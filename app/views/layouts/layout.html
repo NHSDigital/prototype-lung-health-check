@@ -1,104 +1,56 @@
-<!-- 
+<!--
   This is the main layout where you can:
-    - change the header and footer 
+    - change the header and footer
     - add custom CSS and JavaScript
 -->
 
-<!-- Extends the layout from /docs/views/template.html -->
-{% extends "layouts/template.html" %}
+<!-- Extends the prototype kit template which in turn extends the NHS.UK frontend template -->
+{% extends "prototype-kit-template.njk" %}
 
-<!-- Add your custom CSS or Sass in /app/assets/sass/main.scss -->
-{% block headCSS %}
+{% block head %}
+  <!-- Add your custom CSS or Sass in /app/assets/sass/main.scss -->
   <link href="/css/main.css" rel="stylesheet">
+  <script src="/nhsuk-frontend/nhsuk.min.js" defer></script>
 {% endblock %}
 
 <!-- Set the page title -->
 {% block pageTitle %}
-  NHS.UK prototype kit
+  NHS prototype kit
 {% endblock %}
-
-
 
 <!-- Edit the header -->
 <!-- Header code examples can be found at https://service-manual.nhs.uk/design-system/components/header -->
 {% block header %}
-{{ header({
-    "showNav": "true",
-    "showSearch": "false",
-    "searchAction": " ",
-    "organisation": {
-      "name": "Sheffield Teaching Hospitals",
-      "split": "", 
-      "descriptor": "NHS Foundation Trust"
-    },
-    "primaryLinks": [
-      {
-        "url"  : "#",
-        "label" : "Home"
+  {{ header({
+    "service": {
+        "name": serviceName,
+        "href": "/"
       },
-      {
-        'url' : '#',
-        'label' : 'Identity and access'
-      },
-      {
-        'url'  : '#',
-        'label' : 'Pending staff passports'
-      },
-      {
-        'url'  : '#',
-        'label' : 'Reviewed staff passports'
-      },
-      {
-        'url' : '#',
-        'label' : 'Reports'
-      },
-      {
-        'url' : '#',
-        'label' : 'User management'
-      },
-      {
-        'url' : '#',
-        'label' : 'System management'
-      }
-    ]
-  })
-}}
-
-    
-
-{% endblock %}
-
-{% block outerContent %}
-   {% include 'includes/feedback.html' %}
+      "showNav": "false",
+      "showSearch": "false"
+    })
+  }}
 {% endblock %}
 
 <!-- Edit the footer -->
 <!-- Footer code examples can be found at https://service-manual.nhs.uk/design-system/components/footer -->
 {% block footer %}
-{{ footer({
-  "links": [
-    {
-      "URL": "#",
-      "label": "Accessibility statement"
-    },
-    {
-      "URL": "#",
-      "label": "Contact us"
-    },
-    {
-      "URL": "#",
-      "label": "Cookies"
-    },
-    {
-      "URL": "#",
-      "label": "Privacy policy"
-    },
-    {
-      "URL": "#",
-      "label": "Terms and conditions"
-    }
-  ]
-})}}
+  {{ footer({
+    "links": [
+      {
+        "URL": "/",
+        "label": "Home"
+      },
+      {
+        "URL": "/example-templates",
+        "label": "Page templates"
+      },
+      {
+        "URL": "/prototype-admin/reset?returnPage=" + (currentPage | urlencode),
+        "label": "Reset data"
+      }
+    ]
+  })}}
 {% endblock %}
 
 {% block bodyEnd %}

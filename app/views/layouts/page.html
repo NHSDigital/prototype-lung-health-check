@@ -1,0 +1,51 @@
+{% extends 'layout-web-or-native.html' %}
+
+{# {% set mainClasses = "nhsuk-main-wrapper--s" %} #}
+{% set hub = "Services" %}
+
+{% block pageTitle %}
+ {{pageHeading}} - NHS Health Check online - NHS
+{% endblock %}
+
+{% block beforeContent %}
+
+  {% if data.webOrNative == 'native' %}
+    {% if backLink === true or backLink !== false %}
+      {% if containerFullWidth === true %}
+        <div class="nhsuk-width-container">
+          <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-column-full">
+              {% include "_components/nhs-app/back-link/include.html" %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        {% include "_components/nhs-app/back-link/include.html" %}
+      {% endif %}
+    {% endif %}
+    ?
+
+  {% else %}
+    {{ backLink({
+      "text": "Back",
+      "classes": "",
+      "attributes": {
+          onclick: "history.back()"
+      }
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+
+    <div class="nhsuk-grid-column-two-thirds">
+    
+
+      {%block pageContent%}
+      {% endblock %}
+
+    </div>  
+
+  </div>
+{% endblock %}
