@@ -1,0 +1,23 @@
+
+{% from 'card/macro.njk' import card %}
+
+{% set headingHtml %}
+  <h{{ params.headingLevel or "2" }}>
+    {{params.heading}}
+    {% if params.headingInset %}
+      <span class="app-card__heading-inset app-card__heading-inset--{{params.headingInsetColour or 'green'}}">
+        {{params.headingInset}}
+      </span>
+    {%endif%}
+    {% if params.headingBigNumber %}
+      <span class="app-card__heading-big-number">
+        {{params.headingBigNumber}}
+      </span>
+    {%endif%}
+  </h{{ params.headingLevel or "2" }}>
+{% endset %}
+
+{{ card({
+  headingHtml: headingHtml,
+  descriptionHtml: params.descriptionHtml
+}) }}
