@@ -1,0 +1,132 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Lung Health Check" %}
+
+
+{% block content %}
+
+<h1 class="nhsuk-heading-l">{{pageHeading}}</h1>
+
+{% set hasCompletedEligibility = data.existingConditions == "No" %}
+
+{% set cannotStartYetStatus = {
+  tag: {
+    text: "Cannot start yet",
+    classes: "nhsuk-tag--grey"
+  }
+} %}
+
+{% set incompleteStatus = {
+  tag: {
+    text: "Not started yet",
+    classes: "nhsuk-tag--blue"
+  }
+} %}
+
+{% set completedStatus = {
+  text: "Completed",
+  classes: "nhsuk-task-list__status--completed"
+} %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+
+<h3>1. Check before you start </h3>
+
+
+{{ taskList({
+  idPrefix: "check-eligibility",
+  items: [
+    {
+      title: {
+        text: "Check eligibility"
+      },
+      href: "check-eligibility/have-you-completed-NHS",
+      status: incompleteStatus if not hasCompletedEligibility else completedStatus
+    },
+    {
+      title: {
+        text: "Read declaration"
+      },
+      href: "declaration/what-to-expect" if hasCompletedEligibility,
+      status: cannotStartYetStatus if not hasCompletedEligibility else (completedStatus if data.completeNHSOnline == "Yes" else incompleteStatus)
+    }
+  ]
+}) }}
+
+  {{ data.completeNHSOnline | log }}
+
+  {% set hasCompletedDeclaration = data.completeNHSOnline == "Yes" %}
+
+<h3>2. Health questionnaire </h3>
+
+{{ taskList({
+  idPrefix: "health-questionnaire",
+  items: [
+    {
+      title: {
+        text: "About you"
+      },
+      href: "about-you/siblings-angina" if hasCompletedDeclaration,
+      status: cannotStartYetStatus if not hasCompletedDeclaration else (completedStatus if data.aboutYouCompleted == "true" else incompleteStatus)
+    },
+    {
+      title: {
+        text: "Health history"
+      },
+      href: "physical-activity/exercise" if hasCompletedDeclaration,
+      status: cannotStartYetStatus if not hasCompletedDeclaration else (completedStatus if data.physicalActivityCompleted == "true" else incompleteStatus)
+    },
+    {
+      title: {
+        text: "Family health history"
+      },
+      href: "alcohol-consumption/do-you-drink" if hasCompletedDeclaration,
+      status: cannotStartYetStatus if not hasCompletedDeclaration else (completedStatus if data.alcoholConsumptionCompleted == "true" else incompleteStatus)
+    }
+  ]
+}) }}
+
+{{ data | log }}
+
+<h3>3. Smoking history </h3>
+
+{% set hasCompletedHealthQuestionnaire = 
+  data.aboutYouCompleted == "true" and 
+  data.physicalActivityCompleted == "true" and
+  data.alcoholConsumptionCompleted == "true" and
+  data.bodyMeasurementsCompleted == "true" %}
+
+{{ taskList({
+  idPrefix: "blood-pressure",
+  items: [
+    {
+      title: {
+        text: "Confirm your smoking history"
+      },
+      href: "blood-pressure/about" if hasCompletedHealthQuestionnaire,
+      status: cannotStartYetStatus if not hasCompletedHealthQuestionnaire else 
+        (completedStatus if data.bloodPressureCompleted == "true" else incompleteStatus)
+    }
+  ]
+}) }}
+
+<h3>4. Submit </h3>
+
+{% set hasCompletedBloodPressure = data.bloodPressureCompleted == "true" %}
+
+{{ taskList({
+  idPrefix: "submit",
+  items: [
+    {
+      title: {
+        text: "Review and submit"
+      },
+      href: "submit/check-your-answers" if hasCompletedBloodPressure,
+      status: cannotStartYetStatus if not hasCompletedBloodPressure else (completedStatus if data.submitCompleted == "true" else incompleteStatus)
+    }
+  ]
+}) }}
+
+</div>
+</div>
+{% endblock %}
