@@ -1,0 +1,103 @@
+<!-- 
+  This is the main layout where you can:
+    - change the header and footer 
+    - add custom CSS and JavaScript
+-->
+
+<!-- Extends the layout from /docs/views/template.html -->
+{% extends "layouts/template.html" %}
+
+<!-- Add your custom CSS or Sass in /app/assets/sass/main.scss -->
+{% block headCSS %}
+<link href="/css/main.css" rel="stylesheet">
+{% endblock %}
+
+<!-- Set the page title -->
+{% block pageTitle %}
+NHS.UK prototype kit
+{% endblock %}
+
+<!-- Edit the header -->
+<!-- Header code examples can be found at https://service-manual.nhs.uk/design-system/components/header -->
+{% block header %}
+{{ header({
+"showNav": "true",
+"showSearch": "false",
+"searchAction": " ",
+"classes": "nhsuk-header--white",
+"organisation": {
+"name": "Doncaster and Bassetlaw Teaching Hospitals",
+"split": "",
+"descriptor": "NHS Foundation Trust"
+},
+"primaryLinks": [
+{
+"url" : "#",
+"label" : ""
+},
+{
+'url' : '#',
+'label' : ''
+},
+{
+'url' : '#',
+'label' : ''
+},
+{
+'url' : '#',
+'label' : ''
+},
+{
+'url' : '#',
+'label' : ''
+}
+]
+})
+}}
+{% endblock %}
+
+{% block beforeContent %}
+   {% include 'includes/feedback.html' %}
+{% endblock %}
+
+<!-- Edit the footer -->
+<!-- Footer code examples can be found at https://service-manual.nhs.uk/design-system/components/footer -->
+{% block footer %}
+{{ footer({
+"links": [
+{
+"URL": "https://digital.nhs.uk/services/digital-staff-passport/accessibility-statement",
+"label": "Accessibility"
+},
+{
+"URL": "https://digital.nhs.uk/services/digital-staff-passport/cookies",
+"label": "Cookies"
+},
+{
+"URL": "https://digital.nhs.uk/services/digital-staff-passport/privacy-notice-for-the-nhs-digital-staff-passport",
+"label": "Privacy notice"
+},
+{
+"URL": "https://digital.nhs.uk/services/digital-staff-passport/terms-and-conditions",
+"label": "Terms and conditions"
+},
+{
+"URL": "https://digital.nhs.uk/services/digital-staff-passport/terms-of-use",
+"label": "Terms of use"
+},
+{
+"URL": "https://digital.nhs.uk/services/digital-staff-passport/get-help-with-the-digital-staff-passport",
+"label": "Help and support"
+}
+]
+})}}
+{% endblock %}
+
+{% block bodyEnd %}
+{% block scripts %}
+<!-- Custom JavaScript files can be added to this file -->
+{% include "includes/scripts.html" %}
+<!-- For adding page specific JavsScript -->
+{% block pageScripts %}{% endblock %}
+{% endblock %}
+{% endblock %}
