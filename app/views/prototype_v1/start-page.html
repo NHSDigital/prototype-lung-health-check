@@ -1,42 +1,48 @@
 {% extends 'layouts/layout.html' %}
-<div class="nhsuk-width-container">
 
-  <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
-    <ol class="nhsuk-breadcrumb__list">
-      <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="#">Home</a></li>
-      <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="#">Section</a></li>
-      <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="#">Subsection</a></li>
-    </ol>
-    <p class="nhsuk-breadcrumb__back">
-      <a class="nhsuk-breadcrumb__backlink" href="#">
-        <span class="nhsuk-u-visually-hidden">Back to &nbsp;</span>
-        Subsection
-      </a>
-    </p>
-  </nav>
+{% set pageHeading = "Complete an NHS Lung Health Check" %}
+{% block beforeContent %}
 
-  <main class="nhsuk-main-wrapper nhsuk-main-wrapper--s" id="maincontent" role="main">
-    <div class="nhsuk-grid-row">
-      <div class="nhsuk-grid-column-two-thirds">
-
-        <h1>Service name goes here</h1>
-        <p>Use this service to do something.</p>
-        <p>You can use this service if you:</p>
-        <ul>
-          <li>live in England</li>
-          <li>need to get a thing</li>
-          <li>need to change a thing</li>
-        </ul>
-
-        <h2>Before you start</h2>
-
-        <p>We'll ask you for: ...</p>
-
-        <a class="nhsuk-button" href="#" role="button" draggable="false">Start now</a>
-
-        <p>By using this service you are agreeing to our <a href="#">terms of use</a> and <a href="#">privacy policy</a>.</p>
-
-      </div>
-    </div>
-  </main>
+<div class="nhsuk-back-link"> <a class="nhsuk-back-link__link" href="/index">
+    <svg class="nhsuk-icon nhsuk-icon__chevron-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" height="24" width="24">
+      <path d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"></path>
+    </svg>
+    Go back</a>
 </div>
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+  
+
+
+<h1 class="nhsuk-heading-l">
+  {{ pageHeading }}
+</h1>
+
+<p>The NHS Lung Health Check is a free check-up of your health. It can help spot early signs of conditions like lung disease, stroke and type 2 diabetes.</p>
+<p>Doing your Lung Health Check online means you do not have to make a GP appointment.  The results are sent to your GP.</p>
+<p>You're eligible for this service when you:</p>
+<ul>
+  <li>are between 40 and 74 years old</li>
+  <li>are currently or have previously smoked</li>
+</ul>
+
+<h2 class="nhsuk-heading-m">Before you start</h2>
+
+<p>We will ask you for some measurements. If you have the following items at home, have them nearby before you start:</p>
+<ul>
+  <li>tape measure</li>
+  <li>bathroom scales</li>
+  <li>blood pressure monitor</li>
+</ul>
+
+<p>You can still complete your Lung Health Check without these items.</p>
+
+<a href="task-list" class="nhsuk-button">
+  Start now
+</a>
+  </div>
+</div>
+
+{% endblock %}
