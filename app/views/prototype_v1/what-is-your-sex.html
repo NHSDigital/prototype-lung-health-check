@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 
 {% set pageName = "Are these details correct?" %}
-
+    {% set pageHeading = "What is your sex assigned at birth?" %}
 
 {% block beforeContent %}
 {{ backLink({
-href: "what-is-your-sex",
+href: "check-the-details",
 text: "Back"
 }) }}
 {% endblock %}
@@ -14,31 +14,28 @@ text: "Back"
   <div class="nhsuk-grid-column-two-thirds">
     <form action="what-is-your-weight" method="post" novalidate="true">
 <h2>{{pageHeading}}</h2>
-      {% set pageHeading = "What is your sex assigned at birth?" %}
+  
 
-      {{ radios({
-      "idPrefix": "sex",
-      "name": "sex",
-      "fieldset": {
-      "legend": {
-      "text": pageHeading,
-      "classes": "nhsuk-fieldset__legend--l",
-      "isPageHeading": true
-      }
-      },
-      "items": [
-      {
-      "value": "Female",
-      "text": "Female",
-      checked: checked("sex", "Female")
-      },
-      {
-      "value": "Male",
-      "text": "Male",
-      checked: checked("sex", "Male")
-      }
-      ]
-      }) }}
+{{ radios({
+  idPrefix: "what-is-your-sex",
+  name: "what-is-your-sex",
+  fieldset: {
+    legend: {
+      classes: "nhsuk-fieldset__legend--m",
+      isPageHeading: true
+    }
+  },
+  items: [
+    {
+      value: "male",
+      text: "Male"
+    },
+    {
+      value: "female",
+      text: "Female"
+    }
+  ]
+}) }}
       {{ button({
       text: "Continue"
       }) }}
