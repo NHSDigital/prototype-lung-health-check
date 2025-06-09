@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Enter your height" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "what-is-your-sex",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="what-is-your-weight" method="post" novalidate="true">
+
+      <h2>{{pageHeading}}</h2>
+
+  <p>An accurate measurement is important. This helps to work out if you’re a healthy weight. </p>
+
+    <p>You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.</p>
+    {{ data | log}}
+
+    {% if data.heightUnit == "imperial" %}
+
+    {{ dateInput({
+      id: "height",
+      namePrefix: "height",
+      fieldset: {
+        legend: {
+          text: "What is your height?",
+          classes: "nhsuk-label--m"
+        }
+      },
+      items: [
+        {
+          name: "feet",
+          classes: "nhsuk-input--width-4",
+          value: data.height.feet
+        },
+        {
+          name: "inches",
+          classes: "nhsuk-input--width-4",
+          value: data.height.feet
+        }
+       
+      ]
+    }) }}
+
+    <input type="hidden" name="heightUnit" value="imperial">
+
+    <p><a href="./what-is-your-height?heightUnit=metric&height[feet]=&height[inches]=">Switch to metric</a></p>
+
+    {% else %}
+
+    {{ dateInput({
+      id: "height",
+      namePrefix: "height",
+      fieldset: {
+        legend: {
+          text: "What is your height?",
+          classes: "nhsuk-label--m"
+        }
+      },
+      items: [
+        {
+          name: "centimetres",
+          classes: "nhsuk-input--width-4",
+          value: data.height.centimetres
+        }
+      ]
+    }) }}
+
+    <input type="hidden" name="heightUnit" value="metric">
+
+    <p><a href="./what-is-your-height?heightUnit=imperial&height[centimetres]=">Switch to imperial</a></p>
+
+
+    {% endif %}
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

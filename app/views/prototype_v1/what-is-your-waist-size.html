@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "What is your waist measurement?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "measure-your-waist",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="" method="post" novalidate="true">
+
+ {% if data.waistUnit == "imperial" %}
+
+  {{ dateInput({
+    id: "dob-errors",
+    namePrefix: "waist",
+    fieldset: {
+      legend: {
+        text: pageHeading,
+        classes: "nhsuk-label--l",
+        isPageHeading: true
+      }
+    },
+    items: [
+      {
+        name: "inches",
+        classes: "nhsuk-input--width-4",
+        value: data.waist.inches
+      }
+      
+    ]
+  }) }}
+
+  <input type="hidden" name="waistUnit" value="imperial">
+
+  <p><a href="./what-is-your-waist-size?waistUnit=metric&waist[inches]=">Switch to metric</a></p>
+
+  {% else %}
+
+  {{ dateInput({
+    id: "waist",
+    namePrefix: "waist",
+    fieldset: {
+      legend: {
+        text: pageHeading,
+        classes: "nhsuk-label--l",
+        isPageHeading: true
+      }
+    },
+    items: [
+      {
+        name: "centimetres",
+        classes: "nhsuk-input--width-4",
+        value: data.waist.centimetres
+      }
+    ]
+  }) }}
+
+  <input type="hidden" name="waistUnit" value="metric">
+
+  <p><a href="./what-is-your-waist-size?waistUnit=imperial&waist[centimetres]=">Switch to imperial</a></p>
+
+
+  {% endif %}
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}
