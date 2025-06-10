@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "What is the highest level of education you completed?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "measure-your-waist",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="" method="post" novalidate="true">
+
+ {{ radios({
+  "idPrefix": "educationCompleted",
+  "name": "educationCompleted",
+  "fieldset": {
+    "legend": {
+      "text": pageHeading,
+      "classes": "nhsuk-fieldset__legend--l",
+      "isPageHeading": true
+    }
+  },
+    hint: {
+      text: "[reason for asking question]"
+    },
+  "items": [
+    {
+      "value": "Finished school before 15",
+      "text": "I finished school before 15"
+    },
+    {
+      "value": "GCSEs (previously O-levels)",
+      "text": "GCSEs (previously O-levels)"
+    },
+      {
+      "value": "A-levels (previously Higher School Certificate)",
+      "text": "A-levels (previously Higher School Certificate)"
+    },
+      {
+      "value": "Further education (no degree)",
+      "text": "Further education (no degree)"
+    },
+      {
+      "value": "Bachelor degree or equivalent",
+      "text": "Bachelor degree or equivalent"
+    },
+      {
+      "value": "Further degrees (for example Masters or PhD)",
+      "text": "Further degrees (for example Masters or PhD)"
+    }
+  ]
+}) }}
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

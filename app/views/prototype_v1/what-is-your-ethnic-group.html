@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "What is your ethnic group?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "what-is-your-waist-size",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="highest-level-completed-education" method="post" novalidate="true">
+
+ {{ radios({
+  "idPrefix": "ethnicGroup",
+  "name": "ethnicGroup",
+  "fieldset": {
+    "legend": {
+      "text": pageHeading,
+      "classes": "nhsuk-fieldset__legend--l",
+      "isPageHeading": true
+    }
+  },
+    hint: {
+      text: "Your ethnicity may impact your chances of developing some conditions that affect your lungs."
+    },
+  "items": [
+    {
+      "value": "Asian or Asian British",
+      "text": "Asian: Indian, Pakistani, Bangladeshi, Chinese or other asian background",
+      checked: checked("ethnicGroup", "Asian or Asian British")
+    },
+    {
+      "value": "Black, African, Caribbean or Black British",
+      "text": "Black, African, Caribbean or Black British",
+      checked: checked("ethnicGroup", "Black, African, Caribbean or Black British")
+    },
+      {
+      "value": "Mixed or multiple ethnic groups",
+      "text": "Mixed or multiple ethnic groups",
+      checked: checked("ethnicGroup", "Mixed or multiple ethnic groups")
+    },
+      {
+      "value": "White",
+      "text": "White: British, Irish or other white background",
+      checked: checked("ethnicGroup", "White")
+    },
+      {
+      "value": "Other ethnic group",
+      "text": "Other ethnic group",
+      checked: checked("ethnicGroup", "Other ethnic group")
+    }
+  ]
+}) }}
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}
