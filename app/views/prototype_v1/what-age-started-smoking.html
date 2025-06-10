@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "At what age did you start smoking cigarettes regularly?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "do-you-smoke-now",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="do-you-smoke-now" method="post" novalidate="true">
+<h2>{{pageHeading}}</h2>
+         {{ input({
+  label: {
+  text: "Enter the age"
+  },
+  id: "input-width-2",
+  name: "ageStartedSmoking",
+  classes: "nhsuk-input--width-2"
+}) }}
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Have you ever been diagnosed with a malignancy or cancer?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "diagnosed-pneumonia-emphysema",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="exposed-to-asbestos" method="post" novalidate="true">
+
+         {{ radios({
+          "idPrefix": "diagnosedMalignancy",
+          "name": "diagnosedMalignancy",
+          "fieldset": {
+            "legend": {
+              "text": pageHeading,
+              "classes": "nhsuk-fieldset__legend--l",
+              "isPageHeading": true
+            }
+          },
+          "items": [
+            {
+              "value": "Yes",
+              "text": "Yes",
+              checked: checked("diagnosedMalignancy", "Yes")
+            },
+            {
+              "value": "No",
+              "text": "No",
+              checked: checked("diagnosedMalignancy", "No")
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

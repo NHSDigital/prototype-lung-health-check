@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Have you ever smoked cigarettes regularly?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "relatives-age-when-diagnosed",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="what-age-started-smoking" method="post" novalidate="true">
+
+         {{ radios({
+          "idPrefix": "smokedRegularly",
+          "name": "smokedRegularly",
+          "fieldset": {
+            "legend": {
+              "text": pageHeading,
+              "classes": "nhsuk-fieldset__legend--l",
+              "isPageHeading": true
+            }
+          },
+          "items": [
+            {
+              "value": "Yes",
+              "text": "Yes",
+              checked: checked("smokedRegularly", "Yes")
+            },
+            {
+              "value": "No",
+              "text": "No",
+              checked: checked("smokedRegularly", "No")
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

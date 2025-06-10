@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "During periods when you smoked, how many cigarettes did or do you usually smoke per day?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "what-age-stopped-smoking",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="" method="post" novalidate="true">
+
+         {{ radios({
+          "idPrefix": "howmanyCigarettes",
+          "name": "howmanyCigarettes",
+          "fieldset": {
+            "legend": {
+              "text": pageHeading,
+              "classes": "nhsuk-fieldset__legend--l",
+              "isPageHeading": true
+            }
+          },
+          "items": [
+            {
+              "value": "1 - 10",
+              "text": "1 - 10",
+              checked: checked("howmanyCigarettes", "1 - 10")
+            },
+            {
+              "value": "11 - 20",
+              "text": "11 - 20",
+              checked: checked("howmanyCigarettes", "11 - 20")
+            },
+                        {
+              "value": "21 - 30",
+              "text": "21 - 30",
+              checked: checked("howmanyCigarettes", "21 - 30")
+            },
+                        {
+              "value": "31 - 40",
+              "text": "31 - 40",
+              checked: checked("howmanyCigarettes", "31 - 40")
+            },
+                        {
+              "value": "41 - 60",
+              "text": "41 - 60",
+              checked: checked("howmanyCigarettes", "41 - 60")
+            },
+                        {
+              "value": "61 - 80",
+              "text": "61 - 80",
+              checked: checked("howmanyCigarettes", "61 - 80")
+            },
+                        {
+              "value": "81+",
+              "text": "81+",
+              checked: checked("howmanyCigarettes", "81+")
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Can you recall any job or activity where you were exposed to asbestos?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "diagnosed-malignancy-cancer",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="relatives-with-cancer" method="post" novalidate="true">
+
+         {{ radios({
+          "idPrefix": "exposedAsbestos",
+          "name": "exposedAsbestos",
+          "fieldset": {
+            "legend": {
+              "text": pageHeading,
+              "classes": "nhsuk-fieldset__legend--l",
+              "isPageHeading": true
+            }
+          },
+          "items": [
+            {
+              "value": "Yes",
+              "text": "Yes",
+              checked: checked("exposedAsbestos", "Yes")
+            },
+            {
+              "value": "No",
+              "text": "No",
+              checked: checked("exposedAsbestos", "No")
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

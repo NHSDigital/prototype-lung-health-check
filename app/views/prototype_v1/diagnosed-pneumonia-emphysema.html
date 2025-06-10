@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Have you ever been diagnosed with Pneumonia, Emphysema, Bronchitis, TB or COPD?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "highest-level-completed-education",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="diagnosed-malignancy-cancer" method="post" novalidate="true">
+
+         {{ radios({
+          "idPrefix": "diagnosedPneumonia",
+          "name": "diagnosedPneumonia",
+          "fieldset": {
+            "legend": {
+              "text": pageHeading,
+              "classes": "nhsuk-fieldset__legend--l",
+              "isPageHeading": true
+            }
+          },
+          "items": [
+            {
+              "value": "Yes",
+              "text": "Yes",
+              checked: checked("diagnosedPneumonia", "Yes")
+            },
+            {
+              "value": "No",
+              "text": "No",
+              checked: checked("diagnosedPneumonia", "No")
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

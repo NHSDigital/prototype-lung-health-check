@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Have any of your first degree relatives, including parents, had a diagnosis of lung cancer?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "exposed-to-asbestos",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="relatives-age-when-diagnosed" method="post" novalidate="true">
+
+         {{ radios({
+          "idPrefix": "relativesCancer",
+          "name": "relativesCancer",
+          "fieldset": {
+            "legend": {
+              "text": pageHeading,
+              "classes": "nhsuk-fieldset__legend--l",
+              "isPageHeading": true
+            }
+          },
+          "items": [
+            {
+              "value": "Yes",
+              "text": "Yes",
+              checked: checked("relativesCancer", "Yes")
+            },
+            {
+              "value": "No",
+              "text": "No",
+              checked: checked("relativesCancer", "No")
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}
