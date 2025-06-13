@@ -13,16 +13,16 @@ text: "Back"
 {% block content %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-    <form action="" method="post" novalidate="true">
-
-         <h1>
-  {{pageHeading}} 
-</h1>
-
-{{ warningCallout({
+   
+      {{ warningCallout({
   heading: "Important",
   HTML: "<p>Check your answers before you submit them. After you submit them you cannot edit them again. This is so we can complete your lung health check.</p>"
 }) }}
+</div>
+  <div class="nhsuk-grid-column-full">
+ <form action="results-overview" method="post" novalidate="true">
+  <h1>{{pageHeading}} </h1>
+
 
 
 {{ summaryList({
@@ -153,31 +153,143 @@ text: "Back"
           }
         ]
       }
-    },
-    {
-      key: {
-        text: "What is the hightest level of education you completed?"
-      },
-      value: {
-        text: data["educationCompleted"]
-      },
-      actions: {
-        items: [
-          {
-            href: "highest-level-completed-education",
-            text: "Change",
-            visuallyHiddenText: "What is the highest level of education you completed?"
-          }
-        ]
-      }
     }
     ]
     
 }) }}
 
+{{ summaryList({
+  rows: [
+          {
+      key: {
+        text: "Have any of your first degree relatives, including parents, had a diagnosis of lung cancer?"
+      },
+      value: {
+        text: data["relativesCancer"]
+      },
+      actions: {
+        items: [
+          {
+            href: "relatives-with-cancer",
+            text: "Change",
+            visuallyHiddenText: "Have any of your first degree relatives, including parents, had a diagnosis of lung cancer?"
+          }
+        ]
+      }
+    },
+    {
+      key: {
+        text: "Were your relatives less than 60 years old when they were diagnosed?"
+      },
+      value: {
+        text: data["relativeAge"]
+      },
+      actions: {
+        items: [
+          {
+            href: "relatives-age-when-diagnosed",
+            text: "Change",
+            visuallyHiddenText: "Were your relatives less than 60 years old when they were diagnosed?"
+          }
+        ]
+      }
+    }
+    ]
+}) }}
+
+{{ summaryList({
+  rows: [
+          {
+      key: {
+        text: "Have you ever smoked cigarettes regularly?"
+      },
+      value: {
+        text: data["smokedRegularly"]
+      },
+      actions: {
+        items: [
+          {
+            href: "have-you-smoked-regularly",
+            text: "Change",
+            visuallyHiddenText: "Have you ever smoked cigarettes regularly?"
+          }
+        ]
+      }
+    },
+    {
+      key: {
+        text: "At what age did you start smoking cigarettes regularly?"
+      },
+      value: {
+        text: data["ageStartedSmoking"]
+      },
+      actions: {
+        items: [
+          {
+            href: "what-age-started-smoking",
+            text: "Change",
+            visuallyHiddenText: "At what age did you start smoking cigarettes regularly?"
+          }
+        ]
+      }
+    },
+        {
+      key: {
+        text: "Do you smoke cigarettes regularly now?"
+      },
+      value: {
+        text: data["smokeNow"]
+      },
+      actions: {
+        items: [
+          {
+            href: "do-you-smoke-now",
+            text: "Change",
+            visuallyHiddenText: "Do you smoke cigarettes regularly now?"
+          }
+        ]
+      }
+    },
+        {
+      key: {
+        text: "At what age did you last stop smoking cigarettes regularly?"
+      },
+      value: {
+        text: data["ageStoppedSmoking"]
+      },
+      actions: {
+        items: [
+          {
+            href: "what-age-stopped-smoking",
+            text: "Change",
+            visuallyHiddenText: "At what age did you last stop smoking cigarettes regularly?"
+          }
+        ]
+      }
+    },
+        {
+      key: {
+        text: "During periods when you smoked, how many cigarettes did or do you usually smoke per day?"
+      },
+      value: {
+        text: data["howmanyCigarettes"]
+      },
+      actions: {
+        items: [
+          {
+            href: "how-many-cigarettes-per-day",
+            text: "Change",
+            visuallyHiddenText: "During periods when you smoked, how many cigarettes did or do you usually smoke per day?"
+          }
+        ]
+      }
+    }
+    ]
+}) }}
+
    
       {{ button({
-      text: "Continue"
+      text: "Submit"
       }) }}
 
 
