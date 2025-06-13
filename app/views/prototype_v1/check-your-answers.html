@@ -1,0 +1,187 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Check your answers" %}
+{% set buttonText = "Submit" %}
+
+
+{% block beforeContent %}
+{{ backLink({
+href: "how-many-cigarrettes-per-day",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="" method="post" novalidate="true">
+
+         <h1>
+  {{pageHeading}} 
+</h1>
+
+{{ warningCallout({
+  heading: "Important",
+  HTML: "<p>Check your answers before you submit them. After you submit them you cannot edit them again. This is so we can complete your lung health check.</p>"
+}) }}
+
+
+{{ summaryList({
+  rows: [
+          {
+      key: {
+        text: "What is your date of birth?"
+      },
+      value: {
+        text: "12 October 1963"
+      },
+      actions: {
+        items: [
+          {
+            href: "what-is-your-date-of-birth",
+            text: "Change",
+            visuallyHiddenText: "What is your date of birth?"
+          }
+        ]
+      }
+    },
+    {
+      key: {
+        text: "What is your sex assigned at birth?"
+      },
+      value: {
+        text: data["what-is-your-sex"]
+      },
+      actions: {
+        items: [
+          {
+            href: "what-is-your-sex",
+            text: "Change",
+            visuallyHiddenText: "What is your sex assigned at birth?"
+          }
+        ]
+      }
+    },
+     {
+      key: {
+        text: "What is your ehtnic group?"
+      },
+      value: {
+        text: data["ethnicGroup"]
+      },
+      actions: {
+        items: [
+          {
+            href: "what-is-your-ethnic-group",
+            text: "Change",
+            visuallyHiddenText: "What is your ethnic group?"
+          }
+        ]
+      }
+    },
+    {
+      key: {
+        text: "What is the hightest level of education you completed?"
+      },
+      value: {
+        text: data["educationCompleted"]
+      },
+      actions: {
+        items: [
+          {
+            href: "highest-level-completed-education",
+            text: "Change",
+            visuallyHiddenText: "What is the highest level of education you completed?"
+          }
+        ]
+      }
+    }
+    ]
+    
+}) }}
+
+{% include "includes/check-your-answers/measurements.html" %}
+
+{{ summaryList({
+  rows: [
+          {
+      key: {
+        text: "Have you ever been diagnosed with Pneumonia, Emphysema, Bronchitis, TB or COPD?"
+      },
+      value: {
+        text: data["diagnosedPneumonia"]
+      },
+      actions: {
+        items: [
+          {
+            href: "diagnosed-pneumonia-emphysema",
+            text: "Change",
+            visuallyHiddenText: "Have you ever been diagnosed with Pneumonia, Emphysema, Bronchitis, TB or COPD?"
+          }
+        ]
+      }
+    },
+    {
+      key: {
+        text: "Have you ever been diagnosed with a malignancy or cancer?"
+      },
+      value: {
+        text: data["diagnosedMalignancy"]
+      },
+      actions: {
+        items: [
+          {
+            href: "diagnosed-malignancy-cancer",
+            text: "Change",
+            visuallyHiddenText: "Have you ever been diagnosed with a malignancy or cancer?"
+          }
+        ]
+      }
+    },
+     {
+      key: {
+        text: "Can you recall any job or activity where you were exposed to asbestos?"
+      },
+      value: {
+        text: data["exposedAsbestos"]
+      },
+      actions: {
+        items: [
+          {
+            href: "exposed-to-asbestos",
+            text: "Change",
+            visuallyHiddenText: "Can you recall any job or activity where you were exposed to asbestos?"
+          }
+        ]
+      }
+    },
+    {
+      key: {
+        text: "What is the hightest level of education you completed?"
+      },
+      value: {
+        text: data["educationCompleted"]
+      },
+      actions: {
+        items: [
+          {
+            href: "highest-level-completed-education",
+            text: "Change",
+            visuallyHiddenText: "What is the highest level of education you completed?"
+          }
+        ]
+      }
+    }
+    ]
+    
+}) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

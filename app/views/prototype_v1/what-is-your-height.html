@@ -1,10 +1,10 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Enter your height" %}
+{% set pageHeading = "What is your height?" %}
 
 {% block beforeContent %}
 {{ backLink({
-href: "what-is-your-sex",
+href: "highest-level-completed-education",
 text: "Back"
 }) }}
 {% endblock %}
@@ -15,7 +15,7 @@ text: "Back"
 
       <h2>{{pageHeading}}</h2>
 
-  <p>An accurate measurement is important. This helps to work out if you’re a healthy weight. </p>
+  <p>An accurate measurement is important. This helps to work out if you're a healthy weight. </p>
 
     <p>You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.</p>
     {{ data | log}}
@@ -27,7 +27,7 @@ text: "Back"
       namePrefix: "height",
       fieldset: {
         legend: {
-          text: "What is your height?",
+          text: "Enter your height",
           classes: "nhsuk-label--m"
         }
       },
@@ -57,7 +57,7 @@ text: "Back"
       namePrefix: "height",
       fieldset: {
         legend: {
-          text: "What is your height?",
+          text: "Enter your height",
           classes: "nhsuk-label--m"
         }
       },

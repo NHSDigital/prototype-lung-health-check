@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% set pageName = "What is your date of birth?" %}
+    {% set pageHeading = "What is your date of birth?" %}
+
+{% block beforeContent %}
+{{ backLink({
+href: "start-page",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="what-is-your-sex" method="post" novalidate="true">
+  
+{{ dateInput({
+  id: "what-is-your-date-of-birth",
+  namePrefix: "what-is-your-date-of-birth",
+  fieldset: {
+    legend: {
+      text: "What is your date of birth?",
+      classes: "nhsuk-label--l",
+      isPageHeading: true
+    }
+  },
+  hint: {
+    text: "For example, 15 3 1964"
+  },
+  items: [
+    {
+      id: "DOB-day",
+      name: "Day",
+      classes: "nhsuk-input--width-2",
+      value: data["DOBday"]
+    },
+    {
+      id: "DOB-month",
+      name: "Month",
+      classes: "nhsuk-input--width-2",
+      value: data["DOBmonth"]
+    },
+    {
+      id: "DOB-year",
+      name: "Year",
+      classes: "nhsuk-input--width-4",
+      value: data["DOByear"]
+    }
+  ]
+}) }}
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

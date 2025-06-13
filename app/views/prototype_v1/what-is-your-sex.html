@@ -1,18 +1,18 @@
 {% extends 'layout.html' %}
 
-{% set pageName = "Are these details correct?" %}
+{% set pageName = "What is your sex assigned at birth?" %}
     {% set pageHeading = "What is your sex assigned at birth?" %}
 
 {% block beforeContent %}
 {{ backLink({
-href: "check-the-details",
+href: "what-is-your-date-of-birth",
 text: "Back"
 }) }}
 {% endblock %}
 {% block content %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-    <form action="what-is-your-height" method="post" novalidate="true">
+    <form action="what-is-your-ethnic-group" method="post" novalidate="true">
 <h2>{{pageHeading}}</h2>
   
 
@@ -27,12 +27,14 @@ text: "Back"
   },
   items: [
     {
-      value: "male",
-      text: "Male"
+      value: "Male",
+      text: "Male",
+      checked: checked("what-is-your-sex", "Male")
     },
     {
-      value: "female",
-      text: "Female"
+      value: "Female",
+      text: "Female",
+      checked: checked("what-is-your-sex", "Female")
     }
   ]
 }) }}

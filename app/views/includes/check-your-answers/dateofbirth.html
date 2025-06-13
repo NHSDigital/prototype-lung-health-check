@@ -1,0 +1,30 @@
+
+{% set dateOfBirthValue%} 
+ {{data["DOBday"]}}
+  {{data["DOBmonth"]}}
+   {{data["DOByear"]}}
+
+{% endset %}
+
+
+{{ summaryList({
+  rows: [
+    {
+      key: {
+        text: "What is your date of birth?"
+      },
+      value: {
+        html: dateOfBirthValue
+      },
+      actions: {
+        items: [
+          {
+            href: "what-is-your-date-of-birth",
+            text: "Change",
+            visuallyHiddenText: "What is your date of birth?"
+          }
+        ]
+      }
+    }
+  ]
+}) }}
