@@ -7,11 +7,11 @@ const router = express.Router();
 
 module.exports = router;
 
-router.post('/relatives-with-cancer', function(request, response) {
-    var relativesCancer = request.session.data['relativesCancer']
-    if (relativesCancer == "Yes"){
-        response.redirect("/relatives-age-when-diagnosed")
+router.post('/prototype_v1/relatives-age-when-diagnosed', function(request, response) {
+    var relatives = request.session.data['relativesCancer']
+    if (relatives == "Yes"){
+        response.redirect("/prototype_v1/relatives-age-when-diagnosed")
     } else {
-        response.redirect("/have-you-smoked-regularly")
+        response.redirect("/prototype_v1/have-you-smoked-regularly")
     }
 })
