@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Do you smoke cigarettes regularly now?" %}
+{% set pageHeading = "Do you currently smoke? " %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -23,6 +23,9 @@
               "isPageHeading": true
             }
           },
+          hint: {
+      text: "For example, smoking cigarettes or a pipe. But not vaping or e-cigarettes."
+    },
           value: data.smokeNow,
           "items": [
             {

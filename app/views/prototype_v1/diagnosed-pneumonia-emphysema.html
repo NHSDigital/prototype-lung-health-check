@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Have you ever been diagnosed with Pneumonia, Emphysema, Bronchitis, TB or COPD?" %}
+{% set pageHeading = "Have you ever been diagnosed with pneumonia, emphysema, bronchitis, tuberculosis (TB) or chronic obstructive pulmonary disease (COPD)?" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -11,7 +11,7 @@ text: "Back"
 {% block content %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-    <form action="diagnosed-malignancy-cancer" method="post" novalidate="true">
+    <form action="diagnosed-cancer" method="post" novalidate="true">
 
          {{ radios({
           "idPrefix": "diagnosedPneumonia",

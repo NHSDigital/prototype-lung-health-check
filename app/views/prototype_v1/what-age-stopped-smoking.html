@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "At what age did you last stop smoking cigarettes regularly?" %}
+{% set pageHeading = "At what age did you stop smoking?" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -15,7 +15,7 @@ text: "Back"
 <h2>{{pageHeading}}</h2>
          {{ input({
   label: {
-  text: "Enter the age"
+  text: "Enter your age, this can be an estimate."
   },
   id: "input-width-2",
   name: "ageStoppedSmoking",

@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Have you ever been diagnosed with a malignancy or cancer?" %}
+{% set pageHeading = "Have you ever been diagnosed with cancer?" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -13,9 +13,13 @@ text: "Back"
   <div class="nhsuk-grid-column-two-thirds">
     <form action="exposed-to-asbestos" method="post" novalidate="true">
 
+      {% set hintHtml -%}
+  <p class="nhsuk-u-margin-bottom-2">This includes cancers that were called malignancies. Such as leukaemia, lymphoma and myeloma.</p>
+{%- endset %}
+
          {{ radios({
-          "idPrefix": "diagnosedMalignancy",
-          "name": "diagnosedMalignancy",
+          "idPrefix": "diagnosedCancer",
+          "name": "diagnosedCancer",
           "fieldset": {
             "legend": {
               "text": pageHeading,
@@ -23,7 +27,10 @@ text: "Back"
               "isPageHeading": true
             }
           },
-          value: data.diagnosedMalignancy,
+            hint: {
+    html: hintHtml
+  },
+          value: data.diagnosedCancer,
           "items": [
             {
               "value": "Yes",

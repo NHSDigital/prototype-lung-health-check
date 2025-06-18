@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "At what age did you start smoking cigarettes regularly?" %}
+{% set pageHeading = "At what age did you start smoking?" %}
 
 {% block beforeContent %}
 {{ backLink({
-href: "have-you-smoked-regularly",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 {% block content %}
@@ -15,7 +15,7 @@ text: "Back"
 <h2>{{pageHeading}}</h2>
          {{ input({
   label: {
-  text: "Enter the age"
+  text: "Enter your age, this can be an estimate"
   },
   id: "input-width-2",
   name: "ageStartedSmoking",

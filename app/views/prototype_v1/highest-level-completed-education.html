@@ -24,7 +24,7 @@ text: "Back"
     }
   },
     hint: {
-      text: "[reason for asking question]"
+      text: "If you didn't study the English curriculum choose the closest equivalent "
     },
    value: data.educationCompleted,
   "items": [
@@ -33,24 +33,36 @@ text: "Back"
       "text": "I finished school before 15"
     },
     {
-      "value": "GCSEs (previously O-levels)",
-      "text": "GCSEs (previously O-levels)"
+      "value": "GCSEs",
+      "text": "GCSEs",
+      hint: {
+        text: "Previously O-levels"
+      }
     },
       {
-      "value": "A-levels (previously Higher School Certificate)",
-      "text": "A-levels (previously Higher School Certificate)"
+      "value": "A-levels",
+      "text": "A-levels",
+        hint: {
+        text: "Previously Higher School Certificate (HSC)"
+      }
     },
       {
-      "value": "Further education (no degree)",
-      "text": "Further education (no degree)"
+      "value": "Further education",
+      "text": "Further education",
+       hint: {
+        text: "For example, BTEC or Higher National Certificates (HNC)"
+      }
     },
       {
-      "value": "Bachelor degree or equivalent",
-      "text": "Bachelor degree or equivalent"
+      "value": "Bachelor's degree",
+      "text": "Bachelor's degree"
     },
       {
-      "value": "Further degrees (for example Masters or PhD)",
-      "text": "Further degrees (for example Masters or PhD)"
+      "value": "Postgraduate degree",
+      "text": "Postgraduate degree",
+        hint: {
+        text: "For example a Masters or PhD"
+      }
     }
   ]
 }) }}

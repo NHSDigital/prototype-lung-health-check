@@ -26,7 +26,7 @@ router.get('/prototype_v1/start-journey', function (request, response) {
 router.post('/prototype_v1/smokedRegularlyAnswer', function(request, response) {
     var smokedRegularly = request.session.data['smokedRegularly']
     if (smokedRegularly == "Yes"){
-        response.redirect("/prototype_v1/how-many-cigarettes-per-day")
+        response.redirect("/prototype_v1/what-age-started-smoking")
     } else if (smokedRegularly == "No"){
         response.redirect("/prototype_v1/check-your-answers")
     } else {

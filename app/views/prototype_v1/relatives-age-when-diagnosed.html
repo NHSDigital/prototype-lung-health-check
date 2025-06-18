@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Were your relatives less than 60 years old when they were diagnosed?" %}
+{% set pageHeading = "Were your relatives younger than 60 years old when they were diagnosed with lung cancer?" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -23,17 +23,19 @@ text: "Back"
               "isPageHeading": true
             }
           },
-          
+          value: data.relativeAge,
           "items": [
             {
               "value": "Yes",
-              "text": "Yes - Less than 60",
-              checked: checked("relativeAge", "Yes")
+              "text": "Yes, they were younger than 60"
             },
             {
               "value": "No",
-              "text": "No - 60, older, or unknown",
-              checked: checked("relativeAge", "No")
+              "text": "No, they were 60 or older"
+            },
+            {
+              "value": "I don't know",
+              "text": "I don't know"
             }
           ]
         }) }}
