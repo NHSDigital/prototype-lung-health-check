@@ -4,14 +4,15 @@
 
 {% block beforeContent %}
 {{ backLink({
-href: "relatives-age-when-diagnosed",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
+
 {% block content %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-    <form action="what-age-started-smoking" method="post" novalidate="true">
+    <form action="smokedRegularlyAnswer" method="post" novalidate="true">
 
          {{ radios({
           "idPrefix": "smokedRegularly",
@@ -23,16 +24,15 @@ text: "Back"
               "isPageHeading": true
             }
           },
+          value: data.smokedRegularly,
           "items": [
             {
               "value": "Yes",
-              "text": "Yes",
-              checked: checked("smokedRegularly", "Yes")
+              "text": "Yes"
             },
             {
               "value": "No",
-              "text": "No",
-              checked: checked("smokedRegularly", "No")
+              "text": "No"
             }
           ]
         }) }}

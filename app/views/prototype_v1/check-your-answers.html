@@ -6,8 +6,8 @@
 
 {% block beforeContent %}
 {{ backLink({
-href: "how-many-cigarrettes-per-day",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 {% block content %}
@@ -23,7 +23,7 @@ text: "Back"
  <form action="results-overview" method="post" novalidate="true">
   <h1>{{pageHeading}} </h1>
 
-
+{{data["dateOfBirth"] | log}}
 
 {{ summaryList({
   rows: [
@@ -32,7 +32,7 @@ text: "Back"
         text: "What is your date of birth?"
       },
       value: {
-        text: "12 October 1963"
+       text: data["dateOfBirth"] | nhsDate 
       },
       actions: {
         items: [
@@ -165,7 +165,7 @@ text: "Back"
         text: "Have any of your first degree relatives, including parents, had a diagnosis of lung cancer?"
       },
       value: {
-        text: data["relativesCancer"]
+        text: data["relativesHaveCancer"]
       },
       actions: {
         items: [
@@ -193,7 +193,7 @@ text: "Back"
           }
         ]
       }
-    }
+    } if data["relativesHaveCancer"] == "Yes"
     ]
 }) }}
 
@@ -231,8 +231,8 @@ text: "Back"
             visuallyHiddenText: "At what age did you start smoking cigarettes regularly?"
           }
         ]
-      }
-    },
+      } 
+    } if data["relativesHaveCancer"] == "Yes",
         {
       key: {
         text: "Do you smoke cigarettes regularly now?"
@@ -249,7 +249,7 @@ text: "Back"
           }
         ]
       }
-    },
+    } if data["relativesHaveCancer"] == "Yes",
         {
       key: {
         text: "At what age did you last stop smoking cigarettes regularly?"
@@ -266,7 +266,7 @@ text: "Back"
           }
         ]
       }
-    },
+    } if data["relativesHaveCancer"] == "Yes",
         {
       key: {
         text: "During periods when you smoked, how many cigarettes did or do you usually smoke per day?"
@@ -283,7 +283,7 @@ text: "Back"
           }
         ]
       }
-    }
+    } if data["relativesHaveCancer"] == "Yes"
     ]
 }) }}
 

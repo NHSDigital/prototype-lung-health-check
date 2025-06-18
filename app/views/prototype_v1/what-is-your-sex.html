@@ -17,24 +17,23 @@ text: "Back"
   
 
 {{ radios({
-  idPrefix: "what-is-your-sex",
-  name: "what-is-your-sex",
+  idPrefix: "whatIsYourSex",
+  name: "whatIsYourSex",
   fieldset: {
     legend: {
       classes: "nhsuk-fieldset__legend--m",
       isPageHeading: true
     }
   },
+  value: data.whatIsYourSex,
   items: [
     {
       value: "Male",
-      text: "Male",
-      checked: checked("what-is-your-sex", "Male")
+      text: "Male"
     },
     {
       value: "Female",
-      text: "Female",
-      checked: checked("what-is-your-sex", "Female")
+      text: "Female"
     }
   ]
 }) }}

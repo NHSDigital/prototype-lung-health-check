@@ -4,8 +4,8 @@
 
 {% block beforeContent %}
 {{ backLink({
-href: "what-age-started-smoking",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 {% block content %}
@@ -23,16 +23,15 @@ text: "Back"
               "isPageHeading": true
             }
           },
+          value: data.smokeNow,
           "items": [
             {
               "value": "Yes",
-              "text": "Yes",
-              checked: checked("smokeNow", "Yes")
+              "text": "Yes"
             },
             {
               "value": "No",
-              "text": "No",
-              checked: checked("smokeNow", "No")
+              "text": "No"
             }
           ]
         }) }}

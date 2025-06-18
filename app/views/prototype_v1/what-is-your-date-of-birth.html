@@ -16,7 +16,7 @@ text: "Back"
   
 {{ dateInput({
   id: "what-is-your-date-of-birth",
-  namePrefix: "what-is-your-date-of-birth",
+  namePrefix: "dateOfBirth",
   fieldset: {
     legend: {
       text: "What is your date of birth?",
@@ -29,22 +29,19 @@ text: "Back"
   },
   items: [
     {
-      id: "DOB-day",
-      name: "Day",
+      name: "day",
       classes: "nhsuk-input--width-2",
-      value: data["DOBday"]
+      value: data["dateOfBirth"]["day"]
     },
     {
-      id: "DOB-month",
-      name: "Month",
+      name: "month",
       classes: "nhsuk-input--width-2",
-      value: data["DOBmonth"]
+      value: data["dateOfBirth"]["month"]
     },
     {
-      id: "DOB-year",
-      name: "Year",
+      name: "year",
       classes: "nhsuk-input--width-4",
-      value: data["DOByear"]
+      value: data["dateOfBirth"]["year"]
     }
   ]
 }) }}

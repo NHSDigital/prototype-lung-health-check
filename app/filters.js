@@ -1,37 +1,55 @@
 module.exports = function (env) { /* eslint-disable-line func-names,no-unused-vars */
   const filters = {};
 
-  /* ------------------------------------------------------------------
-    add your methods to the filters obj below this comment block:
-    @example:
+filters.nhsDate = function(dateInput) {
+  // Handle empty input
+  if (!dateInput) {
+    return ''
+  }
 
-    filters.sayHi = function(name) {
-        return 'Hi ' + name + '!'
+  let day, month, year
+
+  // Handle both array and object formats
+  if (Array.isArray(dateInput)) {
+    // Array format: [day, month, year]
+    if (dateInput.length !== 3) {
+      return ''
     }
+    [day, month, year] = dateInput
+  } else if (typeof dateInput === 'object') {
+    // Object format: {day: x, month: y, year: z}
+    day = dateInput.day
+    month = dateInput.month
+    year = dateInput.year
+  } else {
+    return ''
+  }
 
-    Which in your templates would be used as:
+  // Handle empty values
+  if (!day || !month || !year) {
+    return ''
+  }
 
-    {{ 'Paul' | sayHi }} => 'Hi Paul'
+  // Month names array (index 0 = January)
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
 
-    Notice the first argument of your filters method is whatever
-    gets 'piped' via '|' to the filter.
+  // Convert strings to numbers and validate
+  const dayNum = parseInt(day, 10)
+  const monthNum = parseInt(month, 10)
+  const yearNum = parseInt(year, 10)
 
-    Filters can take additional arguments, for example:
+  // Validate ranges
+  if (dayNum < 1 || dayNum > 31 || monthNum < 1 || monthNum > 12 || yearNum < 1000) {
+    return ''
+  }
 
-    filters.sayHi = function(name,tone) {
-      return (tone == 'formal' ? 'Greetings' : 'Hi') + ' ' + name + '!'
-    }
+  // Format: "1 January 2020"
+  return `${dayNum} ${monthNames[monthNum - 1]} ${yearNum}`
+}
 
-    Which would be used like this:
 
-    {{ 'Joel' | sayHi('formal') }} => 'Greetings Joel!'
-    {{ 'Gemma' | sayHi }} => 'Hi Gemma!'
-
-    For more on filters and how to write them see the Nunjucks
-    documentation.
-
-  ------------------------------------------------------------------ */
-
-  /* keep the following line to return your filters to the app  */
   return filters;
 };
