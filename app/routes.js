@@ -33,3 +33,14 @@ router.post('/prototype_v1/smokedRegularlyAnswer', function(request, response) {
         response.redirect("/prototype_v1/have-you-smoked-regularly")
     }
 })
+
+router.post('/prototype_v1/smokeNowAnswer', function(request, response) {
+    var smokeNow = request.session.data['smokeNow']
+    if (smokeNow == "Yes"){
+        response.redirect("/prototype_v1/how-mainy-cigarettes-per-day")
+    } else if (smokeNow == "No"){
+        response.redirect("/prototype_v1/how-many-cigarettes-per-day")
+    } else {
+        response.redirect("/prototype_v1/do-you-smoke-now")
+    }
+})

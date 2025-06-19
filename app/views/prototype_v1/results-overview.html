@@ -26,7 +26,7 @@ text: "Back"
       <div class="nhsuk-inset-text nhsuk-u-margin-top-5 nhsuk-u-margin-bottom-5" style="border-left: 5px #007f3b solid;">
         <span class="nhsuk-u-visually-hidden">Information: </span>
         <p>
-          Your risk of lung cancer is low.
+          You could be at moderate risk of developing lung cancer
         </p>
       </div>
 
@@ -45,6 +45,12 @@ text: "Back"
 
   <h2>What to do next </h2>
 
-  <p>You’re making good choices for your health. Check what you can do to keep your risk low.</p>
+<h3>Speak to your GP surgery</h3>
+  <p>Book an appointment with your GP surgery to discuss your lung health in more detail.</p>
+
+  {{ actionLink({
+  text: "Book a GP appointment",
+  href: "#"
+}) }}
 
 {% endblock %}
