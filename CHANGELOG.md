@@ -1,5 +1,10 @@
 # NHS prototype kit Changelog
 
+## 6.3.0 - 26 June 2025
+
+- Make it easier to set page titles ([PR #541](https://github.com/nhsuk/nhsuk-prototype-kit/pull/541))
+- Update to NHS frontend 9.6.3 ([PR #540](https://github.com/nhsuk/nhsuk-prototype-kit/pull/540) and [PR #546](https://github.com/nhsuk/nhsuk-prototype-kit/pull/546))
+
 ## 6.2.0 - 23 May 2025
 
 - Update to NHS frontend 9.6.1 ([PR #528](https://github.com/nhsuk/nhsuk-prototype-kit/pull/528))

@@ -1,14 +1,12 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
-{% block pageTitle %}
-  {{ serviceName }}
-{% endblock %}
+{% set pageName = serviceName %}
 
 {% block beforeContent %}
-{{ breadcrumb({
-  href: "/",
-  text: "Home"
-}) }}
+  {{ breadcrumb({
+    href: "/",
+    text: "Home"
+  }) }}
 {% endblock %}
 
 {% block content %}
@@ -16,7 +14,7 @@
     <div class="nhsuk-grid-column-two-thirds">
 
       <h1>
-        {{ serviceName }}
+        {{ pageName }}
       </h1>
 
       <p>Use this service to:</p>

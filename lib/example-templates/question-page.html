@@ -1,15 +1,13 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% set mainClasses = "nhsuk-main-wrapper--s" %}
 
-{% block pageTitle %}
-  Question page
-{% endblock %}
+{% set pageName = "Question goes here" %}
 
 {% block beforeContent %}
   {{ backLink({
-    "href": "#",
-    "text": "Back"
+    href: "#",
+    text: "Back"
   }) }}
 {% endblock %}
 
@@ -20,30 +18,29 @@
       <form action="#" method="post" class="form">
 
         {{ radios({
-          "idPrefix": "example",
-          "name": "example",
-          "fieldset": {
-            "legend": {
-              "text": "Heading or question goes here",
-              "classes": "nhsuk-fieldset__legend--l",
-              "isPageHeading": true
+          idPrefix: "example",
+          name: "example",
+          fieldset: {
+            legend: {
+              text: pageName,
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
             }
           },
-          "items": [
+          items: [
             {
-              "value": "yes",
-              "text": "Yes"
+              value: "yes",
+              text: "Yes"
             },
             {
-              "value": "no",
-              "text": "No"
+              value: "no",
+              text: "No"
             }
           ]
         }) }}
 
         {{ button({
-          "text": "Continue",
-          "id": "btn_submit"
+          text: "Continue"
         }) }}
 
         <p>(See the <a href="https://service-manual.nhs.uk/design-system/components">NHS digital service manual</a> for examples.)</p>
