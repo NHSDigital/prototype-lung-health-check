@@ -2,7 +2,7 @@
 
 module.exports = {
   // Service name
-  serviceName: 'NHS Lung Health Check',
+  serviceName: 'Lung Health Check',
 
   // Port to run nodemon on locally
   port: 2000,

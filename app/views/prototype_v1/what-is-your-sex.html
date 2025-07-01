@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% set pageName = "What is your sex assigned at birth?" %}
-    {% set pageHeading = "What is your sex assigned at birth?" %}
+    {% set pageHeading = "What was your sex at birth?" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -25,15 +25,18 @@ text: "Back"
       isPageHeading: true
     }
   },
+    hint: {
+      text: "Your sex may impact your chances of developing lung cancer."
+    },
   value: data.whatIsYourSex,
   items: [
     {
-      value: "Male",
-      text: "Male"
-    },
-    {
       value: "Female",
       text: "Female"
+    },
+    {
+      value: "Male",
+      text: "Male"
     }
   ]
 }) }}

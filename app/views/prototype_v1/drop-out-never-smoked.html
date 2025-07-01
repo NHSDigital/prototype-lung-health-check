@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Sorry, you cannot get an NHS lung health check" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+
+<p>The lung health check is for people who have smoked or are current smokers.</p>
+<div class="nhsuk-do-dont-list">
+  <h3 class="nhsuk-do-dont-list__label">See a GP if:</h3>
+  <ul>
+    <li>a cough that does not go away after 3 weeks</li>
+    <li>an existing cough that changes or gets worse</li>
+    <li>chest infections that keep coming back</li>
+        <li>coughing up blood</li>
+        <li>being short of breath a lot</li>
+        <li>unexplained tiredness</li>
+        <li>an ache or pain when breathing or coughing</li>
+        <li>loss of appetite or unexplained weight loss</li>
+  </ul>
+</div>
+  </div>
+</div>
+{% endblock %}
