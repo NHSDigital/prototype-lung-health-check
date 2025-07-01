@@ -5,14 +5,14 @@
 
 {% block beforeContent %}
 {{ backLink({
-href: "what-is-your-date-of-birth",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 {% block content %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-    <form action="what-is-your-ethnic-group" method="post" novalidate="true">
+    <form action="which-best-describes-you" method="post" novalidate="true">
 <h2>{{pageHeading}}</h2>
   
 

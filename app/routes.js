@@ -12,7 +12,7 @@ router.post('/prototype_v1/relatives-with-cancer-answer', function(request, resp
     if (relativesHaveCancer == "Yes"){
         response.redirect("/prototype_v1/relatives-age-when-diagnosed")
     } else if (relativesHaveCancer == "No"){
-        response.redirect("/prototype_v1/have-you-smoked-regularly")
+        response.redirect("/prototype_v1/what-age-started-smoking")
     } else {
         response.redirect("/prototype_v1/relatives-with-cancer")
     }
@@ -30,17 +30,28 @@ router.post('/prototype_v1/smokedRegularlyAnswer', function(request, response) {
     } else if (smokedRegularly == "No"){
         response.redirect("/prototype_v1/drop-out-never-smoked")
     } else {
-        response.redirect("/prototype_v1/have-you-smoked-regularly")
+        response.redirect("/prototype_v1/what-age-started-smoking")
     }
 })
 
 router.post('/prototype_v1/smokeNowAnswer', function(request, response) {
     var smokeNow = request.session.data['smokeNow']
     if (smokeNow == "Yes"){
-        response.redirect("/prototype_v1/how-mainy-cigarettes-per-day")
+        response.redirect("/prototype_v1/smoke-now-how-many-cigarettes-per-day")
     } else if (smokeNow == "No"){
-        response.redirect("/prototype_v1/how-many-cigarettes-per-day")
+        response.redirect("/prototype_v1/when-smoked-how-many-cigarettes-per-day")
     } else {
         response.redirect("/prototype_v1/do-you-smoke-now")
+    }
+})
+
+router.post('/prototype_v1/who-should-not-use-answer', function(request, response) {
+    var smokeNow = request.session.data['canYouContinue']
+    if (smokeNow == "Yes"){
+        response.redirect("/prototype_v1/what-is-your-height")
+    } else if (smokeNow == "No"){
+        response.redirect("/prototype_v1/drop-out-bmi")
+    } else {
+        response.redirect("/prototype_v1/who-should-not-use-this-online-service")
     }
 })

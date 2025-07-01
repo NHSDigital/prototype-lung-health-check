@@ -4,14 +4,14 @@
 
 {% block beforeContent %}
 {{ backLink({
-href: "relatives-with-cancer",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 {% block content %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-    <form action="have-you-smoked-regularly" method="post" novalidate="true">
+    <form action="what-age-started-smoking" method="post" novalidate="true">
 
          {{ radios({
           "idPrefix": "relativeAge",

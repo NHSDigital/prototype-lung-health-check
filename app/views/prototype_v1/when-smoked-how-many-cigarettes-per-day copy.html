@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "During periods when you smoked, how many cigarettes did you usually smoke per day??" %}
+{% set pageHeading = "When you smoked, how many cigarettes did you usually smoke per day?" %}
 
 {% block beforeContent %}
 {{ backLink({
-href: "what-age-stopped-smoking",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 {% block content %}

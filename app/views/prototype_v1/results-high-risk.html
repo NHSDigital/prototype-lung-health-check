@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Your results" %}
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+  
+
+
+<h2>
+  {{ pageHeading }}
+</h2>
+
+<div class="nhsuk-card">
+    <div class="nhsuk-card__content" style="padding-bottom: 0;">
+      <h2 class="nhsuk-card__heading" style="margin-bottom: 10px;">Higher risk</h2>
+    </div>
+    <div class="nhsuk-card__content" style="padding-top: 0;">
+      <div class="nhsuk-inset-text nhsuk-u-margin-top-5 nhsuk-u-margin-bottom-5" style="border-left: 5px #d5281b solid;">
+        <span class="nhsuk-u-visually-hidden">Information: </span>
+        <p>
+          You could be at a higher risk of developing lung cancer
+        </p>
+      </div>
+      <p>You should book a CT scan.</p>
+      <p>A CT scan will take detailed pictures of the inside of your chest. The scan is used to detect any abnormalities in your lungs. </p>
+      <p>Lung cancer is found in about 1-2% of participants who are scanned. The aim is to find lung cancer early. Early diagnosis can make lung cancer more treatable and make treatment more successful.  </p>
+      <p>When booking your CT scan appointment you will be asked to confirm:</p>
+      <ul>
+      <li>that you have not had a CT scan in the last 12 months</li>
+      <li>if you had have a chest infection requiring antibiotics in the last 6 weeks</li>
+      <li>if your require any assistance or adjustments. For example, if you use a wheelchair or walking frame</li>
+    </ul>
+  {{ actionLink({
+  text: "Book a CT scan",
+  href: "#"
+}) }}
+    </div>
+  </div>
+
+
+  <h3>More information </h3>
+<p>Find more information on the <a>lung cancer screening programme</a> and on <a>CT scans.</a> </p>
+<h3>Help us improve this service</h3>
+  <p>Tell us about your experience using this service today.</p>
+  {{ button({
+  text: "Give feedback",
+  classes: "nhsuk-button--secondary"
+}) }}
+<br>
+<a href="results-low-risk">[Show lower risk results page]</a>
+</div>
+</div>
+
+
+{% endblock %}

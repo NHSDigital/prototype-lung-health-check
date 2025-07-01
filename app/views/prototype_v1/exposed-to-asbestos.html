@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Have you ever been exposed to asbestos?" %}
+{% set pageHeading = "How you ever worked in a job where you were exposed to asbestos?" %}
 
 {% block beforeContent %}
 {{ backLink({
-href: "diagnosed-cancer",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 {% block content %}

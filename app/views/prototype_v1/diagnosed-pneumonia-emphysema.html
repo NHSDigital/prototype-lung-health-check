@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Have you ever been diagnosed with pneumonia, emphysema, bronchitis, tuberculosis (TB) or chronic obstructive pulmonary disease (COPD)?" %}
+{% set pageHeading = "Have you ever been diagnosed with any of the following respiratory conditions?" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -12,29 +12,62 @@ text: "Back"
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
     <form action="diagnosed-cancer" method="post" novalidate="true">
+{{ checkboxes({
+    idPrefix: "EverDiagnosedWith",
+    name: "EverDiagnosedWith",
+    fieldset: {
+      legend: {
+        text: "Have you ever been diagnosed with any of the following respiratory conditions?",
+        isPageHeading: true,
+        classes: "nhsuk-fieldset__legend--l"
+      }
+    },
+    hint: {
+      text: "Select all that apply."
+    },
+    items: [
+      {
+        value: "Pneumonia",
+        text: "Pneumonia",
+        hint: {
+          text: "Acute inflammation of the alveoli in the lungs, likely caused by a bacterial infection"
+        }
+      },
+           {
+        value: "Emphysema",
+        text: "Emphysema",
+        hint: {
+          text: "A long-term lung condition primarily caused by smoking in which the air sacs become damaged and enlarged causing breathlessness"
+        }
+      },
+            {
+        value: "Bronchitis",
+        text: "Bronchitis",
+        hint: {
+          text: "An infection of the main airways of the lungs, causing them to be irritated and inflamed"
+        }
+      },
+            {
+        value: "Tuberculosis (TB)",
+        text: "Tuberculosis (TB)",
+        hint: {
+          text: "A bacterial infection that usually affects the lungs but can affect any part of the body"
+        }
+      },
+            {
+        value: "Chronic obstructive pulmonary disease (COPD)",
+        text: "Chronic obstructive pulmonary disease (COPD)",
+        hint: {
+          text: "A group of lung conditions that makes it difficult to empty air out of the lungs because the airways have become narrowed"
+        }
+      },
+            {
+        value: "None",
+        text: "None of these"
+      }
+    ]
+  }) }}
 
-         {{ radios({
-          "idPrefix": "diagnosedPneumonia",
-          "name": "diagnosedPneumonia",
-          "fieldset": {
-            "legend": {
-              "text": pageHeading,
-              "classes": "nhsuk-fieldset__legend--l",
-              "isPageHeading": true
-            }
-          },
-          value: diagnosedPneumonia,
-          "items": [
-            {
-              "value": "Yes",
-              "text": "Yes"
-            },
-            {
-              "value": "No",
-              "text": "No"
-            }
-          ]
-        }) }}
 
    
       {{ button({

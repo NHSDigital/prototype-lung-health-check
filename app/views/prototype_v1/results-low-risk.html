@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Your results" %}
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+  
+
+
+<h2>
+  {{ pageHeading }}
+</h2>
+
+<div class="nhsuk-card">
+  <div class="nhsuk-card__content" style="padding-bottom: 0;">
+    <h2 class="nhsuk-card__heading" style="margin-bottom: 10px;">Lower risk</h2>
+  </div>
+  <div class="nhsuk-card__content" style="padding-top: 0;">
+    <div class="nhsuk-inset-text nhsuk-u-margin-top-5 nhsuk-u-margin-bottom-5" style="border-left: 5px #007f3b solid;">
+      <span class="nhsuk-u-visually-hidden">Information: </span>
+      <p>
+        The lung health check suggests you are not at higher risk of developing lung cancer
+      </p>
+    </div>
+    <p>You do not need to take any further action. You will be invited to the NHS lung health check again in 2 years.</p>
+  </div>
+</div>
+
+
+  <div class="nhsuk-card nhsuk-card--care nhsuk-card--care--non-urgent">
+  <div class="nhsuk-card--care__heading-container">
+    <h2 class="nhsuk-card--care__heading"> <span role="text"><span class="nhsuk-u-visually-hidden">Non-urgent advice: </span>See a GP if:</span> </h2> <span class="nhsuk-card--care__arrow" aria-hidden="true"></span>
+  </div>
+  <div class="nhsuk-card__content">
+    <p>You have any <a>symptoms of lung cancer</a>, such as:</p>
+    <ul>
+      <li>a cough that does not go away after 3 weeks</li>
+      <li>an existing cough that changes or gets worse</li>
+      <li>chest infections that keep coming back</li>
+      <li>coughing up blood</li>
+      <li>being short of breath a lot</li>
+      <li>unexplained tiredness</li>
+      <li>an ache or pain when breathing or coughing</li>
+      <li>loss of appetite or unexplained weight loss</li>
+    </ul>
+    
+  </div>
+</div>
+<h3>Help us improve this service</h3>
+<p>Tell us about your experience using this service today.</p>
+  {{ button({
+  text: "Give feedback",
+  classes: "nhsuk-button--secondary"
+}) }}
+<br>
+<a href="results-high-risk">[Show high risk results page]</a>
+</div>
+</div>
+
+
+{% endblock %}

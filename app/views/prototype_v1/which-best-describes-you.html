@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Which of these best describes you?" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="what-is-your-ethnic-group" method="post" novalidate="true">
+
+ {{ radios({
+  "idPrefix": "ethnicGroup",
+  "name": "ethnicGroup",
+  "fieldset": {
+    "legend": {
+      "text": pageHeading,
+      "classes": "nhsuk-fieldset__legend--l",
+      "isPageHeading": true
+    }
+  },
+    hint: {
+      text: "This information is used to find your NHS number and match with your GP record."
+    },
+    value: data.bestDescribe,
+  "items": [
+    {
+      "value": "Female",
+      "text": "Female"
+    },
+    {
+      "value": "Male",
+      "text": "Male"
+    },
+      {
+      "value": "Non-binary",
+      "text": "Non-binary"
+    },
+      {
+      "value": "Prefer not to say",
+      "text": "Prefer not to say"
+    },
+      {
+      "value": "How I describe myself may not match my GP record",
+      "text": "How I describe myself may not match my GP record"
+    }
+  ]
+}) }}
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "How many cigarettes do you usually smoke per day?" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="check-your-answers" method="post" novalidate="true">
+
+         {{ radios({
+          "idPrefix": "howmanyCigarettes",
+          "name": "howmanyCigarettes",
+          "fieldset": {
+            "legend": {
+              "text": pageHeading,
+              "classes": "nhsuk-fieldset__legend--l",
+              "isPageHeading": true
+            }
+          },
+          value: data.howmanyCigarettes,
+          "items": [
+            {
+              "value": "1 - 10",
+              "text": "1 - 10"
+            },
+            {
+              "value": "11 - 20",
+              "text": "11 - 20"
+            },
+                        {
+              "value": "21 - 30",
+              "text": "21 - 30"
+            },
+                        {
+              "value": "31 - 40",
+              "text": "31 - 40"
+            },
+                        {
+              "value": "41 - 60",
+              "text": "41 - 60"
+            },
+                        {
+              "value": "61 - 80",
+              "text": "61 - 80"
+            },
+                        {
+              "value": "More than 81",
+              "text": "More than 81"
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

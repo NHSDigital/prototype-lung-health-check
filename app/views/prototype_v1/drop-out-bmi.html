@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Sorry, you cannot get an NHS lung health check" %}
+{% set pageHeading = "You will need to complete your NHS lung health check over the phone" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -12,8 +12,13 @@
 {% block content %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-
-<p>The lung health check is for people who have smoked or are current smokers.</p>
+    <div class="nhsuk-panel-white">
+  <h2>
+   You will need to complete your NHS lung health check over the phone
+  </h2>
+</div>
+<br>
+<p>Call <a>020 0000 0000</a> to complete your NHS lung health check over the phone</p>
 <div class="nhsuk-card nhsuk-card--care nhsuk-card--care--non-urgent">
   <div class="nhsuk-card--care__heading-container">
     <h2 class="nhsuk-card--care__heading"> <span role="text"><span class="nhsuk-u-visually-hidden">Non-urgent advice: </span>See a GP if:</span> </h2> <span class="nhsuk-card--care__arrow" aria-hidden="true"></span>
@@ -25,10 +30,10 @@
       <li>an existing cough that changes or gets worse</li>
       <li>chest infections that keep coming back</li>
       <li>coughing up blood</li>
-            <li>being short of breath a lot</li>
-                  <li>unexplained tiredness</li>
-                        <li>an ache or pain when breathing or coughing</li>
-                              <li>loss of appetite or unexplained weight loss</li>
+      <li>being short of breath a lot</li>
+      <li>unexplained tiredness</li>
+      <li>an ache or pain when breathing or coughing</li>
+      <li>loss of appetite or unexplained weight loss</li>
     </ul>
     
   </div>

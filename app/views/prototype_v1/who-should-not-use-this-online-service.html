@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Who should not use this online service" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+        <form action="who-should-not-use-answer" method="post" novalidate="true">
+<h2>{{pageHeading}}</h2>
+<p>You should not continue to use the NHS lung health check online if you:</p>
+<div class="nhsuk-inset-text">
+  <span class="nhsuk-u-visually-hidden">You should not continue to use the NHS lung health check online if you:</span>
+  <ul>
+    <li>have been diagnosed with an eating disorder, or think you may have one</li>
+    <li>ahave a condition that affects your height</li>
+    <li>have had a limb amputation, or were born with a limb difference</li>
+        <li>are pregnant</li>
+  </ul>
+  </div>
+<p>This is because the online service uses automatic calculations. It cannot give accurate results in these cases.</p>
+<h3>Can you continue to use the NHS lung health check online?</h3>
+{{ radios({
+  idPrefix: "canYouContinue",
+  name: "canYouContinue",
+  fieldset: {
+    legend: {
+      classes: "nhsuk-fieldset__legend--m",
+      isPageHeading: true
+    }
+  },
+  value: data.canYouContinue,
+  items: [
+    {
+      value: "Yes",
+      text: "Yes, I can continue online"
+    },
+    {
+      value: "No",
+      text: "No, I have one or more of these conditions and cannot continue online"
+    }
+  ]
+}) }}
+
+
+
+      {{ button({
+      text: "Continue"
+      }) }}
+</form>
+  </div>
+</div>
+{% endblock %}
