@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% set pageHeading = "Smoking duration" %}
+{% block beforeContent %}
+{{ backLink({
+href: "javascript:history.back();",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="fomer-smoker-what-do-you-smoke" method="post" novalidate="true">
+      <h2>{{pageHeading}}</h2>
+      <p>Enter the total number of years you have smoked in your lifetime. </p>
+      <p>If you quit smoking for periods of 1 year or longer, do not include those in your total.</p>
+      <h3>In years, how long have you been smoking for?</h3>
+     {{ input({
+  id: "input-width-4",
+  name: "test-width-4",
+  classes: "nhsuk-input--width-4"
+}) }}
+      {{ button({
+      text: "Continue"
+      }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}
