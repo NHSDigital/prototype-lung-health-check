@@ -3,295 +3,325 @@
 {% set pageHeading = "Check your answers" %}
 {% set buttonText = "Submit" %}
 
-
 {% block beforeContent %}
 {{ backLink({
   href: "javascript:history.back();",
-  text: "Back"
+  text: "Go back"
 }) }}
 {% endblock %}
+
 {% block content %}
+<style>
+.nhsuk-summary-list {
+  width: 80% !important;
+}
+.nhsuk-summary-list__key {
+  width: 50% !important;
+  padding-right: 32px !important;
+}
+.nhsuk-summary-list__value {
+  width: 30% !important;
+  padding-right: 24px !important;
+}
+.nhsuk-summary-list__actions {
+  width: 20% !important;
+}
+</style>
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
    
-      {{ warningCallout({
-  heading: "Important",
-  HTML: "<p>Check your answers before you submit them. After you submit them you cannot edit them again. This is so we can complete your lung health check.</p>"
-}) }}
-</div>
+    {{ warningCallout({
+      heading: "Important",
+      HTML: "<p>Check your answers before you submit them. After you submit them you cannot edit them again. This is so we can complete your lung health check.</p>"
+    }) }}
+  </div>
+  
   <div class="nhsuk-grid-column-full">
- <form action="results-high-risk" method="post" novalidate="true">
-  <h1>{{pageHeading}} </h1>
+    <form action="current-smoker-results-high-risk" method="post" novalidate="true">
+      <h1>{{pageHeading}}</h1>
 
-{{data["dateOfBirth"] | log}}
-
-{{ summaryList({
-  rows: [
+      {{ summaryList({
+        rows: [
           {
-      key: {
-        text: "What is your date of birth?"
-      },
-      value: {
-       text: data["dateOfBirth"] | nhsDate 
-      },
-      actions: {
-        items: [
+            key: {
+              text: "What is your date of birth?"
+            },
+            value: {
+              text: data["dateOfBirth"] | nhsDate 
+            },
+            actions: {
+              items: [
+                {
+                  href: "what-is-your-date-of-birth",
+                  text: "Change",
+                  visuallyHiddenText: "What is your date of birth?"
+                }
+              ]
+            }
+          },
           {
-            href: "what-is-your-date-of-birth",
-            text: "Change",
-            visuallyHiddenText: "What is your date of birth?"
-          }
+            key: {
+              text: "What is your sex assigned at birth?"
+            },
+            value: {
+              text: data["what-is-your-sex"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "what-is-your-sex",
+                  text: "Change",
+                  visuallyHiddenText: "What is your sex assigned at birth?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "What is your ethnic group?"
+            },
+            value: {
+              text: data["ethnicGroup"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "what-is-your-ethnic-group",
+                  text: "Change",
+                  visuallyHiddenText: "What is your ethnic group?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "What is the highest level of education you completed?"
+            },
+            value: {
+              text: data["educationCompleted"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "highest-level-completed-education",
+                  text: "Change",
+                  visuallyHiddenText: "What is the highest level of education you completed?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "What is your height?"
+            },
+            value: {
+              text: data["height"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "what-is-your-height",
+                  text: "Change",
+                  visuallyHiddenText: "What is your height?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "What is your weight?"
+            },
+            value: {
+              text: data["weight"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "what-is-your-weight",
+                  text: "Change",
+                  visuallyHiddenText: "What is your weight?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "Have you ever been diagnosed with Pneumonia, Emphysema, Bronchitis, TB or COPD?"
+            },
+            value: {
+              text: data["diagnosedPneumonia"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "diagnosed-pneumonia-emphysema",
+                  text: "Change",
+                  visuallyHiddenText: "Have you ever been diagnosed with Pneumonia, Emphysema, Bronchitis, TB or COPD?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "Have you ever been diagnosed with a malignancy or cancer?"
+            },
+            value: {
+              text: data["diagnosedMalignancy"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "diagnosed-malignancy-cancer",
+                  text: "Change",
+                  visuallyHiddenText: "Have you ever been diagnosed with a malignancy or cancer?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "Can you recall any job or activity where you were exposed to asbestos?"
+            },
+            value: {
+              text: data["exposedAsbestos"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "exposed-to-asbestos",
+                  text: "Change",
+                  visuallyHiddenText: "Can you recall any job or activity where you were exposed to asbestos?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "Have any of your first degree relatives, including parents, had a diagnosis of lung cancer?"
+            },
+            value: {
+              text: data["relativesHaveCancer"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "relatives-with-cancer",
+                  text: "Change",
+                  visuallyHiddenText: "Have any of your first degree relatives, including parents, had a diagnosis of lung cancer?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "Were your relatives less than 60 years old when they were diagnosed?"
+            },
+            value: {
+              text: data["relativeAge"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "relatives-age-when-diagnosed",
+                  text: "Change",
+                  visuallyHiddenText: "Were your relatives less than 60 years old when they were diagnosed?"
+                }
+              ]
+            }
+          } if data["relativesHaveCancer"] == "Yes",
+          {
+            key: {
+              text: "Have you ever smoked cigarettes regularly?"
+            },
+            value: {
+              text: data["smokedRegularly"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "have-you-smoked-regularly",
+                  text: "Change",
+                  visuallyHiddenText: "Have you ever smoked cigarettes regularly?"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "At what age did you start smoking cigarettes regularly?"
+            },
+            value: {
+              text: data["ageStartedSmoking"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "what-age-started-smoking",
+                  text: "Change",
+                  visuallyHiddenText: "At what age did you start smoking cigarettes regularly?"
+                }
+              ]
+            } 
+          } if data["smokedRegularly"] == "Yes",
+          {
+            key: {
+              text: "Do you smoke cigarettes regularly now?"
+            },
+            value: {
+              text: data["smokeNow"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "do-you-smoke-now",
+                  text: "Change",
+                  visuallyHiddenText: "Do you smoke cigarettes regularly now?"
+                }
+              ]
+            }
+          } if data["smokedRegularly"] == "Yes",
+          {
+            key: {
+              text: "At what age did you last stop smoking cigarettes regularly?"
+            },
+            value: {
+              text: data["ageStoppedSmoking"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "what-age-stopped-smoking",
+                  text: "Change",
+                  visuallyHiddenText: "At what age did you last stop smoking cigarettes regularly?"
+                }
+              ]
+            }
+          } if data["smokedRegularly"] == "Yes",
+          {
+            key: {
+              text: "During periods when you smoked, how many cigarettes did or do you usually smoke per day?"
+            },
+            value: {
+              text: data["howmanyCigarettes"]
+            },
+            actions: {
+              items: [
+                {
+                  href: "how-many-cigarettes-per-day",
+                  text: "Change",
+                  visuallyHiddenText: "During periods when you smoked, how many cigarettes did or do you usually smoke per day?"
+                }
+              ]
+            }
+          } if data["smokedRegularly"] == "Yes"
         ]
-      }
-    },
-    {
-      key: {
-        text: "What is your sex assigned at birth?"
-      },
-      value: {
-        text: data["what-is-your-sex"]
-      },
-      actions: {
-        items: [
-          {
-            href: "what-is-your-sex",
-            text: "Change",
-            visuallyHiddenText: "What is your sex assigned at birth?"
-          }
-        ]
-      }
-    },
-     {
-      key: {
-        text: "What is your ehtnic group?"
-      },
-      value: {
-        text: data["ethnicGroup"]
-      },
-      actions: {
-        items: [
-          {
-            href: "what-is-your-ethnic-group",
-            text: "Change",
-            visuallyHiddenText: "What is your ethnic group?"
-          }
-        ]
-      }
-    },
-    {
-      key: {
-        text: "What is the hightest level of education you completed?"
-      },
-      value: {
-        text: data["educationCompleted"]
-      },
-      actions: {
-        items: [
-          {
-            href: "highest-level-completed-education",
-            text: "Change",
-            visuallyHiddenText: "What is the highest level of education you completed?"
-          }
-        ]
-      }
-    }
-    ]
-    
-}) }}
-
-{% include "includes/check-your-answers/measurements.html" %}
-
-{{ summaryList({
-  rows: [
-          {
-      key: {
-        text: "Have you ever been diagnosed with Pneumonia, Emphysema, Bronchitis, TB or COPD?"
-      },
-      value: {
-        text: data["diagnosedPneumonia"]
-      },
-      actions: {
-        items: [
-          {
-            href: "diagnosed-pneumonia-emphysema",
-            text: "Change",
-            visuallyHiddenText: "Have you ever been diagnosed with Pneumonia, Emphysema, Bronchitis, TB or COPD?"
-          }
-        ]
-      }
-    },
-    {
-      key: {
-        text: "Have you ever been diagnosed with a malignancy or cancer?"
-      },
-      value: {
-        text: data["diagnosedMalignancy"]
-      },
-      actions: {
-        items: [
-          {
-            href: "diagnosed-malignancy-cancer",
-            text: "Change",
-            visuallyHiddenText: "Have you ever been diagnosed with a malignancy or cancer?"
-          }
-        ]
-      }
-    },
-     {
-      key: {
-        text: "Can you recall any job or activity where you were exposed to asbestos?"
-      },
-      value: {
-        text: data["exposedAsbestos"]
-      },
-      actions: {
-        items: [
-          {
-            href: "exposed-to-asbestos",
-            text: "Change",
-            visuallyHiddenText: "Can you recall any job or activity where you were exposed to asbestos?"
-          }
-        ]
-      }
-    }
-    ]
-    
-}) }}
-
-{{ summaryList({
-  rows: [
-          {
-      key: {
-        text: "Have any of your first degree relatives, including parents, had a diagnosis of lung cancer?"
-      },
-      value: {
-        text: data["relativesHaveCancer"]
-      },
-      actions: {
-        items: [
-          {
-            href: "relatives-with-cancer",
-            text: "Change",
-            visuallyHiddenText: "Have any of your first degree relatives, including parents, had a diagnosis of lung cancer?"
-          }
-        ]
-      }
-    },
-    {
-      key: {
-        text: "Were your relatives less than 60 years old when they were diagnosed?"
-      },
-      value: {
-        text: data["relativeAge"]
-      },
-      actions: {
-        items: [
-          {
-            href: "relatives-age-when-diagnosed",
-            text: "Change",
-            visuallyHiddenText: "Were your relatives less than 60 years old when they were diagnosed?"
-          }
-        ]
-      }
-    } if data["relativesHaveCancer"] == "Yes"
-    ]
-}) }}
-
-{{ summaryList({
-  rows: [
-          {
-      key: {
-        text: "Have you ever smoked cigarettes regularly?"
-      },
-      value: {
-        text: data["smokedRegularly"]
-      },
-      actions: {
-        items: [
-          {
-            href: "have-you-smoked-regularly",
-            text: "Change",
-            visuallyHiddenText: "Have you ever smoked cigarettes regularly?"
-          }
-        ]
-      }
-    },
-    {
-      key: {
-        text: "At what age did you start smoking cigarettes regularly?"
-      },
-      value: {
-        text: data["ageStartedSmoking"]
-      },
-      actions: {
-        items: [
-          {
-            href: "what-age-started-smoking",
-            text: "Change",
-            visuallyHiddenText: "At what age did you start smoking cigarettes regularly?"
-          }
-        ]
-      } 
-    } if data["smokedRegularly"] == "Yes",
-        {
-      key: {
-        text: "Do you smoke cigarettes regularly now?"
-      },
-      value: {
-        text: data["smokeNow"]
-      },
-      actions: {
-        items: [
-          {
-            href: "do-you-smoke-now",
-            text: "Change",
-            visuallyHiddenText: "Do you smoke cigarettes regularly now?"
-          }
-        ]
-      }
-    } if data["smokedRegularly"] == "Yes",
-        {
-      key: {
-        text: "At what age did you last stop smoking cigarettes regularly?"
-      },
-      value: {
-        text: data["ageStoppedSmoking"]
-      },
-      actions: {
-        items: [
-          {
-            href: "what-age-stopped-smoking",
-            text: "Change",
-            visuallyHiddenText: "At what age did you last stop smoking cigarettes regularly?"
-          }
-        ]
-      }
-    } if data["smokedRegularly"] == "Yes",
-        {
-      key: {
-        text: "During periods when you smoked, how many cigarettes did or do you usually smoke per day?"
-      },
-      value: {
-        text: data["howmanyCigarettes"]
-      },
-      actions: {
-        items: [
-          {
-            href: "how-many-cigarettes-per-day",
-            text: "Change",
-            visuallyHiddenText: "During periods when you smoked, how many cigarettes did or do you usually smoke per day?"
-          }
-        ]
-      }
-    } if data["smokedRegularly"] == "Yes"
-    ]
-}) }}
-<p>Your result will be shown on the next page.</p>
-   
-      {{ button({
-      text: "Submit"
       }) }}
 
+      <p>Your result will be shown on the next page.</p>
+   
+      {{ button({
+        text: "Submit"
+      }) }}
 
     </form>
   </div>
