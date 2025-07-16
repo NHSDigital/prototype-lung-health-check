@@ -1,66 +1,102 @@
-# NHS prototype kit
+# Lung Health Check Prototype
 
-Visit the <a href="https://prototype-kit.service-manual.nhs.uk">NHS prototype kit site</a> to download the latest version and read the documentation.
+A digital questionnaire prototype for lung health screening eligibility and risk assessment, built using the NHS prototype kit.
 
-## About the NHS prototype kit
+## About this prototype
 
-The NHS prototype kit enables you to make interactive prototypes that will look like pages on NHS.UK. The prototypes you make are a great way to show ideas to others and for conducting user research.
+This prototype tests a digital alternative to phone-based lung health check questionnaires. It allows members of the public to check their eligibility and complete a risk assessment questionnaire to determine if they need a lung health scan.
 
-## Security
+Currently, lung health check assessments are conducted over the phone, often taking over 30 minutes and involving personal questions. This prototype explores whether users would prefer to complete these assessments digitally, in their own time and privacy.
 
-If you publish your prototypes online, they must be protected by a <a href="https://prototype-kit.service-manual.nhs.uk/how-tos/publish-your-prototype-online">username and password</a>. This is to prevent members of the public finding prototypes and thinking they are real services.
+## Current status
 
-You must protect user privacy at all times, even when using prototypes. Prototypes made with the kit look like NHS.UK, but do not have the same security provisions. Always make sure you are handling user data appropriately.
+**Version:** 1.0  
+**Status:** Research prototype for user testing
 
-## Installation instructions
+### Key features at a glance
+- Complete end-to-end user journey
+- Age validation (55-74 years eligible)
+- NHS design system patterns and components
+- Responsive design following NHS accessibility standards
 
-- <a href="https://prototype-kit.service-manual.nhs.uk/install/simple">Install guide (non technical)</a>
-- <a href="https://prototype-kit.service-manual.nhs.uk/install/advanced">Developer friendly install guide (technical)</a>
+### Known limitations
+- **Scoring system not implemented** - The prototype doesn't calculate weighted scores from answers in the background
+- **Fixed outcome** - Currently shows high-risk result by default (with option to view low-risk alternative)
+- **Research prototype only** - Not intended for clinical use
 
-### Running the kit
+## User journey
 
-Start the kit with `npm run watch`.
+The prototype guides users through:
 
-## Contribute
+1. **Eligibility checking** - Age and smoking history validation
+2. **Risk assessment questionnaire** - Series of health and lifestyle questions
+3. **Results** - Risk level determination and next steps
 
-If you want to contribute to the NHS prototype kit, by reporting bugs, fixing bugs, suggesting new features or writing documentation, then read our [contributing guidelines](CONTRIBUTING.md).
+## Current status
 
-## Development environment
+**Version:** 1.0  
+**Status:** Research prototype for user testing
 
-Before running Gitpod, you must <a href="https://github.com/apps/gitpod-io/installations/new">install the Gitpod.io application on your GitHub account</a>.
+### What works
+- Complete end-to-end user journey
+- Age validation (55-74 years eligible)
+- NHS design system patterns and components
+- Responsive design following NHS accessibility standards
 
-Gitpod also requires access to public repositories. Enable this via <a href="https://gitpod.io/integrations">Gitpod integrations</a>. (Click on the 3 dots to edit permissions for your GitHub account. Gitpod may pre-select permissions. You need read/write access to code in the repos.)
+### Known limitations
+- **Scoring system not implemented** - The prototype doesn't calculate weighted scores from answers in the background
+- **Fixed outcome** - Currently shows high-risk result by default (with option to view low-risk alternative)
+- **Research prototype only** - Not intended for clinical use
 
-Using your own GitHub credentials you can create, change, commit and push to branches on our Gitpod container via the "ready to code" button below.
+## Research hypothesis
 
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/nhsuk/nhsuk-prototype-kit)
+We hypothesize that most users will prefer completing lung health assessments digitally rather than over the phone, due to:
+- Convenience of completing in their own time
+- Privacy for answering personal questions
+- Reduced time commitment
 
-Read an <a href="https://www.gitpod.io/docs">introduction to Gitpod (on Gitpod's website)</a>.
+However, we expect some users will always prefer speaking to a healthcare professional.
 
-## Release lifecycle
+## Design approach
 
-> The below is only for maintainers of the prototype kit source code - these instructions aren't relevant if you're building your own prototype using the kit.
+This prototype has been developed in consultation with:
+- Health Check Online team
+- NHS 111
+- Screening and Personalised Prevention teams
 
-### Testing
+We've used NHS design patterns and components wherever possible to ensure consistency with existing NHS digital services.
 
-Run unit tests locally with `npm run test`.
+## Future development
 
-### Making changes
+- Version 2.0 planned with improvements based on user research findings
+- Design history will be maintained to track changes and decisions
+- Further end-to-end testing with large number of participants
 
-- Merge required changes via pull requests into `main` branch. As you do so, document changes in the `CHANGELOG.md` under an 'Unreleased' header at the top.
+## Technical setup
 
-### Releasing
+Built with the latest NHS prototype kit. No additional setup required beyond standard NHS prototype kit installation.
 
-- Open a new pull request which changes the version number in `package.json` and `package-lock.json` and which updates the 'Unreleased' header in the `CHANGELOG.md` to the new version number and release date. Merge this into `main`.
-- Visit the [Create a new release page](https://github.com/nhsuk/nhsuk-prototype-kit/releases/new) on GitHub. In the 'Choose a tag' dropdown, create a new tag for the new version number, prefixed with a `v`. Use the same format for the release title. You can use the 'Generate release notes' feature to generate some initial release notes, and then edit these as needed. Make sure the "Set as latest release" checkbox is checked. Publish the release (or save as draft if you’re not ready).
-- Update the `prototypeKitVersion` value in [the `package.json` of the prototype kit website](https://github.com/nhsuk/nhsuk.service-manual.prototype-kit.docs/blob/main/package.json#L4) - this will update the 'Download' link to point to the new zip file.
-- Add some details about the new release to the [What’s new page](https://github.com/nhsuk/nhsuk.service-manual.prototype-kit.docs/blob/main/app/views/whats-new/updates.html) on the prototype kit website
-- Announce the new release on the Service Manual Slack, NHS England Slack, and any other appropriate locations
+### Running the prototype
 
-### Code Analysis
+```bash
+npm install
+npm run watch
+```
 
-Code analysis results can be found in [SonarQube](https://sonar.nhswebsite.nhs.uk/dashboard?id=nhsuk-prototype-kit).
+The prototype will be available at `http://localhost:3000`
 
-## Support
+### Password
 
-The NHS prototype kit is maintained by NHS England. [Email us](mailto:service-manual@nhs.net), open a [Github issue](https://github.com/nhsuk/nhsuk-prototype-kit/issues/new) or get in touch on the [NHS digital service manual Slack workspace](https://join.slack.com/t/nhs-service-manual/shared_invite/enQtNTIyOTEyNjU3NDkyLTk4NDQ3YzkwYzk1Njk5YjAxYTI5YTVkZmUxMGQ0ZjA3NjMyM2ZkNjBlMWMxODVjZjYzNzg1ZmU4MWY1NmE2YzE).
+This prototype is password-protected as required for NHS research prototypes. Contact the team for access credentials.
+
+## Research and testing
+
+This prototype is designed for user research to understand preferences between digital and phone-based assessments. It should not be used for actual clinical decisions.
+
+## Contributing
+
+This is a research prototype. For questions or contributions, please contact the team or raise an issue in this repository.
+
+## Licence
+
+This prototype is built using the NHS prototype kit and follows the same licensing terms.

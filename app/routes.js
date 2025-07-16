@@ -71,3 +71,32 @@ router.post('/prototype_v1/whatDoYouSmokeAnswer', function(request, response) {
         response.redirect("/prototype_v1/who-should-not-use-this-online-service")
     }
 })
+
+router.post('/prototype_v1/have-you-smoked-regularly', function(request, response) {
+  const day = request.session.data['dateOfBirth']['day']
+  const month = request.session.data['dateOfBirth']['month'] 
+  const year = request.session.data['dateOfBirth']['year']
+  
+  // Check if all fields are provided
+  if (!day || !month || !year) {
+    return response.redirect("/prototype_v1/what-is-your-date-of-birth")
+  }
+  
+  // Calculate age
+  const birthDate = new Date(year, month - 1, day) // month is 0-indexed
+  const today = new Date()
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const monthDiff = today.getMonth() - birthDate.getMonth()
+  
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--
+  }
+  
+  // Check age eligibility (55-74 for lung health checks)
+  if (age < 55 || age > 74) {
+    return response.redirect("/prototype_v1/drop-out-age")
+  }
+  
+  // If eligible, show the smoking question page
+  response.render('prototype_v1/have-you-smoked-regularly')
+})
