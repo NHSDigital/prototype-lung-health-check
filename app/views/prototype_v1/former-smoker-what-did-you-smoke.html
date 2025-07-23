@@ -9,19 +9,19 @@
 {% block content %}
 <div class="nhsuk-grid-row">
 <div class="nhsuk-grid-column-two-thirds">
-<form action="whatDoYouSmokeAnswer" method="post" novalidate="true">
+<form action="whatDidYouSmokeAnswer" method="post" novalidate="true">
 <h1>{{pageHeading}}</h1>
 <p>Different types of tobacco smoking have a different impact on your health.</p>
-<p>We need to know what you smoke, or used to smoke, on a regular basis. For example, if you have smoked a pipe on a weekly basis for a year or longer.</p>
+<p>We need to know what you smoked on a regular basis. For example, if you smoked a pipe on a weekly basis for a year or longer.</p>
 <p>You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.</p>
 
 {{ checkboxes({
- idPrefix: "whatSmokeNow",
- name: "whatSmokeNow",
+ idPrefix: "whatDidSmoke",
+ name: "whatDidSmoke",
  fieldset: {
  legend: {
  isPageHeading: false,
- "text": "What do you smoke?",
+ "text": "What did you smoke?",
  classes: "nhsuk-fieldset__legend--m"
  }
  },

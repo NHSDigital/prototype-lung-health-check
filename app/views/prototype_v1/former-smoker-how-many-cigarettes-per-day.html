@@ -1,68 +1,32 @@
 {% extends 'layout.html' %}
-
-{% set pageHeading = "When you smoked, how many cigarettes did you usually smoke per day?" %}
-
+{% set pageHeading = "How many cigarettes did you usually smoke per day?" %}
 {% block beforeContent %}
 {{ backLink({
-  href: "javascript:history.back();",
-  text: "Back"
+ href: "javascript:history.back();",
+ text: "Back"
 }) }}
 {% endblock %}
 {% block content %}
 <div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="check-your-answers" method="post" novalidate="true">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="check-your-answers" method="post" novalidate="true">
+<h1>{{pageHeading}}</h1>
+<p>If the number of cigarettes you smoked per day changed over time, tell us the highest number.</p>
 
-         {{ radios({
-          "idPrefix": "howmanyCigarettes",
-          "name": "howmanyCigarettes",
-          "fieldset": {
-            "legend": {
-              "text": pageHeading,
-              "classes": "nhsuk-fieldset__legend--l",
-              "isPageHeading": true
-            }
-          },
-          value: data.howmanyCigarettes,
-          "items": [
-            {
-              "value": "1 - 10",
-              "text": "1 - 10"
-            },
-            {
-              "value": "11 - 20",
-              "text": "11 - 20"
-            },
-                        {
-              "value": "21 - 30",
-              "text": "21 - 30"
-            },
-                        {
-              "value": "31 - 40",
-              "text": "31 - 40"
-            },
-                        {
-              "value": "41 - 60",
-              "text": "41 - 60"
-            },
-                        {
-              "value": "61 - 80",
-              "text": "61 - 80"
-            },
-                        {
-              "value": "More than 81",
-              "text": "More than 81"
-            }
-          ]
-        }) }}
-
-   
-      {{ button({
-      text: "Continue"
-      }) }}
-
-
-    </form>
+<div class="nhsuk-form-group">
+  <label class="nhsuk-label nhsuk-u-visually-hidden" for="cigarettes-per-day">
+    How many cigarettes did you usually smoke per day?
+  </label>
+  <div class="nhsuk-input__wrapper">
+    <input class="nhsuk-input nhsuk-input--width-4" id="cigarettes-per-day" name="howmanyCigarettes" type="text" spellcheck="false">
+    <div class="nhsuk-input__suffix" aria-hidden="true">cigarettes per day</div>
   </div>
+</div>
+
+{{ button({
+text: "Continue"
+}) }}
+</form>
+</div>
 </div>
 {% endblock %}

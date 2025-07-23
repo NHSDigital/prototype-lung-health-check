@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% set pageHeading = "Periods when you stopped smoking" %}
+{% block beforeContent %}
+{{ backLink({
+ href: "javascript:history.back();",
+ text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="former-smoker-what-did-you-smoke" method="post" novalidate="true">
+<h1>{{pageHeading}}</h1>
+<p>There may have been periods when you stopped or quit smoking before you quit for good.</p>
+<p>If you stopped smoking for periods of 1 year or longer, tell us the total number of years you stopped smoking.</p>
+
+{{ radios({
+  "idPrefix": "stopped-smoking-periods",
+  "name": "stoppedSmokingPeriods",
+  "fieldset": {
+    "legend": {
+      "text": "Did you ever stop smoking for periods of 1 year or longer?",
+      "classes": "nhsuk-fieldset__legend--m",
+      "isPageHeading": false
+    }
+  },
+  "items": [
+    {
+      "value": "Yes",
+      "text": "Yes",
+      "conditional": {
+        'html': '<div class="nhsuk-form-group"><label class="nhsuk-label" for="years-stopped">Enter the total number of years you stopped smoking for</label><input class="nhsuk-input nhsuk-input--width-4" id="years-stopped" name="yearsStopped" type="text" spellcheck="false"></div>'
+      }
+    },
+    {
+      "value": "No",
+      "text": "No"
+    }
+  ]
+}) }}
+
+{{ button({
+text: "Continue"
+}) }}
+</form>
+</div>
+</div>
+{% endblock %}

@@ -4,8 +4,8 @@
 
 {% block beforeContent %}
 {{ backLink({
-href: "highest-level-completed-education",
-text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 {% block content %}
@@ -30,7 +30,7 @@ text: "Back"
         value: "Pneumonia",
         text: "Pneumonia",
         hint: {
-          text: "Inflammation of the lungs, usually caused by an infection"
+          text: "An infection of the lungs, diagnosed by a chest x-ray"
         }
       },
            {

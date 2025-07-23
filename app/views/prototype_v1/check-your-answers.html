@@ -64,12 +64,12 @@
               text: "What is your sex assigned at birth?"
             },
             value: {
-              text: data["what-is-your-sex"]
+              text: data["whatIsYourSex"]
             },
             actions: {
               items: [
                 {
-                  href: "what-is-your-sex",
+                  href: "whatIsYourSex",
                   text: "Change",
                   visuallyHiddenText: "What is your sex assigned at birth?"
                 }
@@ -115,7 +115,7 @@
               text: "What is your height?"
             },
             value: {
-              text: data["height"]
+              text: (data["heightUnit"] == "imperial" and data["height"]["feet"] and data["height"]["inches"]) and (data["height"]["feet"] + " feet " + data["height"]["inches"] + " inches") or (data["height"]["centimetres"] and (data["height"]["centimetres"] + " cm")) or "Not provided"
             },
             actions: {
               items: [
@@ -132,7 +132,7 @@
               text: "What is your weight?"
             },
             value: {
-              text: data["weight"]
+              text: (data["weightUnit"] == "imperial" and data["weight"]["stone"] and data["weight"]["pounds"]) and (data["weight"]["stone"] + " stone " + data["weight"]["pounds"] + " pounds") or (data["weight"]["kilograms"] and (data["weight"]["kilograms"] + " kg")) or "Not provided"
             },
             actions: {
               items: [
@@ -163,17 +163,17 @@
           },
           {
             key: {
-              text: "Have you ever been diagnosed with a malignancy or cancer?"
+              text: "Have you ever been diagnosed with cancer?"
             },
             value: {
-              text: data["diagnosedMalignancy"]
+              text: data["diagnosedCancer"]
             },
             actions: {
               items: [
                 {
-                  href: "diagnosed-malignancy-cancer",
+                  href: "diagnosed-cancer",
                   text: "Change",
-                  visuallyHiddenText: "Have you ever been diagnosed with a malignancy or cancer?"
+                  visuallyHiddenText: "Have you ever been diagnosed with cancer?"
                 }
               ]
             }

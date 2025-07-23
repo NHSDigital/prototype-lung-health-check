@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% set pageHeading = "When you quit smoking" %}
+{% block beforeContent %}
+{{ backLink({
+ href: "javascript:history.back();",
+ text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="former-smoker-periods-when-quit" method="post" novalidate="true">
+<h2>{{pageHeading}}</h2>
+<p>Your age when you quit smoking may impact your chances of developing lung cancer.</p>
+<p>If you stopped smoking more than once, tell us your age when you quit smoking for good.</p>
+
+<div class="nhsuk-form-group">
+  <label class="nhsuk-label nhsuk-label--m" for="age-stopped-smoking">
+    How old were you when you quit smoking?
+  </label>
+  <div class="nhsuk-input__wrapper">
+    <div class="nhsuk-input__prefix" aria-hidden="true">Age</div>
+    <input class="nhsuk-input nhsuk-input--width-2" id="age-stopped-smoking" name="ageStoppedSmoking" type="text" spellcheck="false">
+  </div>
+</div>
+
+{{ button({
+text: "Continue"
+}) }}
+</form>
+</div>
+</div>
+{% endblock %}

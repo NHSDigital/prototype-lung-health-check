@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% set pageHeading = "Smoking duration" %}
+{% set pageHeading = "Have you ever stopped smoking for periods of 1 year or longer?" %}
 {% block beforeContent %}
 {{ backLink({
 href: "javascript:history.back();",
@@ -10,20 +10,30 @@ text: "Back"
 <div class="nhsuk-grid-row">
 <div class="nhsuk-grid-column-two-thirds">
 <form action="current-smoker-what-do-you-smoke" method="post" novalidate="true">
-<h1>{{pageHeading}}</h1>
-<p>Enter the total number of years you have smoked in your lifetime.</p>
-<p>If you quit smoking for periods of 1 year or longer, do not include those in your total.</p>
-
-<div class="nhsuk-form-group">
-  <label class="nhsuk-label nhsuk-label--m" for="smoking-duration">
-    How many years have you smoked for?
-  </label>
-  <div class="nhsuk-input__wrapper">
-    <input class="nhsuk-input nhsuk-input--width-4" id="smoking-duration" name="smoking-duration" type="text" spellcheck="false">
-    <div class="nhsuk-input__suffix" aria-hidden="true">years</div>
-  </div>
-</div>
-
+{{ radios({
+ "idPrefix": "stopped-smoking-periods",
+ "name": "stoppedSmokingPeriods",
+ "fieldset": {
+ "legend": {
+ "text": pageHeading,
+ "classes": "nhsuk-fieldset__legend--l",
+ "isPageHeading": true
+ }
+ },
+ "items": [
+ {
+ "value": "Yes",
+ "text": "Yes",
+ "conditional": {
+ 'html': '<div class="nhsuk-form-group"><label class="nhsuk-label nhsuk-label--s" for="years-stopped">Enter the total number of years you stopped smoking for</label><input class="nhsuk-input nhsuk-input--width-4" id="years-stopped" name="yearsStopped" type="text" spellcheck="false"></div>'
+ }
+ },
+ {
+ "value": "No",
+ "text": "No"
+ }
+ ]
+}) }}
 {{ button({
 text: "Continue"
 }) }}
