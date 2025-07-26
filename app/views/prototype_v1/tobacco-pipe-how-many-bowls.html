@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% if data["smokedRegularly"] == "Yes-currently" %}
+  {% set pageHeading = "When you smoke a pipe, how many bowls do you smoke a day?" %}
+  {% set labelText = "Number of bowls"  %}
+{% else %}
+  {% set pageHeading = "When you smoked a pipe, how many bowls did you smoke a day?" %}
+  {% set labelText = "Number of bowls" %}
+{% endif %}
+
+{% block beforeContent %}
+{{ backLink({
+ href: "javascript:history.back();",
+ text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="tobacco-next" method="post" novalidate="true">
+<h1>{{pageHeading}}</h1>
+
+<div class="nhsuk-form-group">
+<label class="nhsuk-label" for="pipe-bowls">
+ {{labelText}}
+</label>
+<input class="nhsuk-input nhsuk-input--width-4" id="pipe-bowls" name="pipeBowls" type="text" spellcheck="false">
+</div>
+
+{{ button({
+text: "Continue"
+}) }}
+</form>
+</div>
+</div>
+{% endblock %}

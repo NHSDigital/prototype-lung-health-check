@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% set pageHeading = "How old were you when you started smoking?" %}
+{% block beforeContent %}
+{{ backLink({
+ href: "javascript:history.back();",
+ text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="ageStartedSmokingAnswer" method="post" novalidate="true">
+<h1>{{pageHeading}}</h1>
+
+<div class="nhsuk-form-group">
+  <label class="nhsuk-label nhsuk-u-visually-hidden" for="age-started-smoking">
+    How old were you when you started smoking?
+  </label>
+  <div class="nhsuk-input__wrapper">
+    <input class="nhsuk-input nhsuk-input--width-4" id="age-started-smoking" name="ageStartedSmoking" type="text" spellcheck="false">
+    <div class="nhsuk-input__suffix" aria-hidden="true">years</div>
+  </div>
+</div>
+
+{{ button({
+text: "Continue"
+}) }}
+</form>
+</div>
+</div>
+{% endblock %}

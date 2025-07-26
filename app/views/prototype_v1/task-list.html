@@ -2,7 +2,6 @@
 
 {% set pageHeading = "Lung Health Check" %}
 
-
 {% block content %}
 
 <h1 class="nhsuk-heading-l">{{pageHeading}}</h1>
@@ -11,39 +10,45 @@
     <h3>Check if you are eligible</h3>
 <ul class="nhsuk-task-list">
     <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="have-you-smoked-regularly" aria-describedby="your-health-2-status">Have you ever smoked</a></div>
-    <div class="nhsuk-task-list__status nhsuk-task-list__status--completed" id="your-health-2-status">Completed</div>
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="eligibility-have-you-ever-smoked" aria-describedby="smoking-status">Have you ever smoked</a></div>
+    <div class="nhsuk-task-list__status nhsuk-task-list__status--completed" id="smoking-status">Completed</div>
   </li>
   <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="what-is-your-date-of-birth" aria-describedby="your-health-1-status">Date of birth</a></div>
-    <div class="nhsuk-task-list__status nhsuk-task-list__status--completed" id="your-health-1-status">Completed</div>
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="eligibility-what-is-your-date-of-birth" aria-describedby="date-birth-status">Date of birth</a></div>
+    <div class="nhsuk-task-list__status nhsuk-task-list__status--completed" id="date-birth-status">Completed</div>
   </li>
 </ul>
 <h3>About you</h3>
 <ul class="nhsuk-task-list">
   <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="who-should-not-use-this-online-service" aria-describedby="your-health-3-hint your-health-3-status">Height and weight</a>
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="who-should-not-use-this-online-service" aria-describedby="height-weight-status">Height and weight</a>
     </div>
-    <div class="nhsuk-task-list__status" id="your-health-3-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+    <div class="nhsuk-task-list__status" id="height-weight-status"><strong class="nhsuk-tag nhsuk-tag--blue">
         Incomplete
       </strong></div>
   </li>
     <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="what-is-your-sex" aria-describedby="your-health-3-hint your-health-3-status">Sex</a>
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="what-is-your-sex" aria-describedby="sex-status">Sex</a>
     </div>
-    <div class="nhsuk-task-list__status" id="your-health-3-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+    <div class="nhsuk-task-list__status" id="sex-status"><strong class="nhsuk-tag nhsuk-tag--blue">
         Incomplete
       </strong></div>
   </li>
   <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="what-is-your-ethnic-group" aria-describedby="your-health-4-status">Ethnicity</a></div>
-    <div class="nhsuk-task-list__status" id="your-health-4-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="which-best-describes-you" aria-describedby="gender-status">Gender identity</a></div>
+    <div class="nhsuk-task-list__status" id="gender-status"><strong class="nhsuk-tag nhsuk-tag--blue">
         Incomplete
       </strong></div>
   </li>
   <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="highest-level-completed-education" aria-describedby="your-health-4-status">Education</a></div>
-    <div class="nhsuk-task-list__status" id="your-health-4-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="what-is-your-ethnic-group" aria-describedby="ethnicity-status">Ethnicity</a></div>
+    <div class="nhsuk-task-list__status" id="ethnicity-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+        Incomplete
+      </strong></div>
+  </li>
+  <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="highest-level-completed-education" aria-describedby="education-status">Education</a></div>
+    <div class="nhsuk-task-list__status" id="education-status"><strong class="nhsuk-tag nhsuk-tag--blue">
         Incomplete
       </strong></div>
   </li>
@@ -51,14 +56,20 @@
 <h3>Your health</h3>
 <ul class="nhsuk-task-list">
   <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="diagnosed-cancer" aria-describedby="your-health-4-status">Current or former illness</a></div>
-    <div class="nhsuk-task-list__status" id="your-health-4-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="diagnosed-pneumonia-emphysema" aria-describedby="respiratory-status">Respiratory conditions</a></div>
+    <div class="nhsuk-task-list__status" id="respiratory-status"><strong class="nhsuk-tag nhsuk-tag--blue">
         Incomplete
       </strong></div>
   </li>
   <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="exposed-to-asbestos" aria-describedby="your-health-4-status">Exposure to asbestos</a></div>
-    <div class="nhsuk-task-list__status" id="your-health-4-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="exposed-to-asbestos" aria-describedby="asbestos-status">Exposure to asbestos</a></div>
+    <div class="nhsuk-task-list__status" id="asbestos-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+        Incomplete
+      </strong></div>
+  </li>
+  <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="diagnosed-cancer" aria-describedby="cancer-status">Cancer diagnosis</a></div>
+    <div class="nhsuk-task-list__status" id="cancer-status"><strong class="nhsuk-tag nhsuk-tag--blue">
         Incomplete
       </strong></div>
   </li>
@@ -66,9 +77,9 @@
 <h3>Family history</h3>
 <ul class="nhsuk-task-list">
   <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="relatives-with-cancer" aria-describedby="your-health-3-hint your-health-3-status">Family history of cancer</a>
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="relatives-with-cancer" aria-describedby="family-history-status">Family history of cancer</a>
     </div>
-    <div class="nhsuk-task-list__status" id="your-health-3-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+    <div class="nhsuk-task-list__status" id="family-history-status"><strong class="nhsuk-tag nhsuk-tag--blue">
         Incomplete
       </strong></div>
   </li>
@@ -76,26 +87,8 @@
 <h3>Smoking habits</h3>
 <ul class="nhsuk-task-list">
   <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="do-you-smoke-now" aria-describedby="your-health-3-hint your-health-3-status">If you currently smoke</a></div>
-    <div class="nhsuk-task-list__status" id="your-health-3-status"><strong class="nhsuk-tag nhsuk-tag--blue">
-        Incomplete
-      </strong></div>
-  </li>
-  <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="#" aria-describedby="your-health-4-status">How long you have smoked</a></div>
-    <div class="nhsuk-task-list__status" id="your-health-4-status"><strong class="nhsuk-tag nhsuk-tag--blue">
-        Incomplete
-      </strong></div>
-  </li>
-  <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="#" aria-describedby="your-health-4-status">Types of tobacco smoking</a></div>
-    <div class="nhsuk-task-list__status" id="your-health-4-status"><strong class="nhsuk-tag nhsuk-tag--blue">
-        Incomplete
-      </strong></div>
-  </li>
-    <li class="nhsuk-task-list__item nhsuk-task-list__item--with-link">
-    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="#" aria-describedby="your-health-4-status">How much you smoke</a></div>
-    <div class="nhsuk-task-list__status" id="your-health-4-status"><strong class="nhsuk-tag nhsuk-tag--blue">
+    <div class="nhsuk-task-list__name-and-hint"><a class="nhsuk-link nhsuk-task-list__link" href="what-do-or-did-smoke" aria-describedby="tobacco-types-status">Types of tobacco smoking</a></div>
+    <div class="nhsuk-task-list__status" id="tobacco-types-status"><strong class="nhsuk-tag nhsuk-tag--blue">
         Incomplete
       </strong></div>
   </li>

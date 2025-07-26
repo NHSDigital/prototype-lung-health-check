@@ -16,10 +16,10 @@ if (relativesHaveCancer == "Yes"){
   response.redirect("/prototype_v1/relatives-age-when-diagnosed")
 } else if (relativesHaveCancer == "No"){
   // No relatives with cancer, route based on smoking status
-  if (smokedRegularly == "Yes-currently") {
-    response.redirect("/prototype_v1/current-smoker-how-many-years")
-  } else if (smokedRegularly == "Yes-usedToRegularly" || smokedRegularly == "Yes-usedToFewTimes") {
-    response.redirect("/prototype_v1/former-smoker-when-quit-smoking")
+ if (smokedRegularly == "Yes-currently") {
+  response.redirect("/prototype_v1/how-old-when-started-smoking")
+} else if (smokedRegularly == "Yes-usedToRegularly") {
+  response.redirect("/prototype_v1/how-old-when-started-smoking")
   } else {
     // Fallback to original logic if smoking status unclear
     response.redirect("/prototype_v1/do-you-smoke-now")
@@ -34,9 +34,9 @@ router.post('/prototype_v1/relatives-age-answer', function(request, response) {
 var smokedRegularly = request.session.data['smokedRegularly']
 
 if (smokedRegularly == "Yes-currently") {
-  response.redirect("/prototype_v1/current-smoker-how-many-years")
-} else if (smokedRegularly == "Yes-usedToRegularly" || smokedRegularly == "Yes-usedToFewTimes") {
-  response.redirect("/prototype_v1/former-smoker-when-quit-smoking")
+  response.redirect("/prototype_v1/how-old-when-started-smoking")
+} else if (smokedRegularly == "Yes-usedToRegularly") {
+  response.redirect("/prototype_v1/how-old-when-started-smoking")
 } else {
   // Fallback
   response.redirect("/prototype_v1/do-you-smoke-now")
@@ -55,7 +55,7 @@ router.post('/prototype_v1/smokedRegularlyAnswer', function(request, response) {
     } else if (smokedRegularly == "Yes-usedToRegularly"){
         response.redirect("/prototype_v1/eligibility-what-is-your-date-of-birth")
     } else if (smokedRegularly == "Yes-usedToFewTimes"){
-        response.redirect("/prototype_v1/eligibility-what-is-your-date-of-birth")
+        response.redirect("/prototype_v1/drop-out-never-smoked") 
     } else if (smokedRegularly == "No"){
         response.redirect("/prototype_v1/drop-out-never-smoked")
     }
@@ -87,14 +87,40 @@ router.post('/prototype_v1/who-should-not-use-answer', function(request, respons
 })
 
 router.post('/prototype_v1/whatDoYouSmokeAnswer', function(request, response) {
-    var smokeNow = request.session.data['whatSmokeNow']
-    if (smokeNow == "Cigarettes"){
-        response.redirect("/prototype_v1/current-smoker-how-many-cigarettes-per-day")
-    } else if (smokeNow == "No"){
-        response.redirect("/prototype_v1/drop-out-bmi")
-    } else {
-        response.redirect("/prototype_v1/who-should-not-use-this-online-service")
+  var selectedTobacco = request.session.data['whatSmokeNow'];
+  
+  // Ensure it's an array (single selection becomes array)
+  if (!Array.isArray(selectedTobacco)) {
+    selectedTobacco = selectedTobacco ? [selectedTobacco] : [];
+  }
+  
+  // Define page mapping in order (matches checkbox order)
+  const tobaccoPages = [
+    { value: 'Cigarettes', page: 'tobacco-how-many-cigarettes-per-day' },
+    { value: 'Rolled cigarettes', page: 'tobacco-rolled-cigarettes-how-many-grams' },
+    { value: 'Pipe', page: 'tobacco-pipe-how-many-bowls' },
+    { value: 'Cigars', page: 'tobacco-what-size-cigars-do-you-smoke' },
+    { value: 'Hookah', page: 'tobacco-hookah-and-shisha' }
+  ];
+  
+  // Create queue of pages to visit
+  var pagesToVisit = [];
+  tobaccoPages.forEach(function(tobacco) {
+    if (selectedTobacco.includes(tobacco.value)) {
+      pagesToVisit.push(tobacco.page);
     }
+  });
+  
+  // Store the queue in session
+  request.session.data['tobaccoPageQueue'] = pagesToVisit;
+  request.session.data['currentTobaccoPageIndex'] = 0;
+  
+  // Redirect to first page or check answers if no pages
+  if (pagesToVisit.length > 0) {
+    response.redirect('/prototype_v1/' + pagesToVisit[0]);
+  } else {
+    response.redirect('/prototype_v1/check-your-answers');
+  }
 })
 
 router.post('/prototype_v1/dateOfBirthAnswer', function(request, response) {
@@ -127,12 +153,68 @@ router.post('/prototype_v1/dateOfBirthAnswer', function(request, response) {
 })
 
 router.post('/prototype_v1/whatDidYouSmokeAnswer', function(request, response) {
-    var smokeNow = request.session.data['whatDidSmoke']
-    if (whatDidSmoke == "Cigarettes"){
-        response.redirect("/prototype_v1/former-smoker-how-many-cigarettes-per-day")
-    } else if (whatDidSmoke == "No"){
-        response.redirect("/prototype_v1/drop-out-bmi")
-    } else {
-        response.redirect("/prototype_v1/who-should-not-use-this-online-service")
+  var selectedTobacco = request.session.data['whatDidSmoke'];
+  
+  // Ensure it's an array (single selection becomes array)
+  if (!Array.isArray(selectedTobacco)) {
+    selectedTobacco = selectedTobacco ? [selectedTobacco] : [];
+  }
+  
+  // Define page mapping for former smokers (same pages, different route name)
+  const tobaccoPages = [
+    { value: 'Cigarettes', page: 'tobacco-how-many-cigarettes-per-day' },
+    { value: 'Rolled cigarettes', page: 'tobacco-rolled-cigarettes-how-many-grams' },
+    { value: 'Pipe', page: 'tobacco-pipe-how-many-bowls' },
+    { value: 'Cigars', page: 'tobacco-what-size-cigars-do-you-smoke' },
+    { value: 'Hookah', page: 'tobacco-hookah-and-shisha' }
+  ];
+  
+  // Create queue of pages to visit
+  var pagesToVisit = [];
+  tobaccoPages.forEach(function(tobacco) {
+    if (selectedTobacco.includes(tobacco.value)) {
+      pagesToVisit.push(tobacco.page);
     }
+  });
+  
+  // Store the queue in session
+  request.session.data['tobaccoPageQueue'] = pagesToVisit;
+  request.session.data['currentTobaccoPageIndex'] = 0;
+  
+  // Redirect to first page or check answers if no pages
+  if (pagesToVisit.length > 0) {
+    response.redirect('/prototype_v1/' + pagesToVisit[0]);
+  } else {
+    response.redirect('/prototype_v1/check-your-answers');
+  }
+})
+
+router.post('/prototype_v1/tobacco-next', function(request, response) {
+  var queue = request.session.data['tobaccoPageQueue'] || [];
+  var currentIndex = request.session.data['currentTobaccoPageIndex'] || 0;
+  
+  // Move to next page
+  currentIndex++;
+  request.session.data['currentTobaccoPageIndex'] = currentIndex;
+  
+  // Check if more pages in queue
+  if (currentIndex < queue.length) {
+    response.redirect('/prototype_v1/' + queue[currentIndex]);
+  } else {
+    // All tobacco pages completed, go to check answers
+    response.redirect('/prototype_v1/check-your-answers');
+  }
+})
+
+router.post('/prototype_v1/ageStartedSmokingAnswer', function(request, response) {
+  var smokedRegularly = request.session.data['smokedRegularly']
+  
+  if (smokedRegularly == "Yes-currently") {
+    response.redirect("/prototype_v1/have-you-ever-stopped-smoking")
+  } else if (smokedRegularly == "Yes-usedToRegularly") {
+    response.redirect("/prototype_v1/former-smoker-when-quit-smoking")
+  } else {
+    // Fallback
+    response.redirect("/prototype_v1/how-old-when-started-smoking")
+  }
 })
