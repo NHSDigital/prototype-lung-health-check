@@ -11,484 +11,404 @@
 {% endblock %}
 
 {% block content %}
+
 <style>
-.nhsuk-summary-list {
-  width: 80% !important;
-}
-.nhsuk-summary-list__key {
-  width: 50% !important;
-  padding-right: 32px !important;
-}
-.nhsuk-summary-list__value {
-  width: 30% !important;
-  padding-right: 24px !important;
-}
-.nhsuk-summary-list__actions {
-  width: 20% !important;
-}
+  .nhsuk-summary-list__row {
+    border-bottom: 1px solid #d8dde0;
+  }
+  .nhsuk-summary-list__key, .nhsuk-summary-list__value, .nhsuk-summary-list__actions {
+    border-bottom: none;
+  }
 </style>
+
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-   
-    {{ warningCallout({
-      heading: "Important",
-      HTML: "<p>Check your answers before you submit them. After you submit them you cannot edit them again. This is so we can complete your lung health check.</p>"
-    }) }}
-  </div>
-  
-  <div class="nhsuk-grid-column-full">
-    <form action="current-smoker-results-high-risk" method="post" novalidate="true">
-      <h1>{{pageHeading}}</h1>
 
-      <!-- Eligibility Section -->
-      <h2 class="nhsuk-heading-m">Eligibility</h2>
-      {{ summaryList({
-        rows: [
-          {
-            key: {
-              text: "Have you ever smoked?"
-            },
-            value: {
-              text: (
-                data["smokedRegularly"] == "Yes-currently" and "Yes, I currently smoke" or
-                data["smokedRegularly"] == "Yes-usedToRegularly" and "Yes, I used to smoke regularly" or
-                data["smokedRegularly"]
-              )
-            },
-            actions: {
-              items: [
-                {
-                  href: "eligibility-have-you-ever-smoked",
-                  text: "Change",
-                  visuallyHiddenText: "Have you ever smoked?"
-                }
-              ]
-            }
-          },
-          {
-            key: {
-              text: "What is your date of birth?"
-            },
-            value: {
-              text: data["dateOfBirth"] | nhsDate 
-            },
-            actions: {
-              items: [
-                {
-                  href: "eligibility-what-is-your-date-of-birth",
-                  text: "Change",
-                  visuallyHiddenText: "What is your date of birth?"
-                }
-              ]
-            }
-          }
-        ]
-      }) }}
+    <h1 class="nhsuk-heading-l">{{pageHeading}}</h1>
+    <p>Check the information you have given us. If any of the details are wrong, you can change them.</p>
 
-      <!-- About You Section -->
-      {% if data["canYouContinue"] or data["whatIsYourSex"] or data["bestDescribe"] or data["ethnicGroup"] or data["educationCompleted"] %}
-      <h2 class="nhsuk-heading-m">About you</h2>
-      {{ summaryList({
-        rows: [
-          {
-            key: {
-              text: "Can you continue to use this online service?"
-            },
-            value: {
-              text: data["canYouContinue"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "who-should-not-use-this-online-service",
-                  text: "Change",
-                  visuallyHiddenText: "Can you continue to use this online service?"
-                }
-              ]
-            }
-          } if data["canYouContinue"],
-          {
-            key: {
-              text: "What is your height?"
-            },
-            value: {
-              text: (data["heightUnit"] == "imperial" and data["height"]["feet"] and data["height"]["inches"]) and (data["height"]["feet"] + " feet " + data["height"]["inches"] + " inches") or (data["height"]["centimetres"] and (data["height"]["centimetres"] + " cm")) or "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: "what-is-your-height",
-                  text: "Change",
-                  visuallyHiddenText: "What is your height?"
-                }
-              ]
-            }
-          } if data["height"],
-          {
-            key: {
-              text: "What is your weight?"
-            },
-            value: {
-              text: (data["weightUnit"] == "imperial" and data["weight"]["stone"] and data["weight"]["pounds"]) and (data["weight"]["stone"] + " stone " + data["weight"]["pounds"] + " pounds") or (data["weight"]["kilograms"] and (data["weight"]["kilograms"] + " kg")) or "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: "what-is-your-weight",
-                  text: "Change",
-                  visuallyHiddenText: "What is your weight?"
-                }
-              ]
-            }
-          } if data["weight"],
-          {
-            key: {
-              text: "What was your sex at birth?"
-            },
-            value: {
-              text: data["whatIsYourSex"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "what-is-your-sex",
-                  text: "Change",
-                  visuallyHiddenText: "What was your sex at birth?"
-                }
-              ]
-            }
-          } if data["whatIsYourSex"],
-          {
-            key: {
-              text: "Which of these best describes you?"
-            },
-            value: {
-              text: data["bestDescribe"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "which-best-describes-you",
-                  text: "Change",
-                  visuallyHiddenText: "Which of these best describes you?"
-                }
-              ]
-            }
-          } if data["bestDescribe"],
-          {
-            key: {
-              text: "What is your ethnic group?"
-            },
-            value: {
-              text: data["ethnicGroup"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "what-is-your-ethnic-group",
-                  text: "Change",
-                  visuallyHiddenText: "What is your ethnic group?"
-                }
-              ]
-            }
-          } if data["ethnicGroup"],
-          {
-            key: {
-              text: "What is the highest level of education you completed?"
-            },
-            value: {
-              text: data["educationCompleted"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "highest-level-completed-education",
-                  text: "Change",
-                  visuallyHiddenText: "What is the highest level of education you completed?"
-                }
-              ]
-            }
-          } if data["educationCompleted"]
-        ]
-      }) }}
+    <!-- Eligibility Section -->
+    {% if data["smokedRegularly"] or data["dateOfBirth"] %}
+    <h2 class="nhsuk-heading-m">Eligibility</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["smokedRegularly"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Have you ever smoked regularly</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            Yes, I currently smoke
+          {% elif data["smokedRegularly"] == "Yes-usedToRegularly" %}
+            Yes, I used to smoke regularly
+          {% else %}
+            {{ data["smokedRegularly"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="eligibility-have-you-ever-smoked">Change<span class="nhsuk-u-visually-hidden"> smoking status</span></a>
+        </dd>
+      </div>
       {% endif %}
 
-      <!-- Your Health Section -->
-      {% if data["EverDiagnosedWith"] or data["exposedAsbestos"] or data["diagnosedCancer"] %}
-      <h2 class="nhsuk-heading-m">Your health</h2>
-      {{ summaryList({
-        rows: [
-          {
-            key: {
-              text: "Have you ever been diagnosed with respiratory conditions?"
-            },
-            value: {
-              text: data["EverDiagnosedWith"] | join(", ") if data["EverDiagnosedWith"] is iterable and data["EverDiagnosedWith"] is not string else data["EverDiagnosedWith"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "diagnosed-pneumonia-emphysema",
-                  text: "Change",
-                  visuallyHiddenText: "Have you ever been diagnosed with respiratory conditions?"
-                }
-              ]
-            }
-          } if data["EverDiagnosedWith"],
-          {
-            key: {
-              text: "Have you ever worked in a job where you were exposed to asbestos?"
-            },
-            value: {
-              text: data["exposedAsbestos"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "exposed-to-asbestos",
-                  text: "Change",
-                  visuallyHiddenText: "Have you ever worked in a job where you were exposed to asbestos?"
-                }
-              ]
-            }
-          } if data["exposedAsbestos"],
-          {
-            key: {
-              text: "Have you ever been diagnosed with cancer?"
-            },
-            value: {
-              text: data["diagnosedCancer"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "diagnosed-cancer",
-                  text: "Change",
-                  visuallyHiddenText: "Have you ever been diagnosed with cancer?"
-                }
-              ]
-            }
-          } if data["diagnosedCancer"]
-        ]
-      }) }}
+      {% if data["dateOfBirth"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Date of birth</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["dateOfBirth"]["day"] and data["dateOfBirth"]["month"] and data["dateOfBirth"]["year"] %}
+            {{ data["dateOfBirth"]["day"] }}/{{ data["dateOfBirth"]["month"] }}/{{ data["dateOfBirth"]["year"] }}
+          {% else %}
+            {{ data["dateOfBirth"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="eligibility-what-is-your-date-of-birth">Change<span class="nhsuk-u-visually-hidden"> date of birth</span></a>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+    {% endif %}
+
+    <!-- About You Section -->
+    <h2 class="nhsuk-heading-m">About you</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["height"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Height</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["height"]["feet"] and data["height"]["inches"] %}
+            {{ data["height"]["feet"] }} feet {{ data["height"]["inches"] }} inches
+          {% elif data["height"]["centimetres"] %}
+            {{ data["height"]["centimetres"] }} cm
+          {% else %}
+            {{ data["height"] }} cm
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-is-your-height">Change<span class="nhsuk-u-visually-hidden"> height</span></a>
+        </dd>
+      </div>
       {% endif %}
 
-      <!-- Family History Section -->
+      {% if data["weight"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Weight</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["weight"]["stones"] and data["weight"]["pounds"] %}
+            {{ data["weight"]["stones"] }} stones {{ data["weight"]["pounds"] }} pounds
+          {% elif data["weight"]["kilograms"] %}
+            {{ data["weight"]["kilograms"] }} kg
+          {% else %}
+            {{ data["weight"] }} kg
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-is-your-weight">Change<span class="nhsuk-u-visually-hidden"> weight</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["whatIsYourSex"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Sex</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["whatIsYourSex"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-is-your-sex">Change<span class="nhsuk-u-visually-hidden"> sex</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["bestDescribe"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Gender identity</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["bestDescribe"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="which-best-describes-you">Change<span class="nhsuk-u-visually-hidden"> gender identity</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["ethnicGroup"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Ethnic group</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["ethnicGroup"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-is-your-ethnic-group">Change<span class="nhsuk-u-visually-hidden"> ethnic group</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["educationCompleted"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Highest level of education</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["educationCompleted"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="highest-level-completed-education">Change<span class="nhsuk-u-visually-hidden"> education level</span></a>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+
+    <!-- Your Health Section -->
+    <h2 class="nhsuk-heading-m">Your health</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["EverDiagnosedWith"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Respiratory conditions</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["EverDiagnosedWith"] is iterable and data["EverDiagnosedWith"] is not string %}
+            {{ data["EverDiagnosedWith"] | join(", ") }}
+          {% else %}
+            {{ data["EverDiagnosedWith"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="diagnosed-pneumonia-emphysema">Change<span class="nhsuk-u-visually-hidden"> respiratory conditions</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["exposedAsbestos"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Asbestos exposure</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["exposedAsbestos"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="exposed-to-asbestos">Change<span class="nhsuk-u-visually-hidden"> asbestos exposure</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["diagnosedCancer"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Cancer diagnosis</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["diagnosedCancer"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="diagnosed-cancer">Change<span class="nhsuk-u-visually-hidden"> cancer diagnosis</span></a>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+
+    <!-- Family History Section -->
+    <h2 class="nhsuk-heading-m">Family history</h2>
+    
+    <dl class="nhsuk-summary-list">
       {% if data["relativesHaveCancer"] %}
-      <h2 class="nhsuk-heading-m">Family history</h2>
-      {{ summaryList({
-        rows: [
-          {
-            key: {
-              text: "Have any of your parents, siblings or children had a diagnosis of lung cancer?"
-            },
-            value: {
-              text: data["relativesHaveCancer"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "relatives-with-cancer",
-                  text: "Change",
-                  visuallyHiddenText: "Have any of your parents, siblings or children had a diagnosis of lung cancer?"
-                }
-              ]
-            }
-          },
-          {
-            key: {
-              text: "Were your relatives younger than 60 years old when they were diagnosed?"
-            },
-            value: {
-              text: data["relativeAge"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "relatives-age-when-diagnosed",
-                  text: "Change",
-                  visuallyHiddenText: "Were your relatives younger than 60 years old when they were diagnosed?"
-                }
-              ]
-            }
-          } if data["relativesHaveCancer"] == "Yes" and data["relativeAge"]
-        ]
-      }) }}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Relatives with cancer</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["relativesHaveCancer"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="relatives-with-cancer">Change<span class="nhsuk-u-visually-hidden"> relatives with cancer</span></a>
+        </dd>
+      </div>
       {% endif %}
 
-      <!-- Smoking Habits Section -->
-      {% if data["ageStartedSmoking"] or data["ageStoppedSmoking"] or data["stoppedSmokingPeriods"] or data["whatSmokeNow"] or data["whatDidSmoke"] or data["howmanyCigarettes"] or data["rolledCigarettesGrams"] or data["pipeBowls"] or data["cigarSizes"] or data["hookahSession"] %}
-      <h2 class="nhsuk-heading-m">Smoking habits</h2>
-      {{ summaryList({
-        rows: [
-          {
-            key: {
-              text: "How old were you when you started smoking?"
-            },
-            value: {
-              text: data["ageStartedSmoking"] + " years old" if data["ageStartedSmoking"] else "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: "how-old-when-started-smoking",
-                  text: "Change",
-                  visuallyHiddenText: "How old were you when you started smoking?"
-                }
-              ]
-            }
-          } if data["ageStartedSmoking"],
-          {
-            key: {
-              text: "How old were you when you quit smoking?"
-            },
-            value: {
-              text: data["ageStoppedSmoking"] + " years old" if data["ageStoppedSmoking"] else "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: "former-smoker-when-quit-smoking",
-                  text: "Change",
-                  visuallyHiddenText: "How old were you when you quit smoking?"
-                }
-              ]
-            }
-          } if data["smokedRegularly"] == "Yes-usedToRegularly" and data["ageStoppedSmoking"],
-          {
-            key: {
-              text: ("Have you ever stopped smoking for periods of 1 year or longer?" if data["smokedRegularly"] == "Yes-currently" else "Did you ever stop smoking for periods of 1 year or longer?")
-            },
-            value: {
-              text: (data["stoppedSmokingPeriods"] + ((" (" + data["yearsStopped"] + " years total)") if data["yearsStopped"] else "")) if data["stoppedSmokingPeriods"] else "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: ("have-you-ever-stopped-smoking" if data["smokedRegularly"] == "Yes-currently" else "former-smoker-periods-when-quit"),
-                  text: "Change",
-                  visuallyHiddenText: ("Have you ever stopped smoking for periods of 1 year or longer?" if data["smokedRegularly"] == "Yes-currently" else "Did you ever stop smoking for periods of 1 year or longer?")
-                }
-              ]
-            }
-          } if data["stoppedSmokingPeriods"],
-          {
-            key: {
-              text: ("What do you smoke?" if data["smokedRegularly"] == "Yes-currently" else "What did you smoke?")
-            },
-            value: {
-              text: ((data["whatSmokeNow"] | join(", ")) if data["whatSmokeNow"] is iterable and data["whatSmokeNow"] is not string else data["whatSmokeNow"]) if data["smokedRegularly"] == "Yes-currently" else ((data["whatDidSmoke"] | join(", ")) if data["whatDidSmoke"] is iterable and data["whatDidSmoke"] is not string else data["whatDidSmoke"])
-            },
-            actions: {
-              items: [
-                {
-                  href: "what-do-or-did-smoke",
-                  text: "Change",
-                  visuallyHiddenText: ("What do you smoke?" if data["smokedRegularly"] == "Yes-currently" else "What did you smoke?")
-                }
-              ]
-            }
-          } if data["whatSmokeNow"] or data["whatDidSmoke"],
-          {
-            key: {
-              text: ("How many cigarettes do you usually smoke per day?" if data["smokedRegularly"] == "Yes-currently" else "How many cigarettes did you usually smoke per day?")
-            },
-            value: {
-              text: data["howmanyCigarettes"] + " cigarettes per day" if data["howmanyCigarettes"] else "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: "tobacco-how-many-cigarettes-per-day",
-                  text: "Change",
-                  visuallyHiddenText: ("How many cigarettes do you usually smoke per day?" if data["smokedRegularly"] == "Yes-currently" else "How many cigarettes did you usually smoke per day?")
-                }
-              ]
-            }
-          } if data["howmanyCigarettes"] and ((data["whatSmokeNow"] and "Cigarettes" in data["whatSmokeNow"]) or (data["whatDidSmoke"] and "Cigarettes" in data["whatDidSmoke"])),
-          {
-            key: {
-              text: ("How many grams of tobacco do you smoke per week in rolled cigarettes?" if data["smokedRegularly"] == "Yes-currently" else "How many grams of tobacco did you smoke per week in rolled cigarettes?")
-            },
-            value: {
-              text: data["rolledCigarettesGrams"] if data["rolledCigarettesGrams"] else "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: "tobacco-rolled-cigarettes-how-many-grams",
-                  text: "Change",
-                  visuallyHiddenText: ("How many grams of tobacco do you smoke per week in rolled cigarettes?" if data["smokedRegularly"] == "Yes-currently" else "How many grams of tobacco did you smoke per week in rolled cigarettes?")
-                }
-              ]
-            }
-          } if data["rolledCigarettesGrams"] and ((data["whatSmokeNow"] and "Rolled cigarettes" in data["whatSmokeNow"]) or (data["whatDidSmoke"] and "Rolled cigarettes" in data["whatDidSmoke"])),
-          {
-            key: {
-              text: ("How many bowls do you smoke per day?" if data["smokedRegularly"] == "Yes-currently" else "How many bowls did you smoke per day?")
-            },
-            value: {
-              text: data["pipeBowls"] + " bowls per day" if data["pipeBowls"] else "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: "tobacco-pipe-how-many-bowls",
-                  text: "Change",
-                  visuallyHiddenText: ("How many bowls do you smoke per day?" if data["smokedRegularly"] == "Yes-currently" else "How many bowls did you smoke per day?")
-                }
-              ]
-            }
-          } if data["pipeBowls"] and ((data["whatSmokeNow"] and "Pipe" in data["whatSmokeNow"]) or (data["whatDidSmoke"] and "Pipe" in data["whatDidSmoke"])),
-          {
-            key: {
-              text: ("What size cigars do you smoke?" if data["smokedRegularly"] == "Yes-currently" else "What size cigars did you smoke?")
-            },
-            value: {
-              html: (
-                (("Small cigars: " + data["smallCigars"] + " per day<br>") if data["smallCigars"] else "") +
-                (("Medium cigars: " + data["mediumCigars"] + " per day<br>") if data["mediumCigars"] else "") +
-                (("Large cigars: " + data["largeCigars"] + " per day") if data["largeCigars"] else "")
-              ) if data["cigarSizes"] else "Not provided"
-            },
-            actions: {
-              items: [
-                {
-                  href: "tobacco-what-size-cigars-do-you-smoke",
-                  text: "Change",
-                  visuallyHiddenText: ("What size cigars do you smoke?" if data["smokedRegularly"] == "Yes-currently" else "What size cigars did you smoke?")
-                }
-              ]
-            }
-          } if data["cigarSizes"] and ((data["whatSmokeNow"] and "Cigars" in data["whatSmokeNow"]) or (data["whatDidSmoke"] and "Cigars" in data["whatDidSmoke"])),
-          {
-            key: {
-              text: ("How do you usually smoke hookah or shisha?" if data["smokedRegularly"] == "Yes-currently" else "How did you usually smoke hookah or shisha?")
-            },
-            value: {
-              text: (data["hookahSession"] | join(", ")) if data["hookahSession"] is iterable and data["hookahSession"] is not string else data["hookahSession"]
-            },
-            actions: {
-              items: [
-                {
-                  href: "tobacco-hookah-and-shisha",
-                  text: "Change",
-                  visuallyHiddenText: ("How do you usually smoke hookah or shisha?" if data["smokedRegularly"] == "Yes-currently" else "How did you usually smoke hookah or shisha?")
-                }
-              ]
-            }
-          } if data["hookahSession"] and ((data["whatSmokeNow"] and "Hookah" in data["whatSmokeNow"]) or (data["whatDidSmoke"] and "Hookah" in data["whatDidSmoke"]))
-        ]
-      }) }}
+      {% if data["relativesHaveCancer"] == "Yes" and data["relativeAge"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Were they under the age of 60 when diagnosed</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["relativeAge"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="relatives-age-when-diagnosed">Change<span class="nhsuk-u-visually-hidden"> relatives age at diagnosis</span></a>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+
+    <!-- Smoking Habits Section -->
+    <h2 class="nhsuk-heading-m">Smoking habits</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["ageStartedSmoking"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Age started smoking</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["ageStartedSmoking"] }} years old</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="how-old-when-started-smoking">Change<span class="nhsuk-u-visually-hidden"> age started smoking</span></a>
+        </dd>
+      </div>
       {% endif %}
 
-      <p>Your result will be shown on the next page.</p>
-   
+      {% if data["ageStoppedSmoking"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Age stopped smoking</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["ageStoppedSmoking"] }} years old</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="former-smoker-when-quit-smoking">Change<span class="nhsuk-u-visually-hidden"> age stopped smoking</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["stoppedSmokingPeriods"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            Stopped smoking for periods of 1+ years
+          {% else %}
+            Stopped smoking for periods of 1+ years before quitting
+          {% endif %}
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+          {{ data["stoppedSmokingPeriods"] }}
+          {% if data["stoppedSmokingPeriods"] == "Yes" and data["yearsStopped"] %}
+            ({{ data["yearsStopped"] }} years total)
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            <a href="have-you-ever-stopped-smoking">Change<span class="nhsuk-u-visually-hidden"> periods stopped smoking</span></a>
+          {% else %}
+            <a href="former-smoker-periods-when-quit">Change<span class="nhsuk-u-visually-hidden"> periods stopped smoking</span></a>
+          {% endif %}
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Tobacco Types -->
+      {% set smokeField = data["whatSmokeNow"] if data["smokedRegularly"] == "Yes-currently" else data["whatDidSmoke"] %}
+      {% if smokeField %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            Types of tobacco you smoke
+          {% else %}
+            Types of tobacco you smoked
+          {% endif %}
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if smokeField is iterable and smokeField is not string %}
+            {{ smokeField | join(", ") }}
+          {% else %}
+            {{ smokeField }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-do-or-did-smoke">Change<span class="nhsuk-u-visually-hidden"> tobacco types</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Tobacco-specific quantities -->
+      {% if data["howmanyCigarettes"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Cigarettes per day</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["howmanyCigarettes"] }} per day</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-how-many-cigarettes-per-day">Change<span class="nhsuk-u-visually-hidden"> cigarettes per day</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["rolledCigarettesGrams"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Rolled cigarettes</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["rolledCigarettesGrams"] }} grams per week</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-rolled-cigarettes-how-many-grams">Change<span class="nhsuk-u-visually-hidden"> rolled cigarettes</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["pipeBowls"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Pipe bowls</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["pipeBowls"] }} per week</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-pipe-how-many-bowls">Change<span class="nhsuk-u-visually-hidden"> pipe bowls</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["cigarSize"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Cigar size and frequency</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["cigarSize"] is iterable and data["cigarSize"] is not string %}
+            {{ data["cigarSize"] | join(", ") }}
+          {% else %}
+            {{ data["cigarSize"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-what-size-cigars-do-you-smoke">Change<span class="nhsuk-u-visually-hidden"> cigar details</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Hookah session types -->
+      {% if data["hookahSession"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            Hookah session types
+          {% else %}
+            Hookah session types you used
+          {% endif %}
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["hookahSession"] is iterable and data["hookahSession"] is not string %}
+            {{ data["hookahSession"] | join(", ") }}
+          {% else %}
+            {{ data["hookahSession"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-hookah-and-shisha">Change<span class="nhsuk-u-visually-hidden"> hookah session types</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Hookah group duration -->
+      {% if data["hookahGroupDuration"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Group session duration</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["hookahGroupDuration"] == "1-45-minutes" %}
+            1 to 45 minutes
+          {% elif data["hookahGroupDuration"] == "46-minutes-1hour30" %}
+            46 minutes to 1 hour 30 minutes
+          {% elif data["hookahGroupDuration"] == "1hour31-2hours15" %}
+            1 hour 31 minutes to 2 hours 15 minutes
+          {% else %}
+            {{ data["hookahGroupDuration"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-hookah-how-much-group">Change<span class="nhsuk-u-visually-hidden"> group session duration</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Hookah individual duration -->
+      {% if data["hookahByYourselfDuration"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Individual session duration</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["hookahByYourselfDuration"] == "1-45-minutes" %}
+            1 to 45 minutes
+          {% elif data["hookahByYourselfDuration"] == "46-minutes-1hour30" %}
+            46 minutes to 1 hour 30 minutes
+          {% elif data["hookahByYourselfDuration"] == "1hour31-2hours15" %}
+            1 hour 31 minutes to 2 hours 15 minutes
+          {% else %}
+            {{ data["hookahByYourselfDuration"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-how-much-by-yourself">Change<span class="nhsuk-u-visually-hidden"> individual session duration</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+    </dl>
+
+    <form action="submit-answer" method="post" novalidate="true">
       {{ button({
-        text: "Submit"
+        "text": buttonText
       }) }}
-
     </form>
+
   </div>
 </div>
+
 {% endblock %}

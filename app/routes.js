@@ -205,7 +205,6 @@ router.post('/prototype_v1/tobacco-next', function(request, response) {
     response.redirect('/prototype_v1/check-your-answers');
   }
 })
-
 router.post('/prototype_v1/ageStartedSmokingAnswer', function(request, response) {
   var smokedRegularly = request.session.data['smokedRegularly']
   
@@ -216,5 +215,48 @@ router.post('/prototype_v1/ageStartedSmokingAnswer', function(request, response)
   } else {
     // Fallback
     response.redirect("/prototype_v1/how-old-when-started-smoking")
+  }
+})
+
+
+router.post('/prototype_v1/tobaccoHookahSessionAnswer', function(request, response) {
+  var hookahSession = request.session.data['hookahSession']
+  
+  // If hookahSession is a string (single selection), convert to array
+  if (typeof hookahSession === 'string') {
+    hookahSession = [hookahSession]
+  }
+  
+  // Check what was selected and route accordingly
+  if (hookahSession && hookahSession.includes('In a group session') && hookahSession.includes('By myself')) {
+    // Both selected - go to group first, then individual
+    response.redirect("/prototype_v1/tobacco-hookah-how-much-group")
+  } else if (hookahSession && hookahSession.includes('In a group session')) {
+    // Only group selected
+    response.redirect("/prototype_v1/tobacco-hookah-how-much-group")
+  } else if (hookahSession && hookahSession.includes('By myself')) {
+    // Only individual selected
+    response.redirect("/prototype_v1/tobacco-how-much-by-yourself")
+  } else {
+    // Nothing selected or error - continue to next tobacco type
+    response.redirect("/prototype_v1/tobacco-next")
+  }
+})
+
+
+router.post('/prototype_v1/tobaccoHookahGroupToIndividual', function(request, response) {
+  var hookahSession = request.session.data['hookahSession']
+  
+  // Convert to array if needed
+  if (typeof hookahSession === 'string') {
+    hookahSession = [hookahSession]
+  }
+  
+  // If both were selected and user just completed group, go to individual
+  if (hookahSession && hookahSession.includes('By myself')) {
+    response.redirect("/prototype_v1/tobacco-how-much-by-yourself")
+  } else {
+    // Otherwise continue to next tobacco type
+    response.redirect("/prototype_v1/tobacco-next")
   }
 })
