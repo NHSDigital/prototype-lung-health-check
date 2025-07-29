@@ -23,9 +23,13 @@
 
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-
     <h1 class="nhsuk-heading-l">{{pageHeading}}</h1>
     <p>Check the information you have given us. If any of the details are wrong, you can change them.</p>
+  </div>
+</div>
+
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-full">
 
     <!-- Eligibility Section -->
     {% if data["smokedRegularly"] or data["dateOfBirth"] %}
@@ -402,7 +406,7 @@
 
     </dl>
 
-  <form action="results-high-risk" method="post" novalidate="true">
+    <form action="/prototype_v1/results-high-risk" method="post" novalidate="true">
       {{ button({
         "text": buttonText
       }) }}
