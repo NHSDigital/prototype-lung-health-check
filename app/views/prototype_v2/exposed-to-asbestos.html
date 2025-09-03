@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Asbestos exposure" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="diagnosed-cancer" method="post" novalidate="true">
+            <h2>{{pageHeading}}</h2>
+  <p class="nhsuk-u-margin-bottom-2">You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.</p>
+  <p>You could be exposed to asbestos today if your job involves working in certain roles in old buildings.</p>
+<p>Examples include:</p>
+<ul class="nhsuk-list nhsuk-list--bullet">
+  <li>heating and ventilation engineers</li>
+  <li>demolition workers</li>
+  <li>plumbers</li>
+  <li>construction workers</li>
+    <li>electricians</li>
+</ul>
+
+
+         {{ radios({
+          "idPrefix": "exposedAsbestos",
+          "name": "exposedAsbestos",
+          "fieldset": {
+            "legend": {
+              "text": "Have you ever worked in a job where you were exposed to asbestos?",
+              "classes": "nhsuk-fieldset__legend--m",
+              "isPageHeading": false
+            }
+          },
+            hint: {
+    html: hintHtml
+  },
+          value: data.exposedAsbestos,
+          "items": [
+            {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            {
+              "value": "No",
+              "text": "No"
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

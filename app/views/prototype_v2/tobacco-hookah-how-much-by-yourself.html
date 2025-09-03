@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% set pageHeading = "When smoking by yourself, how long did you usually smoke for?" %}
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+
+    <form action="tobacco-next" method="post">
+
+      {{ radios({
+        "idPrefix": "hookah-byyourself-duration",
+        "name": "hookahByYourselfDuration",
+        "fieldset": {
+          "legend": {
+            "text": pageHeading,
+            "classes": "nhsuk-fieldset__legend--l",
+            "isPageHeading": true
+          }
+        },
+        "items": [
+          {
+            "value": "1-45-minutes",
+            "text": "1 to 45 minutes"
+          },
+          {
+            "value": "46-minutes-1hour30",
+            "text": "46 minutes to 1 hour 30 minutes"
+          },
+          {
+            "value": "1hour31-2hours15",
+            "text": "1 hour 31 minutes to 2 hours 15 minutes"
+          }
+        ]
+      }) }}
+
+      {{ button({
+        "text": "Continue"
+      }) }}
+
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

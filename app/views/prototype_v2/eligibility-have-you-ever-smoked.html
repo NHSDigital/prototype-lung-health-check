@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Smoking" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="smokedRegularlyAnswer" method="post" novalidate="true">
+            <h2>{{pageHeading}}</h2>
+            <p>We will ask you questions about your smoking habits. This includes cigarettes and other forms of tobacco smoking, such as:</p>
+      <ul>
+      <li>rolled cigarettes, or roll ups</li>
+      <li>a pipe</li>
+      <li>cigars</li>
+      <li>hookah or shisha</li>
+    </ul>
+ <p>We will ask you questions about your smoking habits. This includes cigarettes and other forms of tobacco smoking, such as:</p>
+         {{ radios({
+          "idPrefix": "smokedRegularly",
+          "name": "smokedRegularly",
+          "fieldset": {
+            "legend": {
+              "text": "Have you ever smoked?",
+              "classes": "nhsuk-fieldset__legend--m",
+              "isPageHeading": false
+            }
+          },
+          value: data.smokedRegularly,
+          "items": [
+            {
+              "value": "Yes-currently",
+              "text": "Yes, I currently smoke"
+            },
+            {
+              "value": "Yes-usedToRegularly",
+              "text": "Yes, I used to smoke regularly",
+              hint: {
+                text: "This includes social smoking"
+              }
+            },
+              {
+              "value": "Yes-usedToFewTimes",
+              "text": "Yes, but only a few times",
+              hint: {
+                text: "For example, if you have smoked fewer than 100 cigarettes in your lifetime"
+              }
+            },
+            {
+              "value": "No",
+              "text": "No, I have never smoked"
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

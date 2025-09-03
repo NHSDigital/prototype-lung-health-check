@@ -1,0 +1,418 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Check your answers" %}
+{% set buttonText = "Submit" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Go back"
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+  .nhsuk-summary-list__row {
+    border-bottom: 1px solid #d8dde0;
+  }
+  .nhsuk-summary-list__key, .nhsuk-summary-list__value, .nhsuk-summary-list__actions {
+    border-bottom: none;
+  }
+</style>
+
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <h1 class="nhsuk-heading-l">{{pageHeading}}</h1>
+    <p>Check the information you have given us. If any of the details are wrong, you can change them.</p>
+  </div>
+</div>
+
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-full">
+
+    <!-- Eligibility Section -->
+    {% if data["smokedRegularly"] or data["dateOfBirth"] %}
+    <h2 class="nhsuk-heading-m">Eligibility</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["smokedRegularly"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Have you ever smoked regularly</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            Yes, I currently smoke
+          {% elif data["smokedRegularly"] == "Yes-usedToRegularly" %}
+            Yes, I used to smoke regularly
+          {% else %}
+            {{ data["smokedRegularly"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="eligibility-have-you-ever-smoked">Change<span class="nhsuk-u-visually-hidden"> smoking status</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["dateOfBirth"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Date of birth</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["dateOfBirth"]["day"] and data["dateOfBirth"]["month"] and data["dateOfBirth"]["year"] %}
+            {{ data["dateOfBirth"]["day"] }}/{{ data["dateOfBirth"]["month"] }}/{{ data["dateOfBirth"]["year"] }}
+          {% else %}
+            {{ data["dateOfBirth"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="eligibility-what-is-your-date-of-birth">Change<span class="nhsuk-u-visually-hidden"> date of birth</span></a>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+    {% endif %}
+
+    <!-- About You Section -->
+    <h2 class="nhsuk-heading-m">About you</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["height"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Height</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["height"]["feet"] and data["height"]["inches"] %}
+            {{ data["height"]["feet"] }} feet {{ data["height"]["inches"] }} inches
+          {% elif data["height"]["centimetres"] %}
+            {{ data["height"]["centimetres"] }} cm
+          {% else %}
+            {{ data["height"] }} cm
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-is-your-height">Change<span class="nhsuk-u-visually-hidden"> height</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["weight"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Weight</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["weight"]["stones"] and data["weight"]["pounds"] %}
+            {{ data["weight"]["stones"] }} stones {{ data["weight"]["pounds"] }} pounds
+          {% elif data["weight"]["kilograms"] %}
+            {{ data["weight"]["kilograms"] }} kg
+          {% else %}
+            {{ data["weight"] }} kg
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-is-your-weight">Change<span class="nhsuk-u-visually-hidden"> weight</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["whatIsYourSex"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Sex</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["whatIsYourSex"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-is-your-sex">Change<span class="nhsuk-u-visually-hidden"> sex</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["bestDescribe"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Gender identity</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["bestDescribe"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="which-best-describes-you">Change<span class="nhsuk-u-visually-hidden"> gender identity</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["ethnicGroup"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Ethnic group</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["ethnicGroup"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-is-your-ethnic-group">Change<span class="nhsuk-u-visually-hidden"> ethnic group</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["educationCompleted"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Highest level of education</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["educationCompleted"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="highest-level-completed-education">Change<span class="nhsuk-u-visually-hidden"> education level</span></a>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+
+    <!-- Your Health Section -->
+    <h2 class="nhsuk-heading-m">Your health</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["EverDiagnosedWith"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Respiratory conditions</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["EverDiagnosedWith"] is iterable and data["EverDiagnosedWith"] is not string %}
+            {{ data["EverDiagnosedWith"] | join(", ") }}
+          {% else %}
+            {{ data["EverDiagnosedWith"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="diagnosed-pneumonia-emphysema">Change<span class="nhsuk-u-visually-hidden"> respiratory conditions</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["exposedAsbestos"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Asbestos exposure</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["exposedAsbestos"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="exposed-to-asbestos">Change<span class="nhsuk-u-visually-hidden"> asbestos exposure</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["diagnosedCancer"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Cancer diagnosis</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["diagnosedCancer"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="diagnosed-cancer">Change<span class="nhsuk-u-visually-hidden"> cancer diagnosis</span></a>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+
+    <!-- Family History Section -->
+    <h2 class="nhsuk-heading-m">Family history</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["relativesHaveCancer"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Relatives with cancer</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["relativesHaveCancer"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="relatives-with-cancer">Change<span class="nhsuk-u-visually-hidden"> relatives with cancer</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["relativesHaveCancer"] == "Yes" and data["relativeAge"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Were they under the age of 60 when diagnosed</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["relativeAge"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="relatives-age-when-diagnosed">Change<span class="nhsuk-u-visually-hidden"> relatives age at diagnosis</span></a>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+
+    <!-- Smoking Habits Section -->
+    <h2 class="nhsuk-heading-m">Smoking habits</h2>
+    
+    <dl class="nhsuk-summary-list">
+      {% if data["ageStartedSmoking"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Age started smoking</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["ageStartedSmoking"] }} years old</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="how-old-when-started-smoking">Change<span class="nhsuk-u-visually-hidden"> age started smoking</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["ageStoppedSmoking"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Age stopped smoking</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["ageStoppedSmoking"] }} years old</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="former-smoker-when-quit-smoking">Change<span class="nhsuk-u-visually-hidden"> age stopped smoking</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["stoppedSmokingPeriods"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            Stopped smoking for periods of 1+ years
+          {% else %}
+            Stopped smoking for periods of 1+ years before quitting
+          {% endif %}
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+          {{ data["stoppedSmokingPeriods"] }}
+          {% if data["stoppedSmokingPeriods"] == "Yes" and data["yearsStopped"] %}
+            ({{ data["yearsStopped"] }} years total)
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            <a href="have-you-ever-stopped-smoking">Change<span class="nhsuk-u-visually-hidden"> periods stopped smoking</span></a>
+          {% else %}
+            <a href="former-smoker-periods-when-quit">Change<span class="nhsuk-u-visually-hidden"> periods stopped smoking</span></a>
+          {% endif %}
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Tobacco Types -->
+      {% set smokeField = data["whatSmokeNow"] if data["smokedRegularly"] == "Yes-currently" else data["whatDidSmoke"] %}
+      {% if smokeField %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            Types of tobacco you smoke
+          {% else %}
+            Types of tobacco you smoked
+          {% endif %}
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if smokeField is iterable and smokeField is not string %}
+            {{ smokeField | join(", ") }}
+          {% else %}
+            {{ smokeField }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="what-do-or-did-smoke">Change<span class="nhsuk-u-visually-hidden"> tobacco types</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Tobacco-specific quantities -->
+      {% if data["howmanyCigarettes"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Cigarettes per day</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["howmanyCigarettes"] }} per day</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-how-many-cigarettes-per-day">Change<span class="nhsuk-u-visually-hidden"> cigarettes per day</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["rolledCigarettesGrams"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Rolled cigarettes</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["rolledCigarettesGrams"] }} grams per week</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-rolled-cigarettes-how-many-grams">Change<span class="nhsuk-u-visually-hidden"> rolled cigarettes</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["pipeBowls"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Pipe bowls</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["pipeBowls"] }} per week</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-pipe-how-many-bowls">Change<span class="nhsuk-u-visually-hidden"> pipe bowls</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["cigarSize"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Cigar size and frequency</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["cigarSize"] is iterable and data["cigarSize"] is not string %}
+            {{ data["cigarSize"] | join(", ") }}
+          {% else %}
+            {{ data["cigarSize"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-what-size-cigars-do-you-smoke">Change<span class="nhsuk-u-visually-hidden"> cigar details</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Hookah session types -->
+      {% if data["hookahSession"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+          {% if data["smokedRegularly"] == "Yes-currently" %}
+            Hookah session types
+          {% else %}
+            Hookah session types you used
+          {% endif %}
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["hookahSession"] is iterable and data["hookahSession"] is not string %}
+            {{ data["hookahSession"] | join(", ") }}
+          {% else %}
+            {{ data["hookahSession"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-hookah-and-shisha">Change<span class="nhsuk-u-visually-hidden"> hookah session types</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Hookah group duration -->
+      {% if data["hookahGroupDuration"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Group session duration</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["hookahGroupDuration"] == "1-45-minutes" %}
+            1 to 45 minutes
+          {% elif data["hookahGroupDuration"] == "46-minutes-1hour30" %}
+            46 minutes to 1 hour 30 minutes
+          {% elif data["hookahGroupDuration"] == "1hour31-2hours15" %}
+            1 hour 31 minutes to 2 hours 15 minutes
+          {% else %}
+            {{ data["hookahGroupDuration"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-hookah-how-much-group">Change<span class="nhsuk-u-visually-hidden"> group session duration</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Hookah individual duration -->
+      {% if data["hookahByYourselfDuration"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Individual session duration</dt>
+        <dd class="nhsuk-summary-list__value">
+          {% if data["hookahByYourselfDuration"] == "1-45-minutes" %}
+            1 to 45 minutes
+          {% elif data["hookahByYourselfDuration"] == "46-minutes-1hour30" %}
+            46 minutes to 1 hour 30 minutes
+          {% elif data["hookahByYourselfDuration"] == "1hour31-2hours15" %}
+            1 hour 31 minutes to 2 hours 15 minutes
+          {% else %}
+            {{ data["hookahByYourselfDuration"] }}
+          {% endif %}
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="tobacco-how-much-by-yourself">Change<span class="nhsuk-u-visually-hidden"> individual session duration</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+    </dl>
+
+    <form action="/prototype_v2/results-high-risk" method="post" novalidate="true">
+      {{ button({
+        "text": buttonText
+      }) }}
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

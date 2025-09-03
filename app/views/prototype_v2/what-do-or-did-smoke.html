@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% set pageHeading = "Types of tobacco smoking" %}
+
+{% if data["smokedRegularly"] == "Yes-currently" %}
+  {% set explanatoryText = "We need to know what you smoke, or used to smoke, on a regular basis. For example, if you have smoked a pipe on a weekly basis for a year or longer." %}
+  {% set questionText = "What do you smoke?" %}
+  {% set formAction = "whatDoYouSmokeAnswer" %}
+  {% set fieldName = "whatSmokeNow" %}
+{% else %}
+  {% set explanatoryText = "We need to know what you smoked on a regular basis. For example, if you smoked a pipe on a weekly basis for a year or longer." %}
+  {% set questionText = "What did you smoke?" %}
+  {% set formAction = "whatDidYouSmokeAnswer" %}
+  {% set fieldName = "whatDidSmoke" %}
+{% endif %}
+
+{% block beforeContent %}
+{{ backLink({
+ href: "javascript:history.back();",
+ text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="{{formAction}}" method="post" novalidate="true">
+<h1>{{pageHeading}}</h1>
+<p>Different types of tobacco smoking have a different impact on your health.</p>
+<p>{{explanatoryText}}</p>
+<p>You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.</p>
+
+{{ checkboxes({
+ idPrefix: fieldName,
+ name: fieldName,
+ fieldset: {
+ legend: {
+ isPageHeading: false,
+ "text": questionText,
+ classes: "nhsuk-fieldset__legend--m"
+ }
+ },
+ hint: {
+ text: "Select all that apply"
+ },
+ value: data[fieldName],
+ items: [
+ {
+ value: "Cigarettes",
+ text: "Cigarettes"
+ },
+ {
+ value: "Rolled cigarettes",
+ text: "Rolled cigarettes, or roll-ups"
+ },
+ {
+ value: "Pipe",
+ text: "Pipe"
+ },
+ {
+ value: "Cigars",
+ text: "Cigars"
+ },
+ {
+ value: "Hookah",
+ text: "Hookah or shisha"
+ }
+ ]
+ }) }}
+ {{ button({
+ text: "Continue"
+ }) }}
+</form>
+</div>
+</div>
+{% endblock %}

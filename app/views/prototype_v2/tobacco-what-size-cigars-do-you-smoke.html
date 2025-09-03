@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% if data["smokedRegularly"] == "Yes-currently" %}
+  {% set pageHeading = "What size cigar do you smoke?" %}
+  {% set smallQuestion = "How many small cigars do you smoke?" %}
+  {% set mediumQuestion = "How many medium cigars do you smoke?" %}
+  {% set largeQuestion = "How many large cigars do you smoke?" %}
+{% else %}
+  {% set pageHeading = "What size cigar did you smoke?" %}
+  {% set smallQuestion = "How many small cigars did you smoke?" %}
+  {% set mediumQuestion = "How many medium cigars did you smoke?" %}
+  {% set largeQuestion = "How many large cigars did you smoke?" %}
+{% endif %}
+
+{% block beforeContent %}
+{{ backLink({
+ href: "javascript:history.back();",
+ text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="tobacco-next" method="post" novalidate="true">
+ {{ checkboxes({
+ "idPrefix": "cigarSizes",
+ "name": "cigarSizes",
+ "fieldset": {
+ "legend": {
+ "text": pageHeading,
+ "classes": "nhsuk-fieldset__legend--l",
+ "isPageHeading": true
+ }
+ },
+ value: data.cigarSizes,
+ "items": [
+ {
+ "value": "Small",
+ "text": "Small",
+ "hint": {
+ "text": "Petit Corona or Short Panetela, usually 4 to 5 inches long"
+ },
+ "conditional": {
+ 'html': '<div class="nhsuk-form-group"><label class="nhsuk-label nhsuk-label--s" for="small-cigars">' + smallQuestion + '</label><input class="nhsuk-input nhsuk-input--width-4" id="small-cigars" name="smallCigars" type="text" spellcheck="false"></div>'
+ }
+ },
+ {
+ "value": "Medium",
+ "text": "Medium",
+ "hint": {
+ "text": "Robusto or Corona, usually 5 to 6 inches long"
+ },
+ "conditional": {
+ 'html': '<div class="nhsuk-form-group"><label class="nhsuk-label nhsuk-label--s" for="medium-cigars">' + mediumQuestion + '</label><input class="nhsuk-input nhsuk-input--width-4" id="medium-cigars" name="mediumCigars" type="text" spellcheck="false"></div>'
+ }
+ },
+ {
+ "value": "Large",
+ "text": "Large",
+ "hint": {
+ "text": "Churchill or Double Corona, usually 7 to 8 inches long"
+ },
+ "conditional": {
+ 'html': '<div class="nhsuk-form-group"><label class="nhsuk-label nhsuk-label--s" for="large-cigars">' + largeQuestion + '</label><input class="nhsuk-input nhsuk-input--width-4" id="large-cigars" name="largeCigars" type="text" spellcheck="false"></div>'
+ }
+ }
+ ]
+ }) }}
+ {{ button({
+ text: "Continue"
+ }) }}
+</form>
+</div>
+</div>
+{% endblock %}

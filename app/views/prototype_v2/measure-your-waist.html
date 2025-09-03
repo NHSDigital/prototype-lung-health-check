@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Measure your waist" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="what-is-your-waist-size" method="post" novalidate="true">
+
+      <h2>{{pageHeading}}</h2>
+
+    <p>We need your waist measurement to help calculate your risk of type 2 diabetes.</p>
+
+    <h3>How to measure your waist</h3>
+
+    <p>Many of us underestimate our waist size. An accurate measurement is important. Use a soft tape measure for the best result.</p>
+
+    <ol>
+      <li>Measure on bare skin if you can. If not, measure wearing one thin layer of clothing.</li>
+      <li>Find the middle point between your lowest rib and your hip bone. This will be roughly level with your belly button.</li>
+      <li>Wrap a tape measure around this middle point, breathing naturally and not holding your tummy in.</li>
+    </ol>
+
+    {{ details({
+      text: "I do not have a soft tape measure",
+      HTML: "
+      <p>If you do not have a soft tape measure, use a piece of string. Wrap it around your waist and mark where it meets. Then measure this against a ruler or metal tape measure.</p>
+      <p>You can also get your waist measured at some gyms and local pharmacies.</p>"
+    }) }}
+
+    <p><a href="https://www.youtube.com/watch?si=XUVe3-5fOTiNxdzR&v=dwk8sVCKuio&feature=youtu.be">Watch an NHS video of how to measure your waist</a> (opens in new tab)</p>
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

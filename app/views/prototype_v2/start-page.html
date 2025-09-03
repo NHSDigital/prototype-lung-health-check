@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% set pageHeading = "Complete an NHS lung cancer risk check" %}
+{% block beforeContent %}
+<div class="nhsuk-back-link"> <a class="nhsuk-back-link__link" href="/index">
+<svg class="nhsuk-icon nhsuk-icon__chevron-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" height="24" width="24">
+<path d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"></path>
+</svg>
+ Go back</a>
+</div>
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<h1 class="nhsuk-heading-l">
+ {{ pageHeading }}
+</h1>
+<p>The NHS lung cancer risk check will ask you some questions about your medical history and lifestyle to work out your risk of getting lung cancer. </p>
+<p>Lung cancer screening aims to find lung cancer early, sometimes before you have symptoms. Early diagnosis can make lung cancer more treatable and make treatment more successful.</p>
+<p>You are eligible for this service if you are:</p>
+<ul>
+<li>aged between 55 and 74</li>
+<li>registered with a GP surgery</li>
+<li>someone who smokes or used to smoke</li>
+</ul>
+<h3>What to expect</h3>
+<p>We will ask you questions about:</p>
+<ul>
+<li>your height and weight</li>
+<li>your ethnicity</li>
+<li>the highest level of education you completed</li>
+<li>if you have ever had a cancer diagnosis</li>
+<li>if your parents, siblings, or children have ever had a lung cancer diagnosis</li>
+<li>your smoking habits</li>
+</ul>
+<p>After you submit your answers you will be told if you could be at a higher risk of developing lung cancer or not.</p>
+<p>If your result suggests you could be at a high risk of developing lung cancer you will be offered a CT scan.</p>
+<a href="start-journey" class="nhsuk-button">
+ Start now
+</a>
+</div>
+</div>
+{% endblock %}
