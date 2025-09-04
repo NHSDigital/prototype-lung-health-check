@@ -2,7 +2,7 @@
 
 module.exports = {
   // Service name
-  serviceName: 'NHS lung cancer risk check',
+  serviceName: 'Lung cancer risk check',
 
   // Port to run nodemon on locally
   port: 2000,
@@ -12,5 +12,5 @@ module.exports = {
 
   // Enable cookie-based session store (persists on restart)
   // Please note 4KB cookie limit per domain, cookies too large will silently be ignored
-  useCookieSessionStore: 'false',
-};
+  useCookieSessionStore: 'false'
+}

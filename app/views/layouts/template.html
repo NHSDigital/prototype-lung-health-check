@@ -36,8 +36,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="description" content="">
 
     <title>{% block pageTitle %}NHS.UK prototype kit{% endblock %}</title>
@@ -76,7 +75,7 @@
 
   <body class="{{ bodyClasses }}">
 
-    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+    <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' nhsuk-frontend-supported' : '');</script>
     {% block bodyStart %}{% endblock %}
 
       {% block skipLink %}

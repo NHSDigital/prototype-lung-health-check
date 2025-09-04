@@ -21,36 +21,47 @@
 <!-- Edit the header -->
 <!-- Header code examples can be found at https://service-manual.nhs.uk/design-system/components/header -->
 {% block header %}
-  {{ header({
-    "service": {
-        "name": serviceName,
-        "href": "/"
-      },
-      "showNav": "false",
-      "showSearch": "false"
-    })
-  }}
+{{ header({
+logo: {
+href: "/",
+ariaLabel: "Lung cancer risk check"
+},
+service: {
+text: "Lung cancer risk check",
+href: "/"
+}
+}) }}
 {% endblock %}
 
 <!-- Edit the footer -->
 <!-- Footer code examples can be found at https://service-manual.nhs.uk/design-system/components/footer -->
 {% block footer %}
-  {{ footer({
-    "links": [
+{{ footer({
+  meta: {
+    items: [
       {
-        "URL": "/",
-        "label": "Home"
+        href: "#",
+        text: "Accessibility statement"
       },
       {
-        "URL": "/example-templates",
-        "label": "Page templates"
+        href: "#",
+        text: "Contact us"
       },
       {
-        "URL": "/prototype-admin/reset?returnPage=" + (currentPage | urlencode),
-        "label": "Reset data"
+        href: "#",
+        text: "Cookies"
+      },
+      {
+        href: "#",
+        text: "Privacy policy"
+      },
+      {
+        href: "#",
+        text: "Terms and conditions"
       }
     ]
-  })}}
+  }
+}) }}
 {% endblock %}
 
 {% block bodyEnd %}
