@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "What is your ethnic group?" %}
+{% set pageHeading = "What is your ethnic background?" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -14,8 +14,8 @@
     <form action="highest-level-completed-education" method="post" novalidate="true">
 
  {{ radios({
-  "idPrefix": "ethnicGroup",
-  "name": "ethnicGroup",
+  "idPrefix": "ethnicBackground",
+  "name": "ethnicBackground",
   "fieldset": {
     "legend": {
       "text": pageHeading,
@@ -26,7 +26,7 @@
     hint: {
       text: "Your ethnicity may impact your chances of developing lung disease and cancer."
     },
-    value: data.ethnicGroup,
+    value: data.ethnicBackground,
   "items": [
     {
       "value": "Asian or Asian British",
@@ -47,6 +47,13 @@
       {
       "value": "Other ethnic group",
       "text": "Other ethnic group"
+    },
+    {
+      divider: "or"
+    },
+    {
+      value: "prefer-not-to-say",
+      text: "I'd prefer not to say"
     }
   ]
 }) }}
