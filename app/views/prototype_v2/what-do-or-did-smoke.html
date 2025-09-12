@@ -1,18 +1,18 @@
 {% extends 'layout.html' %}
 {% set pageHeading = "Types of tobacco smoking" %}
-
 {% if data["smokedRegularly"] == "Yes-currently" %}
-  {% set explanatoryText = "We need to know what you smoke, or used to smoke, on a regular basis. For example, if you have smoked a pipe on a weekly basis for a year or longer." %}
-  {% set questionText = "What do you smoke?" %}
-  {% set formAction = "whatDoYouSmokeAnswer" %}
-  {% set fieldName = "whatSmokeNow" %}
+ {% set newContentText = "Smoking affects your health in different ways depending on how you smoke." %}
+ {% set explanatoryText = "We need to know what you smoke, or used to smoke, on a regular basis. For example, if you have smoked a pipe on a weekly basis for a year or longer." %}
+ {% set questionText = "What do you smoke?" %}
+ {% set formAction = "whatDoYouSmokeAnswer" %}
+ {% set fieldName = "whatSmokeNow" %}
 {% else %}
-  {% set explanatoryText = "We need to know what you smoked on a regular basis. For example, if you smoked a pipe on a weekly basis for a year or longer." %}
-  {% set questionText = "What did you smoke?" %}
-  {% set formAction = "whatDidYouSmokeAnswer" %}
-  {% set fieldName = "whatDidSmoke" %}
+ {% set newContentText = "Smoking affects your health in different ways depending on how you smoked." %}
+ {% set explanatoryText = "We need to know what you smoked on a regular basis. For example, if you smoked a pipe on a weekly basis for a year or longer." %}
+ {% set questionText = "What did you smoke?" %}
+ {% set formAction = "whatDidYouSmokeAnswer" %}
+ {% set fieldName = "whatDidSmoke" %}
 {% endif %}
-
 {% block beforeContent %}
 {{ backLink({
  href: "javascript:history.back();",
@@ -24,10 +24,9 @@
 <div class="nhsuk-grid-column-two-thirds">
 <form action="{{formAction}}" method="post" novalidate="true">
 <h1>{{pageHeading}}</h1>
-<p>Different types of tobacco smoking have a different impact on your health.</p>
+<p>{{newContentText}}</p>
 <p>{{explanatoryText}}</p>
 <p>You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.</p>
-
 {{ checkboxes({
  idPrefix: fieldName,
  name: fieldName,

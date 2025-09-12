@@ -1,16 +1,53 @@
 {% extends 'layout.html' %}
-
 {% if data["smokedRegularly"] == "Yes-currently" %}
-  {% set pageHeading = "What size cigar do you smoke?" %}
-  {% set smallQuestion = "How many small cigars do you smoke?" %}
-  {% set mediumQuestion = "How many medium cigars do you smoke?" %}
-  {% set largeQuestion = "How many large cigars do you smoke?" %}
+ {% set pageHeading = "What size cigar or cigarillo do you smoke?" %}
+ {% set cigarilloQuestion = "How many cigarillos do you smoke a day?" %}
+ {% set smallQuestion = "How many small cigars do you smoke a day?" %}
+ {% set mediumQuestion = "How many medium cigars do you smoke a day?" %}
+ {% set largeQuestion = "How many large cigars do you smoke a day?" %}
 {% else %}
-  {% set pageHeading = "What size cigar did you smoke?" %}
-  {% set smallQuestion = "How many small cigars did you smoke?" %}
-  {% set mediumQuestion = "How many medium cigars did you smoke?" %}
-  {% set largeQuestion = "How many large cigars did you smoke?" %}
+ {% set pageHeading = "What size cigar or cigarillo did you smoke?" %}
+ {% set cigarilloQuestion = "How many cigarillos did you smoke a day?" %}
+ {% set smallQuestion = "How many small cigars did you smoke a day?" %}
+ {% set mediumQuestion = "How many medium cigars did you smoke a day?" %}
+ {% set largeQuestion = "How many large cigars did you smoke a day?" %}
 {% endif %}
+
+{% set cigarilloHtml %}
+<div class="nhsuk-form-group">
+  <label class="nhsuk-label nhsuk-label--s" for="cigarillos">
+    {{ cigarilloQuestion }}
+  </label>
+  <input class="nhsuk-input nhsuk-input--width-4" id="cigarillos" name="cigarillos" type="text" spellcheck="false">
+</div>
+{% endset -%}
+
+{% set smallCigarHtml %}
+<div class="nhsuk-form-group">
+  <label class="nhsuk-label nhsuk-label--s" for="small-cigars">
+    {{ smallQuestion }}
+  </label>
+  <input class="nhsuk-input nhsuk-input--width-4" id="small-cigars" name="smallCigars" type="text" spellcheck="false">
+</div>
+{% endset -%}
+
+{% set mediumCigarHtml %}
+<div class="nhsuk-form-group">
+  <label class="nhsuk-label nhsuk-label--s" for="medium-cigars">
+    {{ mediumQuestion }}
+  </label>
+  <input class="nhsuk-input nhsuk-input--width-4" id="medium-cigars" name="mediumCigars" type="text" spellcheck="false">
+</div>
+{% endset -%}
+
+{% set largeCigarHtml %}
+<div class="nhsuk-form-group">
+  <label class="nhsuk-label nhsuk-label--s" for="large-cigars">
+    {{largeQuestion}}
+  </label>
+  <input class="nhsuk-input nhsuk-input--width-4" id="large-cigars" name="largeCigars" type="text" spellcheck="false">
+</div>
+{% endset -%}
 
 {% block beforeContent %}
 {{ backLink({
@@ -18,6 +55,7 @@
  text: "Back"
 }) }}
 {% endblock %}
+
 {% block content %}
 <div class="nhsuk-grid-row">
 <div class="nhsuk-grid-column-two-thirds">
@@ -32,8 +70,18 @@
  "isPageHeading": true
  }
  },
+ "hint": {
+ "text": "Select all that apply"
+ },
  value: data.cigarSizes,
  "items": [
+ {
+ "value": "Cigarillo",
+ "text": "Cigarillo",
+ "conditional": {
+ "html": cigarilloHtml
+ }
+ },
  {
  "value": "Small",
  "text": "Small",
@@ -41,7 +89,7 @@
  "text": "Petit Corona or Short Panetela, usually 4 to 5 inches long"
  },
  "conditional": {
- 'html': '<div class="nhsuk-form-group"><label class="nhsuk-label nhsuk-label--s" for="small-cigars">' + smallQuestion + '</label><input class="nhsuk-input nhsuk-input--width-4" id="small-cigars" name="smallCigars" type="text" spellcheck="false"></div>'
+ "html": smallCigarHtml
  }
  },
  {
@@ -51,7 +99,7 @@
  "text": "Robusto or Corona, usually 5 to 6 inches long"
  },
  "conditional": {
- 'html': '<div class="nhsuk-form-group"><label class="nhsuk-label nhsuk-label--s" for="medium-cigars">' + mediumQuestion + '</label><input class="nhsuk-input nhsuk-input--width-4" id="medium-cigars" name="mediumCigars" type="text" spellcheck="false"></div>'
+ "html": mediumCigarHtml
  }
  },
  {
@@ -61,11 +109,85 @@
  "text": "Churchill or Double Corona, usually 7 to 8 inches long"
  },
  "conditional": {
- 'html': '<div class="nhsuk-form-group"><label class="nhsuk-label nhsuk-label--s" for="large-cigars">' + largeQuestion + '</label><input class="nhsuk-input nhsuk-input--width-4" id="large-cigars" name="largeCigars" type="text" spellcheck="false"></div>'
+ "html": largeCigarHtml
  }
  }
  ]
  }) }}
+
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% from 'input/macro.njk' import input %}
+
+{% set emailHtml %}
+  {{ input({
+    id: "email",
+    name: "email",
+    classes: "nhsuk-u-width-two-thirds",
+    label: {
+      text: "Email address"
+    }
+  }) }}
+{% endset -%}
+
+{% set phoneHtml %}
+  {{ input({
+    id: "phone",
+    name: "phone",
+    classes: "nhsuk-u-width-two-thirds",
+    label: {
+      text: "Phone number"
+    }
+  }) }}
+{% endset -%}
+
+{% set mobileHtml %}
+  {{ input({
+    id: "mobile",
+    name: "mobile",
+    classes: "nhsuk-u-width-two-thirds",
+    label: {
+      text: "Mobile phone number"
+    }
+  }) }}
+{% endset -%}
+
+{{ checkboxes({
+  idPrefix: "contact",
+  name: "contact",
+  fieldset: {
+    legend: {
+      text: "How would you prefer to be contacted?",
+      classes: "nhsuk-fieldset__legend--l",
+      isPageHeading: "true"
+    }
+  },
+  hint: {
+    text: "Select all options that are relevant to you"
+  },
+  items: [
+    {
+      value: "email",
+      text: "Email",
+      "conditional": {
+        "html": emailHtml
+      }
+    },
+    {
+      "value": "phone",
+      "text": "Phone",
+      "conditional": {
+        "html": phoneHtml
+      }
+    },
+    {
+      "value": "text",
+      "text": "Text message",
+      "conditional": {
+        "html": mobileHtml
+      }
+    }
+  ]
+}) }}
  {{ button({
  text: "Continue"
  }) }}
