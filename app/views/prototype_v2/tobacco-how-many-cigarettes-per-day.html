@@ -1,12 +1,18 @@
 {% extends 'layout.html' %}
 
 {% if data["smokedRegularly"] == "Yes-currently" %}
-  {% set pageHeading = "How many cigarettes do you usually smoke per day?" %}
-  {% set explanatoryText = "If the number of cigarettes you smoke per day changes, tell us the highest number" %}
+  {% set pageHeading = "Cigarette smoking" %}
+{% set explanatoryHtml %}
+  <p>If the number of cigarettes you smoke per day has changed over time, tell us the highest number you have smoked on a daily basis.</p>
+  <p>If you only smoke socially, for example at the weekend, tell us how many cigarettes you smoke on those occasions.</p>
+{% endset %}
   {% set labelText = "How many cigarettes do you usually smoke per day?" %}
 {% else %}
-  {% set pageHeading = "How many cigarettes did you usually smoke per day?" %}
-  {% set explanatoryText = "If the number of cigarettes you smoked per day changed over time, tell us the highest number" %}
+  {% set pageHeading = "Cigarette smoking" %}
+{% set explanatoryHtml %}
+  <p>If the number of cigarettes you smoke per day has changed over time, tell us the highest number you have smoked on a daily basis.</p>
+  <p>If you only smoke socially, for example at the weekend, tell us how many cigarettes you smoke on those occasions.</p>
+{% endset %}
   {% set labelText = "How many cigarettes did you usually smoke per day?" %}
 {% endif %}
 
@@ -21,7 +27,7 @@
 <div class="nhsuk-grid-column-two-thirds">
 <form action="tobacco-next" method="post" novalidate="true">
 <h1>{{pageHeading}}</h1>
-<p>{{explanatoryText}}</p>
+{{ explanatoryHtml | safe }}
 
 <div class="nhsuk-form-group">
 <label class="nhsuk-label nhsuk-u-visually-hidden" for="cigarettes-per-day">

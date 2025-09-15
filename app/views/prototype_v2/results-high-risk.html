@@ -41,47 +41,32 @@
 <h2>Benefits of stopping smoking</h2>
 <p>Stopping smoking is a great way to stay healthy, protect the health of those around you, and enjoy a better quality of life.</p>
 
-<div class="nhsuk-do-dont-list">
-  <h3 class="nhsuk-do-dont-list__label">When you quit, you:</h3>
-  <ul class="nhsuk-list nhsuk-list--tick">
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      lower your risk of cancer, lung disease, heart disease, stroke and dementia
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      protect your loved ones and pets from secondhand smoke
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      feel better mentally in as little as 6 weeks
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      save money - around £38 a week for the average smoker
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      increase energy levels
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      look better and have healthier skin
-    </li>
-  </ul>
-</div>
+{{ list({
+title: "When you quit, you:",
+type: "tick",
+items: [
+{
+item: "lower your risk of cancer, lung disease, heart disease, stroke and dementia"
+},
+{
+item: "protect your loved ones and pets from secondhand smoke"
+},
+{
+item: "feel better mentally in as little as 6 weeks"
+},
+{
+item: "save money - around £38 a week for the average smoker"
+},
+{
+item: "increase energy levels"
+},
+{
+item: "look better and have healthier skin"
+}
+]
+}) }}
+
+
 
 <h2>It's never too late to stop</h2>
 <p>When you stop smoking, your body can repair itself sooner than you might think. It does not matter how old you are, or how long you have smoked.</p>
@@ -97,29 +82,22 @@
 </ul>
 </div>
 
-<div class="nhsuk-do-dont-list">
-  <h3 class="nhsuk-do-dont-list__label">To help stop smoking:</h3>
-  <ul class="nhsuk-list nhsuk-list--tick">
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      talk to your GP or pharmacy about stop smoking aids, medication and support services
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      set small goals - you're 5 times more likely to quit for good if you stop smoking for 28 days
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      reflect on any past attempts to quit and try new methods
-    </li>
-  </ul>
-</div>
+{{ list({
+title: "To help stop smoking:",
+type: "tick",
+items: [
+{
+item: "talk to your GP or pharmacy about stop smoking aids, medication and support services"
+},
+{
+item: "set small goals - you're 5 times more likely to quit for good if you stop smoking for 28 days"
+},
+{
+item: "reflect on any past attempts to quit and try new methods"
+}
+]
+}) }}
+
 
 {{ details({
   classes: "nhsuk-expander",
