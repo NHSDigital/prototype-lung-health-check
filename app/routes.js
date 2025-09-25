@@ -275,8 +275,8 @@ var smokedRegularly = request.session.data['smokedRegularly']
 if (relativesHaveCancer == "Yes"){
   // If relatives had cancer, ask about their age first
   response.redirect("/prototype_v2/relatives-age-when-diagnosed")
-} else if (relativesHaveCancer == "No"){
-  // No relatives with cancer, route based on smoking status
+} else if (relativesHaveCancer == "No" || relativesHaveCancer == "I don't know"){
+  // No relatives with cancer OR don't know, route based on smoking status
  if (smokedRegularly == "Yes-currently") {
   response.redirect("/prototype_v2/how-old-when-started-smoking")
 } else if (smokedRegularly == "Yes-usedToRegularly") {

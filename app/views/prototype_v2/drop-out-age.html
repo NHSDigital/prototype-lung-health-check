@@ -1,4 +1,7 @@
 {% extends 'layout.html' %}
+{% from 'details/macro.njk' import details %}
+{% from 'do-dont-list/macro.njk' import list %}
+{% from 'card/macro.njk' import card %}
 
 {% set pageHeading = "You do not need an NHS lung health check" %}
 
@@ -14,69 +17,41 @@
   <div class="nhsuk-grid-column-two-thirds">
    <h2>{{pageHeading}}</h2>
 <p>The NHS lung health check is for people between the ages of 55 and 74.</p>
-<div class="nhsuk-card nhsuk-card--care nhsuk-card--care--non-urgent">
-  <div class="nhsuk-card--care__heading-container">
-    <h2 class="nhsuk-card--care__heading"> <span role="text"><span class="nhsuk-u-visually-hidden">Non-urgent advice: </span>See a GP if:</span> </h2> <span class="nhsuk-card--care__arrow" aria-hidden="true"></span>
-  </div>
-  <div class="nhsuk-card__content">
-    <p>You have any <a>symptoms of lung cancer</a>, such as:</p>
-    <ul>
-      <li>a cough that does not go away after 3 weeks</li>
-      <li>an existing cough that changes or gets worse</li>
-      <li>chest infections that keep coming back</li>
-      <li>coughing up blood</li>
-            <li>being short of breath a lot</li>
-                  <li>unexplained tiredness</li>
-                        <li>an ache or pain when breathing or coughing</li>
-                              <li>loss of appetite or unexplained weight loss</li>
-    </ul>
-    
-  </div>
-</div>
+
+{{ card({
+  type: "non-urgent",
+  heading: "See a GP if:",
+  classes: "nhsuk-u-width-full",
+  descriptionHtml: "<p>You have any <a href='https://www.nhs.uk/conditions/lung-cancer/symptoms/'>symptoms of lung cancer</a>, such as:</p><ul><li>a cough that does not go away after 3 weeks</li><li>an existing cough that changes or gets worse</li><li>chest infections that keep coming back</li><li>coughing up blood</li><li>being short of breath a lot</li><li>unexplained tiredness</li><li>an ache or pain when breathing or coughing</li><li>loss of appetite or unexplained weight loss</li></ul>"
+}) }}
+
 <h2>Benefits of stopping smoking</h2>
 <p>Stopping smoking is a great way to stay healthy, protect the health of those around you, and enjoy a better quality of life.</p>
 
-<div class="nhsuk-do-dont-list">
-  <h3 class="nhsuk-do-dont-list__label">When you quit, you:</h3>
-  <ul class="nhsuk-list nhsuk-list--tick">
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      lower your risk of cancer, lung disease, heart disease, stroke and dementia
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      protect your loved ones and pets from secondhand smoke
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      feel better mentally in as little as 6 weeks
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      save money - around £38 a week for the average smoker
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      increase energy levels
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      look better and have healthier skin
-    </li>
-  </ul>
-</div>
+{{ list({
+  title: "When you quit, you:",
+  type: "tick",
+  items: [
+    {
+      item: "lower your risk of cancer, lung disease, heart disease, stroke and dementia"
+    },
+    {
+      item: "protect your loved ones and pets from secondhand smoke"
+    },
+    {
+      item: "feel better mentally in as little as 6 weeks"
+    },
+    {
+      item: "save money - around £38 a week for the average smoker"
+    },
+    {
+      item: "increase energy levels"
+    },
+    {
+      item: "look better and have healthier skin"
+    }
+  ]
+}) }}
 
 <h2>It's never too late to stop</h2>
 <p>When you stop smoking, your body can repair itself sooner than you might think. It does not matter how old you are, or how long you have smoked.</p>
@@ -92,84 +67,58 @@
 </ul>
 </div>
 
-<div class="nhsuk-do-dont-list">
-  <h3 class="nhsuk-do-dont-list__label">To help stop smoking:</h3>
-  <ul class="nhsuk-list nhsuk-list--tick">
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      talk to your GP or pharmacy about stop smoking aids, medication and support services
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      set small goals - you're 5 times more likely to quit for good if you stop smoking for 28 days
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      reflect on any past attempts to quit and try new methods
-    </li>
-  </ul>
-</div>
+{{ list({
+  title: "To help stop smoking:",
+  type: "tick",
+  items: [
+    {
+      item: "talk to your GP or pharmacy about stop smoking aids, medication and support services"
+    },
+    {
+      item: "set small goals - you're 5 times more likely to quit for good if you stop smoking for 28 days"
+    },
+    {
+      item: "reflect on any past attempts to quit and try new methods"
+    }
+  ]
+}) }}
 
 {{ details({
   classes: "nhsuk-expander",
-  text: "Vaping to quit smoking",
+  summaryText: "Vaping to quit smoking",
   html: "<p>Nearly two-thirds of people who use vapes with Stop Smoking Services quit smoking.</p><p>Nicotine vapes are less harmful than cigarettes. They don't produce tar or carbon monoxide, which cause cancer, lung disease, and heart disease.</p><p>Vaping mimics smoking with hand-to-mouth movement and helps manage nicotine cravings.</p><p>Vaping also costs about a third as much as smoking, once you have the kit.</p><p>Vaping is not risk-free. It is not recommended for non smokers or those under 18 years old.</p><h3>Useful resources</h3><p>The following links open in a new tab.</p><p>Visit a vape shop or <a href=\"https://www.nhs.uk/better-health/quit-smoking/find-your-local-stop-smoking-service/\" target=\"_blank\">local Stop Smoking Service</a> for advice</p><p>Read <a href=\"https://www.nhs.uk/better-health/quit-smoking/vaping-to-quit-smoking/\" target=\"_blank\">NHS guidance on vaping to quit smoking</a></p><h3>Want to quit vaping?</h3><p>To quit vaping, gradually reduce nicotine strength or usage. Seek advice from a vape shop or local Stop Smoking Service.</p>"
 }) }}
 
 {{ details({
   classes: "nhsuk-expander", 
-  text: "Smoking, anxiety and mood",
+  summaryText: "Smoking, anxiety and mood",
   html: "<p>Quitting smoking can lift your mood, and ease stress, anxiety and depression.</p><p>Smokers often think that smoking helps them relax. But in reality, nicotine cravings increase anxiety and tension.</p><p>To manage cravings, try to:</p><ul><li>keep busy with hobbies and activities</li><li>relax with breathing techniques or meditation</li><li>seek support from friends, family, or support groups</li><li>use nicotine replacement therapy or medications</li></ul><p>The following links open in a new tab.</p><p>Read <a href=\"https://www.nhs.uk/live-well/quit-smoking/stopping-smoking-mental-health-benefits/\" target=\"_blank\">NHS guidance on smoking and mental health</a></p><p>Get your <a href=\"https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/your-mind-plan-quiz/\" target=\"_blank\">free Mind Plan</a></p>"
 }) }}
 
-<div class="nhsuk-do-dont-list">
-  <h3 class="nhsuk-do-dont-list__label">For free help and support:</h3>
-  <p>The following links open in a new tab:</p>
-  <ul class="nhsuk-list nhsuk-list--tick">
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      find your nearest local <a href="#">Stop Smoking Service</a>
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      get a <a href="#">free personal quit plan</a>
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      join the <a href="#">Quit Smoking Group on Facebook</a>
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      read <a href="#">NHS guidance on smoking</a>
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      call the free National Smokefree Helpline on <a href="#">0300 123 1044</a> (England only)
-    </li>
-    <li>
-      <svg class="nhsuk-icon nhsuk-icon__tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20,6 9,17 4,12"></polyline>
-      </svg>
-      download the NHS Quit Smoking app from the <a href="#">Apple App Store</a> or <a href="#">Google Play Store</a>
-    </li>
-  </ul>
-</div>
+{{ list({
+  title: "For free help and support:",
+  type: "tick",
+  items: [
+    {
+      item: 'find your nearest local <a href="#">Stop Smoking Service</a>'
+    },
+    {
+      item: 'get a <a href="#">free personal quit plan</a>'
+    },
+    {
+      item: 'join the <a href="#">Quit Smoking Group on Facebook</a>'
+    },
+    {
+      item: 'read <a href="#">NHS guidance on smoking</a>'
+    },
+    {
+      item: 'call the free National Smokefree Helpline on <a href="#">0300 123 1044</a> (England only)'
+    },
+    {
+      item: 'download the NHS Quit Smoking app from the <a href="#">Apple App Store</a> or <a href="#">Google Play Store</a>'
+    }
+  ]
+}) }}
 
   </div>
 </div>
