@@ -3,13 +3,13 @@
 {% if data["smokedRegularly"] == "Yes-currently" %}
  {% set newContentText = "Smoking affects your health in different ways depending on how you smoke." %}
  {% set explanatoryText = "We need to know what you smoke, or used to smoke, on a regular basis. For example, if you have smoked a pipe on a weekly basis for a year or longer." %}
- {% set questionText = "What do you smoke?" %}
+ {% set questionText = "What do you smoke regularly?" %}
  {% set formAction = "whatDoYouSmokeAnswer" %}
  {% set fieldName = "whatSmokeNow" %}
 {% else %}
  {% set newContentText = "Smoking affects your health in different ways depending on how you smoked." %}
  {% set explanatoryText = "We need to know what you smoked on a regular basis. For example, if you smoked a pipe on a weekly basis for a year or longer." %}
- {% set questionText = "What did you smoke?" %}
+ {% set questionText = "What did you smoke regularly?" %}
  {% set formAction = "whatDidYouSmokeAnswer" %}
  {% set fieldName = "whatDidSmoke" %}
 {% endif %}

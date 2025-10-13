@@ -1,48 +1,48 @@
 {% extends 'layout.html' %}
-
-{% if data["smokedRegularly"] == "Yes-currently" %}
-  {% set pageHeading = "Cigarette smoking" %}
-{% set explanatoryHtml %}
-  <p>If the number of cigarettes you smoke per day has changed over time, tell us the highest number you have smoked on a daily basis.</p>
-  <p>If you only smoke socially, for example at the weekend, tell us how many cigarettes you smoke on those occasions.</p>
-{% endset %}
-  {% set labelText = "How many cigarettes do you usually smoke per day?" %}
-{% else %}
-  {% set pageHeading = "Cigarette smoking" %}
-{% set explanatoryHtml %}
-  <p>If the number of cigarettes you smoke per day has changed over time, tell us the highest number you have smoked on a daily basis.</p>
-  <p>If you only smoke socially, for example at the weekend, tell us how many cigarettes you smoke on those occasions.</p>
-{% endset %}
-  {% set labelText = "How many cigarettes did you usually smoke per day?" %}
-{% endif %}
+{% from 'input/macro.njk' import input %}
+{% from 'button/macro.njk' import button %}
 
 {% block beforeContent %}
 {{ backLink({
- href: "javascript:history.back();",
- text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
+
 {% block content %}
 <div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="tobacco-next" method="post" novalidate="true">
-<h1>{{pageHeading}}</h1>
-{{ explanatoryHtml | safe }}
-
-<div class="nhsuk-form-group">
-<label class="nhsuk-label nhsuk-u-visually-hidden" for="cigarettes-per-day">
- {{labelText}}
-</label>
-<div class="nhsuk-input__wrapper">
-<input class="nhsuk-input nhsuk-input--width-4" id="cigarettes-per-day" name="howmanyCigarettes" type="text" spellcheck="false">
-<div class="nhsuk-input__suffix" aria-hidden="true">cigarettes per day</div>
-</div>
-</div>
-
-{{ button({
-text: "Continue"
-}) }}
-</form>
-</div>
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="tobacco-next" method="post" novalidate="true">
+      <h1>Cigarette smoking</h1>
+      
+      {% if data["smokedRegularly"] == "Yes-currently" %}
+        <p>If the number of cigarettes you smoke per day has changed over time, tell us the highest number you have smoked on a regular basis.</p>
+        
+        <p>If you only smoke socially, for example at the weekend, tell us how many cigarettes you smoke on those occasions.</p>
+        
+        <h2 class="nhsuk-heading-m">What is the highest number of cigarettes you have smoked per day on a regular basis?</h2>
+      {% else %}
+        <p>If the number of cigarettes you smoked per day changed over time, tell us the highest number you smoked on a regular basis.</p>
+        
+        <p>If you only smoked socially, for example at the weekend, tell us how many cigarettes you smoked on those occasions.</p>
+        
+        <h2 class="nhsuk-heading-m">What is the highest number of cigarettes you have smoked per day on a regular basis?</h2>
+      {% endif %}
+      
+      <div class="nhsuk-form-group">
+        <label class="nhsuk-label nhsuk-u-visually-hidden" for="cigarettes-per-day">
+          Number of cigarettes
+        </label>
+        <div class="nhsuk-input__wrapper">
+          <input class="nhsuk-input nhsuk-input--width-4" id="cigarettes-per-day" name="howmanyCigarettes" type="text" spellcheck="false">
+          <div class="nhsuk-input__suffix" aria-hidden="true">cigarettes</div>
+        </div>
+      </div>
+      
+      {{ button({
+        text: "Continue"
+      }) }}
+    </form>
+  </div>
 </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% from 'input/macro.njk' import input %}
 {% from 'button/macro.njk' import button %}
-{% set pageHeading = "How old were you when you started smoking?" %}
+{% set pageHeading = "How old were you when you started smoking regularly?" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -20,7 +20,7 @@
 
 {{ input({
   label: {
-    text: "How old were you when you started smoking?",
+    text: "How old were you when you started smoking regularly?",
     classes: "nhsuk-u-visually-hidden"
   },
   id: "age-started-smoking",

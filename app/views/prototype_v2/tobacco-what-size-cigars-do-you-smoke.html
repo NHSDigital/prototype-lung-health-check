@@ -1,125 +1,135 @@
 {% extends 'layout.html' %}
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% from 'button/macro.njk' import button %}
+
 {% if data["smokedRegularly"] == "Yes-currently" %}
- {% set pageHeading = "What size cigar or cigarillo do you smoke?" %}
- {% set cigarilloQuestion = "How many cigarillos do you smoke a day?" %}
- {% set smallQuestion = "How many small cigars do you smoke a day?" %}
- {% set mediumQuestion = "How many medium cigars do you smoke a day?" %}
- {% set largeQuestion = "How many large cigars do you smoke a day?" %}
+  {% set cigarilloQuestion = "How many cigarillos do you smoke a day?" %}
+  {% set smallQuestion = "How many small cigars do you smoke a day?" %}
+  {% set mediumQuestion = "How many medium cigars do you smoke a day?" %}
+  {% set largeQuestion = "How many large cigars do you smoke a day?" %}
+  {% set h2Question = "What size cigar or cigarillo do you smoke?" %}
 {% else %}
- {% set pageHeading = "What size cigar or cigarillo did you smoke?" %}
- {% set cigarilloQuestion = "How many cigarillos did you smoke a day?" %}
- {% set smallQuestion = "How many small cigars did you smoke a day?" %}
- {% set mediumQuestion = "How many medium cigars did you smoke a day?" %}
- {% set largeQuestion = "How many large cigars did you smoke a day?" %}
+  {% set cigarilloQuestion = "How many cigarillos did you smoke a day?" %}
+  {% set smallQuestion = "How many small cigars did you smoke a day?" %}
+  {% set mediumQuestion = "How many medium cigars did you smoke a day?" %}
+  {% set largeQuestion = "How many large cigars did you smoke a day?" %}
+  {% set h2Question = "What size cigar or cigarillo did you smoke?" %}
 {% endif %}
 
 {% set cigarilloHtml %}
-<div class="nhsuk-form-group">
-  <label class="nhsuk-label nhsuk-label--s" for="cigarillos">
+<div class='nhsuk-form-group'>
+  <label class='nhsuk-label nhsuk-label--s' for='cigarillos'>
     {{ cigarilloQuestion }}
   </label>
-  <input class="nhsuk-input nhsuk-input--width-4" id="cigarillos" name="cigarillos" type="text" spellcheck="false">
+  <input class='nhsuk-input nhsuk-input--width-4' id='cigarillos' name='cigarillos' type='text' spellcheck='false'>
 </div>
 {% endset -%}
 
 {% set smallCigarHtml %}
-<div class="nhsuk-form-group">
-  <label class="nhsuk-label nhsuk-label--s" for="small-cigars">
+<div class='nhsuk-form-group'>
+  <label class='nhsuk-label nhsuk-label--s' for='small-cigars'>
     {{ smallQuestion }}
   </label>
-  <input class="nhsuk-input nhsuk-input--width-4" id="small-cigars" name="smallCigars" type="text" spellcheck="false">
+  <input class='nhsuk-input nhsuk-input--width-4' id='small-cigars' name='smallCigars' type='text' spellcheck='false'>
 </div>
 {% endset -%}
 
 {% set mediumCigarHtml %}
-<div class="nhsuk-form-group">
-  <label class="nhsuk-label nhsuk-label--s" for="medium-cigars">
+<div class='nhsuk-form-group'>
+  <label class='nhsuk-label nhsuk-label--s' for='medium-cigars'>
     {{ mediumQuestion }}
   </label>
-  <input class="nhsuk-input nhsuk-input--width-4" id="medium-cigars" name="mediumCigars" type="text" spellcheck="false">
+  <input class='nhsuk-input nhsuk-input--width-4' id='medium-cigars' name='mediumCigars' type='text' spellcheck='false'>
 </div>
 {% endset -%}
 
 {% set largeCigarHtml %}
-<div class="nhsuk-form-group">
-  <label class="nhsuk-label nhsuk-label--s" for="large-cigars">
-    {{largeQuestion}}
+<div class='nhsuk-form-group'>
+  <label class='nhsuk-label nhsuk-label--s' for='large-cigars'>
+    {{ largeQuestion }}
   </label>
-  <input class="nhsuk-input nhsuk-input--width-4" id="large-cigars" name="largeCigars" type="text" spellcheck="false">
+  <input class='nhsuk-input nhsuk-input--width-4' id='large-cigars' name='largeCigars' type='text' spellcheck='false'>
 </div>
 {% endset -%}
 
 {% block beforeContent %}
 {{ backLink({
- href: "javascript:history.back();",
- text: "Back"
+  href: "javascript:history.back();",
+  text: "Back"
 }) }}
 {% endblock %}
 
 {% block content %}
 <div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="tobacco-next" method="post" novalidate="true">
- {{ checkboxes({
- "idPrefix": "cigarSizes",
- "name": "cigarSizes",
- "fieldset": {
- "legend": {
- "text": pageHeading,
- "classes": "nhsuk-fieldset__legend--l",
- "isPageHeading": true
- }
- },
- "hint": {
- "text": "Select all that apply"
- },
- value: data.cigarSizes,
- "items": [
- {
- "value": "Cigarillo",
- "text": "Cigarillo",
- "conditional": {
- "html": cigarilloHtml
- }
- },
- {
- "value": "Small",
- "text": "Small",
- "hint": {
- "text": "Petit Corona or Short Panetela, usually 4 to 5 inches long"
- },
- "conditional": {
- "html": smallCigarHtml
- }
- },
- {
- "value": "Medium",
- "text": "Medium",
- "hint": {
- "text": "Robusto or Corona, usually 5 to 6 inches long"
- },
- "conditional": {
- "html": mediumCigarHtml
- }
- },
- {
- "value": "Large",
- "text": "Large",
- "hint": {
- "text": "Churchill or Double Corona, usually 7 to 8 inches long"
- },
- "conditional": {
- "html": largeCigarHtml
- }
- }
- ]
- }) }}
-
-
- {{ button({
- text: "Continue"
- }) }}
-</form>
-</div>
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="tobacco-next" method="post" novalidate="true">
+      <h1>Cigar and cigarillo smoking</h1>
+      
+      {% if data["smokedRegularly"] == "Yes-currently" %}
+        <p>If you only smoke socially, for example at the weekend, tell us how many cigars or cigarillos you smoke on those occasions.</p>
+        
+        <h2>What size cigar or cigarillo do you usually smoke?</h2>
+      {% else %}
+        <p>If you only smoked socially, for example at the weekend, tell us how many cigars or cigarillos you smoked on those occasions.</p>
+        
+        <h2>What size cigar or cigarillo did you usually smoke?</h2>
+      {% endif %}
+      
+      {{ checkboxes({
+        "idPrefix": "cigarSizes",
+        "name": "cigarSizes",
+        "fieldset": {
+          "legend": {
+            "text": "Select all that apply",
+            "classes": "nhsuk-fieldset__legend--m"
+          }
+        },
+        "value": data.cigarSizes,
+        "items": [
+          {
+            "value": "Cigarillo",
+            "text": "Cigarillo",
+            "conditional": {
+              "html": cigarilloHtml
+            }
+          },
+          {
+            "value": "Small",
+            "text": "Small",
+            "hint": {
+              "text": "Petit Corona or Short Panetela, usually 4 to 5 inches long"
+            },
+            "conditional": {
+              "html": smallCigarHtml
+            }
+          },
+          {
+            "value": "Medium",
+            "text": "Medium",
+            "hint": {
+              "text": "Robusto or Corona, usually 5 to 6 inches long"
+            },
+            "conditional": {
+              "html": mediumCigarHtml
+            }
+          },
+          {
+            "value": "Large",
+            "text": "Large",
+            "hint": {
+              "text": "Churchill or Double Corona, usually 7 to 8 inches long"
+            },
+            "conditional": {
+              "html": largeCigarHtml
+            }
+          }
+        ]
+      }) }}
+      
+      {{ button({
+        text: "Continue"
+      }) }}
+    </form>
+  </div>
 </div>
 {% endblock %}
