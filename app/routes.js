@@ -338,9 +338,9 @@ router.post('/prototype_v2/smokeNowAnswer', function(request, response) {
 router.post('/prototype_v2/who-should-not-use-answer', function(request, response) {
     var smokeNow = request.session.data['canYouContinue']
     if (smokeNow == "Yes"){
-        response.redirect("/prototype_v2/what-is-your-height")
-    } else if (smokeNow == "No"){
         response.redirect("/prototype_v2/drop-out-bmi")
+    } else if (smokeNow == "No"){
+        response.redirect("/prototype_v2/what-is-your-height")
     } else {
         response.redirect("/prototype_v2/who-should-not-use-this-online-service")
     }
