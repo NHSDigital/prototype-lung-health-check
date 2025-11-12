@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Check if you need to ask for a face-to-face appointment" %}
+{% set pageHeading = "Check if you need a face-to-face appointment" %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -14,6 +14,7 @@
   <div class="nhsuk-grid-column-two-thirds">
         <form action="who-should-not-use-answer" method="post" novalidate="true">
 <h2>{{pageHeading}}</h2>
+<p>This online service uses automatic calculations based on your height and weight. This means it cannot give accurate results in some cases. </p>
 <p>You need to do your NHS lung cancer risk check in person, not online, if you:</p>
 <div class="nhsuk-inset-text">
   <span class="nhsuk-u-visually-hidden">You need to do your NHS lung cancer risk check in person, not online, if you:</span>
@@ -24,7 +25,6 @@
     <li>are pregnant</li>
   </ul>
   </div>
-<p>This is because the online service uses automatic calculations based on your height and weight. It cannot give accurate results in these cases. </p>
 <h3>Do you need to leave the online service and ask for a face-to-face appointment?</h3>
 {{ radios({
   idPrefix: "canYouContinue",
