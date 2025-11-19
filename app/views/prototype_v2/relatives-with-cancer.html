@@ -1,45 +1,55 @@
 {% extends 'layout.html' %}
-{% set pageHeading = "Have any of your parents, siblings or children had a diagnosis of lung cancer?" %}
-{% block beforeContent %}
-{{ backLink({
- href: "javascript:history.back();",
- text: "Back"
-}) }}
+
+{% block pageTitle %}
+  Have any of your parents, siblings or children had a diagnosis of lung cancer? - NHS
 {% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form class="form" action="relatives-with-cancer-answer" method="post" novalidate="true">
- {{ radios({
- "idPrefix": "relativesHaveCancer",
- "name": "relativesHaveCancer",
- "fieldset": {
- "legend": {
- "text": pageHeading,
- "classes": "nhsuk-fieldset__legend--l",
- "isPageHeading": true
- }
- },
- value: data.relativesHaveCancer,
- "items": [
- {
- "value": "Yes",
- "text": "Yes"
- },
- {
- "value": "No",
- "text": "No"
- },
- {
- "value": "I don't know",
- "text": "I don't know"
- }
- ]
- }) }}
- {{ button({
- text: "Continue"
- }) }}
-</form>
-</div>
-</div>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="relatives-with-cancer-answer" method="post">
+
+        {{ radios({
+          idPrefix: "relativesHaveCancer",
+          name: "relativesHaveCancer",
+          fieldset: {
+            legend: {
+              text: "Have any of your parents, siblings or children had a diagnosis of lung cancer?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          value: data.relativesHaveCancer,
+          items: [
+            {
+              value: "Yes",
+              text: "Yes"
+            },
+            {
+              value: "No",
+              text: "No"
+            },
+            {
+              value: "I don't know",
+              text: "I don't know"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
 {% endblock %}

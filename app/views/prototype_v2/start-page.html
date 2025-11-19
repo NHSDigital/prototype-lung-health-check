@@ -1,37 +1,64 @@
 {% extends 'layout.html' %}
-{% set pageHeading = "Complete an NHS lung cancer risk check" %}
-{% block beforeContent %}
-<a class="nhsuk-back-link" href="#">Back</a>
+
+{% block pageTitle %}
+  Help us test the NHS lung cancer risk check online - NHS
 {% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "#"
+  }) }}
+{% endblock %}
+
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<h1 class="nhsuk-heading-l">
- {{ pageHeading }}
-</h1>
-<p>The NHS lung cancer risk check will ask you some questions about your medical history and lifestyle to work out your risk of getting lung cancer. </p>
-<p>Lung cancer screening aims to find lung cancer early, sometimes before you have symptoms. Early diagnosis can make lung cancer more treatable and make treatment more successful.</p>
-<p>You are eligible for this service if you are:</p>
-<ul>
-<li>aged between 55 and 74</li>
-<li>registered with a GP surgery</li>
-<li>someone who smokes or used to smoke</li>
-</ul>
-<h3>What to expect</h3>
-<p>To understand your level of risk we will ask you questions about:</p>
-<ul>
-<li>your height and weight</li>
-<li>your ethnicity</li>
-<li>the highest level of education you completed</li>
-<li>if you have ever had a cancer diagnosis</li>
-<li>if your parents, siblings, or children have ever had a lung cancer diagnosis</li>
-<li>your smoking habits</li>
-</ul>
-<p>The NHS lung cancer risk check will use your answers to predict your risk of developing lung cancer in the next 5 years.</p>
-<p>By completing the questionnaire you will be helping us to create a better service.</p>
-<a href="start-journey" class="nhsuk-button">
- Start now
-</a>
-</div>
-</div>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h2>Help us test the NHS lung cancer risk check online</h2>
+
+      <p>We are testing a new online questionnaire, the NHS lung cancer risk check. This service will ask you some questions about your medical history and lifestyle.</p>
+
+      <p>This online service cannot currently calculate your level of risk. Once you have completed the questionnaire you will need to call us to repeat the questionnaire by phone.</p>
+
+      <p>As a thank you we will be offering you a £10 voucher for testing the online service.</p>
+
+      <h2 class="nhsuk-heading-m">The benefits of lung cancer screening</h2>
+
+      <p>Your risk of lung cancer increases as you get older. Screening aims to find lung cancer early, sometimes before you have symptoms. Early diagnosis can make lung cancer more treatable and make treatment more successful.</p>
+
+      <p>You are eligible for lung cancer screening if you are:</p>
+      
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>aged between 55 and 74</li>
+        <li>registered with a GP surgery</li>
+        <li>someone who smokes or used to smoke</li>
+      </ul>
+
+      <h2 class="nhsuk-heading-m">What to expect in the online service</h2>
+
+      <p>To understand your level of risk we will ask you questions about:</p>
+
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>your height and weight</li>
+        <li>your ethnicity</li>
+        <li>your education</li>
+        <li>if you have ever had a cancer diagnosis</li>
+        <li>if your parents, siblings, or children have ever had a lung cancer diagnosis</li>
+        <li>your smoking habits</li>
+      </ul>
+
+      <p>Once you have submitted your answers we ask that you call us to complete the questionnaire by phone.</p>
+
+      {{ button({
+        text: "Start now",
+        href: "start-journey"
+      }) }}
+
+      <h2 class="nhsuk-heading-m">If you do not want to test the online service</h2>
+
+      <p>You can call us on <a href="tel:02075554444">0207 555 444</a> to complete your NHS lung cancer risk check by phone instead of testing the online service</p>
+
+    </div>
+  </div>
 {% endblock %}

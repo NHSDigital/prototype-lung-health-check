@@ -1,43 +1,48 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "You will need to complete your NHS lung health check over the phone" %}
+{% block pageTitle %}
+  Call us to book a face-to-face appointment - NHS
+{% endblock %}
 
 {% block beforeContent %}
-{{ backLink({
-  href: "javascript:history.back();",
-  text: "Back"
-}) }}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
 {% endblock %}
 
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <div class="nhsuk-panel-white">
-  <h2>
-   You will need to complete your NHS lung health check over the phone
-  </h2>
-</div>
-<br>
-<p>Call <a>020 0000 0000</a> to complete your NHS lung health check over the phone</p>
-<div class="nhsuk-card nhsuk-card--care nhsuk-card--care--non-urgent">
-  <div class="nhsuk-card--care__heading-container">
-    <h2 class="nhsuk-card--care__heading"> <span role="text"><span class="nhsuk-u-visually-hidden">Non-urgent advice: </span>See a GP if:</span> </h2> <span class="nhsuk-card--care__arrow" aria-hidden="true"></span>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h2>Call us to book a face-to-face appointment</h2>
+
+      <p>A healthcare professional will complete your NHS lung cancer risk check at your appointment.</p>
+
+      <p>They will take your height and weight measurements to calculate your body mass index (BMI).</p>
+
+      <p>Call us on <a href="tel:02000000000">020 0000 0000</a> to book an appointment. If we do not hear from you in 2 weeks we will call you.</p>
+
+      {{ card({
+        type: "non-urgent",
+        heading: "Speak to a GP if:",
+        descriptionHtml: "
+          <p>You have any of the following symptoms:</p>
+          <ul>
+            <li>a <a href='https://www.nhs.uk/conditions/cough/'>cough</a> that does not go away after 3 weeks</li>
+            <li>a long-standing cough that gets worse</li>
+            <li><a href='https://www.nhs.uk/conditions/chest-infection/'>chest infections</a> that keep coming back</li>
+            <li><a href='https://www.nhs.uk/conditions/coughing-up-blood/'>coughing up blood</a></li>
+            <li>an ache or pain when breathing or coughing</li>
+            <li>persistent <a href='https://www.nhs.uk/conditions/shortness-of-breath/'>breathlessness</a></li>
+            <li>persistent tiredness or lack of energy</li>
+            <li>loss of appetite or unexplained weight loss</li>
+          </ul>
+          <p>They could be <a href='https://www.nhs.uk/conditions/lung-cancer/symptoms/'>symptoms of lung cancer</a>. Your GP will ask about your general health and your symptoms.</p>
+          <p>You may be asked to have a <a href='https://www.nhs.uk/conditions/blood-tests/'>blood test</a> to rule out some of the possible causes of your symptoms, such as a <a href='https://www.nhs.uk/conditions/chest-infection/'>chest infection</a>.</p>
+        "
+      }) }}
+
+    </div>
   </div>
-  <div class="nhsuk-card__content">
-    <p>You have any <a>symptoms of lung cancer</a>, such as:</p>
-    <ul>
-      <li>a cough that does not go away after 3 weeks</li>
-      <li>an existing cough that changes or gets worse</li>
-      <li>chest infections that keep coming back</li>
-      <li>coughing up blood</li>
-      <li>being short of breath a lot</li>
-      <li>unexplained tiredness</li>
-      <li>an ache or pain when breathing or coughing</li>
-      <li>loss of appetite or unexplained weight loss</li>
-    </ul>
-    
-  </div>
-</div>
-  </div>
-</div>
 {% endblock %}

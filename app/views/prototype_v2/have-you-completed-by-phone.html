@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block pageTitle %}
-  Were your relatives younger than 60 years old when they were diagnosed with lung cancer? - NHS
+  Confirm if you have completed a lung health questionnaire by phone - NHS
 {% endblock %}
 
 {% block beforeContent %}
@@ -15,31 +15,29 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      <form action="relatives-age-answer" method="post">
+      <form method="post" action="have-you-completed-by-phone-answer">
 
         {{ radios({
-          idPrefix: "relativeAge",
-          name: "relativeAge",
+          idPrefix: "completedByPhone",
+          name: "completedByPhone",
           fieldset: {
             legend: {
-              text: "Were your relatives younger than 60 years old when they were diagnosed with lung cancer?",
+              text: "Confirm if you have completed a lung health questionnaire by phone",
               classes: "nhsuk-fieldset__legend--l",
               isPageHeading: true
             }
           },
-          value: data.relativeAge,
+          hint: {
+            text: "If you have already completed a questionnaire about your lung health or lung cancer risk by phone you do not need to test the online service."
+          },
           items: [
             {
               value: "Yes",
-              text: "Yes, they were younger than 60"
+              text: "Yes"
             },
             {
               value: "No",
-              text: "No, they were 60 or older"
-            },
-            {
-              value: "I don't know",
-              text: "I don't know"
+              text: "No"
             }
           ]
         }) }}

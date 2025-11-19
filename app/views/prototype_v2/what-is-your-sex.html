@@ -1,51 +1,55 @@
 {% extends 'layout.html' %}
 
-{% set pageName = "What was your sex at birth?" %}
-    {% set pageHeading = "What was your sex at birth?" %}
+{% block pageTitle %}
+  What was your sex at birth? - NHS
+{% endblock %}
 
 {% block beforeContent %}
-{{ backLink({
-  href: "javascript:history.back();",
-  text: "Back"
-}) }}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
 {% endblock %}
+
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="which-best-describes-you" method="post" novalidate="true">
-<h2>{{pageHeading}}</h2>
-  
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
 
-{{ radios({
-  idPrefix: "whatIsYourSex",
-  name: "whatIsYourSex",
-  fieldset: {
-    legend: {
-      classes: "nhsuk-fieldset__legend--m",
-      isPageHeading: true
-    }
-  },
-    hint: {
-      text: "Your sex may impact your chances of developing lung cancer."
-    },
-  value: data.whatIsYourSex,
-  items: [
-    {
-      value: "Female",
-      text: "Female"
-    },
-    {
-      value: "Male",
-      text: "Male"
-    }
-  ]
-}) }}
-      {{ button({
-      text: "Continue"
-      }) }}
+      <form action="which-best-describes-you" method="post">
 
+        <h2>What was your sex at birth?</h2>
 
-    </form>
+        <p>Your sex may impact your chances of developing lung cancer, we will ask about your gender identity on the next question</p>
+
+        {{ radios({
+          idPrefix: "whatIsYourSex",
+          name: "whatIsYourSex",
+          fieldset: {
+            legend: {
+              text: "What was your sex at birth?",
+              classes: "nhsuk-fieldset__legend--m nhsuk-u-visually-hidden",
+              isPageHeading: false
+            }
+          },
+          value: data.whatIsYourSex,
+          items: [
+            {
+              value: "Female",
+              text: "Female"
+            },
+            {
+              value: "Male",
+              text: "Male"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
   </div>
-</div>
 {% endblock %}

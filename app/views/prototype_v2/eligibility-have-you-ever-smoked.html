@@ -1,72 +1,73 @@
 {% extends 'layout.html' %}
 
-{% set pageHeading = "Tobacco smoking" %}
+{% block pageTitle %}
+  Have you ever smoked tobacco - NHS
+{% endblock %}
 
 {% block beforeContent %}
-{{ backLink({
-  href: "javascript:history.back();",
-  text: "Back"
-}) }}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
 {% endblock %}
 
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="smokedRegularlyAnswer" method="post" novalidate="true">
-            <h2>{{pageHeading}}</h2>
-            <p>We will ask you questions about your smoking habits. This includes different types of tobacco smoking such as:</p>
-      <ul>
-      <li>cigarettes from a packet</li>
-      <li>rolled cigarettes, or roll ups</li>
-      <li>a pipe</li>
-      <li>cigars</li>
-      <li>hookah or shisha</li>
-    </ul>
-    <p>It does not currently include vaping or e-cigarettes.</p>
-         {{ radios({
-          "idPrefix": "smokedRegularly",
-          "name": "smokedRegularly",
-          "fieldset": {
-            "legend": {
-              "text": "Have you ever smoked tobacco?",
-              "classes": "nhsuk-fieldset__legend--m",
-              "isPageHeading": false
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="smokedRegularlyAnswer" method="post">
+
+        <h2>Tobacco smoking</h2>
+
+        <p>We will ask you questions about your smoking habits. This includes different types of tobacco smoking such as:</p>
+
+        <ul class="nhsuk-list nhsuk-list--bullet">
+          <li>cigarettes from a packet</li>
+          <li>rolled cigarettes, or roll ups</li>
+          <li>a pipe</li>
+          <li>cigars</li>
+          <li>hookah or shisha</li>
+        </ul>
+
+        <p>It does not currently include vaping or e-cigarettes.</p>
+
+        {{ radios({
+          idPrefix: "smokedRegularly",
+          name: "smokedRegularly",
+          fieldset: {
+            legend: {
+              text: "Have you ever smoked tobacco?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
             }
           },
           value: data.smokedRegularly,
-          "items": [
+          items: [
             {
-              "value": "Yes-currently",
-              "text": "Yes, I currently smoke"
+              value: "Yes-currently",
+              text: "Yes, I currently smoke"
             },
             {
-              "value": "Yes-usedToRegularly",
-              "text": "Yes, I used to smoke regularly",
-              hint: {
-                text: "This includes social smoking"
-              }
-            },
-              {
-              "value": "Yes-usedToFewTimes",
-              "text": "Yes, but only a few times",
-              hint: {
-                text: "For example, if you have smoked fewer than 100 cigarettes in your lifetime"
-              }
+              value: "Yes-usedToRegularly",
+              text: "Yes, I used to smoke"
             },
             {
-              "value": "No",
-              "text": "No, I have never smoked"
+              value: "Yes-usedToFewTimes",
+              text: "Yes, but I have smoked fewer than 100 cigarettes in my lifetime"
+            },
+            {
+              value: "No",
+              text: "No, I have never smoked"
             }
           ]
         }) }}
 
-   
-      {{ button({
-      text: "Continue"
-      }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
 
+      </form>
 
-    </form>
+    </div>
   </div>
-</div>
 {% endblock %}

@@ -1,79 +1,96 @@
 {% extends 'layout.html' %}
-{% set pageHeading = "Education" %}
-{% block beforeContent %}
-{{ backLink({
-href: "javascript:history.back();",
-text: "Back"
-}) }}
+
+{% block pageTitle %}
+  Tell us your education to help us give you an accurate risk score - NHS
 {% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="diagnosed-pneumonia-emphysema" method="post" novalidate="true">
-<h2>{{pageHeading}}</h2>
-<p>Education is linked to other lifestyle factors that may impact your chances of developing lung disease and cancer.</p>
-<p>If you didn't study the English curriculum choose the closest equivalent.</p>
- {{ radios({
- "idPrefix": "educationCompleted",
- "name": "educationCompleted",
- "fieldset": {
- "legend": {
- "text": "What is the highest level of education you completed?",
- "classes": "nhsuk-fieldset__legend--m",
- "isPageHeading": false
- }
- },
- value: data.educationCompleted,
- "items": [
- {
- "value": "I finished school before the age of 15",
- "text": "I finished school before the age of 15"
- },
- {
- "value": "GCSEs",
- "text": "GCSEs",
- hint: {
- text: "Previously O-levels"
- }
- },
- {
- "value": "A-levels",
- "text": "A-levels",
- hint: {
- text: "Previously Higher School Certificate (HSC)"
- }
- },
- {
- "value": "Further education",
- "text": "Further education",
- hint: {
- text: "For example, BTEC or Higher National Certificates (HNC)"
- }
- },
- {
- "value": "Bachelor's degree",
- "text": "Bachelor's degree"
- },
- {
- "value": "Postgraduate degree",
- "text": "Postgraduate degree",
- hint: {
- text: "For example a Masters or PhD"
- }
- },
- {
- "divider": "or"
- },
- {
- "value": "I'd prefer not to say",
- "text": "I'd prefer not to say"
- }
- ]
- }) }}
- {{ button({
- text: "Continue"
- }) }}
-</form>
-</div>
-</div>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="diagnosed-pneumonia-emphysema" method="post">
+
+        <h2>Tell us your education to help us give you an accurate risk score</h2>
+
+        <p>Education is linked to other factors that may impact your chances of developing lung cancer.</p>
+
+        <p>You do not have to tell us about your education but this may affect the accuracy of your risk score.</p>
+
+        <p>If you did not study in England choose the closest equivalent.</p>
+
+        {{ checkboxes({
+          idPrefix: "educationCompleted",
+          name: "educationCompleted",
+          fieldset: {
+            legend: {
+              text: "What level of education have you completed?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
+            },
+            hint: {
+              text: "Select all that apply"
+            }
+          },
+          items: [
+            {
+              value: "I finished school before the age of 15",
+              text: "I finished school before the age of 15"
+            },
+            {
+              value: "GCSEs",
+              text: "GCSEs",
+              hint: {
+                text: "Previously O-levels"
+              }
+            },
+            {
+              value: "A-levels",
+              text: "A-levels",
+              hint: {
+                text: "Previously Higher School Certificate (HSC)"
+              }
+            },
+            {
+              value: "Further education",
+              text: "Further education",
+              hint: {
+                text: "For example, BTEC or Higher National Certificates (HNC)"
+              }
+            },
+            {
+              value: "Bachelor's degree",
+              text: "Bachelor's degree"
+            },
+            {
+              value: "Postgraduate degree",
+              text: "Postgraduate degree",
+              hint: {
+                text: "For example a Masters or PhD"
+              }
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "Prefer not to say",
+              text: "Prefer not to say"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
 {% endblock %}

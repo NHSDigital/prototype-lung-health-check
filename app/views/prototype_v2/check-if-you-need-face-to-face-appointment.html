@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block pageTitle %}
+  Check if you need a face-to-face appointment - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="who-should-not-use-answer" method="post">
+
+        <h2>Check if you need a face-to-face appointment</h2>
+
+        <p>This online service uses automatic calculations based on your height and weight. This means it cannot give accurate results in some cases.</p>
+
+        <p>You need to do your NHS lung cancer risk check in person, not online, if you:</p>
+
+        {{ insetText({
+          html: "
+            <ul>
+              <li>have been diagnosed with an eating disorder, or think you may have one</li>
+              <li>have a condition that affects your height</li>
+              <li>have had a limb amputation, or were born with a limb difference</li>
+              <li>are pregnant</li>
+            </ul>
+          "
+        }) }}
+
+        {{ radios({
+          idPrefix: "canYouContinue",
+          name: "canYouContinue",
+          fieldset: {
+            legend: {
+              text: "Do you need to leave the online service and ask for a face-to-face appointment?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
+            }
+          },
+          value: data.canYouContinue,
+          items: [
+            {
+              value: "Yes",
+              text: "Yes, one or more of these things applies to me and I need a face-to-face appointment"
+            },
+            {
+              value: "No",
+              text: "No, I can continue online"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

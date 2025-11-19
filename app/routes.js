@@ -270,42 +270,41 @@ router.post('/prototype_v1/tobaccoHookahGroupToIndividual', function(request, re
 
 router.post('/prototype_v2/relatives-with-cancer-answer', function(request, response) {
 var relativesHaveCancer = request.session.data['relativesHaveCancer']
-var smokedRegularly = request.session.data['smokedRegularly']
 
 if (relativesHaveCancer == "Yes"){
   // If relatives had cancer, ask about their age first
   response.redirect("/prototype_v2/relatives-age-when-diagnosed")
 } else if (relativesHaveCancer == "No" || relativesHaveCancer == "I don't know"){
-  // No relatives with cancer OR don't know, route based on smoking status
- if (smokedRegularly == "Yes-currently") {
+  // No relatives with cancer OR don't know, go straight to age started smoking
   response.redirect("/prototype_v2/how-old-when-started-smoking")
-} else if (smokedRegularly == "Yes-usedToRegularly") {
-  response.redirect("/prototype_v2/how-old-when-started-smoking")
-  } else {
-    // Fallback to original logic if smoking status unclear
-    response.redirect("/prototype_v2/do-you-smoke-now")
-  }
 } else {
+  // No answer provided, redirect back to the question
   response.redirect("/prototype_v2/relatives-with-cancer")
 }
 })
 
 router.post('/prototype_v2/relatives-age-answer', function(request, response) {
-var smokedRegularly = request.session.data['smokedRegularly']
-
-if (smokedRegularly == "Yes-currently") {
   response.redirect("/prototype_v2/how-old-when-started-smoking")
-} else if (smokedRegularly == "Yes-usedToRegularly") {
-  response.redirect("/prototype_v2/how-old-when-started-smoking")
-} else {
-  // Fallback
-  response.redirect("/prototype_v2/do-you-smoke-now")
-}
 })
 
 router.get('/prototype_v2/start-journey', function (request, response) {
     delete request.session.data
-    response.redirect("/prototype_v2/eligibility-have-you-ever-smoked")
+    response.redirect("/prototype_v2/have-you-completed-by-phone")
+})
+
+router.post('/prototype_v2/have-you-completed-by-phone-answer', function(request, response) {
+  const completedByPhone = request.session.data['completedByPhone']
+  
+  if (completedByPhone === 'Yes') {
+    // If they've already completed by phone, redirect to exit page
+    response.redirect('/prototype_v2/completed-by-phone-exit')
+  } else if (completedByPhone === 'No') {
+    // If they haven't completed by phone, continue to eligibility
+    response.redirect('/prototype_v2/eligibility-have-you-ever-smoked')
+  } else {
+    // If no answer provided, redirect back to the question
+    response.redirect('/prototype_v2/have-you-completed-by-phone')
+  }
 })
 
 router.post('/prototype_v2/smokedRegularlyAnswer', function(request, response) {
@@ -409,7 +408,7 @@ router.post('/prototype_v2/dateOfBirthAnswer', function(request, response) {
   }
   
   // If eligible, show the smoking question page
-  response.render('prototype_v2/task-list')
+  response.render('prototype_v2/check-if-you-need-face-to-face-appointment')
 })
 
 router.post('/prototype_v2/whatDidYouSmokeAnswer', function(request, response) {
