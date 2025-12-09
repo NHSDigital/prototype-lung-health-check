@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% if data["smokedRegularly"] == "Yes-currently" %}
+ {% set pageHeading = "Hookah and shisha" %}
+ {% set explanatoryText1 = "The length of time and how often you smoke hookah or shisha may impact your chances of developing lung cancer." %}
+ {% set explanatoryText2 = "To give you an accurate risk calculation we only need to know if you smoke hookah or shisha on a regular basis. For example, if you smoke on a weekly basis for a year or longer." %}
+ {% set questionText = "Do you usually smoke in a group session or by yourself?" %}
+{% else %}
+ {% set pageHeading = "Hookah and shisha" %}
+ {% set explanatoryText1 = "The length of time and how often you smoked hookah or shisha may impact your chances of developing lung cancer." %}
+ {% set explanatoryText2 = "To give you an accurate risk calculation we only need to know if you smoked hookah or shisha on a regular basis. For example, if you smoked on a weekly basis for a year or longer." %}
+ {% set questionText = "Did you usually smoke in a group session or by yourself?" %}
+{% endif %}
+{% block beforeContent %}
+{{ backLink({
+ href: "javascript:history.back();",
+ text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="tobaccoHookahSessionAnswer" method="post" novalidate="true">
+<h1>{{pageHeading}}</h1>
+<p>{{explanatoryText1}}</p>
+<p>{{explanatoryText2}}</p>
+{{ checkboxes({
+ "idPrefix": "hookahSession",
+ "name": "hookahSession",
+ "fieldset": {
+ "legend": {
+ "text": questionText,
+ "classes": "nhsuk-fieldset__legend--m",
+ "isPageHeading": false
+ }
+ },
+ hint: {
+ text: "Select all that apply"
+ },
+ value: data.hookahSession,
+ "items": [
+ {
+ "value": "In a group session",
+ "text": "In a group session"
+ },
+ {
+ "value": "By myself",
+ "text": "By myself"
+ }
+ ]
+ }) }}
+ {{ button({
+ text: "Continue"
+ }) }}
+</form>
+</div>
+</div>
+{% endblock %}

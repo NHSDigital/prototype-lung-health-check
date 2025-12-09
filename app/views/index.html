@@ -1,22 +1,13 @@
 <!-- Use this page as the index for your project -->
-
 <!-- ADDING CUSTOM CSS - Add your custom CSS or Sass in /app/assets/sass/main.scss -->
-
 <!-- Extends the layout from /views/layout.html -->
 {% extends 'layouts/layout_home.html' %}
-<!--
-  In /views/layout.html you can:
-    - change the header and footer
-    - add custom CSS and JavaScript
--->
 
 <!-- Set the page title -->
 {% block pageTitle %}
 NHS Lung health check online
 {% endblock %}
 
-<!-- For adding a breadcrumb -->
-<!-- Code examples can be found at https://service-manual.nhs.uk/design-system/components/breadcrumbs -->
 {% block outerContent %}
 <section class="nhsuk-hero">
   <div class="nhsuk-width-container nhsuk-hero--border app-width-container">
@@ -24,67 +15,76 @@ NHS Lung health check online
       <div class="nhsuk-grid-column-two-thirds">
         <div class="nhsuk-hero__wrapper app-hero__wrapper">
           <h1 class="nhsuk-u-margin-bottom-4">Lung cancer risk check online prototypes</h1>
-          <p class="nhsuk-body-l nhsuk-u-margin-bottom-1">This page allows you to view current and previous prototypes
-            for the lung cancer risk check service.</p>
+          <p class="nhsuk-body-l nhsuk-u-margin-bottom-1">This page allows you to view current and previous prototypes for the lung cancer risk check service.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
-
 {% endblock %}
 
-
-<!-- For adding page content -->
-<!-- Page layout code can be found at https://service-manual.nhs.uk/design-system/styles/layout -->
 {% block content %}
-
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-two-thirds">
-    <h2>Protoype version 2.0 - pre-pilot</h2>
-    <p class="nhsuk-grey-date">Last updated: 12 November 2025</p>
-    <p>This prototype is to be used for testing during the pre-pilot phase of the service</p>
-    <a class="nhsuk-button nhsuk-button--secondary-solid" data-module="nhsuk-button" href="/prototype_v2/start-page">
-  Open prototype
+    
+    <!-- Prototype v3 -->
+    <h2>Prototype version 3.0 - pre-pilot</h2>
+    <p class="nhsuk-body-s nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-2">Last updated: 9 December 2025</p>
+    <p>Multiple changes have been made to v3, including major revisions to the tobacco smoking screens.</p>
+    <a class="nhsuk-button nhsuk-button--secondary" href="/prototype_v3/start-page">
+      Open prototype
     </a>
-    </div>
-      <div class="nhsuk-grid-column-two-thirds">
-    <h2>Protoype version 1.0</h2>
-    <p class="nhsuk-grey-date">Last updated: 31 July 2025</p>
+    
+    <!-- Section break -->
+    <hr class="nhsuk-section-break nhsuk-section-break--l nhsuk-section-break--visible">
+    
+    <!-- Prototype v2 -->
+    <h2>Prototype version 2.0 - pre-pilot</h2>
+    <p class="nhsuk-body-s nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-2">Last updated: 12 November 2025</p>
+    <p>This prototype is to be used for testing during the pre-pilot phase of the service.</p>
+    <a class="nhsuk-button nhsuk-button--secondary" href="/prototype_v2/start-page">
+      Open prototype
+    </a>
+    
+    <!-- Section break -->
+    <hr class="nhsuk-section-break nhsuk-section-break--l nhsuk-section-break--visible">
+    
+    <!-- Prototype v1 -->
+    <h2>Prototype version 1.0</h2>
+    <p class="nhsuk-body-s nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-2">Last updated: 31 July 2025</p>
     <p>This is the first version of our prototype.</p>
-    <a class="nhsuk-button nhsuk-button--secondary-solid" data-module="nhsuk-button" href="/prototype_v1/start-page">
-  Open prototype
+    <a class="nhsuk-button nhsuk-button--secondary" href="/prototype_v1/start-page">
+      Open prototype
     </a>
-    </div>
-  
-    <div class="nhsuk-grid-column-two-thirds">
-        <hr class="nhsuk-section-break--l nhsuk-section-break--visible">
-     <h4>Design History</h4>
-      <p>
-       These are our design history posts and new ones will be added as they are published.
-      </p>
-      <ul>
-        <li>11 August 2025 - <a href="https://design-history.prevention-services.nhs.uk/lung-health-check/2025/08/lung-health-check-prototype/">Designing and testing a prototype</a></li>
-         <li>9 June 2025 - <a href="https://design-history.prevention-services.nhs.uk/lung-health-check/2025/06/health-assessments-discovery/">Health assessments discovery</a></li>
-      </ul>
-              <hr class="nhsuk-section-break--l nhsuk-section-break--visible">
-
-    <h4>Design Standards</h4>
-      <p>
-        We use the <a href="https://service-manual.nhs.uk/">NHS Design Principles</a> and <a href="https://www.gov.uk/service-manual/service-standard">GDS Service Standards</a> to guide our work and ensure that the services we are
-        delivering are equitable and inclusive.
-      </p>
-        <hr class="nhsuk-section-break--l nhsuk-section-break--visible">
-   <h4>Key links</h4>
-      <p class="nhsuk-body">
-        <a href="https://github.com/NHSDigital/prototype-lung-health-check">Lung health check online prototype on
-          Github</a><br>
-        <a href="https://service-manual.nhs.uk/design-system/prototyping">Getting started with prototyping</a>
-      </p>
-      
-    </div>
-  
-
+    
+    <!-- Section break -->
+    <hr class="nhsuk-section-break nhsuk-section-break--l nhsuk-section-break--visible">
+    
+    <!-- Design History -->
+    <h3>Design history</h3>
+    <p>These are our design history posts and new ones will be added as they are published.</p>
+    <ul class="nhsuk-list">
+      <li>11 August 2025 - <a href="https://design-history.prevention-services.nhs.uk/lung-health-check/2025/08/lung-health-check-prototype/">Designing and testing a prototype</a></li>
+      <li>9 June 2025 - <a href="https://design-history.prevention-services.nhs.uk/lung-health-check/2025/06/health-assessments-discovery/">Health assessments discovery</a></li>
+    </ul>
+    
+    <!-- Section break -->
+    <hr class="nhsuk-section-break nhsuk-section-break--l nhsuk-section-break--visible">
+    
+    <!-- Design Standards -->
+    <h3>Design standards</h3>
+    <p>We use the <a href="https://service-manual.nhs.uk/">NHS Design Principles</a> and <a href="https://www.gov.uk/service-manual/service-standard">GDS Service Standards</a> to guide our work and ensure that the services we are delivering are equitable and inclusive.</p>
+    
+    <!-- Section break -->
+    <hr class="nhsuk-section-break nhsuk-section-break--l nhsuk-section-break--visible">
+    
+    <!-- Key links -->
+    <h3>Key links</h3>
+    <ul class="nhsuk-list">
+      <li><a href="https://github.com/NHSDigital/prototype-lung-health-check">Lung health check online prototype on Github</a></li>
+      <li><a href="https://service-manual.nhs.uk/design-system/prototyping">Getting started with prototyping</a></li>
+    </ul>
+    
   </div>
-  <!-- End of content -->
+</div>
 {% endblock %}

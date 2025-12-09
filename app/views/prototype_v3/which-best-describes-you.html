@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+{% block pageTitle %}
+  Which of these best describes you? - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="what-is-your-ethnic-background" method="post">
+
+        <h2>Which of these best describes you?</h2>
+
+        <p>This information helps us plan your care</p>
+
+        {{ radios({
+          idPrefix: "bestDescribe",
+          name: "bestDescribe",
+          fieldset: {
+            legend: {
+              text: "Which of these best describes you?",
+              classes: "nhsuk-fieldset__legend--m nhsuk-u-visually-hidden",
+              isPageHeading: false
+            }
+          },
+          value: data.bestDescribe,
+          items: [
+            {
+              value: "Female",
+              text: "Female"
+            },
+            {
+              value: "Male",
+              text: "Male"
+            },
+            {
+              value: "Intersex or have a difference in sex development",
+              text: "Intersex or have a difference in sex development"
+            },
+            {
+              value: "Trans or non-binary",
+              text: "Trans or non-binary"
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "Prefer not to say",
+              text: "Prefer not to say"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
