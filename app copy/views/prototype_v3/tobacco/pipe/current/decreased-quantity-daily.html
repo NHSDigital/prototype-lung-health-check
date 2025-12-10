@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% from 'input/macro.njk' import input %}
+{% block pageTitle %}
+  When your smoking decreased, what is the highest number of bowls you smoked a day? - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/pipe/current/decreased-quantity-daily-answer" method="post">
+        {{ input({
+          label: {
+            text: "When your smoking decreased, what is the highest number of bowls you smoked a day on a regular basis?",
+            classes: "nhsuk-label--l",
+            isPageHeading: true
+          },
+          id: "pipeCurrentDecreasedQuantityDaily",
+          name: "pipeCurrentDecreasedQuantityDaily",
+          classes: "nhsuk-input--width-5",
+          prefix: {
+            text: "Number of bowls"
+          },
+          value: data.pipeCurrentDecreasedQuantityDaily
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

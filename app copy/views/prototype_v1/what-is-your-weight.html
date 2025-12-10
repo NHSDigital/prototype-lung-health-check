@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Enter your weight" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="what-is-your-sex" method="post" novalidate="true">
+
+      <h2>{{pageHeading}}</h2>
+
+    <p>An accurate measurement is important. If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.</p>
+   
+    {{ data | log}}
+
+    {% if data.weightUnit == "imperial" %}
+
+    {{ dateInput({
+      id: "weight",
+      namePrefix: "weight",
+      fieldset: {
+        legend: {
+          text: "What is your weight?",
+          classes: "nhsuk-label--m"
+        }
+      },
+      items: [
+        {
+          name: "stone",
+          classes: "nhsuk-input--width-4",
+          value: data.weight.stone
+        },
+        {
+          name: "pounds",
+          classes: "nhsuk-input--width-4",
+          value: data.weight.pounds
+        }
+       
+      ]
+    }) }}
+
+    <input type="hidden" name="weightUnit" value="imperial">
+
+    <p><a href="./what-is-your-weight?weightUnit=metric&weight-Stone=&weight[pounds]=">Switch to metric</a></p>
+
+    {% else %}
+
+    {{ dateInput({
+      id: "weight",
+      namePrefix: "weight",
+      fieldset: {
+        legend: {
+          text: "What is your weight?",
+          classes: "nhsuk-label--m"
+        }
+      },
+      items: [
+        {
+          name: "kilograms",
+          classes: "nhsuk-input--width-4",
+          value: data.weight.kilograms
+        }
+      ]
+    }) }}
+
+
+    <input type="hidden" name="weightUnit" value="metric">
+
+    <p><a href="./what-is-your-weight?weightUnit=imperial&weight[kilograms]=">Switch to imperial</a></p>
+
+
+    {% endif %}
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

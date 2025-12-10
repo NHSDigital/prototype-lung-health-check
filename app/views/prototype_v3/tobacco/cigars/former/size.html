@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% block pageTitle %}
+  What size cigar or cigarillo did you normally smoke? - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/cigars/former/size-answer" method="post">
+        {{ checkboxes({
+          idPrefix: "cigarsFormerSize",
+          name: "cigarsFormerSize",
+          fieldset: {
+            legend: {
+              text: "What size cigar or cigarillo did you normally smoke?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          value: data.cigarsFormerSize,
+          items: [
+            {
+              value: "cigarillo",
+              text: "Cigarillo",
+              hint: {
+                text: "Cafe Creme or Signature cigars"
+              }
+            },
+            {
+              value: "small",
+              text: "Small",
+              hint: {
+                text: "Petit Corona or Short Panetela, usually 4 to 5 inches long"
+              }
+            },
+            {
+              value: "medium",
+              text: "Medium",
+              hint: {
+                text: "Robusto or Corona, usually 5 to 6 inches long"
+              }
+            },
+            {
+              value: "large",
+              text: "Large",
+              hint: {
+                text: "Churchill or Double Corona, usually 7 to 8 inches long"
+              }
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% from 'input/macro.njk' import input %}
+{% block pageTitle %}
+  Rolled cigarette smoking - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/rolled-cigarettes/former/years-smoked-answer" method="post">
+<h2>Rolled cigarette smoking</h2>
+        {{ input({
+          label: {
+            text: "Roughly how many years did you smoke rolled cigarettes?",
+            classes: "nhsuk-label--m"
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "rolledCigarettesFormerYearsSmoked",
+          name: "rolledCigarettesFormerYearsSmoked",
+          classes: "nhsuk-input--width-2",
+          suffix: {
+            text: "years"
+          },
+          value: data.rolledCigarettesFormerYearsSmoked
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

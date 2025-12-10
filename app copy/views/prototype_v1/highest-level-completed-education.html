@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% set pageHeading = "Education" %}
+{% block beforeContent %}
+{{ backLink({
+href: "javascript:history.back();",
+text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="diagnosed-pneumonia-emphysema" method="post" novalidate="true">
+      <h2>{{pageHeading}}</h2>
+      <p>Education is closely linked to other lifestyle factors that may impact your chances of developing lung disease and cancer.</p>
+      <p>If you didn't study the English curriculum choose the closest equivalent.</p>
+      {{ radios({
+      "idPrefix": "educationCompleted",
+      "name": "educationCompleted",
+      "fieldset": {
+      "legend": {
+      "text": "What is the highest level of education you completed?",
+      "classes": "nhsuk-fieldset__legend--m",
+      "isPageHeading": false
+      }
+      },
+      value: data.educationCompleted,
+      "items": [
+      {
+      "value": "I finished school before the age of 15",
+      "text": "I finished school before the age of 15"
+      },
+      {
+      "value": "GCSEs",
+      "text": "GCSEs",
+      hint: {
+      text: "Previously O-levels"
+      }
+      },
+      {
+      "value": "A-levels",
+      "text": "A-levels",
+      hint: {
+      text: "Previously Higher School Certificate (HSC)"
+      }
+      },
+      {
+      "value": "Further education",
+      "text": "Further education",
+      hint: {
+      text: "For example, BTEC or Higher National Certificates (HNC)"
+      }
+      },
+      {
+      "value": "Bachelor's degree",
+      "text": "Bachelor's degree"
+      },
+      {
+      "value": "Postgraduate degree",
+      "text": "Postgraduate degree",
+      hint: {
+      text: "For example a Masters or PhD"
+      }
+      }
+      ]
+      }) }}
+      {{ button({
+      text: "Continue"
+      }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}

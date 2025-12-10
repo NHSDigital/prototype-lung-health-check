@@ -1,0 +1,154 @@
+{% extends 'layout.html' %}
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% if data["smokedRegularly"] == "Yes-currently" %}
+ {% set newContentText = "Smoking affects your health in different ways depending on what you smoke." %}
+ {% set explanatoryText = "We need to know what you smoke, or used to smoke, on a regular basis. For example, if you have smoked a pipe on a weekly basis for a year or longer." %}
+ {% set questionText = "What do you smoke regularly?" %}
+ {% set formAction = "whatDoYouSmokeAnswer" %}
+ {% set fieldName = "whatSmokeNow" %}
+{% else %}
+ {% set newContentText = "Smoking affects your health in different ways depending on what you smoked." %}
+ {% set explanatoryText = "We need to know what you smoked on a regular basis. For example, if you smoked a pipe on a weekly basis for a year or longer." %}
+ {% set questionText = "What did you smoke regularly?" %}
+ {% set formAction = "whatDidYouSmokeAnswer" %}
+ {% set fieldName = "whatDidSmoke" %}
+{% endif %}
+{% block pageTitle %}
+  The type of tobacco you smoke or used to smoke - NHS
+{% endblock %}
+{% block beforeContent %}
+{{ backLink({
+ href: "javascript:history.back();",
+ text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="{{formAction}}" method="post" novalidate="true">
+<h2>The type of tobacco you smoke or used to smoke</h2>
+<p>{{newContentText}}</p>
+<p>{{explanatoryText}}</p>
+<p>You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.</p>
+
+<div class="nhsuk-form-group">
+  <fieldset class="nhsuk-fieldset">
+    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+      {{questionText}}
+    </legend>
+    <table class="nhsuk-table">
+      <thead class="nhsuk-table__head">
+        <tr class="nhsuk-table__row">
+          <th class="nhsuk-table__header" scope="col"></th>
+          <th class="nhsuk-table__header" scope="col">I currently smoke</th>
+          <th class="nhsuk-table__header" scope="col">I used to smoke</th>
+        </tr>
+      </thead>
+      <tbody class="nhsuk-table__body">
+        <tr class="nhsuk-table__row">
+          <td class="nhsuk-table__cell">Cigarettes</td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-cigarettes-current" name="{{fieldName}}-cigarettes-current" type="checkbox" value="Cigarettes-current">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-cigarettes-current">
+                <span class="nhsuk-u-visually-hidden">I currently smoke cigarettes</span>
+              </label>
+            </div>
+          </td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-cigarettes-used" name="{{fieldName}}-cigarettes-used" type="checkbox" value="Cigarettes-used">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-cigarettes-used">
+                <span class="nhsuk-u-visually-hidden">I used to smoke cigarettes</span>
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr class="nhsuk-table__row">
+          <td class="nhsuk-table__cell">Rolled cigarettes</td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-rolled-current" name="{{fieldName}}-rolled-current" type="checkbox" value="Rolled-current">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-rolled-current">
+                <span class="nhsuk-u-visually-hidden">I currently smoke rolled cigarettes</span>
+              </label>
+            </div>
+          </td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-rolled-used" name="{{fieldName}}-rolled-used" type="checkbox" value="Rolled-used">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-rolled-used">
+                <span class="nhsuk-u-visually-hidden">I used to smoke rolled cigarettes</span>
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr class="nhsuk-table__row">
+          <td class="nhsuk-table__cell">Pipe</td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-pipe-current" name="{{fieldName}}-pipe-current" type="checkbox" value="Pipe-current">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-pipe-current">
+                <span class="nhsuk-u-visually-hidden">I currently smoke a pipe</span>
+              </label>
+            </div>
+          </td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-pipe-used" name="{{fieldName}}-pipe-used" type="checkbox" value="Pipe-used">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-pipe-used">
+                <span class="nhsuk-u-visually-hidden">I used to smoke a pipe</span>
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr class="nhsuk-table__row">
+          <td class="nhsuk-table__cell">Cigars</td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-cigars-current" name="{{fieldName}}-cigars-current" type="checkbox" value="Cigars-current">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-cigars-current">
+                <span class="nhsuk-u-visually-hidden">I currently smoke cigars</span>
+              </label>
+            </div>
+          </td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-cigars-used" name="{{fieldName}}-cigars-used" type="checkbox" value="Cigars-used">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-cigars-used">
+                <span class="nhsuk-u-visually-hidden">I used to smoke cigars</span>
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr class="nhsuk-table__row">
+          <td class="nhsuk-table__cell">Hookah or shisha</td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-hookah-current" name="{{fieldName}}-hookah-current" type="checkbox" value="Hookah-current">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-hookah-current">
+                <span class="nhsuk-u-visually-hidden">I currently smoke hookah or shisha</span>
+              </label>
+            </div>
+          </td>
+          <td class="nhsuk-table__cell">
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="{{fieldName}}-hookah-used" name="{{fieldName}}-hookah-used" type="checkbox" value="Hookah-used">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="{{fieldName}}-hookah-used">
+                <span class="nhsuk-u-visually-hidden">I used to smoke hookah or shisha</span>
+              </label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+</div>
+
+ {{ button({
+ text: "Continue"
+ }) }}
+</form>
+</div>
+</div>
+{% endblock %}

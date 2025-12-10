@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% from 'details/macro.njk' import details %}
+{% block pageTitle %}
+  Tell us if you ever lived with anyone who worked with asbestos - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="diagnosed-cancer " method="post">
+<h2>Tell us if you ever lived with anyone who worked with asbestos</h2>
+<p>If you lived with someone who worked with asbestos you may have been exposed to asbestos. For example, if you washed the clothes they worked in.</p>
+<p>Someone might have worked with asbestos if they worked in an industry such as building or construction, particularly from the 1950s to the 1990s.</p>
+
+        {{ details({
+          summaryText: "What is asbestos?",
+          html: "
+<p>Asbestos was used in a number of building materials and products. For example:</p>
+<ul class=nhsuk-list nhsuk-list--bullet>
+<li>boilers and pipes</li>
+<li>car brakes</li>
+<li>cement for roofing sheets</li>
+<li>floor tiles</li>
+<li>insulating board to protect buildings and ships against fire</li>
+</ul>
+<p>If you lived with someone who worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.</p>
+          "
+        }) }}
+        {{ radios({
+          idPrefix: "livedWithAsbestosWorker",
+          name: "livedWithAsbestosWorker",
+          fieldset: {
+            legend: {
+              text: "Have you ever lived with anyone who worked with asbestos?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
+            }
+          },
+          value: data.livedWithAsbestosWorker,
+          items: [
+            {
+              value: "Yes",
+              text: "Yes"
+            },
+            {
+              value: "No",
+              text: "No"
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

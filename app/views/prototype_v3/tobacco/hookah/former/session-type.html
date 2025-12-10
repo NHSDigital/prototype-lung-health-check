@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% block pageTitle %}
+  Hookah and shisha smoking - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/hookah/former/session-type-answer" method="post">
+<h2>Hookah and shisha smoking</h2>
+<p>How you smoked hookah or shisha may impact your chances of developing lung cancer.</p>
+<p>For example, if you smoked by yourself you are likely to have smoked more tobacco than if you shared a pipe in a group session.</p>
+        {{ checkboxes({
+          idPrefix: "hookahFormerSessionType",
+          name: "hookahFormerSessionType",
+          fieldset: {
+            legend: {
+              text: "When you smoked, was it in a group session or by yourself?",
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          value: data.hookahFormerSessionType,
+          items: [
+            {
+              value: "group",
+              text: "In a group session"
+            },
+            {
+              value: "solo",
+              text: "By myself"
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

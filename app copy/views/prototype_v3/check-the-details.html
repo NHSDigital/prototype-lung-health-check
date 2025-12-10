@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+
+{% set pageName = "Are these details correct?" %}
+
+
+{% block beforeContent %}
+  {{ backLink({
+    href: "start-page",
+    text: "Back"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="what-is-your-sex" method="post" novalidate="true">
+ <h2 class="nhsuk-heading-l">Check the information we hold about you</h2>
+ <p>These are details held in your NHS Account.</p>
+
+      {{ summaryList({
+        rows: [
+          {
+            key: {
+              text: "Name"
+            },
+            value: {
+              text: "Jane Smith"
+            }
+          },
+          {
+            key: {
+              text: "Date of birth"
+            },
+            value: {
+              html: "20 June 1965"
+            }
+          },
+          {
+            key: {
+              text: "NHS number"
+            },
+            value: {
+              text: "415 514 1993"
+            }
+          }
+        ]
+      }) }}
+
+
+
+<br>
+
+
+{{ radios({
+  idPrefix: "are-details-correct",
+  name: "are-these-details-correct",
+  fieldset: {
+    legend: {
+      text: "Are these details correct?",
+      classes: "nhsuk-fieldset__legend--m",
+      isPageHeading: true
+    }
+  },
+  items: [
+    {
+      value: "yes",
+      text: "Yes"
+    },
+    {
+      value: "no",
+      text: "No"
+    }
+  ]
+}) }}
+
+{{ button({
+  text: "Continue"
+}) }}
+        
+              </form>
+    </div>
+  </div>
+  {% endblock %}

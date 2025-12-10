@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% from 'input/macro.njk' import input %}
+{% block pageTitle %}
+  When your smoking increased, roughly how many cigarillos did you normally smoke a day? - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/cigars/current/cigarillo/increased-quantity-daily-answer" method="post">
+        {{ input({
+          label: {
+            text: "When your smoking increased, roughly how many cigarillos did you normally smoke a day?",
+            classes: "nhsuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigarsCurrentCigarilloIncreasedQuantityDaily",
+          name: "cigarsCurrentCigarilloIncreasedQuantityDaily",
+          classes: "nhsuk-input--width-5",
+          suffix: {
+            text: "cigarillos"
+          },
+          value: data.cigarsCurrentCigarilloIncreasedQuantityDaily
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

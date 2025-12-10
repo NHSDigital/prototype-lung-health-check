@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% from 'radios/macro.njk' import radios %}
+{% block pageTitle %}
+  How often did you smoke rolled cigarettes? - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/rolled-cigarettes/former/frequency-answer" method="post">
+        {{ radios({
+          idPrefix: "rolledCigarettesFormerFrequency",
+          name: "rolledCigarettesFormerFrequency",
+          fieldset: {
+            legend: {
+              text: "How often did you smoke rolled cigarettes?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          value: data.rolledCigarettesFormerFrequency,
+          items: [
+            {
+              value: "Daily",
+              text: "Daily"
+            },
+            {
+              value: "Weekly",
+              text: "Weekly",
+              hint: {
+                text: "For example, on the weekend"
+              }
+            },
+            {
+              value: "Monthly",
+              text: "Monthly"
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

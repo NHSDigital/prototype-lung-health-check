@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% set pageHeading = "Were your relatives younger than 60 years old when they were diagnosed with lung cancer?" %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="relatives-age-answer" method="post" novalidate="true">
+
+         {{ radios({
+          "idPrefix": "relativeAge",
+          "name": "relativeAge",
+          "fieldset": {
+            "legend": {
+              "text": pageHeading,
+              "classes": "nhsuk-fieldset__legend--l",
+              "isPageHeading": true
+            }
+          },
+          value: data.relativeAge,
+          "items": [
+            {
+              "value": "Yes",
+              "text": "Yes, they were younger than 60"
+            },
+            {
+              "value": "No",
+              "text": "No, they were 60 or older"
+            },
+            {
+              "value": "I don't know",
+              "text": "I don't know"
+            }
+          ]
+        }) }}
+
+   
+      {{ button({
+      text: "Continue"
+      }) }}
+
+
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block pageTitle %}
+  If you have ever been diagnosed with cancer - NHS
+{% endblock %}
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="relatives-with-cancer" method="post" novalidate="true">
+<h2>If you have ever been diagnosed with cancer</h2>
+<p>If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.</p>
+         {{ radios({
+          "idPrefix": "diagnosedCancer",
+          "name": "diagnosedCancer",
+          "fieldset": {
+            "legend": {
+              "text": "Have you ever been diagnosed with cancer?",
+              "classes": "nhsuk-fieldset__legend--m",
+              "isPageHeading": false
+            }
+          },
+          value: data.diagnosedCancer,
+          "items": [
+            {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            {
+              "value": "No",
+              "text": "No"
+            }
+          ]
+        }) }}
+      {{ button({
+      text: "Continue"
+      }) }}
+</form>
+</div>
+</div>
+{% endblock %}

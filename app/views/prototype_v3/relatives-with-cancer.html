@@ -1,51 +1,56 @@
 {% extends 'layout.html' %}
+{% from 'radios/macro.njk' import radios %}
+
 {% block pageTitle %}
   If your parents, siblings or children have ever been diagnosed with lung cancer - NHS
 {% endblock %}
+
 {% block beforeContent %}
   {{ backLink({
     text: "Back",
     href: "javascript:history.back();"
   }) }}
 {% endblock %}
+
 {% block content %}
 <div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="relatives-with-cancer-answer" method="post">
-<h2>If your parents, siblings or children have ever been diagnosed with lung cancer</h2>
-<p>If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.</p>
-<p>We ask about lung cancer, rather than any other type of cancer as it has a greater impact on your risk score.</p>
-<p>This question does not include your grandparents or grandchildren.</p>
-        {{ radios({
-          idPrefix: "relativesHaveCancer",
-          name: "relativesHaveCancer",
-          fieldset: {
-            legend: {
-              text: "Have any of your parents, siblings or children ever been diagnosed with lung cancer?",
-              classes: "nhsuk-fieldset__legend--m",
-              isPageHeading: false
-            }
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="relatives-with-cancer-answer" method="post">
+      <h2>If your parents, siblings or children have ever been diagnosed with lung cancer</h2>
+      <p>If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.</p>
+      <p>We ask about lung cancer, rather than any other type of cancer as it has a greater impact on your risk score.</p>
+      <p>This question does not include your grandparents or grandchildren.</p>
+      
+      {{ radios({
+        idPrefix: "relativesHaveCancer",
+        name: "relativesHaveCancer",
+        fieldset: {
+          legend: {
+            text: "Have any of your parents, siblings or children ever been diagnosed with lung cancer?",
+            classes: "nhsuk-fieldset__legend--m",
+            isPageHeading: false
+          }
+        },
+        items: [
+          {
+            value: "Yes",
+            text: "Yes"
           },
-          value: data.relativesHaveCancer,
-          items: [
-            {
-              value: "Yes",
-              text: "Yes"
-            },
-            {
-              value: "No",
-              text: "No"
-            },
-            {
-              value: "I do not know",
-              text: "I do not know"
-            }
-          ]
-        }) }}
-        {{ button({
-          text: "Continue"
-        }) }}
-</form>
-</div>
+          {
+            value: "No",
+            text: "No"
+          },
+          {
+            value: "I don't know",
+            text: "I do not know"
+          }
+        ]
+      }) }}
+
+      <button class="nhsuk-button" data-module="nhsuk-button" type="submit">
+        Continue
+      </button>
+    </form>
+  </div>
 </div>
 {% endblock %}

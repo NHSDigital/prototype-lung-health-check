@@ -1,0 +1,20 @@
+// Import NHS.UK frontend library
+@import "nhsuk-frontend/dist/nhsuk";
+
+// Components that are not in the NHS.UK frontend library
+@import 'components/list-border';
+@import 'components/related-nav';
+
+///////////////////////////////////////////
+// Add your custom CSS/Sass styles below...
+///////////////////////////////////////////
+  .nhsuk-grey-date {
+   colour: $nhsuk-secondary-text-color; 
+  }
+  .nhsuk-panel-white {
+    background-colour: $color_nhsuk-white; 
+    padding-left: 20px;
+     padding-right: 15px;
+      padding-top: 15px;
+      padding-bottom: 10px;
+  }

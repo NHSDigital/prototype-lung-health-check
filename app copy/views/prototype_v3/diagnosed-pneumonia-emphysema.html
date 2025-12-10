@@ -1,0 +1,87 @@
+{% extends 'layout.html' %}
+
+{% block pageTitle %}
+  Have you ever been diagnosed with any of the following respiratory conditions? - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="exposed-to-asbestos" method="post">
+
+        {{ checkboxes({
+          idPrefix: "EverDiagnosedWith",
+          name: "EverDiagnosedWith",
+          fieldset: {
+            legend: {
+              text: "Have you ever been diagnosed with any of the following respiratory conditions?",
+              isPageHeading: true,
+              classes: "nhsuk-fieldset__legend--l"
+            },
+            hint: {
+              text: "Select all that apply"
+            }
+          },
+          items: [
+            {
+              value: "Pneumonia",
+              text: "Pneumonia",
+              hint: {
+                text: "An infection of the lungs, usually diagnosed by a chest x-ray"
+              }
+            },
+            {
+              value: "Emphysema",
+              text: "Emphysema",
+              hint: {
+                text: "Damage to the air sacs in the lungs"
+              }
+            },
+            {
+              value: "Bronchitis",
+              text: "Bronchitis",
+              hint: {
+                text: "An inflammation of the airways in the lungs that is usually caused by an infection"
+              }
+            },
+            {
+              value: "Tuberculosis (TB)",
+              text: "Tuberculosis (TB)",
+              hint: {
+                text: "An infection that usually affects the lungs, but can affect any part of the body"
+              }
+            },
+            {
+              value: "Chronic obstructive pulmonary disease (COPD)",
+              text: "Chronic obstructive pulmonary disease (COPD)",
+              hint: {
+                text: "A group of lung conditions that cause breathing difficulties"
+              }
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "No, I have not had any of these respiratory conditions",
+              text: "No, I have not had any of these respiratory conditions"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

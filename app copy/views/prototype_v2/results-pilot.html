@@ -1,0 +1,160 @@
+{% extends 'layout.html' %}
+{% from 'details/macro.njk' import details %}
+{% from 'button/macro.njk' import button %}
+{% from 'do-dont-list/macro.njk' import list as doDontList %}
+{% from 'card/macro.njk' import card %}
+{% set pageHeading = "Your answers have been submitted" %}
+
+{% block content %}
+
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+
+    <div class="nhsuk-panel nhsuk-panel--confirmation">
+      <h1 class="nhsuk-panel__title">
+        {{ pageHeading }}
+      </h1>
+    </div>
+
+    <p>Thank you for using the NHS lung cancer risk check online.</p>
+
+    <h2>What happens next</h2>
+
+    <p>Call us on <a href="tel:02012341234">020 1234 1234</a> to book an appointment to complete your NHS lung cancer risk check and receive your result.</p>
+
+    <p><strong>Opening times:</strong><br>
+    Monday to Saturday, 8am to 8pm</p>
+
+    <p>If we do not hear from you in 2 days we will call you.</p>
+    
+    <p>Stopping smoking is a great way to stay healthy, protect the health of those around you, and enjoy a better quality of life.</p>
+
+    {{ doDontList({
+      title: "When you quit, you:",
+      type: "tick",
+      items: [
+        {
+          item: "lower your risk of cancer, lung disease, heart disease, stroke and dementia"
+        },
+        {
+          item: "protect your loved ones and pets from secondhand smoke"
+        },
+        {
+          item: "feel better mentally in as little as 6 weeks"
+        },
+        {
+          item: "save money - around £38 a week for the average smoker"
+        },
+        {
+          item: "increase energy levels"
+        },
+        {
+          item: "look better and have healthier skin"
+        }
+      ]
+    }) }}
+
+    <h2>It's never too late to stop</h2>
+    <p>When you stop smoking, your body can repair itself sooner than you might think. It does not matter how old you are, or how long you have smoked.</p>
+
+    <div class="nhsuk-inset-text">
+      <span class="nhsuk-u-visually-hidden">Information: </span>
+      <p><strong>When you stop smoking, in:</strong></p>
+      <ul>
+        <li>2 days, all harmful carbon monoxide leaves your body</li>
+        <li>2 to 12 weeks, your circulation improves</li>
+        <li>3 to 9 months, your lung function and breathing improves</li>
+        <li>1 year, your risk of a heart attack halves compared to a smoker</li>
+      </ul>
+    </div>
+
+    {{ doDontList({
+      title: "To help stop smoking:",
+      type: "tick",
+      items: [
+        {
+          item: "talk to your GP or pharmacy about stop smoking aids, medication and support services"
+        },
+        {
+          item: "set small goals - you're 5 times more likely to quit for good if you stop smoking for 28 days"
+        },
+        {
+          item: "reflect on any past attempts to quit and try new methods"
+        }
+      ]
+    }) }}
+
+    {{ details({
+      classes: "nhsuk-expander",
+      summaryText: "Vaping to quit smoking",
+      html: "<p>Nearly two-thirds of people who use vapes with Stop Smoking Services quit smoking.</p><p>Nicotine vapes are less harmful than cigarettes. They don't produce tar or carbon monoxide, which cause cancer, lung disease, and heart disease.</p><p>Vaping mimics smoking with hand-to-mouth movement and helps manage nicotine cravings.</p><p>Vaping also costs about a third as much as smoking, once you have the kit.</p><p>Vaping is not risk-free. It is not recommended for non smokers or those under 18 years old.</p><h3>Useful resources</h3><p>The following links open in a new tab.</p><p>Visit a vape shop or <a href='https://www.nhs.uk/better-health/quit-smoking/find-your-local-stop-smoking-service/' target='_blank' rel='noopener noreferrer'>local Stop Smoking Service</a> for advice</p><p>Read <a href='https://www.nhs.uk/better-health/quit-smoking/vaping-to-quit-smoking/' target='_blank' rel='noopener noreferrer'>NHS guidance on vaping to quit smoking</a></p><h3>Want to quit vaping?</h3><p>To quit vaping, gradually reduce nicotine strength or usage. Seek advice from a vape shop or local Stop Smoking Service.</p>"
+    }) }}
+
+    {{ details({
+      classes: "nhsuk-expander", 
+      summaryText: "Smoking, anxiety and mood",
+      html: "<p>Quitting smoking can lift your mood, and ease stress, anxiety and depression.</p><p>Smokers often think that smoking helps them relax. But in reality, nicotine cravings increase anxiety and tension.</p><p>To manage cravings, try to:</p><ul><li>keep busy with hobbies and activities</li><li>relax with breathing techniques or meditation</li><li>seek support from friends, family, or support groups</li><li>use nicotine replacement therapy or medications</li></ul><p>The following links open in a new tab.</p><p>Read <a href='https://www.nhs.uk/live-well/quit-smoking/stopping-smoking-mental-health-benefits/' target='_blank' rel='noopener noreferrer'>NHS guidance on smoking and mental health</a></p><p>Get your <a href='https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/your-mind-plan-quiz/' target='_blank' rel='noopener noreferrer'>free Mind Plan</a></p>"
+    }) }}
+
+    <h3>For free help and support:</h3>
+    <p>The following links open in a new tab:</p>
+
+    {{ doDontList({
+      title: "Find help",
+      type: "tick",
+      items: [
+        {
+          item: "find your nearest local <a href='https://www.nhs.uk/better-health/quit-smoking/find-your-local-stop-smoking-service/' target='_blank' rel='noopener noreferrer'>Stop Smoking Service</a>"
+        },
+        {
+          item: "get a <a href='https://www.nhs.uk/better-health/quit-smoking/personal-quit-plan/' target='_blank' rel='noopener noreferrer'>free personal quit plan</a>"
+        },
+        {
+          item: "join the <a href='https://www.facebook.com/groups/quitsmoking/' target='_blank' rel='noopener noreferrer'>Quit Smoking Group on Facebook</a>"
+        },
+        {
+          item: "read <a href='https://www.nhs.uk/better-health/quit-smoking/' target='_blank' rel='noopener noreferrer'>NHS guidance on smoking</a>"
+        },
+        {
+          item: "call the free National Smokefree Helpline on <a href='tel:03001231044'>0300 123 1044</a> (England only)"
+        },
+        {
+          item: "download the NHS Quit Smoking app from the <a href='https://apps.apple.com/gb/app/nhs-quit-smoking/id1452316449' target='_blank' rel='noopener noreferrer'>Apple App Store</a> or <a href='https://play.google.com/store/apps/details?id=uk.nhs.nhsapp.quitsmoking' target='_blank' rel='noopener noreferrer'>Google Play Store</a>"
+        }
+      ]
+    }) }}
+
+    {{ card({
+      type: "non-urgent",
+      heading: "See a GP if:",
+      descriptionHtml: "
+        <p>You have any <a href='https://www.nhs.uk/conditions/lung-cancer/symptoms/'>symptoms of lung cancer</a>, such as:</p>
+        <ul>
+          <li>a cough that does not go away after 3 weeks</li>
+          <li>an existing cough that changes or gets worse</li>
+          <li>chest infections that keep coming back</li>
+          <li>coughing up blood</li>
+          <li>being short of breath a lot</li>
+          <li>unexplained tiredness</li>
+          <li>an ache or pain when breathing or coughing</li>
+          <li>loss of appetite or unexplained weight loss</li>
+        </ul>
+      "
+    }) }}
+
+    <h3>Help us improve this service</h3>
+    <p>Tell us about your experience using this service today.</p>
+    {{ button({
+      text: "Give feedback",
+      classes: "nhsuk-button--secondary",
+      href: "feedback"
+    }) }}
+
+    <br>
+    <!-- Development link - remove in production -->
+    <a href="results-high-risk">[Show high risk results page]</a>
+    
+  </div>
+</div>
+
+{% endblock %}

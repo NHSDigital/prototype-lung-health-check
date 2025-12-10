@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}
+
+{% block pageTitle %}
+  Tell us your ethnic background to help us give you an accurate risk score - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="highest-level-completed-education" method="post">
+
+        <h2>Tell us your ethnic background to help us give you an accurate risk score</h2>
+
+        <p>Your ethnicity may impact your chances of developing lung cancer.</p>
+
+        <p>You do not have to tell us your ethnic background but this may affect the accuracy of your risk score.</p>
+
+        {{ radios({
+          idPrefix: "ethnicBackground",
+          name: "ethnicBackground",
+          fieldset: {
+            legend: {
+              text: "What is your ethnic background?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
+            }
+          },
+          value: data.ethnicBackground,
+          items: [
+            {
+              value: "Asian or Asian British",
+              text: "Asian or Asian British"
+            },
+            {
+              value: "Black, African, Caribbean or Black British",
+              text: "Black, African, Caribbean or Black British"
+            },
+            {
+              value: "Mixed or multiple ethnic groups",
+              text: "Mixed or multiple ethnic groups"
+            },
+            {
+              value: "White",
+              text: "White"
+            },
+            {
+              value: "Other ethnic group",
+              text: "Other ethnic group"
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "Prefer not to say",
+              text: "Prefer not to say"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

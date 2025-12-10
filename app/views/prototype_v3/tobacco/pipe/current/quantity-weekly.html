@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% from 'input/macro.njk' import input %}
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% block pageTitle %}
+  Tell us about your pipe smoking history - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/pipe/current/quantity-weekly-answer" method="post">
+<h2>Tell us about your pipe smoking history</h2>
+        {{ input({
+          label: {
+            text: "What is the highest number of bowls you smoked a week on a regular basis?",
+            classes: "nhsuk-label--m"
+          },
+          id: "pipeCurrentQuantityWeekly",
+          name: "pipeCurrentQuantityWeekly",
+          classes: "nhsuk-input--width-5",
+          prefix: {
+            text: "Number of bowls"
+          },
+          value: data.pipeCurrentQuantityWeekly
+        }) }}
+        {{ checkboxes({
+          idPrefix: "pipeCurrentChanges",
+          name: "pipeCurrentChanges",
+          fieldset: {
+            legend: {
+              text: "Has the amount of pipe you smoke changed over time?",
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          value: data.pipeCurrentChanges,
+          items: [
+            {
+              value: "increased",
+              text: "Yes, it has increased"
+            },
+            {
+              value: "decreased",
+              text: "Yes, it has decreased"
+            },
+            {
+              value: "stopped",
+              text: "Yes, I stopped smoking for a period of 1 year or longer",
+              exclusive: false
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "no-change",
+              text: "No, it has not changed",
+              behaviour: "exclusive"
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

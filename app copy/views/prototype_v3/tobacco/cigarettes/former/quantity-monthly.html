@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+{% from 'input/macro.njk' import input %}
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% block pageTitle %}
+  Tell us about your cigarette smoking history - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/cigarettes/former/quantity-monthly-answer" method="post">
+<h2>Tell us about your cigarette smoking history</h2>
+<p>We ask about the number of cigarettes you used to smoke to help us give you an accurate risk score.</p>
+        {{ input({
+          label: {
+            text: "Roughly how many cigarettes did you normally smoke a month?",
+            classes: "nhsuk-label--m"
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigarettesFormerQuantityMonthly",
+          name: "cigarettesFormerQuantityMonthly",
+          classes: "nhsuk-input--width-5",
+          suffix: {
+            text: "cigarettes"
+          },
+          value: data.cigarettesFormerQuantityMonthly
+        }) }}
+        {{ checkboxes({
+          idPrefix: "cigarettesFormerChanges",
+          name: "cigarettesFormerChanges",
+          fieldset: {
+            legend: {
+              text: "Did the amount of cigarettes you smoke change over time?",
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          value: data.cigarettesFormerChanges,
+          items: [
+            {
+              value: "increased",
+              text: "Yes, it increased"
+            },
+            {
+              value: "decreased",
+              text: "Yes, it decreased"
+            },
+            {
+              value: "stopped",
+              text: "Yes, I stopped smoking for a period of 1 year or longer",
+              exclusive: false
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "no-change",
+              text: "No, it did not change",
+              behaviour: "exclusive"
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

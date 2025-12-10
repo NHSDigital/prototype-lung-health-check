@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% from 'input/macro.njk' import input %}
+{% block pageTitle %}
+  Years you stopped smoking rolled cigarettes - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/rolled-cigarettes/former/stopped-years-answer" method="post">
+<h2>Years you stopped smoking rolled cigarettes</h2>
+        {{ input({
+          label: {
+            text: "Enter the total number of years you stopped smoking rolled cigarettes for",
+            classes: "nhsuk-label--m"
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "rolledCigarettesFormerStoppedYears",
+          name: "rolledCigarettesFormerStoppedYears",
+          classes: "nhsuk-input--width-2",
+          suffix: {
+            text: "years"
+          },
+          value: data.rolledCigarettesFormerStoppedYears
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

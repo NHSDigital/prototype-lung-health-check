@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% from 'radios/macro.njk' import radios %}
+{% block pageTitle %}
+  When your rolled cigarette smoking increased - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/rolled-cigarettes/former/increased-quantity-weekly-answer" method="post">
+<h2>When your rolled cigarette smoking increased</h2>
+        {{ radios({
+          idPrefix: "rolledCigarettesFormerIncreasedQuantityWeekly",
+          name: "rolledCigarettesFormerIncreasedQuantityWeekly",
+          fieldset: {
+            legend: {
+              text: "When your smoking increased, roughly how many grams of tobacco did you smoke in a normal week?",
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g"
+          },
+          value: data.rolledCigarettesFormerIncreasedQuantityWeekly,
+          items: [
+            {
+              value: "10g-30g",
+              text: "10g to 30g"
+            },
+            {
+              value: "30g-50g",
+              text: "30g to 50g"
+            },
+            {
+              value: "50g-75g",
+              text: "50g to 75g"
+            },
+            {
+              value: "75g-100g",
+              text: "75g to 100g"
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

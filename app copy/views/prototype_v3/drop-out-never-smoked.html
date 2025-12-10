@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block pageTitle %}
+  You are not eligible for an NHS lung cancer risk check - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h2>You are not eligible for an NHS lung cancer risk check</h2>
+
+      <p>The NHS lung cancer risk check is for people who have smoked or are current smokers.</p>
+
+      {{ card({
+        type: "non-urgent",
+        heading: "Speak to a GP if:",
+        descriptionHtml: "
+          <p>You have any of the following symptoms:</p>
+          <ul>
+            <li>a <a href='https://www.nhs.uk/conditions/cough/'>cough</a> that does not go away after 3 weeks</li>
+            <li>a long-standing cough that gets worse</li>
+            <li><a href='https://www.nhs.uk/conditions/chest-infection/'>chest infections</a> that keep coming back</li>
+            <li><a href='https://www.nhs.uk/conditions/coughing-up-blood/'>coughing up blood</a></li>
+            <li>an ache or pain when breathing or coughing</li>
+            <li>persistent <a href='https://www.nhs.uk/conditions/shortness-of-breath/'>breathlessness</a></li>
+            <li>persistent tiredness or lack of energy</li>
+            <li>loss of appetite or unexplained weight loss</li>
+          </ul>
+          <p>They could be <a href='https://www.nhs.uk/conditions/lung-cancer/symptoms/'>symptoms of lung cancer</a>. Your GP will ask about your general health and your symptoms.</p>
+          <p>You may be asked to have a <a href='https://www.nhs.uk/conditions/blood-tests/'>blood test</a> to rule out some of the possible causes of your symptoms, such as a <a href='https://www.nhs.uk/conditions/chest-infection/'>chest infection</a>.</p>
+        "
+      }) }}
+
+    </div>
+  </div>
+{% endblock %}

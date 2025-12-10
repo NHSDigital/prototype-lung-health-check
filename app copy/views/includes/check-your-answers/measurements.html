@@ -1,0 +1,68 @@
+{% set heightValue %}
+  {% if data.heightUnit == "imperial" and data.height.feet and data.height.inches %}
+    {{data.height.feet }} feet {{ data.height.inches}} inches
+  {% elseif data.heightUnit == "metric" and data.height.centimetres %}
+    {{ data.height.centimetres }} cm
+  {% else %}
+    <span class="nhsuk-hint">Not provided</span>
+  {% endif %}
+{% endset %}
+
+{% set weightValue %}
+  {% if data.weightUnit == "imperial" and data.weight.stone and data.weight.pounds %}
+    {{data.weight.stone}} stone {{ data.weight.pounds}} pounds
+  {% elseif data.weightUnit == "metric" and data.weight.kilograms %}
+    {{ data.weight.kilograms }} kg
+  {% else %}
+    <span class="nhsuk-hint">Not provided</span>
+  {% endif %}
+{% endset %}
+
+{% set waistValue %}
+  {% if data.waistUnit == "imperial" and data.waist.inches %}
+    {{data.waist.inches}} inches 
+  {% elseif data.waistUnit == "metric" and data.waist.centimetres %}
+    {{ data.waist.centimetres }} cm
+  {% else %}
+    <span class="nhsuk-hint">Not provided</span>
+  {% endif %}
+{% endset %}
+
+{{ summaryList({
+  rows: [
+    {
+      key: {
+        text: "What is your height?"
+      },
+      value: {
+        html: heightValue
+      },
+      actions: {
+        items: [
+          {
+            href: "what-is-your-height",
+            text: "Change",
+            visuallyHiddenText: "What is your height?"
+          }
+        ]
+      }
+    },
+    {
+      key: {
+        text: "What is your weight?"
+      },
+      value: {
+        html: weightValue
+      },
+      actions: {
+        items: [
+          {
+            href: "what-is-your-weight",
+            text: "Change",
+            visuallyHiddenText: "What is your weight?"
+          }
+        ]
+      }
+    }
+  ]
+}) }}

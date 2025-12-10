@@ -1,0 +1,66 @@
+
+
+{# {% set mainClasses = "nhsuk-main-wrapper--s" %} #}
+{% set hub = "Services" %}
+
+
+{% block pageTitle -%}
+  {%- if flash.error %}Error: {% endif %}{{ pageHeading }} - NHS Health Check online - NHS
+{%- endblock %}
+
+{% block beforeContent %}
+
+  {% if data.webOrNative == 'native' %}
+    {% if backLink === true or backLink !== false %}
+      {% if containerFullWidth === true %}
+        <div class="nhsuk-width-container">
+          <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-column-full">
+              {% include "_components/nhs-app/back-link/include.html" %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        {% include "_components/nhs-app/back-link/include.html" %}
+      {% endif %}
+    {% endif %}
+
+  {% else %}
+    {{ backLink({
+      "text": "Back",
+      "classes": "",
+      "attributes": {
+          onclick: "history.back()"
+      }
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% if flash.error %}
+        {{ errorSummary({
+          "titleText": "There is a problem",
+          "errorList": flash.error
+        }) }}
+      {% endif %}
+    
+      <form action="{{formAction | safe }}" method="{{ formMethod or 'post' }}" novalidate>
+
+        {% block formContent %}
+        {% endblock %}
+
+        {% if not hideButton %}
+          {{ button({
+            text: buttonText or "Continue"
+          }) }}
+        {% endif %}
+
+      </form>
+    </div>
+
+  </div>
+{% endblock %}

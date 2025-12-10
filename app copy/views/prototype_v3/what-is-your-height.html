@@ -1,0 +1,83 @@
+{% extends 'layout.html' %}
+
+{% block pageTitle %}
+  Enter your height - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="what-is-your-weight" method="post">
+
+        <h2>Enter your height</h2>
+
+        <p>An accurate measurement is important.</p>
+
+        <p>You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.</p>
+
+        {% if data.heightUnit == "imperial" %}
+          <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-label--m">
+              What is your height?
+            </legend>
+            <div class="nhsuk-grid-row">
+              <div class="nhsuk-grid-column-one-quarter">
+                <div class="nhsuk-form-group">
+                  <label class="nhsuk-label" for="height-feet">
+                    Feet
+                  </label>
+                  <div class="nhsuk-input__wrapper">
+                    <input class="nhsuk-input nhsuk-input--width-4" id="height-feet" name="height[feet]" type="text" value="{{ data.height.feet }}">
+                    <div class="nhsuk-input__suffix" aria-hidden="true">ft</div>
+                  </div>
+                </div>
+              </div>
+              <div class="nhsuk-grid-column-one-quarter">
+                <div class="nhsuk-form-group">
+                  <label class="nhsuk-label" for="height-inches">
+                    Inches
+                  </label>
+                  <div class="nhsuk-input__wrapper">
+                    <input class="nhsuk-input nhsuk-input--width-4" id="height-inches" name="height[inches]" type="text" value="{{ data.height.inches }}">
+                    <div class="nhsuk-input__suffix" aria-hidden="true">in</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <input type="hidden" name="heightUnit" value="imperial">
+          <p><a href="./what-is-your-height?heightUnit=metric&height[feet]=&height[inches]=">Switch to centimetres</a></p>
+        {% else %}
+          <div class="nhsuk-form-group">
+            <label class="nhsuk-label nhsuk-label--m" for="height-centimetres">
+              What is your height?
+            </label>
+            <div class="nhsuk-hint" id="height-hint">
+              Centimetres
+            </div>
+            <div class="nhsuk-input__wrapper">
+              <input class="nhsuk-input nhsuk-input--width-4" id="height-centimetres" name="height[centimetres]" type="text" value="{{ data.height.centimetres }}" aria-describedby="height-hint">
+              <div class="nhsuk-input__suffix" aria-hidden="true">cm</div>
+            </div>
+          </div>
+          <input type="hidden" name="heightUnit" value="metric">
+          <p><a href="./what-is-your-height?heightUnit=imperial&height[centimetres]=">Switch to feet and inches</a></p>
+        {% endif %}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% from 'radios/macro.njk' import radios %}
+{% block pageTitle %}
+  When smoking hookah or shisha in a group, how long did you usually smoke for? - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/hookah/former/group-duration-monthly-answer" method="post">
+        {{ radios({
+          idPrefix: "hookahFormerGroupDurationMonthly",
+          name: "hookahFormerGroupDurationMonthly",
+          fieldset: {
+            legend: {
+              text: "When smoking hookah or shisha in a group, how long did you usually smoke for?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          value: data.hookahFormerGroupDurationMonthly,
+          items: [
+            {
+              value: "1-45",
+              text: "1 to 45 minutes"
+            },
+            {
+              value: "46-90",
+              text: "46 minutes to 1 hour 30 minutes"
+            },
+            {
+              value: "91-135",
+              text: "1 hour 31 minutes to 2 hours 15 minutes"
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}

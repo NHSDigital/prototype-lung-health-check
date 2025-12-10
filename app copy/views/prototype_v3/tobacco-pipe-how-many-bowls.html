@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% from 'input/macro.njk' import input %}
+{% from 'button/macro.njk' import button %}
+
+{% block beforeContent %}
+{{ backLink({
+  href: "javascript:history.back();",
+  text: "Back"
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-two-thirds">
+    <form action="tobacco-next" method="post" novalidate="true">
+      <h1>Pipe smoking</h1>
+      
+      {% if data["smokedRegularly"] == "Yes-currently" %}
+        <p>If the amount you smoke has changed over time, tell us the highest number of bowls you have smoked on a regular basis.</p>
+        
+        <p>If you only smoke socially, for example at the weekend, tell us how many bowls you smoke on those occasions.</p>
+      {% else %}
+        <p>If the amount you smoked changed over time, tell us the highest number of bowls you smoked on a regular basis.</p>
+        
+        <p>If you only smoked socially, for example at the weekend, tell us how many bowls you smoked on those occasions.</p>
+      {% endif %}
+      
+      {% if data["smokedRegularly"] == "Yes-currently" %}
+        <h2 class="nhsuk-heading-m">What is the highest number of bowls you smoke a day on a regular basis?</h2>
+      {% else %}
+        <h2 class="nhsuk-heading-m">What is the highest number of bowls you smoked a day on a regular basis?</h2>
+      {% endif %}
+      
+      {{ input({
+        "label": {
+          "text": "Number of bowls"
+        },
+        "id": "pipe-bowls",
+        "name": "pipeBowls",
+        "type": "text",
+        "classes": "nhsuk-input--width-4",
+        "spellcheck": false
+      }) }}
+      
+      {{ button({
+        text: "Continue"
+      }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}
