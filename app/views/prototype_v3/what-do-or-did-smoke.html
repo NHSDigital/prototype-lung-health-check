@@ -6,12 +6,14 @@
  {% set questionText = "What do you smoke regularly?" %}
  {% set formAction = "whatDoYouSmokeAnswer" %}
  {% set fieldName = "whatSmokeNow" %}
+ {% set isCurrentSmoker = true %}
 {% else %}
  {% set newContentText = "Smoking affects your health in different ways depending on what you smoked." %}
  {% set explanatoryText = "We need to know what you smoked on a regular basis. For example, if you smoked a pipe on a weekly basis for a year or longer." %}
  {% set questionText = "What did you smoke regularly?" %}
  {% set formAction = "whatDidYouSmokeAnswer" %}
  {% set fieldName = "whatDidSmoke" %}
+ {% set isCurrentSmoker = false %}
 {% endif %}
 {% block pageTitle %}
   The type of tobacco you smoke or used to smoke - NHS
@@ -36,6 +38,9 @@
     <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
       {{questionText}}
     </legend>
+    
+    {% if isCurrentSmoker %}
+    {# Current smoker - show both columns #}
     <table class="nhsuk-table">
       <thead class="nhsuk-table__head">
         <tr class="nhsuk-table__row">
@@ -142,6 +147,41 @@
         </tr>
       </tbody>
     </table>
+    {% else %}
+    {# Former smoker - single column of checkboxes #}
+    <div class="nhsuk-checkboxes">
+      <div class="nhsuk-checkboxes__item">
+        <input class="nhsuk-checkboxes__input tobacco-checkbox" id="cigarettes-former" name="tobacco-former" type="checkbox" value="Cigarettes">
+        <label class="nhsuk-label nhsuk-checkboxes__label" for="cigarettes-former">
+          Cigarettes
+        </label>
+      </div>
+      <div class="nhsuk-checkboxes__item">
+        <input class="nhsuk-checkboxes__input tobacco-checkbox" id="rolled-former" name="tobacco-former" type="checkbox" value="Rolled cigarettes">
+        <label class="nhsuk-label nhsuk-checkboxes__label" for="rolled-former">
+          Rolled cigarettes
+        </label>
+      </div>
+      <div class="nhsuk-checkboxes__item">
+        <input class="nhsuk-checkboxes__input tobacco-checkbox" id="pipe-former" name="tobacco-former" type="checkbox" value="Pipe">
+        <label class="nhsuk-label nhsuk-checkboxes__label" for="pipe-former">
+          Pipe
+        </label>
+      </div>
+      <div class="nhsuk-checkboxes__item">
+        <input class="nhsuk-checkboxes__input tobacco-checkbox" id="cigars-former" name="tobacco-former" type="checkbox" value="Cigars">
+        <label class="nhsuk-label nhsuk-checkboxes__label" for="cigars-former">
+          Cigars
+        </label>
+      </div>
+      <div class="nhsuk-checkboxes__item">
+        <input class="nhsuk-checkboxes__input tobacco-checkbox" id="hookah-former" name="tobacco-former" type="checkbox" value="Hookah">
+        <label class="nhsuk-label nhsuk-checkboxes__label" for="hookah-former">
+          Hookah or shisha
+        </label>
+      </div>
+    </div>
+    {% endif %}
   </fieldset>
 </div>
 
