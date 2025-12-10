@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
-
-{% set pageHeading = "Have you ever been diagnosed with cancer?" %}
-
+{% block pageTitle %}
+  If you have ever been diagnosed with cancer - NHS
+{% endblock %}
 {% block beforeContent %}
 {{ backLink({
   href: "javascript:history.back();",
@@ -10,23 +10,20 @@
 {% endblock %}
 {% block content %}
 <div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="relatives-with-cancer" method="post" novalidate="true">
-
-
+<div class="nhsuk-grid-column-two-thirds">
+<form action="relatives-with-cancer" method="post" novalidate="true">
+<h2>If you have ever been diagnosed with cancer</h2>
+<p>If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.</p>
          {{ radios({
           "idPrefix": "diagnosedCancer",
           "name": "diagnosedCancer",
           "fieldset": {
             "legend": {
-              "text": pageHeading,
-              "classes": "nhsuk-fieldset__legend--l",
-              "isPageHeading": true
+              "text": "Have you ever been diagnosed with cancer?",
+              "classes": "nhsuk-fieldset__legend--m",
+              "isPageHeading": false
             }
           },
-            hint: {
-    html: hintHtml
-  },
           value: data.diagnosedCancer,
           "items": [
             {
@@ -39,14 +36,10 @@
             }
           ]
         }) }}
-
-   
       {{ button({
       text: "Continue"
       }) }}
-
-
-    </form>
-  </div>
+</form>
+</div>
 </div>
 {% endblock %}

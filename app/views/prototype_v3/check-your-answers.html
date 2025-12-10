@@ -175,10 +175,20 @@
 
       {% if data["exposedAsbestos"] %}
       <div class="nhsuk-summary-list__row">
-        <dt class="nhsuk-summary-list__key">Asbestos exposure</dt>
+        <dt class="nhsuk-summary-list__key">Worked in a job with asbestos exposure</dt>
         <dd class="nhsuk-summary-list__value">{{ data["exposedAsbestos"] }}</dd>
         <dd class="nhsuk-summary-list__actions">
-          <a href="exposed-to-asbestos">Change<span class="nhsuk-u-visually-hidden"> asbestos exposure</span></a>
+          <a href="exposed-to-asbestos">Change<span class="nhsuk-u-visually-hidden"> asbestos exposure at work</span></a>
+        </dd>
+      </div>
+      {% endif %}
+
+      {% if data["livedWithAsbestosWorker"] %}
+      <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">Lived with anyone who worked with asbestos</dt>
+        <dd class="nhsuk-summary-list__value">{{ data["livedWithAsbestosWorker"] }}</dd>
+        <dd class="nhsuk-summary-list__actions">
+          <a href="lived-with-asbestos-worker">Change<span class="nhsuk-u-visually-hidden"> lived with asbestos worker</span></a>
         </dd>
       </div>
       {% endif %}

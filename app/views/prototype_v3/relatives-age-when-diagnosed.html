@@ -1,30 +1,28 @@
 {% extends 'layout.html' %}
-
 {% block pageTitle %}
-  Were your relatives younger than 60 years old when they were diagnosed with lung cancer? - NHS
+  How old your relatives were when they were diagnosed - NHS
 {% endblock %}
-
 {% block beforeContent %}
   {{ backLink({
     text: "Back",
     href: "javascript:history.back();"
   }) }}
 {% endblock %}
-
 {% block content %}
-  <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-two-thirds">
-
-      <form action="relatives-age-answer" method="post">
-
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="relatives-age-answer" method="post">
+<h2>How old your relatives were when they were diagnosed</h2>
+<p>We ask about their age when they were diagnosed with lung cancer because it may impact your risk score.</p>
+<p>If you do not know or cannot remember, select 'I do not know'.</p>
         {{ radios({
           idPrefix: "relativeAge",
           name: "relativeAge",
           fieldset: {
             legend: {
               text: "Were your relatives younger than 60 years old when they were diagnosed with lung cancer?",
-              classes: "nhsuk-fieldset__legend--l",
-              isPageHeading: true
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
             }
           },
           value: data.relativeAge,
@@ -38,18 +36,15 @@
               text: "No, they were 60 or older"
             },
             {
-              value: "I don't know",
-              text: "I don't know"
+              value: "I do not know",
+              text: "I do not know"
             }
           ]
         }) }}
-
         {{ button({
           text: "Continue"
         }) }}
-
-      </form>
-
-    </div>
-  </div>
+</form>
+</div>
+</div>
 {% endblock %}

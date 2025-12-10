@@ -3,13 +3,29 @@
     - change the header and footer
     - add custom CSS and JavaScript
 -->
-
 <!-- Extends the prototype kit template which in turn extends the NHS.UK frontend template -->
 {% extends "prototype-kit-template.njk" %}
+{% from "tag/macro.njk" import tag %}
 
 {% block head %}
-  <!-- Add your custom CSS or Sass in /app/assets/sass/main.scss -->
-  <link href="/css/main.css" rel="stylesheet">
+<!-- Add your custom CSS or Sass in /app/assets/sass/main.scss -->
+<link href="/css/main.css" rel="stylesheet">
+<style>
+  .nhsuk-phase-banner {
+    padding: 10px 0;
+    border-bottom: 1px solid #d8dde0;
+  }
+  .nhsuk-phase-banner__content {
+    display: flex;
+    align-items: center;
+  }
+  .nhsuk-phase-banner__content .nhsuk-tag {
+    margin-right: 10px;
+  }
+  .nhsuk-phase-banner__text {
+    margin: 0;
+  }
+</style>
 {% endblock %}
 
 <!-- Set the page title -->
@@ -30,6 +46,22 @@ text: "Lung cancer risk check",
 href: "/"
 }
 }) }}
+
+<!-- Phase banner (inside header block) -->
+<div class="nhsuk-phase-banner">
+  <div class="nhsuk-width-container">
+    <div class="nhsuk-phase-banner__content">
+      {{ tag({
+        text: "Pilot",
+        classes: "nhsuk-tag--blue"
+      }) }}
+      <p class="nhsuk-phase-banner__text nhsuk-body-s">
+  This is a new service – your <a class="nhsuk-link" href="https://feedback.digital.nhs.uk/jfe/form/SV_d4MPGuH486oxASW" target="_blank" rel="noopener noreferrer">feedback</a> will help us to improve it.
+</p>
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 <!-- Edit the footer -->
@@ -66,13 +98,13 @@ href: "/"
 {% block bodyEnd %}
 <script src="/nhsuk-frontend/nhsuk-frontend.min.js" type="module"></script>
 <script type="module">
-  import { initAll } from '/nhsuk-frontend/nhsuk-frontend.min.js'
-  initAll()
+import { initAll } from '/nhsuk-frontend/nhsuk-frontend.min.js'
+initAll()
 </script>
   {% block scripts %}
-    <!-- Custom JavaScript files can be added to this file -->
+<!-- Custom JavaScript files can be added to this file -->
     {% include "includes/scripts.html" %}
-    <!-- For adding page specific JavsScript -->
+<!-- For adding page specific JavsScript -->
     {% block pageScripts %}{% endblock %}
   {% endblock %}
 {% endblock %}

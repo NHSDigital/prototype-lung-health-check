@@ -1,55 +1,48 @@
 {% extends 'layout.html' %}
 {% from 'details/macro.njk' import details %}
-
 {% block pageTitle %}
   Tell us if you might have been exposed to asbestos at work - NHS
 {% endblock %}
-
 {% block beforeContent %}
   {{ backLink({
     text: "Back",
     href: "javascript:history.back();"
   }) }}
 {% endblock %}
-
 {% block content %}
-  <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-two-thirds">
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="lived-with-asbestos-worker" method="post">
+<h2>Tell us if you might have been exposed to asbestos at work</h2>
+<p>You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.</p>
+<p>You could be exposed to asbestos today if your job involves working in certain roles in old buildings.</p>
+<p>Examples include:</p>
+<ul class="nhsuk-list nhsuk-list--bullet">
+<li>heating and ventilation engineers</li>
+<li>demolition workers</li>
+<li>plumbers</li>
+<li>construction workers</li>
+<li>electricians</li>
+</ul>
 
-      <form action="diagnosed-cancer" method="post">
-
-        <h2>Tell us if you might have been exposed to asbestos at work</h2>
-
-        <p>You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.</p>
-
-        <p>You could be exposed to asbestos today if your job involves working in certain roles in old buildings.</p>
-
-        <p>Examples include:</p>
-        <ul class="nhsuk-list nhsuk-list--bullet">
-          <li>heating and ventilation engineers</li>
-          <li>demolition workers</li>
-          <li>plumbers</li>
-          <li>construction workers</li>
-          <li>electricians</li>
-        </ul>
-
-        <p>You might know there was asbestos in buildings you have spent time in, or products you have used. But if the asbestos was not damaged, the risk to your health is very low.</p>
+<h4>If you did not work with asbestos but think you might have been exposed</h4>
+<p>You might know there was asbestos in buildings you have spent time in, or products you have used. But if the asbestos was not damaged, the risk to your health is very low.</p>
+<p>If you lived with someone who worked with asbestos you may have been exposed to asbestos yourself. For example, if you washed the clothes they worked in. The next question will ask if you lived with someone who might have been exposed to asbestos at work.</p>
 
         {{ details({
           summaryText: "What is asbestos?",
           html: "
-            <p>Asbestos was used in a number of building materials and products. For example:</p>
-            <ul class=\"nhsuk-list nhsuk-list--bullet\">
-              <li>boilers and pipes</li>
-              <li>car brakes</li>
-              <li>cement for roofing sheets</li>
-              <li>floor tiles</li>
-              <li>insulating board to protect buildings and ships against fire</li>
-            </ul>
-            <p>If you worked in an industry such as building or construction you are more likely to have come into contact with damaged asbestos materials and products.</p>
+<p>Asbestos was used in a number of building materials and products. For example:</p>
+<ul class=nhsuk-list nhsuk-list--bullet>
+<li>boilers and pipes</li>
+<li>car brakes</li>
+<li>cement for roofing sheets</li>
+<li>floor tiles</li>
+<li>insulating board to protect buildings and ships against fire</li>
+</ul>
+<p>If you worked in an industry such as building or construction you are more likely to have come into contact with damaged asbestos materials and products.</p>
           "
         }) }}
-
         {{ radios({
           idPrefix: "exposedAsbestos",
           name: "exposedAsbestos",
@@ -72,13 +65,10 @@
             }
           ]
         }) }}
-
         {{ button({
           text: "Continue"
         }) }}
-
-      </form>
-
-    </div>
-  </div>
+</form>
+</div>
+</div>
 {% endblock %}

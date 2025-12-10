@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% from 'input/macro.njk' import input %}
 {% block pageTitle %}
-  How old were you when you started smoking regularly? - NHS
+  Cigarette smoking - NHS
 {% endblock %}
 {% block beforeContent %}
   {{ backLink({
@@ -12,23 +12,23 @@
 {% block content %}
 <div class="nhsuk-grid-row">
 <div class="nhsuk-grid-column-two-thirds">
-<form action="ageStartedSmokingAnswer" method="post">
+<form action="/prototype_v3/tobacco/cigarettes/current/years-smoked-answer" method="post">
+<h2>Cigarette smoking</h2>
         {{ input({
           label: {
-            text: "How old were you when you started smoking regularly?",
-            classes: "nhsuk-label--l",
-            isPageHeading: true
+            text: "Roughly how many years have you smoked cigarettes?",
+            classes: "nhsuk-label--m"
           },
           hint: {
-            text: "Provide an estimate if you are not sure"
+            text: "Give an estimate if you are not sure"
           },
-          id: "ageStartedSmoking",
-          name: "ageStartedSmoking",
+          id: "cigarettesCurrentYearsSmoked",
+          name: "cigarettesCurrentYearsSmoked",
           classes: "nhsuk-input--width-2",
-          prefix: {
-            text: "Age"
+          suffix: {
+            text: "years"
           },
-          value: data.ageStartedSmoking
+          value: data.cigarettesCurrentYearsSmoked
         }) }}
         {{ button({
           text: "Continue"

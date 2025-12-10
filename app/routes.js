@@ -724,7 +724,7 @@ router.post('/prototype_v3/ageStartedSmokingAnswer', function(request, response)
   var smokedRegularly = request.session.data['smokedRegularly']
   
   if (smokedRegularly == "Yes-currently") {
-    response.redirect("/prototype_v3/have-you-ever-stopped-smoking")
+    response.redirect("/prototype_v3/what-do-or-did-smoke")
   } else if (smokedRegularly == "Yes-usedToRegularly") {
     response.redirect("/prototype_v3/former-smoker-when-quit-smoking")
   } else {

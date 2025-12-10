@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% from 'input/macro.njk' import input %}
+{% block pageTitle %}
+  When your smoking decreased, roughly how many cigarettes did you normally smoke a day? - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-two-thirds">
+<form action="/prototype_v3/tobacco/cigarettes/former/decreased-quantity-daily-answer" method="post">
+        {{ input({
+          label: {
+            text: "When your smoking decreased, roughly how many cigarettes did you normally smoke a day?",
+            classes: "nhsuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigarettesFormerDecreasedQuantityDaily",
+          name: "cigarettesFormerDecreasedQuantityDaily",
+          classes: "nhsuk-input--width-5",
+          suffix: {
+            text: "cigarettes"
+          },
+          value: data.cigarettesFormerDecreasedQuantityDaily
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+</form>
+</div>
+</div>
+{% endblock %}
