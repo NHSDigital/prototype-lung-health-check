@@ -4,7 +4,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node .",
-    "watch": "npm start"
+    "watch": "npm start",
+    "lint:scripts": "standard",
+    "lint:scripts:fix": "standard --fix"
   },
   "author": "https://github.com/nhsuk/",
   "license": "MIT",
