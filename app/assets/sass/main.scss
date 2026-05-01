@@ -1,7 +1,5 @@
-// Import NHS.UK frontend library
 @import "nhsuk-frontend/dist/nhsuk";
 
-// Add your custom CSS/Sass styles below.
 .nhsuk-summary-list__row {
   border-bottom: 1px solid #d8dde0;
 }
@@ -16,13 +14,16 @@
   padding: 10px 0;
   border-bottom: 1px solid #d8dde0;
 }
+
 .nhsuk-phase-banner__content {
   display: flex;
   align-items: center;
 }
+
 .nhsuk-phase-banner__content .nhsuk-tag {
   margin-right: 10px;
 }
+
 .nhsuk-phase-banner__text {
   margin: 0;
 }
