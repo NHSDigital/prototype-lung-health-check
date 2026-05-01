@@ -18,16 +18,18 @@ The prototype guides users through:
 
 ## Current status
 
-**Version:** 1.0  
+**Version:** 1.0
 **Status:** Research prototype for user testing
 
 ### What works
+
 - Complete end-to-end user journey
 - Age validation (55-74 years eligible)
 - NHS design system patterns and components
 - Responsive design following NHS accessibility standards
 
 ### Known limitations
+
 - **Scoring system not implemented** - The prototype doesn't calculate weighted scores from answers in the background
 - **Fixed outcome** - Currently shows high-risk result by default (with option to view low-risk alternative)
 - **Research prototype only** - Not intended for clinical use
@@ -35,6 +37,7 @@ The prototype guides users through:
 ## Research hypothesis
 
 We hypothesize that most users will prefer completing lung health assessments digitally rather than over the phone, due to:
+
 - Convenience of completing in their own time
 - Privacy for answering personal questions
 - Reduced time commitment
@@ -44,6 +47,7 @@ However, we expect some users will always prefer speaking to a healthcare profes
 ## Design approach
 
 This prototype has been developed in consultation with:
+
 - Health Check Online team
 - NHS 111
 - Screening and Personalised Prevention teams
