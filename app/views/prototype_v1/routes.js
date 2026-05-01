@@ -10,14 +10,14 @@ router.post('/prototype_v1/relatives-with-cancer-answer', (request, response) =>
   const relativesHaveCancer = request.session.data.relativesHaveCancer
   const smokedRegularly = request.session.data.smokedRegularly
 
-  if (relativesHaveCancer == 'Yes') {
+  if (relativesHaveCancer === 'Yes') {
   // If relatives had cancer, ask about their age first
     response.redirect('/prototype_v1/relatives-age-when-diagnosed')
-  } else if (relativesHaveCancer == 'No') {
+  } else if (relativesHaveCancer === 'No') {
   // No relatives with cancer, route based on smoking status
-    if (smokedRegularly == 'Yes-currently') {
+    if (smokedRegularly === 'Yes-currently') {
       response.redirect('/prototype_v1/how-old-when-started-smoking')
-    } else if (smokedRegularly == 'Yes-usedToRegularly') {
+    } else if (smokedRegularly === 'Yes-usedToRegularly') {
       response.redirect('/prototype_v1/how-old-when-started-smoking')
     } else {
     // Fallback to original logic if smoking status unclear
@@ -31,9 +31,9 @@ router.post('/prototype_v1/relatives-with-cancer-answer', (request, response) =>
 router.post('/prototype_v1/relatives-age-answer', (request, response) => {
   const smokedRegularly = request.session.data.smokedRegularly
 
-  if (smokedRegularly == 'Yes-currently') {
+  if (smokedRegularly === 'Yes-currently') {
     response.redirect('/prototype_v1/how-old-when-started-smoking')
-  } else if (smokedRegularly == 'Yes-usedToRegularly') {
+  } else if (smokedRegularly === 'Yes-usedToRegularly') {
     response.redirect('/prototype_v1/how-old-when-started-smoking')
   } else {
     // Fallback
@@ -48,13 +48,13 @@ router.get('/prototype_v1/start-journey', (request, response) => {
 
 router.post('/prototype_v1/smokedRegularlyAnswer', (request, response) => {
   const smokedRegularly = request.session.data.smokedRegularly
-  if (smokedRegularly == 'Yes-currently') {
+  if (smokedRegularly === 'Yes-currently') {
     response.redirect('/prototype_v1/eligibility-what-is-your-date-of-birth')
-  } else if (smokedRegularly == 'Yes-usedToRegularly') {
+  } else if (smokedRegularly === 'Yes-usedToRegularly') {
     response.redirect('/prototype_v1/eligibility-what-is-your-date-of-birth')
-  } else if (smokedRegularly == 'Yes-usedToFewTimes') {
+  } else if (smokedRegularly === 'Yes-usedToFewTimes') {
     response.redirect('/prototype_v1/drop-out-never-smoked')
-  } else if (smokedRegularly == 'No') {
+  } else if (smokedRegularly === 'No') {
     response.redirect('/prototype_v1/drop-out-never-smoked')
   } else {
     response.redirect('/prototype_v1/eligibility-have-you-ever-smoked')
@@ -63,9 +63,9 @@ router.post('/prototype_v1/smokedRegularlyAnswer', (request, response) => {
 
 router.post('/prototype_v1/smokeNowAnswer', (request, response) => {
   const smokeNow = request.session.data.smokeNow
-  if (smokeNow == 'Yes') {
+  if (smokeNow === 'Yes') {
     response.redirect('/prototype_v1/current-smoker-how-many-years')
-  } else if (smokeNow == 'No') {
+  } else if (smokeNow === 'No') {
     response.redirect('/prototype_v1/former-smoker-when-quit-smoking')
   } else {
     response.redirect('/prototype_v1/do-you-smoke-now')
@@ -74,9 +74,9 @@ router.post('/prototype_v1/smokeNowAnswer', (request, response) => {
 
 router.post('/prototype_v1/who-should-not-use-answer', (request, response) => {
   const smokeNow = request.session.data.canYouContinue
-  if (smokeNow == 'Yes') {
+  if (smokeNow === 'Yes') {
     response.redirect('/prototype_v1/what-is-your-height')
-  } else if (smokeNow == 'No') {
+  } else if (smokeNow === 'No') {
     response.redirect('/prototype_v1/drop-out-bmi')
   } else {
     response.redirect('/prototype_v1/who-should-not-use-this-online-service')
@@ -205,9 +205,9 @@ router.post('/prototype_v1/tobacco-next', (request, response) => {
 router.post('/prototype_v1/ageStartedSmokingAnswer', (request, response) => {
   const smokedRegularly = request.session.data.smokedRegularly
 
-  if (smokedRegularly == 'Yes-currently') {
+  if (smokedRegularly === 'Yes-currently') {
     response.redirect('/prototype_v1/have-you-ever-stopped-smoking')
-  } else if (smokedRegularly == 'Yes-usedToRegularly') {
+  } else if (smokedRegularly === 'Yes-usedToRegularly') {
     response.redirect('/prototype_v1/former-smoker-when-quit-smoking')
   } else {
     // Fallback

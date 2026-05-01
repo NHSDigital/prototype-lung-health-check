@@ -122,9 +122,9 @@ router.post('/prototype_v3/dateOfBirthAnswer', (req, res) => {
 router.post('/prototype_v3/who-should-not-use-answer', (req, res) => {
   const canContinue = req.session.data.canYouContinue
 
-  if (canContinue == 'Yes') {
+  if (canContinue === 'Yes') {
     res.redirect('/prototype_v3/drop-out-bmi')
-  } else if (canContinue == 'No') {
+  } else if (canContinue === 'No') {
     res.redirect('/prototype_v3/enter-your-height')
   } else {
     res.redirect('/prototype_v3/who-should-not-use-this-online-service')
@@ -143,7 +143,7 @@ router.post('/prototype_v3/enter-your-height-answer', (req, res) => {
   // Clear previous errors
   delete req.session.data.heightErrors
 
-  if (heightUnit == 'imperial') {
+  if (heightUnit === 'imperial') {
     const feet = height ? height.feet : ''
     const inches = height ? height.inches : ''
 
@@ -206,7 +206,7 @@ router.post('/prototype_v3/enter-your-weight-answer', (req, res) => {
   // Clear previous errors
   delete req.session.data.weightErrors
 
-  if (weightUnit == 'imperial') {
+  if (weightUnit === 'imperial') {
     const stone = weight ? weight.stone : ''
     const pounds = weight ? weight.pounds : ''
 
@@ -269,9 +269,9 @@ router.post('/prototype_v3/diagnosed-with-cancer-answer', (req, res) => {
 router.post('/prototype_v3/relatives-with-cancer-answer', (req, res) => {
   const relativesHaveCancer = req.session.data.relativesHaveCancer
 
-  if (relativesHaveCancer == 'Yes') {
+  if (relativesHaveCancer === 'Yes') {
     res.redirect('/prototype_v3/relatives-age-when-diagnosed')
-  } else if (relativesHaveCancer == 'No' || relativesHaveCancer == "I don't know") {
+  } else if (relativesHaveCancer === 'No' || relativesHaveCancer === "I don't know") {
     res.redirect('/prototype_v3/how-old-when-started-smoking')
   } else {
     res.redirect('/prototype_v3/relatives-with-cancer')
@@ -300,9 +300,9 @@ router.get('/prototype_v3/periods-when-you-stopped-smoking', function (req, res,
 router.post('/prototype_v3/how-old-when-started-smoking-answer', (req, res) => {
   const smokedRegularly = req.session.data.smokedRegularly
 
-  if (smokedRegularly == 'Yes-currently') {
+  if (smokedRegularly === 'Yes-currently') {
     res.redirect('/prototype_v3/periods-when-you-stopped-smoking')
-  } else if (smokedRegularly == 'Yes-usedToRegularly') {
+  } else if (smokedRegularly === 'Yes-usedToRegularly') {
     res.redirect('/prototype_v3/former-smoker-when-quit-smoking')
   } else {
     // Fallback
