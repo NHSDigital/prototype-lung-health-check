@@ -12,9 +12,9 @@
 
       <h1 class="nhsuk-heading-l">Agree to share your NHS login information</h1>
 
-      <p class="nhsuk-body">To continue, you need to agree to share your NHS login information with <strong>NHS check if you need a lung scan</strong>.</p>
+      <p class="nhsuk-body">To continue, you need to agree to share your NHS login information with <strong>NHS {{ serviceName | lower }}</strong>.</p>
 
-      <p class="nhsuk-body"><strong>NHS check if you need a lung scan</strong> will use your:</p>
+      <p class="nhsuk-body"><strong>NHS {{ serviceName | lower }}</strong> will use your:</p>
 
       <ul class="nhsuk-list nhsuk-list--bullet">
         <li>first names</li>
@@ -24,9 +24,9 @@
         <li>NHS number</li>
       </ul>
 
-      <p class="nhsuk-body">Read the terms of use and privacy policy for <strong>NHS check if you need a lung scan</strong> to check how your information will be used.</p>
+      <p class="nhsuk-body">Read the terms of use and privacy policy for <strong>NHS {{ serviceName | lower }}</strong> to check how your information will be used.</p>
 
-      <p class="nhsuk-body">If you do not agree to share this information you will not be able to use NHS login with <strong>NHS check if you need a lung scan</strong>.</p>
+      <p class="nhsuk-body">If you do not agree to share this information you will not be able to use NHS login with <strong>NHS {{ serviceName | lower }}</strong>.</p>
 
       <form action="/prototype_v3/agree-to-share-login-info" method="post">
         {{ button({

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  NHS check if you need a lung scan privacy policy - NHS
+  NHS {{ serviceName | lower }} privacy policy - NHS
 {% endblock %}
 
 {% block beforeContent %}
@@ -11,10 +11,10 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      <h1 class="nhsuk-heading-l">NHS check if you need a lung scan privacy policy</h1>
+      <h1 class="nhsuk-heading-l">NHS {{ serviceName | lower }} privacy policy</h1>
 
       <h2 class="nhsuk-heading-m">Who we are</h2>
-      <p class="nhsuk-body">NHS England is running a pilot of the <em>Check if you need a lung scan</em> digital service.</p>
+      <p class="nhsuk-body">NHS England is running a pilot of the <em>{{ serviceName | lower }}</em> digital service.</p>
 
       <h2 class="nhsuk-heading-m">Why we use your data</h2>
       <p class="nhsuk-body">We use your information to evaluate whether a digital questionnaire can safely and effectively support lung cancer screening alongside the existing telephone service.</p>
@@ -32,7 +32,7 @@
       <p class="nhsuk-body">Read the full privacy notice below to understand how your data is used, shared, stored, and what your rights are.</p>
 
       <h3 class="nhsuk-heading-s">1. About this service</h3>
-      <p class="nhsuk-body">NHS check if you need a lung scan is a pilot by NHS England and allows you to complete a lung health check online before you complete your phone appointment. The pilot is designed to evaluate whether a digital questionnaire can operate as effectively as the existing telephone based lung cancer screening service.</p>
+      <p class="nhsuk-body">NHS {{ serviceName | lower }} is a pilot by NHS England and allows you to complete a lung health check online before you complete your phone appointment. The pilot is designed to evaluate whether a digital questionnaire can operate as effectively as the existing telephone based lung cancer screening service.</p>
       <p class="nhsuk-body">The pilot is for service evaluation purposes only and does not form part of routine clinical care.</p>
 
       <h3 class="nhsuk-heading-s">2. Who we are</h3>
@@ -118,7 +118,7 @@
       <p class="nhsuk-body">If you want to access your screening results, contact your GP or local screening service.</p>
 
       <h3 class="nhsuk-heading-s">9. Ask a question or find out more</h3>
-      <p class="nhsuk-body">If you have a general question about using the NHS check if you need a lung scan, you can contact us by email at: <a href="mailto:england.digitallungcancerscreening@nhs.net" class="nhsuk-link">england.digitallungcancerscreening@nhs.net</a></p>
+      <p class="nhsuk-body">If you have a general question about using the NHS {{ serviceName | lower }}, you can contact us by email at: <a href="mailto:england.digitallungcancerscreening@nhs.net" class="nhsuk-link">england.digitallungcancerscreening@nhs.net</a></p>
 
     </div>
   </div>
