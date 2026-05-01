@@ -1,15 +1,15 @@
-{% extends 'layouts/layout-web-or-native.html' %}
+{% extends "layouts/layout-web-or-native.html" %}
 
 {# {% set mainClasses = "nhsuk-main-wrapper--s" %} #}
 {% set hub = "Services" %}
 
 {% block pageTitle %}
- {{pageHeading}} - Check if you need a lung scan
+ {{ pageHeading }} - {{ serviceName }}
 {% endblock %}
 
 {% block beforeContent %}
 
-  {% if data.webOrNative == 'native' %}
+  {% if data.webOrNative == "native" %}
     {% if backLink === true or backLink !== false %}
       {% if containerFullWidth === true %}
         <div class="nhsuk-width-container">
@@ -27,9 +27,9 @@
 
   {% else %}
     {{ backLink({
-      "text": "Back",
-      "classes": "",
-      "attributes": {
+      text: "Back",
+      classes: "",
+      attributes: {
           onclick: "history.back()"
       }
     }) }}
@@ -40,12 +40,12 @@
   <div class="nhsuk-grid-row">
 
     <div class="nhsuk-grid-column-two-thirds">
-    
+
 
       {%block pageContent%}
       {% endblock %}
 
-    </div>  
+    </div>
 
   </div>
 {% endblock %}

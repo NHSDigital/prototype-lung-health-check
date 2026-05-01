@@ -11,3 +11,18 @@
 .nhsuk-summary-list__actions {
   border-bottom: none;
 }
+
+.nhsuk-phase-banner {
+  padding: 10px 0;
+  border-bottom: 1px solid #d8dde0;
+}
+.nhsuk-phase-banner__content {
+  display: flex;
+  align-items: center;
+}
+.nhsuk-phase-banner__content .nhsuk-tag {
+  margin-right: 10px;
+}
+.nhsuk-phase-banner__text {
+  margin: 0;
+}

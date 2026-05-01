@@ -3,14 +3,13 @@
 {# {% set mainClasses = "nhsuk-main-wrapper--s" %} #}
 {% set hub = "Services" %}
 
-
 {% block pageTitle -%}
-  {%- if flash.error %}Error: {% endif %}{{ pageHeading }} - NHS Health Check online - NHS
+  {%- if flash.error %}Error: {% endif %} {{ pageHeading }} - {{ serviceName }} - NHS
 {%- endblock %}
 
 {% block beforeContent %}
 
-  {% if data.webOrNative == 'native' %}
+  {% if data.webOrNative == "native" %}
     {% if backLink === true or backLink !== false %}
       {% if containerFullWidth === true %}
         <div class="nhsuk-width-container">
@@ -27,9 +26,9 @@
 
   {% else %}
     {{ backLink({
-      "text": "Back",
-      "classes": "",
-      "attributes": {
+      text: "Back",
+      classes: "",
+      attributes: {
           onclick: "history.back()"
       }
     }) }}
@@ -43,12 +42,12 @@
 
       {% if flash.error %}
         {{ errorSummary({
-          "titleText": "There is a problem",
-          "errorList": flash.error
+          titleText: "There is a problem",
+          errorList: flash.error
         }) }}
       {% endif %}
-    
-      <form action="{{formAction | safe }}" method="{{ formMethod or 'post' }}" novalidate>
+
+      <form action="{{ formAction | safe }}" method="{{ formMethod or 'post' }}" novalidate>
 
         {% block formContent %}
         {% endblock %}
