@@ -2,95 +2,93 @@
 const express = require('express')
 const router = express.Router()
 
-/////////////////
+/// //////////////
 // Prototype 1 //
-/////////////////
+/// //////////////
 
 router.post('/prototype_v1/relatives-with-cancer-answer', (request, response) => {
-var relativesHaveCancer = request.session.data['relativesHaveCancer']
-var smokedRegularly = request.session.data['smokedRegularly']
+  const relativesHaveCancer = request.session.data.relativesHaveCancer
+  const smokedRegularly = request.session.data.smokedRegularly
 
-if (relativesHaveCancer == "Yes"){
+  if (relativesHaveCancer === 'Yes') {
   // If relatives had cancer, ask about their age first
-  response.redirect("/prototype_v1/relatives-age-when-diagnosed")
-} else if (relativesHaveCancer == "No"){
+    response.redirect('/prototype_v1/relatives-age-when-diagnosed')
+  } else if (relativesHaveCancer === 'No') {
   // No relatives with cancer, route based on smoking status
- if (smokedRegularly == "Yes-currently") {
-  response.redirect("/prototype_v1/how-old-when-started-smoking")
-} else if (smokedRegularly == "Yes-usedToRegularly") {
-  response.redirect("/prototype_v1/how-old-when-started-smoking")
-  } else {
+    if (smokedRegularly === 'Yes-currently') {
+      response.redirect('/prototype_v1/how-old-when-started-smoking')
+    } else if (smokedRegularly === 'Yes-usedToRegularly') {
+      response.redirect('/prototype_v1/how-old-when-started-smoking')
+    } else {
     // Fallback to original logic if smoking status unclear
-    response.redirect("/prototype_v1/do-you-smoke-now")
+      response.redirect('/prototype_v1/do-you-smoke-now')
+    }
+  } else {
+    response.redirect('/prototype_v1/relatives-with-cancer')
   }
-} else {
-  response.redirect("/prototype_v1/relatives-with-cancer")
-}
 })
 
-
 router.post('/prototype_v1/relatives-age-answer', (request, response) => {
-  var smokedRegularly = request.session.data['smokedRegularly']
+  const smokedRegularly = request.session.data.smokedRegularly
 
-  if (smokedRegularly == "Yes-currently") {
-    response.redirect("/prototype_v1/how-old-when-started-smoking")
-  } else if (smokedRegularly == "Yes-usedToRegularly") {
-    response.redirect("/prototype_v1/how-old-when-started-smoking")
+  if (smokedRegularly === 'Yes-currently') {
+    response.redirect('/prototype_v1/how-old-when-started-smoking')
+  } else if (smokedRegularly === 'Yes-usedToRegularly') {
+    response.redirect('/prototype_v1/how-old-when-started-smoking')
   } else {
     // Fallback
-    response.redirect("/prototype_v1/do-you-smoke-now")
+    response.redirect('/prototype_v1/do-you-smoke-now')
   }
 })
 
 router.get('/prototype_v1/start-journey', (request, response) => {
-    delete request.session.data
-    response.redirect("/prototype_v1/eligibility-have-you-ever-smoked")
+  delete request.session.data
+  response.redirect('/prototype_v1/eligibility-have-you-ever-smoked')
 })
 
 router.post('/prototype_v1/smokedRegularlyAnswer', (request, response) => {
-  var smokedRegularly = request.session.data['smokedRegularly']
-  if (smokedRegularly == "Yes-currently"){
-      response.redirect("/prototype_v1/eligibility-what-is-your-date-of-birth")
-  } else if (smokedRegularly == "Yes-usedToRegularly"){
-      response.redirect("/prototype_v1/eligibility-what-is-your-date-of-birth")
-  } else if (smokedRegularly == "Yes-usedToFewTimes"){
-      response.redirect("/prototype_v1/drop-out-never-smoked")
-  } else if (smokedRegularly == "No"){
-      response.redirect("/prototype_v1/drop-out-never-smoked")
-  }
-  else {
-      response.redirect("/prototype_v1/eligibility-have-you-ever-smoked")
+  const smokedRegularly = request.session.data.smokedRegularly
+  if (smokedRegularly === 'Yes-currently') {
+    response.redirect('/prototype_v1/eligibility-what-is-your-date-of-birth')
+  } else if (smokedRegularly === 'Yes-usedToRegularly') {
+    response.redirect('/prototype_v1/eligibility-what-is-your-date-of-birth')
+  } else if (smokedRegularly === 'Yes-usedToFewTimes') {
+    response.redirect('/prototype_v1/drop-out-never-smoked')
+  } else if (smokedRegularly === 'No') {
+    response.redirect('/prototype_v1/drop-out-never-smoked')
+  } else {
+    response.redirect('/prototype_v1/eligibility-have-you-ever-smoked')
   }
 })
 
 router.post('/prototype_v1/smokeNowAnswer', (request, response) => {
-    var smokeNow = request.session.data['smokeNow']
-    if (smokeNow == "Yes"){
-        response.redirect("/prototype_v1/current-smoker-how-many-years")
-    } else if (smokeNow == "No"){
-        response.redirect("/prototype_v1/former-smoker-when-quit-smoking")
-    } else {
-        response.redirect("/prototype_v1/do-you-smoke-now")
-    }
+  const smokeNow = request.session.data.smokeNow
+  if (smokeNow === 'Yes') {
+    response.redirect('/prototype_v1/current-smoker-how-many-years')
+  } else if (smokeNow === 'No') {
+    response.redirect('/prototype_v1/former-smoker-when-quit-smoking')
+  } else {
+    response.redirect('/prototype_v1/do-you-smoke-now')
+  }
 })
 
 router.post('/prototype_v1/who-should-not-use-answer', (request, response) => {
-    var smokeNow = request.session.data['canYouContinue']
-    if (smokeNow == "Yes"){
-        response.redirect("/prototype_v1/what-is-your-height")
-    } else if (smokeNow == "No"){
-        response.redirect("/prototype_v1/drop-out-bmi")
-    } else {
-        response.redirect("/prototype_v1/who-should-not-use-this-online-service")
-    }
+  const smokeNow = request.session.data.canYouContinue
+  if (smokeNow === 'Yes') {
+    response.redirect('/prototype_v1/what-is-your-height')
+  } else if (smokeNow === 'No') {
+    response.redirect('/prototype_v1/drop-out-bmi')
+  } else {
+    response.redirect('/prototype_v1/who-should-not-use-this-online-service')
+  }
 })
 
 router.post('/prototype_v1/whatDoYouSmokeAnswer', (request, response) => {
-  var selectedTobacco = request.session.data['whatSmokeNow'];
+  let selectedTobacco = request.session.data.whatSmokeNow
 
   // Ensure it's an array (single selection becomes array)
   if (!Array.isArray(selectedTobacco)) {
-    selectedTobacco = selectedTobacco ? [selectedTobacco] : [];
+    selectedTobacco = selectedTobacco ? [selectedTobacco] : []
   }
 
   // Define page mapping in order (matches checkbox order)
@@ -100,36 +98,36 @@ router.post('/prototype_v1/whatDoYouSmokeAnswer', (request, response) => {
     { value: 'Pipe', page: 'tobacco-pipe-how-many-bowls' },
     { value: 'Cigars', page: 'tobacco-what-size-cigars-do-you-smoke' },
     { value: 'Hookah', page: 'tobacco-hookah-and-shisha' }
-  ];
+  ]
 
   // Create queue of pages to visit
-  var pagesToVisit = [];
-  tobaccoPages.forEach(function(tobacco) {
+  const pagesToVisit = []
+  tobaccoPages.forEach(function (tobacco) {
     if (selectedTobacco.includes(tobacco.value)) {
-      pagesToVisit.push(tobacco.page);
+      pagesToVisit.push(tobacco.page)
     }
-  });
+  })
 
   // Store the queue in session
-  request.session.data['tobaccoPageQueue'] = pagesToVisit;
-  request.session.data['currentTobaccoPageIndex'] = 0;
+  request.session.data.tobaccoPageQueue = pagesToVisit
+  request.session.data.currentTobaccoPageIndex = 0
 
   // Redirect to first page or check answers if no pages
   if (pagesToVisit.length > 0) {
-    response.redirect('/prototype_v1/' + pagesToVisit[0]);
+    response.redirect('/prototype_v1/' + pagesToVisit[0])
   } else {
-    response.redirect('/prototype_v1/check-your-answers');
+    response.redirect('/prototype_v1/check-your-answers')
   }
 })
 
 router.post('/prototype_v1/dateOfBirthAnswer', (request, response) => {
-  const day = request.session.data['dateOfBirth']['day']
-  const month = request.session.data['dateOfBirth']['month']
-  const year = request.session.data['dateOfBirth']['year']
+  const day = request.session.data.dateOfBirth.day
+  const month = request.session.data.dateOfBirth.month
+  const year = request.session.data.dateOfBirth.year
 
   // Check if all fields are provided
   if (!day || !month || !year) {
-    return response.redirect("/prototype_v1/eligibility-what-is-your-date-of-birth")
+    return response.redirect('/prototype_v1/eligibility-what-is-your-date-of-birth')
   }
 
   // Calculate age
@@ -144,7 +142,7 @@ router.post('/prototype_v1/dateOfBirthAnswer', (request, response) => {
 
   // Check age eligibility (55-74 for lung health checks)
   if (age < 55 || age > 74) {
-    return response.redirect("/prototype_v1/drop-out-age")
+    return response.redirect('/prototype_v1/drop-out-age')
   }
 
   // If eligible, show the smoking question page
@@ -152,11 +150,11 @@ router.post('/prototype_v1/dateOfBirthAnswer', (request, response) => {
 })
 
 router.post('/prototype_v1/whatDidYouSmokeAnswer', (request, response) => {
-  var selectedTobacco = request.session.data['whatDidSmoke'];
+  let selectedTobacco = request.session.data.whatDidSmoke
 
   // Ensure it's an array (single selection becomes array)
   if (!Array.isArray(selectedTobacco)) {
-    selectedTobacco = selectedTobacco ? [selectedTobacco] : [];
+    selectedTobacco = selectedTobacco ? [selectedTobacco] : []
   }
 
   // Define page mapping for former smokers (same pages, different route name)
@@ -166,60 +164,59 @@ router.post('/prototype_v1/whatDidYouSmokeAnswer', (request, response) => {
     { value: 'Pipe', page: 'tobacco-pipe-how-many-bowls' },
     { value: 'Cigars', page: 'tobacco-what-size-cigars-do-you-smoke' },
     { value: 'Hookah', page: 'tobacco-hookah-and-shisha' }
-  ];
+  ]
 
   // Create queue of pages to visit
-  var pagesToVisit = [];
-  tobaccoPages.forEach(function(tobacco) {
+  const pagesToVisit = []
+  tobaccoPages.forEach(function (tobacco) {
     if (selectedTobacco.includes(tobacco.value)) {
-      pagesToVisit.push(tobacco.page);
+      pagesToVisit.push(tobacco.page)
     }
-  });
+  })
 
   // Store the queue in session
-  request.session.data['tobaccoPageQueue'] = pagesToVisit;
-  request.session.data['currentTobaccoPageIndex'] = 0;
+  request.session.data.tobaccoPageQueue = pagesToVisit
+  request.session.data.currentTobaccoPageIndex = 0
 
   // Redirect to first page or check answers if no pages
   if (pagesToVisit.length > 0) {
-    response.redirect('/prototype_v1/' + pagesToVisit[0]);
+    response.redirect('/prototype_v1/' + pagesToVisit[0])
   } else {
-    response.redirect('/prototype_v1/check-your-answers');
+    response.redirect('/prototype_v1/check-your-answers')
   }
 })
 
 router.post('/prototype_v1/tobacco-next', (request, response) => {
-  var queue = request.session.data['tobaccoPageQueue'] || [];
-  var currentIndex = request.session.data['currentTobaccoPageIndex'] || 0;
+  const queue = request.session.data.tobaccoPageQueue || []
+  let currentIndex = request.session.data.currentTobaccoPageIndex || 0
 
   // Move to next page
-  currentIndex++;
-  request.session.data['currentTobaccoPageIndex'] = currentIndex;
+  currentIndex++
+  request.session.data.currentTobaccoPageIndex = currentIndex
 
   // Check if more pages in queue
   if (currentIndex < queue.length) {
-    response.redirect('/prototype_v1/' + queue[currentIndex]);
+    response.redirect('/prototype_v1/' + queue[currentIndex])
   } else {
     // All tobacco pages completed, go to check answers
-    response.redirect('/prototype_v1/check-your-answers');
+    response.redirect('/prototype_v1/check-your-answers')
   }
 })
 router.post('/prototype_v1/ageStartedSmokingAnswer', (request, response) => {
-  var smokedRegularly = request.session.data['smokedRegularly']
+  const smokedRegularly = request.session.data.smokedRegularly
 
-  if (smokedRegularly == "Yes-currently") {
-    response.redirect("/prototype_v1/have-you-ever-stopped-smoking")
-  } else if (smokedRegularly == "Yes-usedToRegularly") {
-    response.redirect("/prototype_v1/former-smoker-when-quit-smoking")
+  if (smokedRegularly === 'Yes-currently') {
+    response.redirect('/prototype_v1/have-you-ever-stopped-smoking')
+  } else if (smokedRegularly === 'Yes-usedToRegularly') {
+    response.redirect('/prototype_v1/former-smoker-when-quit-smoking')
   } else {
     // Fallback
-    response.redirect("/prototype_v1/how-old-when-started-smoking")
+    response.redirect('/prototype_v1/how-old-when-started-smoking')
   }
 })
 
-
 router.post('/prototype_v1/tobaccoHookahSessionAnswer', (request, response) => {
-  var hookahSession = request.session.data['hookahSession']
+  let hookahSession = request.session.data.hookahSession
 
   // If hookahSession is a string (single selection), convert to array
   if (typeof hookahSession === 'string') {
@@ -229,22 +226,21 @@ router.post('/prototype_v1/tobaccoHookahSessionAnswer', (request, response) => {
   // Check what was selected and route accordingly
   if (hookahSession && hookahSession.includes('In a group session') && hookahSession.includes('By myself')) {
     // Both selected - go to group first, then individual
-    response.redirect("/prototype_v1/tobacco-hookah-how-much-group")
+    response.redirect('/prototype_v1/tobacco-hookah-how-much-group')
   } else if (hookahSession && hookahSession.includes('In a group session')) {
     // Only group selected
-    response.redirect("/prototype_v1/tobacco-hookah-how-much-group")
+    response.redirect('/prototype_v1/tobacco-hookah-how-much-group')
   } else if (hookahSession && hookahSession.includes('By myself')) {
     // Only individual selected
-    response.redirect("/prototype_v1/tobacco-how-much-by-yourself")
+    response.redirect('/prototype_v1/tobacco-how-much-by-yourself')
   } else {
     // Nothing selected or error - continue to next tobacco type
-    response.redirect("/prototype_v1/tobacco-next")
+    response.redirect('/prototype_v1/tobacco-next')
   }
 })
 
-
 router.post('/prototype_v1/tobaccoHookahGroupToIndividual', (request, response) => {
-  var hookahSession = request.session.data['hookahSession']
+  let hookahSession = request.session.data.hookahSession
 
   // Convert to array if needed
   if (typeof hookahSession === 'string') {
@@ -253,10 +249,10 @@ router.post('/prototype_v1/tobaccoHookahGroupToIndividual', (request, response) 
 
   // If both were selected and user just completed group, go to individual
   if (hookahSession && hookahSession.includes('By myself')) {
-    response.redirect("/prototype_v1/tobacco-how-much-by-yourself")
+    response.redirect('/prototype_v1/tobacco-how-much-by-yourself')
   } else {
     // Otherwise continue to next tobacco type
-    response.redirect("/prototype_v1/tobacco-next")
+    response.redirect('/prototype_v1/tobacco-next')
   }
 })
 module.exports = router

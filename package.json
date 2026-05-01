@@ -4,7 +4,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node .",
-    "watch": "npm start"
+    "watch": "npm start",
+    "lint:scripts": "standard",
+    "lint:scripts:fix": "standard --fix"
   },
   "author": "https://github.com/nhsuk/",
   "license": "MIT",
@@ -13,6 +15,7 @@
     "nhsuk-prototype-kit": "^8.2.0"
   },
   "devDependencies": {
+    "standard": "^17.1.2"
   },
   "engines": {
     "node": "24.x",

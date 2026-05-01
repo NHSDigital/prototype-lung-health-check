@@ -16,7 +16,7 @@ const entryPoints = [
   'app/assets/javascript/*.js'
 ]
 
-async function init() {
+async function init () {
   const prototype = await NHSPrototypeKit.init({
     serviceName: config.serviceName,
     buildOptions: {
