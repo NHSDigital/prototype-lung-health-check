@@ -1,7 +1,7 @@
 module.exports = function (env) { /* eslint-disable-line func-names,no-unused-vars */
   const filters = {}
 
-  filters.nhsDate = function(dateInput) {
+  filters.nhsDate = function (dateInput) {
     // Handle empty input
     if (!dateInput) {
       return ''
