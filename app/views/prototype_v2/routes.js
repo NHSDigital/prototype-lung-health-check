@@ -6,7 +6,7 @@ const router = express.Router()
 // Prototype 2 //
 /////////////////
 
-router.post('/prototype_v2/relatives-with-cancer-answer', function(request, response) {
+router.post('/prototype_v2/relatives-with-cancer-answer', (request, response) => {
 var relativesHaveCancer = request.session.data['relativesHaveCancer']
 
 if (relativesHaveCancer == "Yes"){
@@ -21,16 +21,16 @@ if (relativesHaveCancer == "Yes"){
 }
 })
 
-router.post('/prototype_v2/relatives-age-answer', function(request, response) {
+router.post('/prototype_v2/relatives-age-answer', (request, response) => {
   response.redirect("/prototype_v2/how-old-when-started-smoking")
 })
 
-router.get('/prototype_v2/start-journey', function (request, response) {
+router.get('/prototype_v2/start-journey', (request, response) => {
     delete request.session.data
     response.redirect("/prototype_v2/have-you-completed-by-phone")
 })
 
-router.post('/prototype_v2/have-you-completed-by-phone-answer', function(request, response) {
+router.post('/prototype_v2/have-you-completed-by-phone-answer', (request, response) => {
   const completedByPhone = request.session.data['completedByPhone']
 
   if (completedByPhone === 'Yes') {
@@ -45,7 +45,7 @@ router.post('/prototype_v2/have-you-completed-by-phone-answer', function(request
   }
 })
 
-router.post('/prototype_v2/smokedRegularlyAnswer', function(request, response) {
+router.post('/prototype_v2/smokedRegularlyAnswer', (request, response) => {
     var smokedRegularly = request.session.data['smokedRegularly']
     if (smokedRegularly == "Yes-currently"){
         response.redirect("/prototype_v2/eligibility-what-is-your-date-of-birth")
@@ -61,7 +61,7 @@ router.post('/prototype_v2/smokedRegularlyAnswer', function(request, response) {
     }
 })
 
-router.post('/prototype_v2/smokeNowAnswer', function(request, response) {
+router.post('/prototype_v2/smokeNowAnswer', (request, response) => {
     var smokeNow = request.session.data['smokeNow']
     if (smokeNow == "Yes"){
         response.redirect("/prototype_v2/current-smoker-how-many-years")
@@ -72,7 +72,7 @@ router.post('/prototype_v2/smokeNowAnswer', function(request, response) {
     }
 })
 
-router.post('/prototype_v2/who-should-not-use-answer', function(request, response) {
+router.post('/prototype_v2/who-should-not-use-answer', (request, response) => {
     var smokeNow = request.session.data['canYouContinue']
     if (smokeNow == "Yes"){
         response.redirect("/prototype_v2/drop-out-bmi")
@@ -83,7 +83,7 @@ router.post('/prototype_v2/who-should-not-use-answer', function(request, respons
     }
 })
 
-router.post('/prototype_v2/whatDoYouSmokeAnswer', function(request, response) {
+router.post('/prototype_v2/whatDoYouSmokeAnswer', (request, response) => {
   var selectedTobacco = request.session.data['whatSmokeNow'];
 
   // Ensure it's an array (single selection becomes array)
@@ -120,7 +120,7 @@ router.post('/prototype_v2/whatDoYouSmokeAnswer', function(request, response) {
   }
 })
 
-router.post('/prototype_v2/dateOfBirthAnswer', function(request, response) {
+router.post('/prototype_v2/dateOfBirthAnswer', (request, response) => {
   const day = request.session.data['dateOfBirth']['day']
   const month = request.session.data['dateOfBirth']['month']
   const year = request.session.data['dateOfBirth']['year']
@@ -149,7 +149,7 @@ router.post('/prototype_v2/dateOfBirthAnswer', function(request, response) {
   response.render('prototype_v2/check-if-you-need-face-to-face-appointment')
 })
 
-router.post('/prototype_v2/whatDidYouSmokeAnswer', function(request, response) {
+router.post('/prototype_v2/whatDidYouSmokeAnswer', (request, response) => {
   var selectedTobacco = request.session.data['whatDidSmoke'];
 
   // Ensure it's an array (single selection becomes array)
@@ -186,7 +186,7 @@ router.post('/prototype_v2/whatDidYouSmokeAnswer', function(request, response) {
   }
 })
 
-router.post('/prototype_v2/tobacco-next', function(request, response) {
+router.post('/prototype_v2/tobacco-next', (request, response) => {
   var queue = request.session.data['tobaccoPageQueue'] || [];
   var currentIndex = request.session.data['currentTobaccoPageIndex'] || 0;
 
@@ -203,7 +203,7 @@ router.post('/prototype_v2/tobacco-next', function(request, response) {
   }
 })
 
-router.post('/prototype_v2/ageStartedSmokingAnswer', function(request, response) {
+router.post('/prototype_v2/ageStartedSmokingAnswer', (request, response) => {
   var smokedRegularly = request.session.data['smokedRegularly']
 
   if (smokedRegularly == "Yes-currently") {
@@ -216,7 +216,7 @@ router.post('/prototype_v2/ageStartedSmokingAnswer', function(request, response)
   }
 })
 
-router.post('/prototype_v2/tobaccoHookahSessionAnswer', function(request, response) {
+router.post('/prototype_v2/tobaccoHookahSessionAnswer', (request, response) => {
   var hookahSession = request.session.data['hookahSession']
 
   // If hookahSession is a string (single selection), convert to array
@@ -240,7 +240,7 @@ router.post('/prototype_v2/tobaccoHookahSessionAnswer', function(request, respon
   }
 })
 
-router.post('/prototype_v2/tobaccoHookahGroupToIndividual', function(request, response) {
+router.post('/prototype_v2/tobaccoHookahGroupToIndividual', (request, response) => {
   var hookahSession = request.session.data['hookahSession']
 
   // Convert to array if needed
