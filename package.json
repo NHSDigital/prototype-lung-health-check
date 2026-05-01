@@ -6,7 +6,9 @@
     "start": "node .",
     "watch": "npm start",
     "lint:scripts": "standard",
-    "lint:scripts:fix": "standard --fix"
+    "lint:scripts:fix": "standard --fix",
+    "lint:styles": "stylelint 'app/assets/sass/**/*.scss' 'app/views/_components/**/*.scss'",
+    "lint:styles:fix": "stylelint 'app/assets/sass/**/*.scss' 'app/views/_components/**/*.scss' --fix"
   },
   "author": "https://github.com/nhsuk/",
   "license": "MIT",
@@ -15,7 +17,11 @@
     "nhsuk-prototype-kit": "^8.2.0"
   },
   "devDependencies": {
-    "standard": "^17.1.2"
+    "standard": "^17.1.2",
+    "stylelint": "^17.9.1",
+    "stylelint-config-recommended-scss": "^17.0.1",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-order": "^8.1.1"
   },
   "engines": {
     "node": "24.x",
