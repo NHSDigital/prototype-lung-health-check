@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node .",
     "watch": "npm start",
+    "lint:markdown": "markdownlint '**/*.md'",
+    "lint:markdown:fix": "markdownlint '**/*.md' --fix",
     "lint:scripts": "standard",
     "lint:scripts:fix": "standard --fix",
     "lint:styles": "stylelint 'app/assets/sass/**/*.scss' 'app/views/_components/**/*.scss'",
