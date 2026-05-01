@@ -10,13 +10,17 @@
     "lint:styles": "stylelint 'app/assets/sass/**/*.scss' 'app/views/_components/**/*.scss'",
     "lint:styles:fix": "stylelint 'app/assets/sass/**/*.scss' 'app/views/_components/**/*.scss' --fix"
   },
-  "author": "https://github.com/nhsuk/",
+  "author": "https://github.com/nhsdigital/",
   "license": "MIT",
   "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.3",
+    "marked-gfm-heading-id": "^4.1.4",
     "nhsuk-frontend": "^10.4.0",
     "nhsuk-prototype-kit": "^8.2.0"
   },
   "devDependencies": {
+    "markdownlint-cli": "^0.48.0",
     "standard": "^17.1.2",
     "stylelint": "^17.9.1",
     "stylelint-config-recommended-scss": "^17.0.1",
