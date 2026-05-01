@@ -19,15 +19,6 @@ rules:
   # https://stylelint.io/user-guide/rules/list/at-rule-no-unknown
   at-rule-no-unknown: null
 
-  # Always require a newline after a closing brace of a rule
-  # https://stylelint.io/user-guide/rules/list/block-closing-brace-newline-after
-  block-closing-brace-newline-after:
-  - always
-    # Exceptions for conditionals, particularly useful for SCSS.
-  - ignoreAtRules:
-    - if
-    - else
-
   # Disallow using CSS named colours
   # https://stylelint.io/user-guide/rules/list/color-named
   color-named: never
@@ -71,6 +62,10 @@ rules:
   function-url-scheme-allowed-list:
   - data
 
+  # Allow Sass imports without url().
+  # https://stylelint.io/user-guide/rules/list/import-notation
+  import-notation: string
+
   # Disallow deep nesting, ideally only exceptions (such as .js-enabled) should
   # have nesting
   # https://stylelint.io/user-guide/rules/list/max-nesting-depth
@@ -87,10 +82,6 @@ rules:
   # than a previous rule.
   # https://stylelint.io/user-guide/rules/list/no-descending-specificity
   no-descending-specificity: null
-
-  # Disallow prefixing decimals with a 0
-  # https://stylelint.io/user-guide/rules/list/number-leading-zero
-  number-leading-zero: never
 
   # Require all class selectors to be in a hyphenated BEM format
   # https://stylelint.io/user-guide/rules/list/selector-class-pattern
@@ -165,12 +156,12 @@ rules:
   scss/at-if-closing-brace-space-after: always-intermediate
 
   # Disallow importing partials with a underscore prefix
-  # https://github.com/kristerkari/stylelint-scss/tree/master/src/rules/at-import-no-partial-leading-underscore
-  scss/at-import-no-partial-leading-underscore: true
+  # https://github.com/stylelint-scss/stylelint-scss/blob/master/src/rules/load-no-partial-leading-underscore
+  scss/load-no-partial-leading-underscore: true
 
-  # Disallow importing partials with a underscore prefix
-  # https://github.com/kristerkari/stylelint-scss/tree/master/src/rules/at-import-partial-extension
-  scss/at-import-partial-extension: never
+  # Disallow importing partials with a .scss extension
+  # https://github.com/stylelint-scss/stylelint-scss/blob/master/src/rules/load-partial-extension
+  scss/load-partial-extension: never
 
   # Disallow parenthesis when including a mixin with no parameters
   # https://github.com/kristerkari/stylelint-scss/tree/master/src/rules/at-mixin-argumentless-call-parentheses
