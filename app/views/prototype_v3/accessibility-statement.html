@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Accessibility statement for NHS check if you need a lung scan - NHS
+  Accessibility statement for NHS {{ serviceName | lower }} - NHS
 {% endblock %}
 
 {% block beforeContent %}
@@ -11,7 +11,7 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      <h1 class="nhsuk-heading-l">Accessibility statement for NHS check if you need a lung scan</h1>
+      <h1 class="nhsuk-heading-l">Accessibility statement for NHS {{ serviceName | lower }}</h1>
 
       <p class="nhsuk-body">This statement was created in March 2026.</p>
 
@@ -125,7 +125,7 @@
 
       <p class="nhsuk-body">This statement was prepared on 19th March 2026.</p>
 
-      <p class="nhsuk-body">This website was last tested on 17th March 2026 against the WCAG 2.2 AA standard by the product team of NHS check if you need a lung scan.</p>
+      <p class="nhsuk-body">This website was last tested on 17th March 2026 against the WCAG 2.2 AA standard by the product team of NHS {{ serviceName | lower }}.</p>
 
       <p class="nhsuk-body">Content was selected to make sure a good representation of different pages, templates and components were tested as well as key content and user journeys.</p>
 
