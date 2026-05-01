@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'input/macro.njk' import input %}
 {% block pageTitle %}
   Cigarillo smoking - NHS
@@ -10,11 +10,11 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="/prototype_v3/tobacco/cigarillos/current/quantity-answer" method="post">
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigarillos/current/quantity-answer" method="post">
 
-<h1>Cigarillo smoking</h1>
+        <h1 class="nhsuk-heading-l">Cigarillo smoking</h1>
 
         {% set frequencyText = "a day" %}
         {% if data.cigarillosCurrentFrequency == "Weekly" %}
@@ -35,7 +35,7 @@
         {% endif %}
 
 
-<p>The question on the next page will ask if the number of cigarillos you smoke has changed over time.</p>
+        <p class="nhsuk-body">The question on the next page will ask if the number of cigarillos you smoke has changed over time.</p>
 
         {{ input({
           label: {
@@ -56,11 +56,11 @@
             text: "The number of cigarillos smoked must be at least 1"
           } if data['cigarillosCurrentQuantity-error']
         }) }}
-        
+
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

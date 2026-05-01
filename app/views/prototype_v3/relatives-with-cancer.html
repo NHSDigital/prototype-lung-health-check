@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'radios/macro.njk' import radios %}
 
 {% block pageTitle %}
@@ -13,46 +13,47 @@
 {% endblock %}
 
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <h2>If your parents, siblings or children have ever been diagnosed with lung cancer</h2>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <h1 class="nhsuk-heading-l">If your parents, siblings or children have ever been diagnosed with lung cancer</h1>
 
-    <p>If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.</p>
+      <p class="nhsuk-body">If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.</p>
 
-    <p>This question is about lung cancer rather than any other type of cancer. It does not include your grandparents or grandchildren.</p>
+      <p class="nhsuk-body">This question is about lung cancer rather than any other type of cancer. It does not include your grandparents or grandchildren.</p>
 
-    <form action="relatives-with-cancer-answer" method="post">
-      
-      {{ radios({
-        idPrefix: "relativesHaveCancer",
-        name: "relativesHaveCancer",
-        fieldset: {
-          legend: {
-            text: "Have any of your parents, siblings or children ever been diagnosed with lung cancer?",
-            classes: "nhsuk-fieldset__legend--m",
-            isPageHeading: false
-          }
-        },
-        items: [
-          {
-            value: "Yes",
-            text: "Yes"
+      <form action="relatives-with-cancer-answer" method="post">
+
+        {{ radios({
+          idPrefix: "relativesHaveCancer",
+          name: "relativesHaveCancer",
+          fieldset: {
+            legend: {
+              text: "Have any of your parents, siblings or children ever been diagnosed with lung cancer?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
+            }
           },
-          {
-            value: "No",
-            text: "No"
-          },
-          {
-            value: "I don't know",
-            text: "I do not know"
-          }
-        ]
-      }) }}
+          value: data.relativesHaveCancer,
+          items: [
+            {
+              value: "Yes",
+              text: "Yes"
+            },
+            {
+              value: "No",
+              text: "No"
+            },
+            {
+              value: "I don't know",
+              text: "I do not know"
+            }
+          ]
+        }) }}
 
-      {{ button({
-        text: "Continue"
-      }) }}
-    </form>
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}

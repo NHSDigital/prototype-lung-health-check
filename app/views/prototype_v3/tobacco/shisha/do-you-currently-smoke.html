@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% block pageTitle %}
   Do you currently smoke shisha - NHS
@@ -12,37 +12,37 @@
 {% endblock %}
 
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="/prototype_v3/tobacco/shisha/do-you-currently-smoke-answer" method="post">
-      
-      {{ radios({
-        idPrefix: "currentlySmokesShisha",
-        name: "currentlySmokesShisha",
-        value: data["currentlySmokesShisha"],
-        fieldset: {
-          legend: {
-            text: "Do you currently smoke shisha?",
-            classes: "nhsuk-fieldset__legend--l",
-            isPageHeading: true
-          }
-        },
-        items: [
-          {
-            value: "Yes",
-            text: "Yes"
-          },
-          {
-            value: "No",
-            text: "No"
-          }
-        ]
-      }) }}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/shisha/do-you-currently-smoke-answer" method="post">
 
-      {{ button({
-        text: "Continue"
-      }) }}
-    </form>
+        {{ radios({
+          idPrefix: "currentlySmokesShisha",
+          name: "currentlySmokesShisha",
+          fieldset: {
+            legend: {
+              text: "Do you currently smoke shisha?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          value: data.currentlySmokesShisha,
+          items: [
+            {
+              value: "Yes",
+              text: "Yes"
+            },
+            {
+              value: "No",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% block pageTitle %}
   Rolling tobacco smoking - NHS
 {% endblock %}
@@ -9,11 +9,11 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="/prototype_v3/tobacco/rolling-tobacco/former/quantity-answer" method="post">
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/rolling-tobacco/former/quantity-answer" method="post">
 
-<h1>Rolling tobacco</h1>
+        <h1 class="nhsuk-heading-l">Rolling tobacco</h1>
 
         {% set frequencyText = "a week" %}
         {% if data.rollingTobaccoFormerFrequency == "Monthly" %}
@@ -23,7 +23,7 @@
         {% endif %}
 
 
-<p>The question on the next page will ask if the amount of tobacco you smoked changed over time.</p>
+        <p class="nhsuk-body">The question on the next page will ask if the amount of tobacco you smoked changed over time.</p>
 
         {{ radios({
           fieldset: {
@@ -57,11 +57,11 @@
             }
           ]
         }) }}
-        
+
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

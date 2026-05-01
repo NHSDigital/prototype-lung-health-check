@@ -1,7 +1,7 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {# Get the current size being processed #}
-{% set currentSize = data["currentCigarSize"] or "small" %}
+{% set currentSize = data.currentCigarSize or "small" %}
 {% set sizeLower = currentSize | lower %}
 
 {# Set size-specific text #}
@@ -30,7 +30,7 @@
   {% set timePeriod = "day" %}
 {% endif %}
 
-{% if data["smokedRegularly"] == "Yes-currently" %}
+{% if data.smokedRegularly == "Yes-currently" %}
   {% set pageHeading = (currentSize | capitalize) + " cigar smoking" %}
   {% set questionText = "Roughly how many " + sizePlural + " do you currently smoke in a normal " + timePeriod + "?" %}
 {% else %}
@@ -39,46 +39,46 @@
 {% endif %}
 
 {% block beforeContent %}
-{{ backLink({
-  href: "javascript:history.back();",
-  text: "Back"
-}) }}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
 {% endblock %}
 
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="quantity-answer" method="post" novalidate>
-      
-      <h1>{{ pageHeading }}</h1>
-      
-      <p>The question on the next page will ask if the number of {{ sizePlural }} you smoke has changed over time.</p>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="quantity-answer" method="post" novalidate>
 
-      {{ input({
-        "label": {
-          "text": questionText,
-          "classes": "nhsuk-label--m"
-        },
-        "hint": {
-          "text": "Give an estimate if you are not sure"
-        },
-        "id": "cigar" + currentSize + "Quantity",
-        "name": "cigar" + currentSize + "Quantity",
-        "classes": "nhsuk-input--width-3",
-        "suffix": {
-          "text": sizePlural
-        },
-        "value": data["cigar" + currentSize + "Quantity"],
-        "errorMessage": {
-          "text": "The number of " + sizePlural + " smoked must be at least 1"
-        } if data["cigar" + currentSize + "Quantity-error"]
-      }) }}
+        <h1 class="nhsuk-heading-l">{{ pageHeading }}</h1>
 
-      {{ button({
-        "text": "Continue"
-      }) }}
+        <p class="nhsuk-body">The question on the next page will ask if the number of {{ sizePlural }} you smoke has changed over time.</p>
 
-    </form>
+        {{ input({
+          label: {
+            text: questionText,
+            classes: "nhsuk-label--m"
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigar" + currentSize + "Quantity",
+          name: "cigar" + currentSize + "Quantity",
+          classes: "nhsuk-input--width-3",
+          suffix: {
+            text: sizePlural
+          },
+          value: data["cigar" + currentSize + "Quantity"],
+          errorMessage: {
+            text: "The number of " + sizePlural + " smoked must be at least 1"
+          } if data["cigar" + currentSize + "Quantity-error"]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}

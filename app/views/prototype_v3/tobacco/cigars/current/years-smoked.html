@@ -1,7 +1,7 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'input/macro.njk' import input %}
 
-{% set sizeName = (data['currentCigarSize'] | lower + " ") if data['currentCigarSize'] else "" %}
+{% set sizeName = (data.currentCigarSize | lower + " ") if data.currentCigarSize else "" %}
 
 {% block pageTitle %}
   Cigar smoking - NHS
@@ -13,9 +13,9 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="/prototype_v3/tobacco/cigars/current/years-smoked-answer" method="post">
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigars/current/years-smoked-answer" method="post">
 
         {{ input({
           label: {
@@ -38,7 +38,7 @@
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

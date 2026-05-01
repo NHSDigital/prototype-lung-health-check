@@ -5,60 +5,42 @@
 -->
 <!-- Extends the prototype kit template which in turn extends the NHS.UK frontend template -->
 {% extends "prototype-kit-template.njk" %}
-{% from "tag/macro.njk" import tag %}
-{% from "panel/macro.njk" import panel %}
 
 {% block head %}
  <!-- Add your custom CSS or Sass in /app/assets/sass/main.scss -->
 <link href="/assets/sass/main.css" rel="stylesheet">
-<style>
-  .nhsuk-phase-banner {
-    padding: 10px 0;
-    border-bottom: 1px solid #d8dde0;
-  }
-  .nhsuk-phase-banner__content {
-    display: flex;
-    align-items: center;
-  }
-  .nhsuk-phase-banner__content .nhsuk-tag {
-    margin-right: 10px;
-  }
-  .nhsuk-phase-banner__text {
-    margin: 0;
-  }
-</style>
 {% endblock %}
 
 <!-- Set the page title -->
 {% block pageTitle %}
-Check if you need a lung scan
+{{ serviceName }} - NHS
 {% endblock %}
 
 <!-- Edit the header -->
 <!-- Header code examples can be found at https://service-manual.nhs.uk/design-system/components/header -->
 {% block header %}
 {{ header({
-logo: {
-href: "/",
-ariaLabel: "Check if you need a lung scan"
-},
-service: {
-text: "Check if you need a lung scan",
-href: "/"
-},
-account: {
-items: [
-{
-text: "Alex Smith",
-href: "#",
-icon: true
-},
-{
-text: "Log out",
-href: "/prototype_v3/start-journey"
-}
-]
-} if data['logged-in']
+  logo: {
+    href: "/",
+    ariaLabel: "Check if you need a lung scan"
+  },
+  service: {
+    text: "Check if you need a lung scan",
+    href: "/"
+  },
+  account: {
+    items: [
+      {
+        text: "Alex Smith",
+        href: "#",
+        icon: true
+      },
+      {
+        text: "Log out",
+        href: "/prototype_v3/start-journey"
+      }
+    ]
+  } if data['logged-in']
 }) }}
 
 <!-- Phase banner (inside header block) -->
@@ -70,8 +52,7 @@ href: "/prototype_v3/start-journey"
         classes: "nhsuk-tag--blue"
       }) }}
       <p class="nhsuk-phase-banner__text nhsuk-body-s">
-  We are testing a new service – your <a class="nhsuk-link" href="https://feedback.digital.nhs.uk/jfe/form/SV_d4MPGuH486oxASW" target="_blank" rel="noopener noreferrer">feedback</a> will help us to improve it.
-</p>
+        We are testing a new service – your <a class="nhsuk-link" href="https://feedback.digital.nhs.uk/jfe/form/SV_d4MPGuH486oxASW" target="_blank" rel="noopener noreferrer">feedback</a> will help us to improve it.
       </p>
     </div>
   </div>
@@ -82,48 +63,46 @@ href: "/prototype_v3/start-journey"
 <!-- Footer code examples can be found at https://service-manual.nhs.uk/design-system/components/footer -->
 {% block footer %}
 {{ footer({
-meta: {
-items: [
-{
-href: "/prototype_v3/accessibility-statement",
-text: "Accessibility statement"
-},
-{
-href: "/prototype_v3/contact-us",
-text: "Contact us"
-},
-{
-href: "/prototype_v3/cookies",
-text: "Cookies"
-},
-{
-href: "/prototype_v3/privacy-policy",
-text: "Privacy policy"
-},
-{
-href: "/prototype_v3/terms-of-use",
-text: "Terms of use"
-}
-]
-}
+  meta: {
+    items: [
+      {
+        href: "/prototype_v3/accessibility-statement",
+        text: "Accessibility statement"
+      },
+      {
+        href: "/prototype_v3/contact-us",
+        text: "Contact us"
+      },
+      {
+        href: "/prototype_v3/cookies",
+        text: "Cookies"
+      },
+      {
+        href: "/prototype_v3/privacy-policy",
+        text: "Privacy policy"
+      },
+      {
+        href: "/prototype_v3/terms-of-use",
+        text: "Terms of use"
+      }
+    ]
+  }
 }) }}
 
-<div class="nhsuk-footer__testing-links" style="background-color: #f0f4f5; border-top: 1px solid #d8dde0;">
+<div class="nhsuk-footer__testing-links">
   <div class="nhsuk-width-container">
-    <div style="padding: 20px 0;">
-      <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 24px;">For testing</h3>
-      <ul class="nhsuk-footer__list" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 20px;">
-        <li class="nhsuk-footer__list-item" style="margin-bottom: 8px;">
-          <a class="nhsuk-footer__list-item-link" href="/prototype_v3/index-allpages" style="color: #000000; font-weight: bold;">Pages index</a>
-        </li>
-        <li class="nhsuk-footer__list-item" style="margin-bottom: 8px;">
-          <a class="nhsuk-footer__list-item-link" href="/prototype_v3/skip-to-tobacco" style="color: #000000; font-weight: bold;">Skip to tobacco - current smoker (testing)</a>
-        </li>
-        <li class="nhsuk-footer__list-item" style="margin-bottom: 8px;">
-          <a class="nhsuk-footer__list-item-link" href="/prototype_v3/skip-to-tobacco-former" style="color: #000000; font-weight: bold;">Skip to tobacco - former smoker (testing)</a>
-        </li>
-      </ul>
-    </div>
+    <h3 class="nhsuk-heading-m nhsuk-u-margin-top-5">For testing</h3>
+    <ul class="nhsuk-footer__list nhsuk-u-margin-bottom-5 nhsuk-u-padding-bottom-5">
+      <li class="nhsuk-footer__list-item">
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v3/index-allpages">Pages index</a>
+      </li>
+      <li class="nhsuk-footer__list-item">
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v3/skip-to-tobacco">Skip to tobacco - current smoker (testing)</a>
+      </li>
+      <li class="nhsuk-footer__list-item">
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v3/skip-to-tobacco-former">Skip to tobacco - former smoker (testing)</a>
+      </li>
+    </ul>
   </div>
 </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'input/macro.njk' import input %}
 {% block pageTitle %}
   Pipe smoking - NHS
@@ -10,9 +10,9 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="/prototype_v3/tobacco/pipe/current/years-smoked-answer" method="post">
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/pipe/current/years-smoked-answer" method="post">
 
         {{ input({
           label: {
@@ -35,7 +35,7 @@
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

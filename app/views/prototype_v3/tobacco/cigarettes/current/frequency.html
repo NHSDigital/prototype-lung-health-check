@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'radios/macro.njk' import radios %}
 {% block pageTitle %}
   How often do you smoke cigarettes? - NHS
@@ -10,14 +10,14 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="/prototype_v3/tobacco/cigarettes/current/frequency-answer" method="post">
-        
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigarettes/current/frequency-answer" method="post">
+
         {{ radios({
           idPrefix: "cigarettesCurrentFrequency",
           name: "cigarettesCurrentFrequency",
-        value: data["cigarettesCurrentFrequency"],
+          value: data.cigarettesCurrentFrequency,
           fieldset: {
             legend: {
               text: "How often do you smoke cigarettes?",
@@ -53,11 +53,11 @@
             }
           ]
         }) }}
-        
+
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

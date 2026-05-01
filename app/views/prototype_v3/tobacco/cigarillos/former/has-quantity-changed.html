@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'checkboxes/macro.njk' import checkboxes %}
 {% block pageTitle %}
   Did the number of cigarillos you normally smoke change over time? - NHS
@@ -10,17 +10,17 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="/prototype_v3/tobacco/cigarillos/former/has-quantity-changed-answer" method="post">
-        
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigarillos/former/has-quantity-changed-answer" method="post">
+
         {% set frequencyText = "a day" %}
         {% if data.cigarillosFormerFrequency == "Weekly" %}
           {% set frequencyText = "a week" %}
         {% elif data.cigarillosFormerFrequency == "Monthly" %}
           {% set frequencyText = "a month" %}
         {% endif %}
-        
+
         {{ checkboxes({
           idPrefix: "cigarillosFormerChanges",
           name: "cigarillosFormerChanges",
@@ -34,6 +34,7 @@
           hint: {
             text: "Select all that apply"
           },
+          values: data.cigarillosFormerChanges,
           items: [
             {
               value: "more",
@@ -53,11 +54,11 @@
             }
           ]
         }) }}
-        
+
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

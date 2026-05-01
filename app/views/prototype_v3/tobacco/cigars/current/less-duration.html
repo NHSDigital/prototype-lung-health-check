@@ -1,7 +1,7 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {# Get the current size being processed #}
-{% set currentSize = data["currentCigarSize"] or "small" %}
+{% set currentSize = data.currentCigarSize or "small" %}
 {% set sizeLower = currentSize | lower %}
 
 {# Set size-specific text #}
@@ -33,47 +33,47 @@
 {# Create the fewer text #}
 {% set fewerText = fewerQuantity + " " + (sizePlural if fewerQuantity != "1" else sizePlural | replace("cigars", "cigar")) + " " + timePeriod %}
 
-{% if data["smokedRegularly"] == "Yes-currently" %}
+{% if data.smokedRegularly == "Yes-currently" %}
   {% set questionText = "Roughly how many years did you smoke " + fewerText + "?" %}
 {% else %}
   {% set questionText = "Roughly how many years did you smoke " + fewerText + "?" %}
 {% endif %}
 
 {% block beforeContent %}
-{{ backLink({
-  href: "javascript:history.back();",
-  text: "Back"
-}) }}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
 {% endblock %}
 
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="less-duration-answer" method="post" novalidate>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="less-duration-answer" method="post" novalidate>
 
-      {{ input({
-        "label": {
-          "text": questionText,
-          "classes": "nhsuk-label--l",
-          "isPageHeading": true
-        },
-        "hint": {
-          "text": "Give an estimate if you are not sure"
-        },
-        "id": "cigar" + currentSize + "FewerDuration",
-        "name": "cigar" + currentSize + "FewerDuration",
-        "classes": "nhsuk-input--width-3",
-        "suffix": {
-          "text": "years"
-        },
-        "value": data["cigar" + currentSize + "FewerDuration"]
-      }) }}
+        {{ input({
+          label: {
+            text: questionText,
+            classes: "nhsuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigar" + currentSize + "FewerDuration",
+          name: "cigar" + currentSize + "FewerDuration",
+          classes: "nhsuk-input--width-3",
+          suffix: {
+            text: "years"
+          },
+          value: data["cigar" + currentSize + "FewerDuration"]
+        }) }}
 
-      {{ button({
-        "text": "Continue"
-      }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
 
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}

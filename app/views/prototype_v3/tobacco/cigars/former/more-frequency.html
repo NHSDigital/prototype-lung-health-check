@@ -1,7 +1,7 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {# Get the current size being processed #}
-{% set currentSize = data["currentCigarSize"] or "small" %}
+{% set currentSize = data.currentCigarSize or "small" %}
 {% set sizeLower = currentSize | lower %}
 
 {# Set size-specific text #}
@@ -33,68 +33,69 @@
 {# Create the baseline text #}
 {% set baselineText = baselineQuantity + " " + (sizePlural if baselineQuantity != "1" else sizePlural | replace("cigars", "cigar")) + " " + timePeriod %}
 
-{% if data["smokedRegularly"] == "Yes-currently" %}
+{% if data.smokedRegularly == "Yes-currently" %}
   {% set questionText = "When you smoked more than " + baselineText + ", how often did you smoke " + sizePlural + "?" %}
 {% else %}
   {% set questionText = "When you smoked more than " + baselineText + ", how often did you smoke " + sizePlural + "?" %}
 {% endif %}
 
 {% block beforeContent %}
-{{ backLink({
-  href: "javascript:history.back();",
-  text: "Back"
-}) }}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
 {% endblock %}
 
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="more-frequency-answer" method="post" novalidate>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="more-frequency-answer" method="post" novalidate>
 
-      {{ radios({
-        "idPrefix": "cigar" + currentSize + "MoreFrequency",
-        "name": "cigar" + currentSize + "MoreFrequency",
-        "fieldset": {
-          "legend": {
-            "text": questionText,
-            "classes": "nhsuk-fieldset__legend--l",
-            "isPageHeading": true
-          }
-        },
-        "items": [
-          {
-            "value": "Daily",
-            "text": "Daily"
-          },
-          {
-            "value": "Weekly",
-            "text": "Weekly",
-            "hint": {
-              "text": "For example, on the weekend"
+        {{ radios({
+          idPrefix: "cigar" + currentSize + "MoreFrequency",
+          name: "cigar" + currentSize + "MoreFrequency",
+          value: data["cigar" + currentSize + "MoreFrequency"],
+          fieldset: {
+            legend: {
+              text: questionText,
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
             }
           },
-          {
-            "value": "Monthly",
-            "text": "Monthly",
-            "hint": {
-              "text": "Select this option if you smoked at least once a month"
+          items: [
+            {
+              value: "Daily",
+              text: "Daily"
+            },
+            {
+              value: "Weekly",
+              text: "Weekly",
+              hint: {
+                text: "For example, on the weekend"
+              }
+            },
+            {
+              value: "Monthly",
+              text: "Monthly",
+              hint: {
+                text: "Select this option if you smoked at least once a month"
+              }
+            },
+            {
+              value: "Yearly",
+              text: "Yearly",
+              hint: {
+                text: "For example, 2 to 3 times a year or fewer"
+              }
             }
-          },
-          {
-            "value": "Yearly",
-            "text": "Yearly",
-            "hint": {
-              "text": "For example, 2 to 3 times a year or fewer"
-            }
-          }
-        ]
-      }) }}
+          ]
+        }) }}
 
-      {{ button({
-        "text": "Continue"
-      }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
 
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}

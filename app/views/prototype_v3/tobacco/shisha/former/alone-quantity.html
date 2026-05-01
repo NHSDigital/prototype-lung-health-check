@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'input/macro.njk' import input %}
 
 {% if data.shishaFormerAloneFrequency == "Daily" %}
@@ -21,10 +21,10 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="/prototype_v3/tobacco/shisha/former/alone-quantity-answer" method="post">
-        
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/shisha/former/alone-quantity-answer" method="post">
+
         {{ input({
           label: {
             text: "Roughly, how many hours a " + frequencyText + " did you normally smoke shisha for by yourself?",
@@ -42,11 +42,11 @@
           },
           value: data.shishaFormerAloneQuantity
         }) }}
-        
+
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

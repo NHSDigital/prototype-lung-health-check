@@ -1,13 +1,13 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {# Get current size being processed #}
-{% set currentSize = data["currentCigarSize"] or "Small" %}
+{% set currentSize = data.currentCigarSize or "Small" %}
 
 {# Get baseline quantity for THIS size #}
 {% set baselineQuantity = data["cigar" + currentSize + "Quantity"] %}
 
 {# Get frequency (shared across all sizes) #}
-{% set frequency = data["cigarsCurrentFrequency"] or data["cigarsFormerFrequency"] %}
+{% set frequency = data.cigarsCurrentFrequency or data.cigarsFormerFrequency %}
 
 {# Set frequency-based time period #}
 {% if frequency == "Daily" %}
@@ -41,7 +41,7 @@
   {% set baselineText = baselineQuantity + " " + sizePlural + " " + timePeriod %}
 {% endif %}
 
-{% if data["smokedRegularly"] == "Yes-currently" %}
+{% if data.smokedRegularly == "Yes-currently" %}
   {% set questionText = "Has the number of " + sizePlural + " you normally smoke changed over time?" %}
   {% set fieldName = "cigar" + currentSize + "Changes" %}
 {% else %}
@@ -50,55 +50,56 @@
 {% endif %}
 
 {% block beforeContent %}
-{{ backLink({
-  href: "javascript:history.back();",
-  text: "Back"
-}) }}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
 {% endblock %}
 
 {% block content %}
-<div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-two-thirds">
-    <form action="has-quantity-changed-answer" method="post" novalidate>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="has-quantity-changed-answer" method="post" novalidate>
 
-      {{ checkboxes({
-        "idPrefix": fieldName,
-        "name": fieldName,
-        "fieldset": {
-          "legend": {
-            "text": questionText,
-            "classes": "nhsuk-fieldset__legend--l",
-            "isPageHeading": true
-          }
-        },
-        "hint": {
-          "text": "Select all that apply"
-        },
-        "items": [
-          {
-            "value": "more",
-            "text": "Yes, I used to smoke more than " + baselineText
+        {{ checkboxes({
+          idPrefix: fieldName,
+          name: fieldName,
+          fieldset: {
+            legend: {
+              text: questionText,
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
           },
-          {
-            "value": "less",
-            "text": "Yes, I used to smoke fewer than " + baselineText
+          hint: {
+            text: "Select all that apply"
           },
-          {
-            "divider": "or"
-          },
-          {
-            "value": "No",
-            "text": "No, it has not changed",
-            "behaviour": "exclusive"
-          }
-        ]
-      }) }}
+          values: data[fieldName],
+          items: [
+            {
+              value: "more",
+              text: "Yes, I used to smoke more than " + baselineText
+            },
+            {
+              value: "less",
+              text: "Yes, I used to smoke fewer than " + baselineText
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "No",
+              text: "No, it has not changed",
+              behaviour: "exclusive"
+            }
+          ]
+        }) }}
 
-      {{ button({
-        "text": "Continue"
-      }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
 
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}

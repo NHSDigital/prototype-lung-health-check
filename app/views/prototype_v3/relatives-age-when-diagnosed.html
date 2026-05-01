@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% block pageTitle %}
   If your relatives were under 60 when they were diagnosed - NHS
 {% endblock %}
@@ -9,15 +9,15 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<h2>If your relatives were under 60 when they were diagnosed</h2>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <h1 class="nhsuk-heading-l">If your relatives were under 60 when they were diagnosed</h1>
 
-<p>We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.</p>
+      <p class="nhsuk-body">We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.</p>
 
-<p>If you do not know or cannot remember, select 'I do not know'.</p>
+      <p class="nhsuk-body">If you do not know or cannot remember, select 'I do not know'.</p>
 
-<form action="relatives-age-answer" method="post">
+      <form action="relatives-age-answer" method="post">
         {{ radios({
           idPrefix: "relativeAge",
           name: "relativeAge",
@@ -47,7 +47,7 @@
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

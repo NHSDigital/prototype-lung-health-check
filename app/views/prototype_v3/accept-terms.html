@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% block pageTitle %}
   {% if data['accept-terms-error'] %}Error: {% endif %}Accept terms of use - NHS
@@ -13,38 +13,39 @@
 
       {% if data['accept-terms-error'] %}
         {{ errorSummary({
-          "titleText": "There is a problem",
-          "errorList": [
+          titleText: "There is a problem",
+          errorList: [
             {
-              "text": "You must accept the terms of use to continue",
-              "href": "#accept-terms"
+              text: "Aggree to the terms of use to continue",
+              href: "#accept-terms"
             }
           ]
         }) }}
       {% endif %}
 
-      <h1>Accept terms of use</h1>
+      <h1 class="nhsuk-heading-l">Accept terms of use</h1>
 
-      <p>To continue, confirm that you have read and agree to the <a href="/prototype_v3/terms-of-use" target="_blank">NHS Check if you need a lung scan terms of use (opens in new tab)</a></p>
+      <p class="nhsuk-body">To continue, confirm that you have read and agree to the <a href="/prototype_v3/terms-of-use" target="_blank" class="nhsuk-link">NHS {{ serviceName }} terms of use (opens in new tab)</a></p>
 
       <form action="/prototype_v3/accept-terms" method="post" novalidate>
 
         {{ checkboxes({
-          "idPrefix": "accept-terms",
-          "name": "accept-terms",
-          "errorMessage": {
-            "text": "Agree to the terms of use to continue"
+          idPrefix: "accept-terms",
+          name: "accept-terms",
+          errorMessage: {
+            text: "Agree to the terms of use to continue"
           } if data['accept-terms-error'],
-          "items": [
+          values: data["accept-terms"],
+          items: [
             {
-              "value": "yes",
-              "text": "I agree"
+              value: "yes",
+              text: "I agree"
             }
           ]
         }) }}
 
         {{ button({
-          "text": "Continue"
+          text: "Continue"
         }) }}
 
       </form>

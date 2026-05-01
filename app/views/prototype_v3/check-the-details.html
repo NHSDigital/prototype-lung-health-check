@@ -1,7 +1,6 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% set pageName = "Are these details correct?" %}
-
 
 {% block beforeContent %}
   {{ backLink({
@@ -13,70 +12,68 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
       <form action="your-gender-identity" method="post" novalidate="true">
- <h2 class="nhsuk-heading-l">Check the information we hold about you</h2>
- <p>These are details held in your NHS Account.</p>
+        <h2 class="nhsuk-heading-l">Check the information we hold about you</h2>
+        <p class="nhsuk-body">These are details held in your NHS Account.</p>
 
-      {{ summaryList({
-        rows: [
-          {
-            key: {
-              text: "Name"
+        {{ summaryList({
+          rows: [
+            {
+              key: {
+                text: "Name"
+              },
+              value: {
+                text: "Jane Smith"
+              }
             },
-            value: {
-              text: "Jane Smith"
+            {
+              key: {
+                text: "Date of birth"
+              },
+              value: {
+                html: "20 June 1965"
+              }
+            },
+            {
+              key: {
+                text: "NHS number"
+              },
+              value: {
+                text: "415 514 1993"
+              }
+            }
+          ]
+        }) }}
+
+        <br>
+
+        {{ radios({
+          idPrefix: "are-details-correct",
+          name: "are-these-details-correct",
+          value: data["are-these-details-correct"],
+          fieldset: {
+            legend: {
+              text: "Are these details correct?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: true
             }
           },
-          {
-            key: {
-              text: "Date of birth"
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
             },
-            value: {
-              html: "20 June 1965"
+            {
+              value: "no",
+              text: "No"
             }
-          },
-          {
-            key: {
-              text: "NHS number"
-            },
-            value: {
-              text: "415 514 1993"
-            }
-          }
-        ]
-      }) }}
+          ]
+        }) }}
 
+        {{ button({
+          text: "Continue"
+        }) }}
 
-
-<br>
-
-
-{{ radios({
-  idPrefix: "are-details-correct",
-  name: "are-these-details-correct",
-  fieldset: {
-    legend: {
-      text: "Are these details correct?",
-      classes: "nhsuk-fieldset__legend--m",
-      isPageHeading: true
-    }
-  },
-  items: [
-    {
-      value: "yes",
-      text: "Yes"
-    },
-    {
-      value: "no",
-      text: "No"
-    }
-  ]
-}) }}
-
-{{ button({
-  text: "Continue"
-}) }}
-        
-              </form>
+      </form>
     </div>
   </div>
-  {% endblock %}
+{% endblock %}

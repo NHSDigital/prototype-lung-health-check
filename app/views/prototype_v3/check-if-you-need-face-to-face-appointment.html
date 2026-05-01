@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% block pageTitle %}
   Check if you need a face-to-face appointment - NHS
@@ -17,21 +17,23 @@
 
       <form action="who-should-not-use-answer" method="post">
 
-        <h2>Check if you need a face-to-face appointment</h2>
+        <h1 class="nhsuk-heading-l">Check if you need a face-to-face appointment</h1>
 
-        <p>This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.</p>
+        <p class="nhsuk-body">This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.</p>
 
-        <p>You need to do your questionnaire in person, not online, if you:</p>
+        {% set insetTextHtml %}
+          <p class="nhsuk-body">You need to do your questionnaire in person, not online, if you:</p>
+
+          <ul class="nhsuk-list nhsuk-list--bullet">
+            <li>have a condition that affects your height</li>
+            <li>have had a limb amputation, or were born with a limb difference</li>
+            <li>have been diagnosed with an eating disorder, or think you may have one</li>
+            <li>are pregnant</li>
+          </ul>
+        {% endset %}
 
         {{ insetText({
-          html: "
-            <ul>
-              <li>have a condition that affects your height</li>
-              <li>have had a limb amputation, or were born with a limb difference</li>
-              <li>have been diagnosed with an eating disorder, or think you may have one</li>
-              <li>are pregnant</li>
-            </ul>
-          "
+          html: insetTextHtml
         }) }}
 
         {{ radios({

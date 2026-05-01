@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'input/macro.njk' import input %}
 {% block pageTitle %}
   When you smoked fewer cigarettes - NHS
@@ -10,10 +10,10 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="/prototype_v3/tobacco/cigarettes/former/less-duration-answer" method="post">
-        
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigarettes/former/less-duration-answer" method="post">
+
         {{ input({
           label: {
             text: "Roughly how many years did you smoke " + data.cigarettesFormerLessQuantity + " cigarettes a day?",
@@ -31,11 +31,11 @@
           },
           value: data.cigarettesFormerLessDuration
         }) }}
-        
+
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

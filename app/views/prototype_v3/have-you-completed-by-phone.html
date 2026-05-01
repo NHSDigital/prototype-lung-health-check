@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% block pageTitle %}
   Confirm if you have completed a lung cancer risk questionnaire by phone - NHS
 {% endblock %}
@@ -9,41 +9,48 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<h2>Confirm if you have completed a lung cancer risk questionnaire by phone</h2>
-<p>If you have already completed a questionnaire about your lung health or lung cancer risk by phone you do not need to test the online service. This is because the online service asks the same questions.</p>
-<p>The questionnaire would have asked you questions about:</p>
-<ul class="nhsuk-list nhsuk-list--bullet">
-<li>your height and weight</li>
-<li>your ethnicity</li>
-<li>your education</li>
-<li>if you have ever had a cancer diagnosis</li>
-<li>if your parents, siblings, or children have ever had a lung cancer diagnosis</li>
-<li>your smoking habits</li>
-</ul>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <h1 class="nhsuk-heading-l">Confirm if you have completed a lung cancer risk questionnaire by phone</h1>
+      <p class="nhsuk-body">If you have already completed a questionnaire about your lung health or lung cancer risk by phone you do not need to test the online service. This is because the online service asks the same questions.</p>
+      <p class="nhsuk-body">The questionnaire would have asked you questions about:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>your height and weight</li>
+        <li>your ethnicity</li>
+        <li>your education</li>
+        <li>if you have ever had a cancer diagnosis</li>
+        <li>if your parents, siblings, or children have ever had a lung cancer diagnosis</li>
+        <li>your smoking habits</li>
+      </ul>
 
-<h2 class="nhsuk-heading-m">Have you previously completed a lung cancer risk questionnaire by phone?</h2>
+      <form action="have-you-completed-by-phone-answer" method="post">
 
-<form method="post" action="have-you-completed-by-phone-answer">
-  {{ radios({
-    idPrefix: "completedByPhone",
-    name: "completedByPhone",
-    items: [
-      {
-        value: "Yes",
-        text: "Yes"
-      },
-      {
-        value: "No",
-        text: "No"
-      }
-    ]
-  }) }}
-  {{ button({
-    text: "Continue"
-  }) }}
-</form>
-</div>
-</div>
+        {{ radios({
+          idPrefix: "completedByPhone",
+          name: "completedByPhone",
+          fieldset: {
+            legend: {
+              text: "Have you previously completed a lung cancer risk questionnaire by phone?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          value: data.completedByPhone,
+          items: [
+            {
+              value: "Yes",
+              text: "Yes"
+            },
+            {
+              value: "No",
+              text: "No"
+            }
+          ]
+        }) }}
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
 {% endblock %}

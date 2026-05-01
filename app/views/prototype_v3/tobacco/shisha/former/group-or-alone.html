@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'checkboxes/macro.njk' import checkboxes %}
 {% block pageTitle %}
   Shisha smoking - NHS
@@ -10,15 +10,15 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
 
-<h1>Smoking shisha in a group or by yourself</h1>
+      <h1 class="nhsuk-heading-l">Smoking shisha in a group or by yourself</h1>
 
 
-<p>If you smoked by yourself you are likely to have smoked more tobacco than if you shared a pipe in a group session.</p>
+      <p class="nhsuk-body">If you smoked by yourself you are likely to have smoked more tobacco than if you shared a pipe in a group session.</p>
 
-<form action="/prototype_v3/tobacco/shisha/former/group-or-alone-answer" method="post">
+      <form action="/prototype_v3/tobacco/shisha/former/group-or-alone-answer" method="post">
 
         {{ checkboxes({
           idPrefix: "shishaFormerGroupOrAlone",
@@ -32,6 +32,7 @@
           hint: {
             text: "Select all that apply"
           },
+          values: data.shishaFormerGroupOrAlone,
           items: [
             {
               value: "Group",
@@ -47,7 +48,7 @@
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

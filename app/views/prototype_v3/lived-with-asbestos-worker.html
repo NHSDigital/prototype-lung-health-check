@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'details/macro.njk' import details %}
 {% block pageTitle %}
   Tell us if you ever lived with anyone who worked with asbestos - NHS
@@ -10,27 +10,29 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-<form action="diagnosed-cancer " method="post">
-<h2>Tell us if you ever lived with anyone who worked with asbestos</h2>
-<p>If you lived with someone who worked with asbestos you may have been exposed to asbestos. For example, if you washed the clothes they worked in.</p>
-<p>Someone might have worked with asbestos if they worked in an industry such as building or construction, particularly from the 1950s to the 1990s.</p>
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="diagnosed-cancer " method="post">
+        <h1 class="nhsuk-heading-l">Tell us if you ever lived with anyone who worked with asbestos</h1>
+        <p class="nhsuk-body">If you lived with someone who worked with asbestos you may have been exposed to asbestos. For example, if you washed the clothes they worked in.</p>
+        <p class="nhsuk-body">Someone might have worked with asbestos if they worked in an industry such as building or construction, particularly from the 1950s to the 1990s.</p>
 
-{{ details({
-  summaryText: "What is asbestos?",
-  html: "
-<p>Asbestos was used in a number of building materials and products. For example:</p>
-<ul class='nhsuk-list nhsuk-list--bullet'>
-<li>boilers and pipes</li>
-<li>car brakes</li>
-<li>cement for roofing sheets</li>
-<li>floor tiles</li>
-<li>insulating board to protect buildings and ships against fire</li>
-</ul>
-<p>If you lived with someone who worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.</p>
-  "
-}) }}
+        {% set detailsHtml %}
+          <p class="nhsuk-body">Asbestos was used in a number of building materials and products. For example:</p>
+          <ul class="nhsuk-list nhsuk-list--bullet">
+            <li>boilers and pipes</li>
+            <li>car brakes</li>
+            <li>cement for roofing sheets</li>
+            <li>floor tiles</li>
+            <li>insulating board to protect buildings and ships against fire</li>
+          </ul>
+          <p class="nhsuk-body">If you lived with someone who worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.</p>
+        {% endset %}
+
+        {{ details({
+          summaryText: "What is asbestos?",
+          html: detailsHtml
+        }) }}
         {{ radios({
           idPrefix: "livedWithAsbestosWorker",
           name: "livedWithAsbestosWorker",
@@ -56,7 +58,7 @@
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}

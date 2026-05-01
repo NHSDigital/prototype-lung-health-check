@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% from 'input/macro.njk' import input %}
 {% block pageTitle %}
   Shisha smoking - NHS
@@ -10,14 +10,14 @@
   }) }}
 {% endblock %}
 {% block content %}
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
 
-<h1>Shisha smoking</h1>
+      <h1 class="nhsuk-heading-l">Shisha smoking</h1>
 
-<p>We only need to know if you smoked shisha regularly. For example, if you smoked on a monthly basis for a year or longer.</p>
+      <p class="nhsuk-body">We only need to know if you smoked shisha regularly. For example, if you smoked on a monthly basis for a year or longer.</p>
 
-<form action="/prototype_v3/tobacco/shisha/former/years-smoked-answer" method="post">
+      <form action="/prototype_v3/tobacco/shisha/former/years-smoked-answer" method="post">
 
         {{ input({
           label: {
@@ -39,7 +39,7 @@
         {{ button({
           text: "Continue"
         }) }}
-</form>
-</div>
-</div>
+      </form>
+    </div>
+  </div>
 {% endblock %}
