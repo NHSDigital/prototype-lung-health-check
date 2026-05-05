@@ -1,0 +1,105 @@
+{% extends "prototype_v3/views/layouts/main.html" %}
+
+{# Get current size being processed #}
+{% set currentSize = data.currentCigarSize or "Small" %}
+
+{# Get baseline quantity for THIS size #}
+{% set baselineQuantity = data["cigar" + currentSize + "Quantity"] %}
+
+{# Get frequency (shared across all sizes) #}
+{% set frequency = data.cigarsCurrentFrequency or data.cigarsFormerFrequency %}
+
+{# Set frequency-based time period #}
+{% if frequency == "Daily" %}
+  {% set timePeriod = "a day" %}
+{% elif frequency == "Weekly" %}
+  {% set timePeriod = "a week" %}
+{% elif frequency == "Monthly" %}
+  {% set timePeriod = "a month" %}
+{% elif frequency == "Yearly" %}
+  {% set timePeriod = "a year" %}
+{% else %}
+  {% set timePeriod = "a week" %}
+{% endif %}
+
+{# Set size-specific text #}
+{% set sizeLower = currentSize | lower %}
+{% if sizeLower == "small" %}
+  {% set sizePlural = "small cigars" %}
+{% elif sizeLower == "medium" %}
+  {% set sizePlural = "medium cigars" %}
+{% elif sizeLower == "large" %}
+  {% set sizePlural = "large cigars" %}
+{% else %}
+  {% set sizePlural = "cigars" %}
+{% endif %}
+
+{# Create the baseline text - handle singular/plural #}
+{% if baselineQuantity == "1" %}
+  {% set baselineText = baselineQuantity + " " + sizeLower + " cigar " + timePeriod %}
+{% else %}
+  {% set baselineText = baselineQuantity + " " + sizePlural + " " + timePeriod %}
+{% endif %}
+
+{% if data.smokedRegularly == "Yes-currently" %}
+  {% set questionText = "Has the number of " + sizePlural + " you normally smoke changed over time?" %}
+  {% set fieldName = "cigarsCurrentChanges" %}
+{% else %}
+  {% set questionText = "Did the number of " + sizePlural + " you normally smoke change over time?" %}
+  {% set fieldName = "cigarsFormerChanges" %}
+{% endif %}
+
+{% block beforeContent %}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="has-quantity-changed-answer" method="post" accept-charset="utf-8" novalidate>
+
+        {{ checkboxes({
+          idPrefix: fieldName,
+          name: fieldName,
+          fieldset: {
+            legend: {
+              text: questionText,
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          values: data[fieldName],
+          items: [
+            {
+              value: "more",
+              text: "Yes, I smoked more than " + baselineText
+            },
+            {
+              value: "less",
+              text: "Yes, I smoked fewer than " + baselineText
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "No",
+              text: "No, it did not change",
+              behaviour: "exclusive"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

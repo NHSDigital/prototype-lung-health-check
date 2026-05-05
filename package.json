@@ -9,8 +9,8 @@
     "lint:markdown:fix": "markdownlint '**/*.md' --fix",
     "lint:scripts": "standard",
     "lint:scripts:fix": "standard --fix",
-    "lint:styles": "stylelint 'app/assets/sass/**/*.scss' 'app/views/_components/**/*.scss'",
-    "lint:styles:fix": "stylelint 'app/assets/sass/**/*.scss' 'app/views/_components/**/*.scss' --fix"
+    "lint:styles": "stylelint 'app/assets/sass/**/*.scss' 'app/prototype_v*/_components/**/*.scss' 'app/prototype_v*/views/_components/**/*.scss'",
+    "lint:styles:fix": "stylelint 'app/assets/sass/**/*.scss' 'app/prototype_v*/_components/**/*.scss' 'app/prototype_v*/views/_components/**/*.scss' --fix"
   },
   "author": "https://github.com/nhsdigital/",
   "license": "MIT",

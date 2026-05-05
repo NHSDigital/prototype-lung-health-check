@@ -1,0 +1,50 @@
+{% extends "prototype_v3/views/layouts/main.html" %}
+
+{% set sizeName = (data.currentCigarSize | lower + " ") if data.currentCigarSize else "" %}
+
+{% block pageTitle %}
+  Do you currently smoke {{ sizeName }}cigars - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigars/do-you-currently-smoke-answer" method="post" accept-charset="utf-8" novalidate>
+
+        {{ radios({
+          idPrefix: "currentlySmokesCigars",
+          name: "currentlySmokesCigars",
+          value: data.currentlySmokesCigars,
+          fieldset: {
+            legend: {
+              text: "Do you currently smoke " + sizeName + "cigars?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          items: [
+            {
+              value: "Yes",
+              text: "Yes"
+            },
+            {
+              value: "No",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

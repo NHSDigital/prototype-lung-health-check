@@ -1,0 +1,115 @@
+{% extends "prototype_v3/views/layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if data.weightErrors %}Error: {% endif %}Enter your weight - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% if data.weightErrors %}
+        {{ errorSummary({
+          titleText: "There is a problem",
+          errorList: [
+            {
+              text: data.weightErrors.weight if data.weightErrors.weight else (data.weightErrors.stone if data.weightErrors.stone else data.weightErrors.pounds),
+              href: "#weight-" + ("kilograms" if data.weightUnit != "imperial" else ("stone" if data.weightErrors.stone else "pounds"))
+            }
+          ]
+        }) }}
+      {% endif %}
+
+      <form action="enter-your-weight-answer" method="post" accept-charset="utf-8" novalidate>
+
+        <h1 class="nhsuk-heading-l">Enter your weight</h1>
+
+        <p class="nhsuk-body">An accurate measurement is important. </p>
+
+        <p class="nhsuk-body">If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.</p>
+
+        {% if data.weightUnit == "imperial" %}
+          <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-label--m">
+              How much do you weigh?
+            </legend>
+            {% if data.weightErrors.weight %}
+              <span class="nhsuk-error-message" id="weight-error">
+                <span class="nhsuk-u-visually-hidden">Error:</span> {{ data.weightErrors.weight }}
+                  </span>
+                {% endif %}
+                <div class="nhsuk-grid-row">
+                  <div class="nhsuk-grid-column-one-quarter">
+                    <div class="nhsuk-form-group{% if data.weightErrors.stone %} nhsuk-form-group--error{% endif %}">
+                      <label class="nhsuk-label" for="weight-stone">
+                        Stone
+                      </label>
+                      {% if data.weightErrors.stone %}
+                        <span class="nhsuk-error-message" id="weight-stone-error">
+                          <span class="nhsuk-u-visually-hidden">Error:</span> {{ data.weightErrors.stone }}
+                            </span>
+                          {% endif %}
+                          <div class="nhsuk-input__wrapper">
+                            <input class="nhsuk-input nhsuk-input--width-4{% if data.weightErrors.stone or data.weightErrors.weight %} nhsuk-input--error{% endif %}" id="weight-stone" name="weight[stone]" type="text" value="{{ data.weight.stone }}"{% if data.weightErrors.stone %} aria-describedby="weight-stone-error"{% endif %}>
+                            <div class="nhsuk-input__suffix" aria-hidden="true">st</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="nhsuk-grid-column-one-quarter">
+                        <div class="nhsuk-form-group{% if data.weightErrors.pounds %} nhsuk-form-group--error{% endif %}">
+                          <label class="nhsuk-label" for="weight-pounds">
+                            Pounds
+                          </label>
+                          {% if data.weightErrors.pounds %}
+                            <span class="nhsuk-error-message" id="weight-pounds-error">
+                              <span class="nhsuk-u-visually-hidden">Error:</span> {{ data.weightErrors.pounds }}
+                                </span>
+                              {% endif %}
+                              <div class="nhsuk-input__wrapper">
+                                <input class="nhsuk-input nhsuk-input--width-4{% if data.weightErrors.pounds or data.weightErrors.weight %} nhsuk-input--error{% endif %}" id="weight-pounds" name="weight[pounds]" type="text" value="{{ data.weight.pounds }}"{% if data.weightErrors.pounds %} aria-describedby="weight-pounds-error"{% endif %}>
+                                <div class="nhsuk-input__suffix" aria-hidden="true">lb</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                      <input type="hidden" name="weightUnit" value="imperial">
+                      <p class="nhsuk-body"><a href="./enter-your-weight?weightUnit=metric&weight[stone]=&weight[pounds]=" class="nhsuk-link">Switch to kilograms</a></p>
+                    {% else %}
+                      <div class="nhsuk-form-group{% if data.weightErrors.weight %} nhsuk-form-group--error{% endif %}">
+                        <label class="nhsuk-label nhsuk-label--m" for="weight-kilograms">
+                          How much do you weigh?
+                        </label>
+                        <div class="nhsuk-hint" id="weight-hint">
+                          Kilograms
+                        </div>
+                        {% if data.weightErrors.weight %}
+                          <span class="nhsuk-error-message" id="weight-error">
+                            <span class="nhsuk-u-visually-hidden">Error:</span> {{ data.weightErrors.weight }}
+                              </span>
+                            {% endif %}
+                            <div class="nhsuk-input__wrapper">
+                              <input class="nhsuk-input nhsuk-input--width-4{% if data.weightErrors.weight %} nhsuk-input--error{% endif %}" id="weight-kilograms" name="weight[kilograms]" type="text" value="{{ data.weight.kilograms }}" aria-describedby="weight-hint{% if data.weightErrors.weight %} weight-error{% endif %}">
+                              <div class="nhsuk-input__suffix" aria-hidden="true">kg</div>
+                            </div>
+                          </div>
+                          <input type="hidden" name="weightUnit" value="metric">
+                          <p class="nhsuk-body"><a href="./enter-your-weight?weightUnit=imperial&weight[kilograms]=" class="nhsuk-link">Switch to stone and pounds</a></p>
+                        {% endif %}
+
+                        {{ button({
+                          text: "Continue"
+                        }) }}
+
+                      </form>
+
+                    </div>
+                  </div>
+                {% endblock %}

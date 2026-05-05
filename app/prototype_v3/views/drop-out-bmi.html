@@ -1,0 +1,54 @@
+{% extends "prototype_v3/views/layouts/main.html" %}
+
+{% block pageTitle %}
+  Call us to book an appointment - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {{ panel({
+        titleText: "Call us to book an appointment"
+      }) }}
+
+      <p class="nhsuk-body">Call us on <a href="tel:02038351600" class="nhsuk-link">020 3835 1600</a> to book an appointment. If we do not hear from you in 2 weeks we will call you.</p>
+
+      <p class="nhsuk-body">At your face to face appointment a health professional will measure your height and weight. They will also ask you questions to {{ serviceName | lower }}.</p>
+
+      <p class="nhsuk-body"><strong>Phone lines are open:</strong><br>
+        Monday to Friday 8am to 8pm<br>
+        Saturdays 8am to 1pm</p>
+
+        {% set cardDescriptionHtml %}
+          <p class="nhsuk-body">You have any of the following symptoms:</p>
+          <ul class="nhsuk-list">
+            <li>a cough that does not go away after 3 weeks</li>
+            <li>a long-standing cough that gets worse</li>
+            <li><a href="https://www.nhs.uk/conditions/chest-infection/" class="nhsuk-link">chest infections</a> that keep coming back</li>
+            <li><a href="https://www.nhs.uk/conditions/coughing-up-blood/" class="nhsuk-link">coughing up blood</a></li>
+            <li>an ache or pain when breathing or coughing</li>
+            <li>persistent <a href="https://www.nhs.uk/conditions/shortness-of-breath/" class="nhsuk-link">breathlessness</a></li>
+            <li>persistent tiredness or lack of energy</li>
+            <li>loss of appetite or unexplained weight loss</li>
+          </ul>
+          <p class="nhsuk-body">They could be <a href="https://www.nhs.uk/conditions/lung-cancer/symptoms/" class="nhsuk-link">symptoms of lung cancer</a>. Your GP will ask about your general health and your symptoms.</p>
+          <p class="nhsuk-body">You may be asked to have a <a href="https://www.nhs.uk/conditions/blood-tests/" class="nhsuk-link">blood test</a> to rule out some of the possible causes of your symptoms, such as a <a href="https://www.nhs.uk/conditions/chest-infection/" class="nhsuk-link">chest infection</a>.</p>
+        {% endset %}
+
+        {{ card({
+          type: "non-urgent",
+          heading: "Speak to a GP if:",
+          descriptionHtml: cardDescriptionHtml
+        }) }}
+
+      </div>
+    </div>
+  {% endblock %}

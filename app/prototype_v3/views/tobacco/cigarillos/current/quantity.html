@@ -1,0 +1,66 @@
+{% extends "prototype_v3/views/layouts/main.html" %}
+{% from 'input/macro.njk' import input %}
+{% block pageTitle %}
+  Cigarillo smoking - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigarillos/current/quantity-answer" method="post" accept-charset="utf-8" novalidate>
+
+        <h1 class="nhsuk-heading-l">Cigarillo smoking</h1>
+
+        {% set frequencyText = "a day" %}
+        {% if data.cigarillosCurrentFrequency == "Weekly" %}
+          {% set frequencyText = "a week" %}
+        {% elif data.cigarillosCurrentFrequency == "Monthly" %}
+          {% set frequencyText = "a month" %}
+        {% elif data.cigarillosCurrentFrequency == "Yearly" %}
+          {% set frequencyText = "a year" %}
+        {% endif %}
+
+        {% set frequencyTextInNormal = "in a normal day" %}
+        {% if data.cigarillosCurrentFrequency == "Weekly" %}
+          {% set frequencyTextInNormal = "in a normal week" %}
+        {% elif data.cigarillosCurrentFrequency == "Monthly" %}
+          {% set frequencyTextInNormal = "in a normal month" %}
+        {% elif data.cigarillosCurrentFrequency == "Yearly" %}
+          {% set frequencyTextInNormal = "in a normal year" %}
+        {% endif %}
+
+
+        <p class="nhsuk-body">The question on the next page will ask if the number of cigarillos you smoke has changed over time.</p>
+
+        {{ input({
+          label: {
+            text: "Roughly how many cigarillos do you currently smoke " + frequencyTextInNormal + "?",
+            classes: "nhsuk-label--m"
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigarillosCurrentQuantity",
+          name: "cigarillosCurrentQuantity",
+          classes: "nhsuk-input--width-3",
+          suffix: {
+            text: "cigarillos"
+          },
+          value: data.cigarillosCurrentQuantity,
+          errorMessage: {
+            text: "The number of cigarillos smoked must be at least 1"
+          } if data['cigarillosCurrentQuantity-error']
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

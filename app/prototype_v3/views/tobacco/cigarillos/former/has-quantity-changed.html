@@ -1,0 +1,64 @@
+{% extends "prototype_v3/views/layouts/main.html" %}
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% block pageTitle %}
+  Did the number of cigarillos you normally smoke change over time? - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigarillos/former/has-quantity-changed-answer" method="post" accept-charset="utf-8" novalidate>
+
+        {% set frequencyText = "a day" %}
+        {% if data.cigarillosFormerFrequency == "Weekly" %}
+          {% set frequencyText = "a week" %}
+        {% elif data.cigarillosFormerFrequency == "Monthly" %}
+          {% set frequencyText = "a month" %}
+        {% endif %}
+
+        {{ checkboxes({
+          idPrefix: "cigarillosFormerChanges",
+          name: "cigarillosFormerChanges",
+          fieldset: {
+            legend: {
+              text: "Did the number of cigarillos you normally smoke change over time?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          values: data.cigarillosFormerChanges,
+          items: [
+            {
+              value: "more",
+              text: "Yes, I smoked more than " + data.cigarillosFormerQuantity + " cigarillos " + frequencyText
+            },
+            {
+              value: "less",
+              text: "Yes, I smoked fewer than " + data.cigarillosFormerQuantity + " cigarillos " + frequencyText
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "no-change",
+              text: "No, it did not change",
+              behaviour: "exclusive"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

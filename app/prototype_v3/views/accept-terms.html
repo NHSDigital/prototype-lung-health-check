@@ -1,0 +1,55 @@
+{% extends "prototype_v3/views/layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if data['accept-terms-error'] %}Error: {% endif %}Accept terms of use - NHS
+{% endblock %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% if data['accept-terms-error'] %}
+        {{ errorSummary({
+          titleText: "There is a problem",
+          errorList: [
+            {
+              text: "Agree to the terms of use to continue",
+              href: "#accept-terms"
+            }
+          ]
+        }) }}
+      {% endif %}
+
+      <h1 class="nhsuk-heading-l">Accept terms of use</h1>
+
+      <p class="nhsuk-body">To continue, confirm that you have read and agree to the <a href="/prototype_v3/terms-of-use" target="_blank" class="nhsuk-link">NHS {{ serviceName }} terms of use (opens in new tab)</a></p>
+
+      <form action="/prototype_v3/accept-terms" method="post" accept-charset="utf-8" novalidate>
+
+        {{ checkboxes({
+          idPrefix: "accept-terms",
+          name: "accept-terms",
+          errorMessage: {
+            text: "Agree to the terms of use to continue"
+          } if data['accept-terms-error'],
+          values: data["accept-terms"],
+          items: [
+            {
+              value: "yes",
+              text: "I agree"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

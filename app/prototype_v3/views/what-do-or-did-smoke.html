@@ -1,0 +1,128 @@
+{% extends "prototype_v3/views/layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if data.smokedRegularly == "Yes-currently" %}
+    The type of tobacco you smoke or used to smoke - NHS
+  {% elif data.smokedRegularly == "Yes-usedToRegularly" %}
+    The type of tobacco you smoked - NHS
+  {% else %}
+    The type of tobacco you smoke or used to smoke - NHS
+  {% endif %}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% if data.smokedRegularly == "Yes-currently" %}
+        <h1 class="nhsuk-heading-l">The type of tobacco you smoke or used to smoke</h1>
+
+        <p class="nhsuk-body">Smoking affects your health in different ways depending on what you smoke.</p>
+
+        <p class="nhsuk-body">We need to know what you smoke, or used to smoke, frequently. For example, if you have smoked a pipe on a weekly basis for a year or longer.</p>
+
+        <p class="nhsuk-body">You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.</p>
+      {% elif data.smokedRegularly == "Yes-usedToRegularly" %}
+        <h1 class="nhsuk-heading-l">The type of tobacco you smoked</h1>
+
+        <p class="nhsuk-body">Smoking affects your health in different ways depending on what you smoked.</p>
+
+        <p class="nhsuk-body">We need to know what you smoked frequently. For example, if you smoked a pipe on a weekly basis for a year or longer.</p>
+
+        <p class="nhsuk-body">You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.</p>
+      {% else %}
+        <h1 class="nhsuk-heading-l">The type of tobacco you smoke or used to smoke</h1>
+
+        <p class="nhsuk-body">Smoking affects your health in different ways depending on what you smoke.</p>
+
+        <p class="nhsuk-body">We need to know what you smoke, or used to smoke, frequently. For example, if you have smoked a pipe on a weekly basis for a year or longer.</p>
+
+        <p class="nhsuk-body">You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.</p>
+      {% endif %}
+
+      <form action="/prototype_v3/what-do-or-did-smoke-answer" method="post" accept-charset="utf-8" novalidate>
+
+        {% if data.smokedRegularly == "Yes-currently" %}
+          {% set legendText = "What do you or have you smoked?" %}
+        {% elif data.smokedRegularly == "Yes-usedToRegularly" %}
+          {% set legendText = "What did you smoke?" %}
+        {% else %}
+          {% set legendText = "What do you or have you smoked?" %}
+        {% endif %}
+
+        {{ checkboxes({
+          idPrefix: "tobaccoTypes",
+          name: "tobaccoTypes",
+          fieldset: {
+            legend: {
+              text: legendText,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          values: data.tobaccoTypes,
+          items: [
+            {
+              value: "Cigarettes",
+              text: "Cigarettes"
+            },
+            {
+              value: "Rolling tobacco",
+              text: "Rolling tobacco, or roll-ups"
+            },
+            {
+              value: "Pipe",
+              text: "Pipe"
+            },
+            {
+              value: "Small cigars",
+              text: "Small cigars",
+              hint: {
+                text: "Petit Corona or Short Panetela, usually 4 to 5 inches long"
+              }
+            },
+            {
+              value: "Medium cigars",
+              text: "Medium cigars",
+              hint: {
+                text: "Robusto or Corona, usually 5 to 6 inches long"
+              }
+            },
+            {
+              value: "Large cigars",
+              text: "Large cigars",
+              hint: {
+                text: "Churchill or Double Corona, usually 7 to 8 inches long"
+              }
+            },
+            {
+              value: "Cigarillos",
+              text: "Cigarillos",
+              hint: {
+                text: "Cafe Creme or Signature cigars, roughly the size of a cigarette"
+              }
+            },
+            {
+              value: "Shisha",
+              text: "Shisha"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
