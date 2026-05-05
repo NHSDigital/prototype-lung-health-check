@@ -1,8 +1,10 @@
-const marked = require('marked')
-const { gfmHeadingId } = require('marked-gfm-heading-id')
+const MarkdownIt = require('markdown-it')
 
-// Configure marked once at module load time (instead of on every call)
-marked.use(gfmHeadingId())
+const markdownIt = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true
+})
 
 /* ------------------------------------------------------------------
 utility function to parse markdown as HTML
@@ -15,7 +17,7 @@ const markdownToHtml = (markdown) => {
   }
 
   const text = markdown.replace(/\\r/g, '\n').replace(/\\t/g, ' ')
-  const html = marked.parse(text)
+  const html = markdownIt.render(text)
 
   // Add nhsuk-* classes
   let nhsukHtml = html.replace(/<p>/g, '<p class="nhsuk-body">')
