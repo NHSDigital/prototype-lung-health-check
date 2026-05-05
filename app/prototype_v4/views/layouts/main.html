@@ -13,7 +13,7 @@
 
 <!-- Set the page title -->
 {% block pageTitle %}
-{{ serviceName }} - NHS
+{{ "Error: " if errors | length }} {{- title + " - " if title | length }} {{- serviceName }} - NHS
 {% endblock %}
 
 <!-- Edit the header -->
