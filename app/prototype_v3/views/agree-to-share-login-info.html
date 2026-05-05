@@ -28,7 +28,7 @@
 
       <p class="nhsuk-body">If you do not agree to share this information you will not be able to use NHS login with <strong>NHS {{ serviceName | lower }}</strong>.</p>
 
-      <form action="/prototype_v3/agree-to-share-login-info" method="post">
+      <form action="/prototype_v3/agree-to-share-login-info" method="post" accept-charset="utf-8" novalidate>
         {{ button({
           text: "I agree"
         }) }}

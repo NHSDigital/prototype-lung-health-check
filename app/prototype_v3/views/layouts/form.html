@@ -47,7 +47,7 @@
         }) }}
       {% endif %}
 
-      <form action="{{ formAction | safe }}" method="{{ formMethod or 'post' }}" novalidate>
+      <form action="{{ formAction | safe }}" method="{{ formMethod or 'post' }}" accept-charset="utf-8" novalidate>
 
         {% block formContent %}
         {% endblock %}

@@ -47,7 +47,7 @@
         <p class="nhsuk-body">You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.</p>
       {% endif %}
 
-      <form action="/prototype_v3/what-do-or-did-smoke-answer" method="post">
+      <form action="/prototype_v3/what-do-or-did-smoke-answer" method="post" accept-charset="utf-8" novalidate>
 
         {% if data.smokedRegularly == "Yes-currently" %}
           {% set legendText = "What do you or have you smoked?" %}
