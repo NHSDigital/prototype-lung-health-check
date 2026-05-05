@@ -47,7 +47,7 @@ We'll consider your request and get back to you in 7-14 days.
 
 The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the 'accessibility regulations'). If you're not happy with how we respond to your complaint, [contact the Equality Advisory and Support Service (EASS)](#).
 
-## Technical information about this website'2 accessibility
+## Technical information about this website's accessibility
 
 NHS England is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.
 
@@ -73,8 +73,6 @@ The content listed below is non-accessible for the following reasons.
 
 ## What we're doing to improve accessibility
 
-##
-
 We have an alternate phone service that increases accessibility for all users. To access this service, please call [020 3835 1600](tel:02038351600).
 
 We have published tools and guidance on accessibility in the NHS digital service manual based on extensive testing. The service manual helps our teams build products and services to meet the same accessibility standards.
@@ -96,7 +94,7 @@ We are making sure that accessibility issues highlighted in this statement are b
 - prioritising accessibility remedial work in all new development and improvement projects
 - working with suppliers to improve the accessibility of their products
 
-## Preparation of this accessibilit2 statement
+## Preparation of this accessibility statement
 
 This statement was prepared on 19th March 2026.
 
