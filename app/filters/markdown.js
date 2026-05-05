@@ -23,9 +23,9 @@ const markdownToHtml = (markdown) => {
   let nhsukHtml = html.replace(/<p>/g, '<p class="nhsuk-body">')
   nhsukHtml = nhsukHtml.replace(/<ol>/g, '<ol class="nhsuk-list nhsuk-list--number">')
   nhsukHtml = nhsukHtml.replace(/<ul>/g, '<ul class="nhsuk-list nhsuk-list--bullet">')
-  nhsukHtml = nhsukHtml.replace(/<h2/g, '<h2 class="nhsuk-heading-l"')
-  nhsukHtml = nhsukHtml.replace(/<h3/g, '<h3 class="nhsuk-heading-m"')
-  nhsukHtml = nhsukHtml.replace(/<h4/g, '<h4 class="nhsuk-heading-s"')
+  nhsukHtml = nhsukHtml.replace(/<h2/g, '<h2 class="nhsuk-heading-m"')
+  nhsukHtml = nhsukHtml.replace(/<h3/g, '<h3 class="nhsuk-heading-s"')
+  nhsukHtml = nhsukHtml.replace(/<h4/g, '<h4 class="nhsuk-heading-xs"')
 
   return nhsukHtml
 }
