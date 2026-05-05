@@ -1,0 +1,114 @@
+<!--
+  This is the main layout where you can:
+    - change the header and footer
+    - add custom CSS and JavaScript
+-->
+<!-- Extends the prototype kit template which in turn extends the NHS.UK frontend template -->
+{% extends "prototype-kit-template.njk" %}
+
+{% block head %}
+ <!-- Add your custom CSS or Sass in /app/assets/sass/main.scss -->
+<link href="/assets/sass/main.css" rel="stylesheet">
+{% endblock %}
+
+<!-- Set the page title -->
+{% block pageTitle %}
+{{ serviceName }} - NHS
+{% endblock %}
+
+<!-- Edit the header -->
+<!-- Header code examples can be found at https://service-manual.nhs.uk/design-system/components/header -->
+{% block header %}
+{{ header({
+  logo: {
+    href: "/",
+    ariaLabel: "Check if you need a lung scan"
+  },
+  service: {
+    text: "Check if you need a lung scan",
+    href: "/"
+  },
+  account: {
+    items: [
+      {
+        text: "Alex Smith",
+        href: "#",
+        icon: true
+      },
+      {
+        text: "Log out",
+        href: "/prototype_v4/"
+      }
+    ]
+  } if data['logged-in']
+}) }}
+
+<!-- Phase banner (inside header block) -->
+<div class="nhsuk-phase-banner">
+  <div class="nhsuk-width-container">
+    <div class="nhsuk-phase-banner__content">
+      {{ tag({
+        text: "Pilot",
+        classes: "nhsuk-tag--blue"
+      }) }}
+      <p class="nhsuk-phase-banner__text nhsuk-body-s">
+        We are testing a new service – your <a class="nhsuk-link" href="https://feedback.digital.nhs.uk/jfe/form/SV_d4MPGuH486oxASW" target="_blank" rel="noopener noreferrer">feedback</a> will help us to improve it.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+<!-- Edit the footer -->
+<!-- Footer code examples can be found at https://service-manual.nhs.uk/design-system/components/footer -->
+{% block footer %}
+{{ footer({
+  meta: {
+    items: [
+      {
+        href: "/prototype_v4/accessibility-statement",
+        text: "Accessibility statement"
+      },
+      {
+        href: "/prototype_v4/contact-us",
+        text: "Contact us"
+      },
+      {
+        href: "/prototype_v4/cookies",
+        text: "Cookies"
+      },
+      {
+        href: "/prototype_v4/privacy-policy",
+        text: "Privacy policy"
+      },
+      {
+        href: "/prototype_v4/terms-of-use",
+        text: "Terms of use"
+      }
+    ]
+  }
+}) }}
+
+{# <div class="nhsuk-footer__testing-links">
+  <div class="nhsuk-width-container">
+    <h3 class="nhsuk-heading-m nhsuk-u-margin-top-5">For testing</h3>
+    <ul class="nhsuk-footer__list nhsuk-u-margin-bottom-5 nhsuk-u-padding-bottom-5">
+      <li class="nhsuk-footer__list-item">
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v4/index-allpages">Pages index</a>
+      </li>
+      <li class="nhsuk-footer__list-item">
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v4/skip-to-tobacco">Skip to tobacco - current smoker (testing)</a>
+      </li>
+      <li class="nhsuk-footer__list-item">
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v4/skip-to-tobacco-former">Skip to tobacco - former smoker (testing)</a>
+      </li>
+    </ul>
+  </div>
+</div> #}
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script type="module" src="/assets/javascript/main.js"></script>
+  {% block pageScripts %}{% endblock %}
+{% endblock %}

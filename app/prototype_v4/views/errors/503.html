@@ -1,0 +1,17 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set hidePhaseBanner = true %}
+{% set hideFooterLinks = true %}
+
+{% set title = "Sorry, the service is unavailable" %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <h1 class="nhsuk-heading-l">{{ title }}</h1>
+      <p class="nhsuk-body">You will be able to use the service from 3pm on Tuesday, 5 May 2026.</p>
+      <p class="nhsuk-body">If you reached this page after submitting information then it has not been saved. You will need to enter it again when the service is available.</p>
+      <p class="nhsuk-body">If you have any questions, email <a class="nhsuk-link" href="mailto:england.digitallungcancerscreening@nhs.net">england.digitallungcancerscreening@nhs.net</a>.</p>
+    </div>
+  </div>
+{% endblock %}
