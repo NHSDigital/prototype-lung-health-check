@@ -1,0 +1,148 @@
+.app-markdown {
+	@include nhsuk-font($size: false);
+
+  h1:not([class]) {
+    @extend %nhsuk-heading-l;
+    max-width: 40rem;
+  }
+
+  h2:not([class]) {
+    @extend %nhsuk-heading-m;
+    max-width: 40rem;
+  }
+
+  h3:not([class]) {
+    @extend %nhsuk-heading-s;
+    max-width: 40rem;
+  }
+
+  h4:not([class]) {
+    @extend %nhsuk-heading-xs;
+    max-width: 40rem;
+  }
+
+  h5:not([class]) {
+    @include nhsuk-font($size: 19, $weight: "bold");
+    @include nhsuk-responsive-margin(4, "bottom");
+    margin-top: 0;
+    color: $nhsuk-secondary-text-colour;
+  }
+
+  h6:not([class]) {
+    @include nhsuk-font($size: 16, $weight: "bold");
+    @include nhsuk-responsive-margin(4, "bottom");
+    margin-top: 0;
+    color: $nhsuk-secondary-text-colour;
+  }
+
+  > p:not([class]),
+  > dl,
+  > blockquote p {
+    @extend %nhsuk-body-m;
+    max-width: 40rem;
+  }
+
+  > blockquote {
+    @extend .nhsuk-inset-text;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  figure {
+    margin: 0;
+    @include nhsuk-responsive-margin(6, "bottom");
+
+    > a {
+      display: block;
+      outline: 1px solid rgba($nhsuk-border-colour, 0.5);
+
+      &:hover {
+        outline-color: $nhsuk-link-hover-colour;
+      }
+
+      &:active {
+        outline-color: $nhsuk-link-active-colour;
+      }
+    }
+
+    a img {
+      outline: 0;
+    }
+  }
+
+  figcaption {
+    @include nhsuk-responsive-margin(4, "top");
+    @include nhsuk-font($size: 19);
+
+    h3 {
+      @extend %nhsuk-heading-s;
+    }
+
+    hr {
+      @extend %nhsuk-section-break--m;
+    }
+
+    &:not([class]) {
+      color: $nhsuk-secondary-text-colour;
+    }
+  }
+
+  abbr {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
+
+  strong,
+  b,
+  dt:not([class]) {
+    @include nhsuk-typography-weight-bold;
+  }
+
+  dd + dt {
+    margin-top: nhsuk-spacing(4);
+  }
+
+  dd {
+    margin-left: 0;
+  }
+
+  dd + dd {
+    margin-top: nhsuk-spacing(2);
+  }
+
+  ul,
+  ol {
+    @extend %nhsuk-list;
+    max-width: 40rem;
+
+    & li ul {
+      list-style-type: circle;
+
+      & li ul {
+        list-style-type: disc;
+      }
+    }
+  }
+
+  ol {
+    @extend %nhsuk-list--number;
+  }
+
+  ul {
+    @extend %nhsuk-list--bullet;
+  }
+
+  a:not([class]) {
+    @include nhsuk-link-style-default;
+  }
+
+  mark {
+    background-color: nhsuk-colour("yellow");
+  }
+
+  hr {
+    @extend %nhsuk-section-break;
+    @extend %nhsuk-section-break--visible;
+    @extend %nhsuk-section-break--xl;
+  }
+}
