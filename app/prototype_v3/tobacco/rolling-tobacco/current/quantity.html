@@ -1,0 +1,74 @@
+{% extends "prototype_v3/layout.html" %}
+{% block pageTitle %}
+  Rolling tobacco smoking - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/rolling-tobacco/current/quantity-answer" method="post">
+
+        <h1 class="nhsuk-heading-l">Rolling tobacco</h1>
+
+        {% set frequencyText = "a week" %}
+        {% if data.rollingTobaccoCurrentFrequency == "Monthly" %}
+          {% set frequencyText = "a month" %}
+        {% elif data.rollingTobaccoCurrentFrequency == "Yearly" %}
+          {% set frequencyText = "a year" %}
+        {% endif %}
+
+        {% set frequencyTextInNormal = "in a normal week" %}
+        {% if data.rollingTobaccoCurrentFrequency == "Monthly" %}
+          {% set frequencyTextInNormal = "in a normal month" %}
+        {% elif data.rollingTobaccoCurrentFrequency == "Yearly" %}
+          {% set frequencyTextInNormal = "in a normal year" %}
+        {% endif %}
+
+
+        <p class="nhsuk-body">The question on the next page will ask if the amount of tobacco you smoke has changed over time.</p>
+
+        {{ radios({
+          fieldset: {
+            legend: {
+              text: "Roughly how many grams of tobacco do you currently smoke " + frequencyTextInNormal + "?",
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g"
+          },
+          idPrefix: "rollingTobaccoCurrentQuantity",
+          name: "rollingTobaccoCurrentQuantity",
+          value: data.rollingTobaccoCurrentQuantity,
+          items: [
+            {
+              value: "10g to 30g",
+              text: "10g to 30g"
+            },
+            {
+              value: "30g to 50g",
+              text: "30g to 50g"
+            },
+            {
+              value: "50g to 75g",
+              text: "50g to 75g"
+            },
+            {
+              value: "75g to 100g",
+              text: "75g to 100g"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

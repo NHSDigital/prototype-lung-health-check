@@ -1,0 +1,24 @@
+
+{% from 'card/macro.njk' import card %}
+
+
+{% set riskFactorCardContent %}
+  <p>{{params.resultSentence}}<span style="font-weight: bold;"> {{params.resultSentenceNumber}}</span></p>
+  <p>{{params.resultDescription}}<span style="font-weight: bold;"> {{params.resultDescriptionValue}}</span></p>
+  <svg xmlns="http://www.w3.org/2000/svg" class="nhsuk-icon nhsuk-icon__chevron-right" viewBox="0 0 24 24" aria-hidden="true" height="34" width="34">
+    <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"/>
+  </svg>
+{% endset %}
+
+<ul class="nhsuk-grid-row nhsuk-card-group" style="margin-bottom: 10px;">
+  <li class="nhsuk-grid-column-full nhsuk-card-group__item">
+  {{ card({
+    href: "#",
+    clickable: "true",
+    heading: params.heading,
+    headingClasses: "nhsuk-heading-s",
+    descriptionHtml: riskFactorCardContent,
+    classes: params.classes
+  }) }}
+  </li>
+</ul>

@@ -1,0 +1,125 @@
+{% extends "prototype_v3/layout.html" %}
+
+{% block pageTitle %}
+  NHS {{ serviceName | lower }} privacy policy - NHS
+{% endblock %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h1 class="nhsuk-heading-l">NHS {{ serviceName | lower }} privacy policy</h1>
+
+      <h2 class="nhsuk-heading-m">Who we are</h2>
+      <p class="nhsuk-body">NHS England is running a pilot of the <em>{{ serviceName | lower }}</em> digital service.</p>
+
+      <h2 class="nhsuk-heading-m">Why we use your data</h2>
+      <p class="nhsuk-body">We use your information to evaluate whether a digital questionnaire can safely and effectively support lung cancer screening alongside the existing telephone service.</p>
+
+      <h2 class="nhsuk-heading-m">What data we use</h2>
+      <p class="nhsuk-body">This includes information you provide in the questionnaire, limited details from NHS login, and (if you complete both routes) responses from the telephone screening so they can be compared.</p>
+
+      <h2 class="nhsuk-heading-m">Your choice</h2>
+      <p class="nhsuk-body">Taking part is voluntary. You can choose not to take part or withdraw at any time. This will not affect your NHS care.</p>
+
+      <h2 class="nhsuk-heading-m">How we protect your data</h2>
+      <p class="nhsuk-body">Your data is kept secure, access is restricted, and personal identifiers are removed once analysis is complete.</p>
+
+      <h2 class="nhsuk-heading-m">More information</h2>
+      <p class="nhsuk-body">Read the full privacy notice below to understand how your data is used, shared, stored, and what your rights are.</p>
+
+      <h3 class="nhsuk-heading-s">1. About this service</h3>
+      <p class="nhsuk-body">NHS {{ serviceName | lower }} is a pilot by NHS England and allows you to complete a lung health check online before you complete your phone appointment. The pilot is designed to evaluate whether a digital questionnaire can operate as effectively as the existing telephone based lung cancer screening service.</p>
+      <p class="nhsuk-body">The pilot is for service evaluation purposes only and does not form part of routine clinical care.</p>
+
+      <h3 class="nhsuk-heading-s">2. Who we are</h3>
+      <p class="nhsuk-body"><strong>Data Controller:</strong> NHS England</p>
+      <p class="nhsuk-body">NHS England is responsible for deciding how and why your personal data is used as part of this pilot.</p>
+
+      <h3 class="nhsuk-heading-s">3. What data we collect</h3>
+      <p class="nhsuk-body">If you choose to take part, we may collect:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>NHS number</li>
+        <li>Name</li>
+        <li>Email address</li>
+      </ul>
+      <p class="nhsuk-body">This information is provided through NHS login to allow secure access.</p>
+      <p class="nhsuk-body">Information you provide in the questionnaire:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>Date of birth</li>
+        <li>Smoking history</li>
+        <li>Height and weight</li>
+        <li>Sex at birth and gender identity</li>
+        <li>Ethnicity</li>
+        <li>Education level</li>
+        <li>Relevant health, lifestyle, and family history information</li>
+      </ul>
+      <p class="nhsuk-body">When you complete the telephone screening, NHS England receives the telephone responses <strong>so they can be compared with the digital responses</strong> as part of the evaluation.</p>
+      <p class="nhsuk-body">On completion of both the digital service and phone screening appointment, your name and email address will be used to issue a participation voucher.</p>
+
+      <h3 class="nhsuk-heading-s">4. How we use your information</h3>
+      <p class="nhsuk-body">We use your information to:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>Evaluate whether the digital questionnaire works as safely and accurately as the telephone screening</li>
+        <li>Compare digital and telephone screening responses</li>
+        <li>Understand clarity, usability, and accessibility of the digital service</li>
+        <li>Inform decisions about future service design</li>
+      </ul>
+      <p class="nhsuk-body">We do not use your information to:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>Provide diagnoses</li>
+        <li>Make clinical decisions</li>
+        <li>Replace existing screening pathways</li>
+      </ul>
+      <p class="nhsuk-body">Participation in the pilot is voluntary. Where you choose to take part, we rely on your consent to:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>participate in the digital pilot</li>
+        <li>allow comparison of digital and telephone screening responses</li>
+        <li>administer participation incentives where applicable</li>
+      </ul>
+      <p class="nhsuk-body">You can withdraw from the pilot at any time without affecting your NHS care.</p>
+
+      <h3 class="nhsuk-heading-s">5. Who we share your information with</h3>
+      <p class="nhsuk-body">Your information may be shared with:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li><strong>InHealth</strong>, to enable comparison between digital and telephone screening responses</li>
+        <li><strong>NHS England technical and analysis teams</strong>, limited to staff who need access to support the pilot</li>
+        <li><strong>Edenred</strong>, where applicable, to issue participation vouchers (name and email address only)</li>
+      </ul>
+      <p class="nhsuk-body">We do not sell your data or use it for marketing.</p>
+
+      <h3 class="nhsuk-heading-s">6. How long information is kept</h3>
+      <p class="nhsuk-body">How long we keep your information:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>Identifiable pilot data is kept only for the duration of the pilot and up to <strong>three months afterwards</strong></li>
+        <li>Personal identifiers are removed once analysis is complete</li>
+        <li>An anonymised and aggregated dataset may be retained for up to <strong>10 years</strong> to support service evaluation and regulatory requirements</li>
+        <li>All data is managed in line with the <strong>NHS Records Management Code of Practice</strong></li>
+      </ul>
+
+      <h3 class="nhsuk-heading-s">7. The law and your information</h3>
+      <p class="nhsuk-body">The law allows the NHS to use information:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>to invite people for screening</li>
+        <li>to keep screening services safe and effective</li>
+      </ul>
+      <p class="nhsuk-body">You can find out more <a href="#" class="nhsuk-link">here</a>.</p>
+
+      <h3 class="nhsuk-heading-s">8. Your rights and getting help</h3>
+      <p class="nhsuk-body">You have rights over your personal information.</p>
+      <p class="nhsuk-body">These include the right to:</p>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        <li>ask what information the NHS holds about you</li>
+        <li>ask for a copy of your screening results</li>
+      </ul>
+      <p class="nhsuk-body">If you want to access your screening results, contact your GP or local screening service.</p>
+
+      <h3 class="nhsuk-heading-s">9. Ask a question or find out more</h3>
+      <p class="nhsuk-body">If you have a general question about using the NHS {{ serviceName | lower }}, you can contact us by email at: <a href="mailto:england.digitallungcancerscreening@nhs.net" class="nhsuk-link">england.digitallungcancerscreening@nhs.net</a></p>
+
+    </div>
+  </div>
+{% endblock %}

@@ -8,6 +8,7 @@ const locals = require('./app/locals')
 const routes = require('./app/routes')
 
 const viewsPath = [
+  'app/',
   'app/views/'
 ]
 

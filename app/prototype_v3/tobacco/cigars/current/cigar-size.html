@@ -1,0 +1,67 @@
+{% extends "prototype_v3/layout.html" %}
+
+{% if data.smokedRegularly == "Yes-currently" %}
+  {% set questionText = "What size cigar do you normally smoke?" %}
+{% else %}
+  {% set questionText = "What size cigar did you normally smoke?" %}
+{% endif %}
+
+{% block beforeContent %}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="cigar-size-answer" method="post" novalidate>
+
+        {{ checkboxes({
+          idPrefix: "cigarSize",
+          name: "cigarSize",
+          fieldset: {
+            legend: {
+              text: questionText,
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          values: data.cigarSize,
+          items: [
+            {
+              value: "Small",
+              text: "Small",
+              hint: {
+                text: "Petit Corona or Short Panetela, usually 4 to 5 inches long"
+              }
+            },
+            {
+              value: "Medium",
+              text: "Medium",
+              hint: {
+                text: "Robusto or Corona, usually 5 to 6 inches long"
+              }
+            },
+            {
+              value: "Large",
+              text: "Large",
+              hint: {
+                text: "Churchill or Double Corona, usually 7 to 8 inches long"
+              }
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

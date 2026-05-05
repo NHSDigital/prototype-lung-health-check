@@ -1,0 +1,79 @@
+{% extends "prototype_v3/layout.html" %}
+
+{# Get the current size being processed #}
+{% set currentSize = data.currentCigarSize or "small" %}
+{% set sizeLower = currentSize | lower %}
+
+{# Set size-specific text #}
+{% if sizeLower == "small" %}
+  {% set sizePlural = "small cigars" %}
+{% elif sizeLower == "medium" %}
+  {% set sizePlural = "medium cigars" %}
+{% elif sizeLower == "large" %}
+  {% set sizePlural = "large cigars" %}
+{% endif %}
+
+{# Get more quantity and frequency #}
+{% set moreQuantity = data["cigar" + currentSize + "MoreQuantity"] %}
+{% set moreFrequency = data["cigar" + currentSize + "MoreFrequency"] %}
+
+{# Set frequency-based time period #}
+{% if moreFrequency == "Daily" %}
+  {% set timePeriod = "a day" %}
+{% elif moreFrequency == "Weekly" %}
+  {% set timePeriod = "a week" %}
+{% elif moreFrequency == "Monthly" %}
+  {% set timePeriod = "a month" %}
+{% elif moreFrequency == "Yearly" %}
+  {% set timePeriod = "a year" %}
+{% else %}
+  {% set timePeriod = "a week" %}
+{% endif %}
+
+{# Create the more text #}
+{% set moreText = moreQuantity + " " + (sizePlural if moreQuantity != "1" else sizePlural | replace("cigars", "cigar")) + " " + timePeriod %}
+
+{% if data.smokedRegularly == "Yes-currently" %}
+  {% set questionText = "Roughly how many years did you smoke " + moreText + "?" %}
+{% else %}
+  {% set questionText = "Roughly how many years did you smoke " + moreText + "?" %}
+{% endif %}
+
+{% block beforeContent %}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="more-duration-answer" method="post" novalidate>
+
+        {{ input({
+          label: {
+            text: questionText,
+            classes: "nhsuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigar" + currentSize + "MoreDuration",
+          name: "cigar" + currentSize + "MoreDuration",
+          classes: "nhsuk-input--width-3",
+          suffix: {
+            text: "years"
+          },
+          value: data["cigar" + currentSize + "MoreDuration"]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}
