@@ -1,4 +1,4 @@
-{% extends "layouts/layout-web-or-native.html" %}
+{% extends "prototype_v3/views/layouts/layout-web-or-native.html" %}
 
 {# {% set mainClasses = "nhsuk-main-wrapper--s" %} #}
 {% set hub = "Services" %}
@@ -15,12 +15,12 @@
         <div class="nhsuk-width-container">
           <div class="nhsuk-grid-row">
             <div class="nhsuk-grid-column-full">
-              {% include "prototype_v3/_components/nhs-app/back-link/include.html" %}
+              {% include "prototype_v3/views/_components/nhs-app/back-link/include.html" %}
             </div>
           </div>
         </div>
       {% else %}
-        {% include "prototype_v3/_components/nhs-app/back-link/include.html" %}
+        {% include "prototype_v3/views/_components/nhs-app/back-link/include.html" %}
       {% endif %}
     {% endif %}
     ?
