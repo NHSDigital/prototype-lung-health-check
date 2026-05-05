@@ -1,0 +1,42 @@
+{% extends "prototype_v3/layouts/main.html" %}
+{% block pageTitle %}
+  You do not need to test the online service - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <h1 class="nhsuk-heading-l">You do not need to test the online service</h1>
+      <p class="nhsuk-body">Because you have completed the questionnaire by phone you do not need to test the online service. This is because the online service asks the same questions.</p>
+
+      <p class="nhsuk-body">Find out more about NHS lung cancer screening in <a href="https://www.healthylondon.org/our-work/lung-health-check/" class="nhsuk-link">North West and South West London</a>.</p>
+
+      {% set cardDescriptionHtml %}
+        <p class="nhsuk-body">You have any of the following symptoms:</p>
+        <ul class="nhsuk-list">
+          <li>a cough that does not go away after 3 weeks</li>
+          <li>a long-standing cough that gets worse</li>
+          <li><a href="https://www.nhs.uk/conditions/chest-infection/" class="nhsuk-link">chest infections</a> that keep coming back</li>
+          <li><a href="https://www.nhs.uk/conditions/coughing-up-blood/" class="nhsuk-link">coughing up blood</a></li>
+          <li>an ache or pain when breathing or coughing</li>
+          <li>persistent <a href="https://www.nhs.uk/conditions/shortness-of-breath/" class="nhsuk-link">breathlessness</a></li>
+          <li>persistent tiredness or lack of energy</li>
+          <li>loss of appetite or unexplained weight loss</li>
+        </ul>
+        <p class="nhsuk-body">They could be <a href="https://www.nhs.uk/conditions/lung-cancer/symptoms/" class="nhsuk-link">symptoms of lung cancer</a>. Your GP will ask about your general health and your symptoms.</p>
+        <p class="nhsuk-body">You may be asked to have a <a href="https://www.nhs.uk/conditions/blood-tests/" class="nhsuk-link">blood test</a> to rule out some of the possible causes of your symptoms, such as a <a href="https://www.nhs.uk/conditions/chest-infection/" class="nhsuk-link">chest infection</a>.</p>
+      {% endset %}
+
+      {{ card({
+        type: "non-urgent",
+        heading: "Speak to a GP if:",
+        descriptionHtml: cardDescriptionHtml
+      }) }}
+    </div>
+  </div>
+{% endblock %}

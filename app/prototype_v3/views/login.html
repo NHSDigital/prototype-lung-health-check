@@ -1,0 +1,69 @@
+{% extends "prototype_v3/layouts/main.html" %}
+
+{% block pageTitle %}
+  Log in to your NHS account - NHS
+{% endblock %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h1 class="nhsuk-heading-l">Log in to your NHS account</h1>
+
+      <form action="/prototype_v3/login" method="post" novalidate>
+
+        {{ input({
+          label: { text: "Email address" },
+          id: "email",
+          name: "email",
+          type: "email",
+          autocomplete: "email",
+          classes: "nhsuk-input--width-20",
+          value: data.email
+        }) }}
+
+        {{ input({
+          label: { text: "Password" },
+          id: "password",
+          name: "password",
+          type: "password",
+          autocomplete: "current-password",
+          classes: "nhsuk-input--width-20"
+        }) }}
+
+        <p class="nhsuk-body"><a href="#" class="nhsuk-link">Forgot password?</a></p>
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body"><a href="#" class="nhsuk-link">Log in with a passkey</a></p>
+
+      <p class="nhsuk-body-l"><strong>or</strong></p>
+
+      {{ button({
+        text: "Create NHS account",
+        href: "#",
+        classes: "nhsuk-button--secondary"
+      }) }}
+
+      <p class="nhsuk-body">An NHS account allows you to access a range of online health services with one set of login details.</p>
+      <p class="nhsuk-body"><a href="#" class="nhsuk-link">Learn more about NHS account</a>.</p>
+
+      <div style="background-color: #ffffff; padding: 24px; margin-top: 32px; border: 1px solid #d8dde0;">
+        <h2 class="nhsuk-heading-m">Trouble with logging in?</h2>
+        <ul class="nhsuk-list">
+          <li><a href="#" class="nhsuk-link">I've lost access to my email address</a></li>
+          <li><a href="#" class="nhsuk-link">I'm not sure if I have an account</a></li>
+          <li><a href="#" class="nhsuk-link">Visit our Help centre</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

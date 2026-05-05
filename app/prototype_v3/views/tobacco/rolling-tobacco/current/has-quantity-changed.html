@@ -1,0 +1,64 @@
+{% extends "prototype_v3/layouts/main.html" %}
+{% from 'checkboxes/macro.njk' import checkboxes %}
+{% block pageTitle %}
+  Did the number of grams of tobacco you normally smoke change over time? - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/rolling-tobacco/current/has-quantity-changed-answer" method="post">
+
+        {% set frequencyText = "a day" %}
+        {% if data.rollingTobaccoCurrentFrequency == "Weekly" %}
+          {% set frequencyText = "a week" %}
+        {% elif data.rollingTobaccoCurrentFrequency == "Monthly" %}
+          {% set frequencyText = "a month" %}
+        {% endif %}
+
+        {{ checkboxes({
+          idPrefix: "rollingTobaccoCurrentChanges",
+          name: "rollingTobaccoCurrentChanges",
+          fieldset: {
+            legend: {
+              text: "Did the number of grams of tobacco you normally smoke change over time?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          values: data.rollingTobaccoCurrentChanges,
+          items: [
+            {
+              value: "more",
+              text: "Yes, I smoked more than " + data.rollingTobaccoCurrentQuantity + " of tobacco " + frequencyText
+            },
+            {
+              value: "less",
+              text: "Yes, I smoked less than " + data.rollingTobaccoCurrentQuantity + " of tobacco " + frequencyText
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "no-change",
+              text: "No, it has not changed",
+              behaviour: "exclusive"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

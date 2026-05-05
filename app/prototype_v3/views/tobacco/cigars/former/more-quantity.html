@@ -1,0 +1,93 @@
+{% extends "prototype_v3/layouts/main.html" %}
+
+{# Get the current size being processed #}
+{% set currentSize = data.currentCigarSize or "small" %}
+{% set sizeLower = currentSize | lower %}
+
+{# Set size-specific text #}
+{% if sizeLower == "small" %}
+  {% set sizePlural = "small cigars" %}
+{% elif sizeLower == "medium" %}
+  {% set sizePlural = "medium cigars" %}
+{% elif sizeLower == "large" %}
+  {% set sizePlural = "large cigars" %}
+{% endif %}
+
+{# Get baseline quantity and frequency #}
+{% set baselineQuantity = data["cigar" + currentSize + "Quantity"] %}
+{% set frequency = data["cigar" + currentSize + "Frequency"] %}
+
+{# Set frequency-based time period for baseline #}
+{% if frequency == "Daily" %}
+  {% set baselineTimePeriod = "a day" %}
+{% elif frequency == "Weekly" %}
+  {% set baselineTimePeriod = "a week" %}
+{% elif frequency == "Monthly" %}
+  {% set baselineTimePeriod = "a month" %}
+{% elif frequency == "Yearly" %}
+  {% set baselineTimePeriod = "a year" %}
+{% else %}
+  {% set baselineTimePeriod = "a week" %}
+{% endif %}
+
+{# Create the baseline text #}
+{% set baselineText = baselineQuantity + " " + (sizePlural if baselineQuantity != "1" else sizePlural | replace("cigars", "cigar")) + " " + baselineTimePeriod %}
+
+{# Get more frequency and set time period for question #}
+{% set moreFrequency = data["cigar" + currentSize + "MoreFrequency"] %}
+{% if moreFrequency == "Daily" %}
+  {% set timePeriod = "day" %}
+{% elif moreFrequency == "Weekly" %}
+  {% set timePeriod = "week" %}
+{% elif moreFrequency == "Monthly" %}
+  {% set timePeriod = "month" %}
+{% elif moreFrequency == "Yearly" %}
+  {% set timePeriod = "year" %}
+{% else %}
+  {% set timePeriod = "day" %}
+{% endif %}
+
+{% if data.smokedRegularly == "Yes-currently" %}
+  {% set questionText = "When you smoked more than " + baselineText + ", roughly how many " + sizePlural + " did you normally smoke a " + timePeriod + "?" %}
+{% else %}
+  {% set questionText = "When you smoked more than " + baselineText + ", roughly how many " + sizePlural + " did you normally smoke a " + timePeriod + "?" %}
+{% endif %}
+
+{% block beforeContent %}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="more-quantity-answer" method="post" novalidate>
+
+        {{ input({
+          label: {
+            text: questionText,
+            classes: "nhsuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigar" + currentSize + "MoreQuantity",
+          name: "cigar" + currentSize + "MoreQuantity",
+          classes: "nhsuk-input--width-3",
+          suffix: {
+            text: sizePlural
+          },
+          value: data["cigar" + currentSize + "MoreQuantity"]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

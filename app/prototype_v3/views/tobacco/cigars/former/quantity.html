@@ -1,0 +1,80 @@
+{% extends "prototype_v3/layouts/main.html" %}
+
+{# Get the current size being processed #}
+{% set currentSize = data.currentCigarSize or "small" %}
+{% set sizeLower = currentSize | lower %}
+
+{# Set size-specific text #}
+{% if sizeLower == "small" %}
+  {% set sizeText = "small cigar" %}
+  {% set sizePlural = "small cigars" %}
+{% elif sizeLower == "medium" %}
+  {% set sizeText = "medium cigar" %}
+  {% set sizePlural = "medium cigars" %}
+{% elif sizeLower == "large" %}
+  {% set sizeText = "large cigar" %}
+  {% set sizePlural = "large cigars" %}
+{% endif %}
+
+{# Set frequency-based time period #}
+{% set frequency = data["cigar" + currentSize + "Frequency"] %}
+{% if frequency == "Daily" %}
+  {% set timePeriod = "day" %}
+{% elif frequency == "Weekly" %}
+  {% set timePeriod = "week" %}
+{% elif frequency == "Monthly" %}
+  {% set timePeriod = "month" %}
+{% elif frequency == "Yearly" %}
+  {% set timePeriod = "year" %}
+{% else %}
+  {% set timePeriod = "day" %}
+{% endif %}
+
+{% set pageHeading = (currentSize | capitalize) + " cigar smoking" %}
+{% set questionText = "Roughly how many " + sizePlural + " did you normally smoke a " + timePeriod + "?" %}
+{% set nextPageText = "The question on the next page will ask if the number of " + sizePlural + " you smoked changed over time." %}
+
+{% block beforeContent %}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Back"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="quantity-answer" method="post" novalidate>
+
+        <h1 class="nhsuk-heading-l">{{ pageHeading }}</h1>
+
+        <p class="nhsuk-body">{{ nextPageText }}</p>
+
+        {{ input({
+          label: {
+            text: questionText,
+            classes: "nhsuk-label--m"
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigar" + currentSize + "Quantity",
+          name: "cigar" + currentSize + "Quantity",
+          classes: "nhsuk-input--width-3",
+          suffix: {
+            text: sizePlural
+          },
+          value: data["cigar" + currentSize + "Quantity"],
+          errorMessage: {
+            text: "The number of " + sizePlural + " smoked must be at least 1"
+          } if data["cigar" + currentSize + "Quantity-error"]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

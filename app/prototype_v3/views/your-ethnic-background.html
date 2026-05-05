@@ -1,0 +1,69 @@
+{% extends "prototype_v3/layouts/main.html" %}
+{% block pageTitle %}
+  Your ethnic background - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h1 class="nhsuk-heading-1">Your ethnic background</h1>
+
+      <p class="nhsuk-body">We ask this question because your ethnicity may impact your chances of developing lung cancer.</p>
+
+      <form action="your-education" method="post">
+        {{ radios({
+          idPrefix: "ethnicBackground",
+          name: "ethnicBackground",
+          fieldset: {
+            legend: {
+              text: "What is your ethnic background?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
+            }
+          },
+          value: data.ethnicBackground,
+          items: [
+            {
+              value: "Asian or Asian British",
+              text: "Asian or Asian British"
+            },
+            {
+              value: "Black, African, Caribbean or Black British",
+              text: "Black, African, Caribbean or Black British"
+            },
+            {
+              value: "Mixed or multiple ethnic groups",
+              text: "Mixed or multiple ethnic groups"
+            },
+            {
+              value: "White",
+              text: "White"
+            },
+            {
+              value: "Other ethnic group",
+              text: "Other ethnic group"
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "Prefer not to say",
+              text: "Prefer not to say"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

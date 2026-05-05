@@ -1,0 +1,48 @@
+{% extends "prototype_v3/layouts/main.html" %}
+{% from 'input/macro.njk' import input %}
+{% block pageTitle %}
+  Cigarette smoking - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/cigarettes/current/more-duration-answer" method="post">
+
+        {% set frequencyText = "a day" %}
+        {% if data.cigarettesCurrentMoreFrequency == "Weekly" %}
+          {% set frequencyText = "a week" %}
+        {% elif data.cigarettesCurrentMoreFrequency == "Monthly" %}
+          {% set frequencyText = "a month" %}
+        {% endif %}
+
+        {{ input({
+          label: {
+            text: "Roughly how many years did you smoke " + data.cigarettesCurrentMoreQuantity + " cigarettes " + frequencyText + "?",
+            classes: "nhsuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "cigarettesCurrentMoreDuration",
+          name: "cigarettesCurrentMoreDuration",
+          classes: "nhsuk-input--width-2",
+          suffix: {
+            text: "years"
+          },
+          value: data.cigarettesCurrentMoreDuration
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "prototype_v3/layouts/main.html" %}
+
+{% block pageTitle %}
+  Have you ever smoked tobacco - NHS
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <form action="smokedRegularlyAnswer" method="post">
+
+        <h1 class="nhsuk-heading-l">Tobacco smoking</h1>
+
+        <p class="nhsuk-body">We will ask you questions about your smoking habits. This includes different types of tobacco smoking such as:</p>
+
+        <ul class="nhsuk-list nhsuk-list--bullet">
+          <li>cigarettes from a packet</li>
+          <li>rolling tobacco, or roll ups</li>
+          <li>a pipe</li>
+          <li>cigars</li>
+          <li>cigarillos</li>
+          <li>shisha</li>
+        </ul>
+
+        <p class="nhsuk-body">It does not currently include vaping or e-cigarettes.</p>
+
+        {{ radios({
+          idPrefix: "smokedRegularly",
+          name: "smokedRegularly",
+          fieldset: {
+            legend: {
+              text: "Have you ever smoked tobacco?",
+              classes: "nhsuk-fieldset__legend--m",
+              isPageHeading: false
+            }
+          },
+          hint: {
+            text: "This includes social smoking"
+          },
+          value: data.smokedRegularly,
+          items: [
+            {
+              value: "Yes-currently",
+              text: "Yes, I currently smoke"
+            },
+            {
+              value: "Yes-usedToRegularly",
+              text: "Yes, I used to smoke"
+            },
+            {
+              value: "Yes-usedToFewTimes",
+              text: "Yes, but I have smoked fewer than 100 cigarettes in my lifetime"
+            },
+            {
+              value: "No",
+              text: "No, I have never smoked"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

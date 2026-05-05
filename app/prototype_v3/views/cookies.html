@@ -1,0 +1,97 @@
+{% extends "prototype_v3/layouts/main.html" %}
+
+{% block pageTitle %}
+  NHS {{ serviceName | lower }} cookies policy - NHS
+{% endblock %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h1 class="nhsuk-heading-l">NHS {{ serviceName | lower }} cookies policy</h1>
+
+      <p class="nhsuk-body">Version 1.0, 11 March 2026</p>
+
+      {% set insetTextHtml %}
+        <p class="nhsuk-body">First release of the service for pilot GP surgeries.</p>
+      {% endset %}
+
+      {{ insetText({
+        html: insetTextHtml
+      }) }}
+
+      <p class="nhsuk-body">This cookies policy relates to the service provided by NHS England.</p>
+
+      <p class="nhsuk-body">NHS England ("we" or "us") uses cookies to deliver the NHS {{ serviceName | lower }}.</p>
+
+      <p class="nhsuk-body">The information set out in this policy is provided in addition to the <a href="/prototype_v3/privacy-policy" class="nhsuk-link">NHS {{ serviceName | lower }} privacy policy</a> and should be read alongside it.</p>
+
+      <p class="nhsuk-body">We put small files called cookies on your device (for example, your phone).</p>
+
+      <p class="nhsuk-body">Cookies are widely used to make websites and apps work, or work more efficiently, as well as to provide services and functionalities for users.</p>
+
+      <p class="nhsuk-body">We only put cookies on your device that are required for the NHS {{ serviceName | lower }} to work ("strictly necessary cookies").</p>
+
+      <p class="nhsuk-body">We ask you to accept our cookies policy when you accept the NHS {{ serviceName | lower }} terms of use and privacy policy. In doing so, you agree to let us put the strictly necessary cookies on your device.</p>
+
+      <p class="nhsuk-body">The strictly necessary cookies we need to put on your device for the NHS {{ serviceName | lower }} to work are listed here.</p>
+
+      <h2 class="nhsuk-heading-m">Essential cookies</h2>
+
+      <table class="nhsuk-table">
+        <thead class="nhsuk-table__head">
+          <tr class="nhsuk-table__row">
+            <th class="nhsuk-table__header" scope="col">Name</th>
+            <th class="nhsuk-table__header" scope="col">Purpose</th>
+            <th class="nhsuk-table__header" scope="col">Expires</th>
+          </tr>
+        </thead>
+        <tbody class="nhsuk-table__body">
+          <tr class="nhsuk-table__row">
+            <td class="nhsuk-table__cell">sessionid</td>
+            <td class="nhsuk-table__cell">This cookie is used by Django to identify your session on the site. It allows the website to remember information as you navigate between pages. No personal data is stored in the cookie itself, it only contains a session identifier.</td>
+            <td class="nhsuk-table__cell">The end of the session. When you close the browser window, sign out or your session expires.</td>
+          </tr>
+          <tr class="nhsuk-table__row">
+            <td class="nhsuk-table__cell">ASLBSA and ASLBSACORS</td>
+            <td class="nhsuk-table__cell">These cookies are created by Azure and help identify different users even if they share the same IP address, allowing for a more even distribution of traffic among origins.</td>
+            <td class="nhsuk-table__cell">The end of the session. When you close the browser window, sign out or your session expires.</td>
+          </tr>
+          <tr class="nhsuk-table__row">
+            <td class="nhsuk-table__cell">csrftoken</td>
+            <td class="nhsuk-table__cell">This cookie is created by Django to protect the site from Cross-Site Request Forgery (CSRF) attacks. It ensures that form submissions and other actions come from you and not from a malicious third party.</td>
+            <td class="nhsuk-table__cell">Typically one year, unless your browser clears cookies.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="nhsuk-heading-m">Cookies set by Qualtrics</h2>
+
+      <p class="nhsuk-body">The NHS {{ serviceName | lower }} uses Qualtrics cookies for the purpose of capturing responses to feedback surveys.</p>
+
+      <p class="nhsuk-body">Details on how Qualtrics uses cookies can be found in the <a href="#" class="nhsuk-link">Qualtrics cookies policy</a>, which can be accessed from within the feedback survey.</p>
+
+      <h2 class="nhsuk-heading-m">Your cookie choices</h2>
+
+      <p class="nhsuk-body">The majority of devices and browsers will allow you to alter the settings used for cookies and disable and enable them as you require.</p>
+
+      <p class="nhsuk-body">You can select your cookie preferences so that you do not get any cookies (except strictly necessary cookies) if you prefer not to receive them.</p>
+
+      <p class="nhsuk-body">You can also delete the cookies already on your device, and you can set your browser or device to prevent them being placed.</p>
+
+      <p class="nhsuk-body">Please be aware that if you set your preferences to not allow cookies, it could limit the functionality of the NHS {{ serviceName | lower }} as it needs the strictly necessary cookies to function.</p>
+
+      <h2 class="nhsuk-heading-m">Changes to this cookies policy</h2>
+
+      <p class="nhsuk-body">The NHS {{ serviceName | lower }} <a href="/prototype_v3/terms-of-use" class="nhsuk-link">terms of use</a>, <a href="/prototype_v3/privacy-policy" class="nhsuk-link">privacy policy</a> and cookies policy may change. If you use the NHS {{ serviceName | lower }} service again in the future you will be subject to the policies which exist at that time.</p>
+
+      <h2 class="nhsuk-heading-m">Version history</h2>
+
+      <p class="nhsuk-body">Version 1, 11 March 2026 - first release of the service for pilot GP surgeries.</p>
+
+    </div>
+  </div>
+{% endblock %}

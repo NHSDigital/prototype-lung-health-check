@@ -1,0 +1,66 @@
+{% extends "prototype_v3/layouts/main.html" %}
+{% block pageTitle %}
+  Rolling tobacco smoking - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      <form action="/prototype_v3/tobacco/rolling-tobacco/former/less-quantity-answer" method="post">
+
+        {% set baseFrequencyText = "a week" %}
+        {% if data.rollingTobaccoFormerFrequency == "Monthly" %}
+          {% set baseFrequencyText = "a month" %}
+        {% endif %}
+
+        {% set lessFrequencyText = "a week" %}
+        {% if data.rollingTobaccoFormerLessFrequency == "Monthly" %}
+          {% set lessFrequencyText = "a month" %}
+        {% endif %}
+
+        {{ radios({
+          fieldset: {
+            legend: {
+              text: "When you smoked less than " + data.rollingTobaccoFormerQuantity + " of tobacco " + baseFrequencyText + ", roughly how many grams of tobacco did you normally smoke " + lessFrequencyText + "?",
+              classes: "nhsuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          },
+          hint: {
+            text: "A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g"
+          },
+          idPrefix: "rollingTobaccoFormerLessQuantity",
+          name: "rollingTobaccoFormerLessQuantity",
+          value: data.rollingTobaccoFormerLessQuantity,
+          items: [
+            {
+              value: "10g to 30g",
+              text: "10g to 30g"
+            },
+            {
+              value: "30g to 50g",
+              text: "30g to 50g"
+            },
+            {
+              value: "50g to 75g",
+              text: "50g to 75g"
+            },
+            {
+              value: "75g to 100g",
+              text: "75g to 100g"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

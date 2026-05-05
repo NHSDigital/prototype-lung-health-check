@@ -1,0 +1,45 @@
+{% extends "prototype_v3/layouts/main.html" %}
+{% from 'input/macro.njk' import input %}
+{% block pageTitle %}
+  Shisha smoking - NHS
+{% endblock %}
+{% block beforeContent %}
+  {{ backLink({
+    text: "Back",
+    href: "javascript:history.back();"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h1 class="nhsuk-heading-l">Shisha smoking</h1>
+
+      <p class="nhsuk-body">We only need to know if you smoke shisha regularly. For example, if you have smoked on a monthly basis for a year or longer.</p>
+
+      <form action="/prototype_v3/tobacco/shisha/current/years-smoked-answer" method="post">
+
+        {{ input({
+          label: {
+            text: "Roughly how many years have you smoked shisha?",
+            classes: "nhsuk-label--m"
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          id: "shishaCurrentYearsSmoked",
+          name: "shishaCurrentYearsSmoked",
+          classes: "nhsuk-input--width-2",
+          suffix: {
+            text: "years"
+          },
+          value: data.shishaCurrentYearsSmoked
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

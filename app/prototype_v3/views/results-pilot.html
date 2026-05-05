@@ -1,0 +1,169 @@
+{% extends "prototype_v3/layouts/main.html" %}
+{% from 'details/macro.njk' import details %}
+{% from 'button/macro.njk' import button %}
+{% from 'do-dont-list/macro.njk' import list as doDontList %}
+{% from 'card/macro.njk' import card %}
+{% from 'panel/macro.njk' import panel %}
+{% from 'inset-text/macro.njk' import insetText %}
+{% set pageHeading = "Thank you for testing the online service" %}
+
+{% block content %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {{ panel({ titleText: "Thank you for testing the online service" }) }}
+
+      <h2 class="nhsuk-heading-m">What happens next</h2>
+
+      <p class="nhsuk-body">You will need to complete your NHS lung cancer screening by phone.</p>
+
+      <p class="nhsuk-body">Call us on <a href="tel:02012341234" class="nhsuk-link">020 1234 1234</a></p>
+
+      <p class="nhsuk-body">An advisor will ask you similar questions about your medical history and lifestyle. They will not have access to the answers you have submitted online. This is because we are testing the online service.</p>
+
+      <p class="nhsuk-body"><strong>Phone lines are open:</strong><br>
+        Monday to Friday 8am to 8pm<br>
+        Saturdays 8am to 1pm</p>
+
+        <p class="nhsuk-body">If we do not hear from you in 14 days we will call you to complete the questionnaire by phone. If you are unable to answer the phone we will call you back.</p>
+
+        <p class="nhsuk-body">As a thank you for testing the online service we will offer you a £10 voucher after you have completed your phone appointment.</p>
+
+        {% set cardDescriptionHtml %}
+          <p class="nhsuk-body">You have any of the following symptoms:</p>
+          <ul class="nhsuk-list">
+            <li>a cough that does not go away after 3 weeks</li>
+            <li>a long-standing cough that gets worse</li>
+            <li><a href="https://www.nhs.uk/conditions/chest-infection/" class="nhsuk-link">chest infections</a> that keep coming back</li>
+            <li><a href="https://www.nhs.uk/conditions/coughing-up-blood/" class="nhsuk-link">coughing up blood</a></li>
+            <li>an ache or pain when breathing or coughing</li>
+            <li>persistent <a href="https://www.nhs.uk/conditions/shortness-of-breath/" class="nhsuk-link">breathlessness</a></li>
+            <li>persistent tiredness or lack of energy</li>
+            <li>loss of appetite or unexplained weight loss</li>
+          </ul>
+          <p class="nhsuk-body">They could be <a href="https://www.nhs.uk/conditions/lung-cancer/symptoms/" class="nhsuk-link">symptoms of lung cancer</a>. Your GP will ask about your general health and your symptoms.</p>
+          <p class="nhsuk-body">You may be asked to have a <a href="https://www.nhs.uk/conditions/blood-tests/" class="nhsuk-link">blood test</a> to rule out some of the possible causes of your symptoms, such as a <a href="https://www.nhs.uk/conditions/chest-infection/" class="nhsuk-link">chest infection</a>.</p>
+        {% endset %}
+
+        {{ card({
+          type: "non-urgent",
+          heading: "Speak to a GP if:",
+          descriptionHtml: cardDescriptionHtml
+        }) }}
+
+        <h2 class="nhsuk-heading-m">Find your local Stop Smoking Service</h2>
+        <p class="nhsuk-body">Stopping smoking is the single biggest change you can make for your health. <a href="https://www.nhs.uk/better-health/quit-smoking/find-your-local-stop-smoking-service/" target="_blank" rel="noopener noreferrer" class="nhsuk-link">Find local services to help you stop smoking</a>.</p>
+
+        <h2 class="nhsuk-heading-m">Benefits of stopping smoking</h2>
+        <p class="nhsuk-body">When you stop smoking, you lower your risk of cancer, protect the health of those around you, and enjoy a better quality of life.</p>
+
+        {{ list({
+          title: "When you quit, you:",
+          type: "tick",
+          items: [
+            {
+              text: "lower your risk of cancer, lung disease, heart disease, stroke and dementia"
+            },
+            {
+              text: "protect your loved ones and pets from secondhand smoke"
+            },
+            {
+              text: "feel better mentally in as little as 6 weeks"
+            },
+            {
+              text: "save money - around £38 a week for the average smoker"
+            },
+            {
+              text: "increase energy levels"
+            },
+            {
+              text: "look better and have healthier skin"
+            }
+          ]
+        }) }}
+
+        <h2 class="nhsuk-heading-m">It's never too late to stop</h2>
+        <p class="nhsuk-body">When you stop smoking, your body can repair itself sooner than you might think. It does not matter how old you are, or how long you have smoked.</p>
+
+        {% set insetTextHtml %}
+          <p class="nhsuk-body"><strong>When you stop smoking, in:</strong></p>
+          <ul class="nhsuk-list">
+            <li>2 days, all harmful carbon monoxide leaves your body</li>
+            <li>2 to 12 weeks, your circulation improves</li>
+            <li>3 to 9 months, your lung function and breathing improves</li>
+            <li>1 year, your risk of a heart attack halves compared to a smoker</li>
+          </ul>
+        {% endset %}
+
+        {{ insetText({
+          html: insetTextHtml
+        }) }}
+
+        {{ list({
+          title: "To help stop smoking:",
+          type: "tick",
+          items: [
+            {
+              text: "talk to your GP or pharmacy about stop smoking aids, medication and support services"
+            },
+            {
+              text: "set small goals - you're 5 times more likely to quit for good if you stop smoking for 28 days"
+            },
+            {
+              text: "reflect on any past attempts to quit and try new methods"
+            }
+          ]
+        }) }}
+
+        {% set detailsHtml %}
+          <p class="nhsuk-body">Quitting smoking can lift your mood, and ease stress, anxiety and depression.</p><p class="nhsuk-body">Smokers often think that smoking helps them relax. But in reality, nicotine cravings increase anxiety and tension.</p><p class="nhsuk-body">To manage cravings, try to:</p><ul class="nhsuk-list"><li>keep busy with hobbies and activities</li><li>relax with breathing techniques or meditation</li><li>seek support from friends, family, or support groups</li><li>use nicotine replacement therapy or medications</li></ul><p class="nhsuk-body">The following links open in a new tab.</p><p class="nhsuk-body">Read <a href="https://www.nhs.uk/live-well/quit-smoking/stopping-smoking-mental-health-benefits/" target="_blank" rel="noopener noreferrer" class="nhsuk-link">NHS guidance on smoking and mental health</a></p><p class="nhsuk-body">Get your <a href="https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/your-mind-plan-quiz/" target="_blank" rel="noopener noreferrer" class="nhsuk-link">free Mind Plan</a></p>
+        {% endset %}
+
+        {{ details({
+          classes: "nhsuk-expander",
+          summaryText: "Smoking, anxiety and mood",
+          html: detailsHtml
+        }) }}
+
+        {{ list({
+          title: "For free help and support:",
+          type: "tick",
+          items: [
+            {
+              html: "find your nearest local <a href='https://www.nhs.uk/better-health/quit-smoking/find-your-local-stop-smoking-service/' target='_blank' rel='noopener noreferrer' class='nhsuk-link'>Stop Smoking Service</a>"
+            },
+            {
+              html: "get a <a href='https://www.nhs.uk/better-health/quit-smoking/personal-quit-plan/' target='_blank' rel='noopener noreferrer' class='nhsuk-link'>free personal quit plan</a>"
+            },
+            {
+              html: "join the <a href='https://www.facebook.com/groups/quitsmoking/' target='_blank' rel='noopener noreferrer' class='nhsuk-link'>Quit Smoking Group on Facebook</a>"
+            },
+            {
+              html: "read <a href='https://www.nhs.uk/better-health/quit-smoking/' target='_blank' rel='noopener noreferrer' class='nhsuk-link'>NHS guidance on smoking</a>"
+            },
+            {
+              html: "call the free National Smokefree Helpline on <a href='tel:03001231044' class='nhsuk-link'>0300 123 1044</a> (England only)"
+            },
+            {
+              html: "download the NHS Quit Smoking app from the <a href='https://apps.apple.com/gb/app/nhs-quit-smoking/id1452316449' target='_blank' rel='noopener noreferrer' class='nhsuk-link'>Apple App Store</a> or <a href='https://play.google.com/store/apps/details?id=uk.nhs.nhsapp.quitsmoking' target='_blank' rel='noopener noreferrer' class='nhsuk-link'>Google Play Store</a>"
+            }
+          ]
+        }) }}
+
+        <h2 class="nhsuk-heading-m">Help us improve this service</h2>
+        <p class="nhsuk-body">Tell us about your experience using this service today.</p>
+        {{ button({
+          text: "Give feedback",
+          classes: "nhsuk-button--secondary",
+          href: "feedback"
+        }) }}
+
+        <br>
+        <!-- Development link - remove in production -->
+        <a href="results-high-risk" class="nhsuk-link">[Show high risk results page]</a>
+
+      </div>
+    </div>
+
+  {% endblock %}
