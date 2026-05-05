@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "gray-matter": "^4.0.3",
+    "luxon": "^3.7.2",
     "marked": "^18.0.3",
     "marked-gfm-heading-id": "^4.1.4",
     "nhsuk-frontend": "^10.4.0",
