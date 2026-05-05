@@ -1,6 +1,23 @@
 // External dependencies
 const express = require('express')
+const fs = require('fs')
+const path = require('path')
 const router = express.Router()
+
+const viewsDirectory = path.join(__dirname, 'views')
+
+function view (template) {
+  return `prototype_v3/views/${template}`
+}
+
+function hasView (template) {
+  if (!template || template.includes('..')) {
+    return false
+  }
+
+  const templatePath = path.join(viewsDirectory, `${template}.html`)
+  return templatePath.startsWith(viewsDirectory) && fs.existsSync(templatePath)
+}
 
 /// //////////////
 // Prototype 3 //
@@ -32,7 +49,7 @@ router.post('/prototype_v3/agree-to-share-login-info', (_req, res) => {
 router.get('/prototype_v3/accept-terms', (req, res) => {
   // Clear any previous error state
   delete req.session.data['accept-terms-error']
-  res.render('prototype_v3/accept-terms')
+  res.render(view('accept-terms'))
 })
 
 // Accept terms validation (POST)
@@ -116,7 +133,7 @@ router.post('/prototype_v3/dateOfBirthAnswer', (req, res) => {
     return res.redirect('/prototype_v3/drop-out-age')
   }
 
-  res.render('prototype_v3/check-if-you-need-face-to-face-appointment')
+  res.render(view('check-if-you-need-face-to-face-appointment'))
 })
 
 router.post('/prototype_v3/who-should-not-use-answer', (req, res) => {
@@ -1611,7 +1628,7 @@ router.get('/prototype_v3/index-allpages', (req, res) => {
   req.session.data = {}
 
   // Render the page
-  res.render('prototype_v3/index-allpages')
+  res.render(view('index-allpages'))
 })
 
 // ============================================
@@ -1677,7 +1694,7 @@ router.get('/prototype_v3/check-your-answers', (req, res) => {
   })
 
   // Render the page
-  res.render('prototype_v3/check-your-answers')
+  res.render(view('check-your-answers'))
 })
 
 // ============================================
@@ -1768,6 +1785,16 @@ router.get('/prototype_v3/skip-to-tobacco-former', (req, res) => {
 
   // Redirect to how-old-when-started-smoking with clean slate
   res.redirect('/prototype_v3/how-old-when-started-smoking')
+})
+
+router.get(/^\/prototype_v3\/(.+)$/, (req, res, next) => {
+  const template = req.params[0]
+
+  if (!hasView(template)) {
+    return next()
+  }
+
+  res.render(view(template))
 })
 
 module.exports = router
