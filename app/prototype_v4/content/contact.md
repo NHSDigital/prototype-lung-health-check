@@ -4,7 +4,7 @@ title: Contact us
 
 ## To complete your lung cancer screening by phone
 
-Call us on: [020 3835 1600](tel:02038351600)
+Call us on: {{ serviceTelephone | telephoneLink }}
 
 **Phone lines are open:**
 Monday to Friday 8am to 8pm

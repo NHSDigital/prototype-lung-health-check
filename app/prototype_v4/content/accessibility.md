@@ -25,7 +25,7 @@ Due to the short-term nature of the test of the online service and the delivery 
 
 We have tested this website for accessibility issues with automated tools and through manual testing. We have a phone service for people who are unable to access this website.
 
-If you are unable to test the online service, please call us on [020 3835 1600](tel:02038351600)
+If you are unable to test the online service, please call us on {{ serviceTelephone | telephoneLink }}
 
 We know some parts of this website are not fully accessible:
 
@@ -73,7 +73,7 @@ The content listed below is non-accessible for the following reasons.
 
 ## What we're doing to improve accessibility
 
-We have an alternate phone service that increases accessibility for all users. To access this service, please call [020 3835 1600](tel:02038351600).
+We have an alternate phone service that increases accessibility for all users. To access this service, please call {{ serviceTelephone | telephoneLink }}.
 
 We have published tools and guidance on accessibility in the NHS digital service manual based on extensive testing. The service manual helps our teams build products and services to meet the same accessibility standards.
 
