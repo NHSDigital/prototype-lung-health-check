@@ -44,19 +44,21 @@
 }) }}
 
 <!-- Phase banner (inside header block) -->
-<div class="nhsuk-phase-banner">
-  <div class="nhsuk-width-container">
-    <div class="nhsuk-phase-banner__content">
-      {{ tag({
-        text: "Pilot",
-        classes: "nhsuk-tag--blue"
-      }) }}
-      <p class="nhsuk-phase-banner__text nhsuk-body-s">
-        We are testing a new service – your <a class="nhsuk-link" href="https://feedback.digital.nhs.uk/jfe/form/SV_d4MPGuH486oxASW" target="_blank" rel="noopener noreferrer">feedback</a> will help us to improve it.
-      </p>
+{% if not hidePhaseBanner %}
+  <div class="nhsuk-phase-banner">
+    <div class="nhsuk-width-container">
+      <div class="nhsuk-phase-banner__content">
+        {{ tag({
+          text: "Pilot",
+          classes: "nhsuk-tag--blue"
+        }) }}
+        <p class="nhsuk-phase-banner__text nhsuk-body-s">
+          We are testing a new service – your <a class="nhsuk-link" href="https://feedback.digital.nhs.uk/jfe/form/SV_d4MPGuH486oxASW" target="_blank" rel="noopener noreferrer">feedback</a> will help us to improve it.
+        </p>
+      </div>
     </div>
   </div>
-</div>
+{% endif %}
 {% endblock %}
 
 <!-- Edit the footer -->
@@ -87,7 +89,7 @@
       }
     ]
   }
-}) }}
+}) if not hideFooterLinks }}
 
 {# <div class="nhsuk-footer__testing-links">
   <div class="nhsuk-width-container">
