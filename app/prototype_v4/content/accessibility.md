@@ -4,7 +4,7 @@ title: Accessibility statement for NHS {{ serviceName | lower }}
 
 This statement was created in March 2026.
 
-This accessibility statement applies to the website [digital-lung-cancer-screening.nhs.uk](#)
+This accessibility statement applies to the website {{ serviceUrl }}
 
 This website is run by NHS England. We want as many people as possible to be able to use this website. For example, that means you should be able to:
 
