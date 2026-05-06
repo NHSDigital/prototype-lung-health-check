@@ -7,6 +7,7 @@ module.exports = (req, res, next) => {
   // res.locals.organisationName = 'NHS'
 
   res.locals.serviceEmail = 'england.digitallungcancerscreening@nhs.net'
+  res.locals.serviceTelephone = '020 3835 1600'
 
   next()
 }
