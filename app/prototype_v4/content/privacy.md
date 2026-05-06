@@ -1,10 +1,10 @@
 ---
-title: NHS check if you need a lung scan privacy policy
+title: NHS {{ serviceName | lower }} privacy policy
 ---
 
 ## Who we are
 
-NHS England is running a pilot of the _check if you need a lung scan_ digital service.
+NHS England is running a pilot of the _{{ serviceName | lower }}_ digital service.
 
 ## Why we use your data
 
@@ -28,7 +28,7 @@ Read the full privacy notice below to understand how your data is used, shared, 
 
 ### 1\. About this service
 
-NHS check if you need a lung scan is a pilot by NHS England and allows you to complete a lung health check online before you complete your phone appointment. The pilot is designed to evaluate whether a digital questionnaire can operate as effectively as the existing telephone based lung cancer screening service.
+NHS {{ serviceName | lower }} is a pilot by NHS England and allows you to complete a lung health check online before you complete your phone appointment. The pilot is designed to evaluate whether a digital questionnaire can operate as effectively as the existing telephone based lung cancer screening service.
 
 The pilot is for service evaluation purposes only and does not form part of routine clinical care.
 
@@ -126,4 +126,4 @@ If you want to access your screening results, contact your GP or local screening
 
 ### 9\. Ask a question or find out more
 
-If you have a general question about using the NHS check if you need a lung scan, you can contact us by email at: [england.digitallungcancerscreening@nhs.net](mailto:england.digitallungcancerscreening@nhs.net)
+If you have a general question about using the NHS {{ serviceName | lower }}, you can contact us by email at: [england.digitallungcancerscreening@nhs.net](mailto:england.digitallungcancerscreening@nhs.net)

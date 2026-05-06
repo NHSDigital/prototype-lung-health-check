@@ -1,5 +1,5 @@
 ---
-title: NHS check if you need a lung scan cookies policy
+title: NHS {{ serviceName | lower }} cookies policy
 ---
 
 Version 1.0, 11 March 2026
@@ -8,19 +8,19 @@ Version 1.0, 11 March 2026
 
 This cookies policy relates to the service provided by NHS England.
 
-NHS England ("we" or "us") uses cookies to deliver the NHS check if you need a lung scan.
+NHS England ("we" or "us") uses cookies to deliver the NHS {{ serviceName | lower }}.
 
-The information set out in this policy is provided in addition to the [NHS check if you need a lung scan privacy policy](/prototype_v4/privacy-policy) and should be read alongside it.
+The information set out in this policy is provided in addition to the [NHS {{ serviceName | lower }} privacy policy](/prototype_v4/privacy-policy) and should be read alongside it.
 
 We put small files called cookies on your device (for example, your phone).
 
 Cookies are widely used to make websites and apps work, or work more efficiently, as well as to provide services and functionalities for users.
 
-We only put cookies on your device that are required for the NHS check if you need a lung scan to work ("strictly necessary cookies").
+We only put cookies on your device that are required for the NHS {{ serviceName | lower }} to work ("strictly necessary cookies").
 
-We ask you to accept our cookies policy when you accept the NHS check if you need a lung scan terms of use and privacy policy. In doing so, you agree to let us put the strictly necessary cookies on your device.
+We ask you to accept our cookies policy when you accept the NHS {{ serviceName | lower }} terms of use and privacy policy. In doing so, you agree to let us put the strictly necessary cookies on your device.
 
-The strictly necessary cookies we need to put on your device for the NHS check if you need a lung scan to work are listed here.
+The strictly necessary cookies we need to put on your device for the NHS {{ serviceName | lower }} to work are listed here.
 
 ## Essential cookies
 
@@ -32,7 +32,7 @@ The strictly necessary cookies we need to put on your device for the NHS check i
 
 ## Cookies set by Qualtrics
 
-The NHS check if you need a lung scan uses Qualtrics cookies for the purpose of capturing responses to feedback surveys.
+The NHS {{ serviceName | lower }} uses Qualtrics cookies for the purpose of capturing responses to feedback surveys.
 
 Details on how Qualtrics uses cookies can be found in the [Qualtrics cookies policy](#), which can be accessed from within the feedback survey.
 
@@ -44,11 +44,11 @@ You can select your cookie preferences so that you do not get any cookies (excep
 
 You can also delete the cookies already on your device, and you can set your browser or device to prevent them being placed.
 
-Please be aware that if you set your preferences to not allow cookies, it could limit the functionality of the NHS check if you need a lung scan as it needs the strictly necessary cookies to function.
+Please be aware that if you set your preferences to not allow cookies, it could limit the functionality of the NHS {{ serviceName | lower }} as it needs the strictly necessary cookies to function.
 
 ## Changes to this cookies policy
 
-The NHS check if you need a lung scan [terms of use](/prototype_v4/terms-of-use), [privacy policy](/prototype_v4/privacy-policy) and cookies policy may change. If you use the NHS check if you need a lung scan service again in the future you will be subject to the policies which exist at that time.
+The NHS {{ serviceName | lower }} [terms of use](/prototype_v4/terms-of-use), [privacy policy](/prototype_v4/privacy-policy) and cookies policy may change. If you use the NHS {{ serviceName | lower }} service again in the future you will be subject to the policies which exist at that time.
 
 ## Version history
 

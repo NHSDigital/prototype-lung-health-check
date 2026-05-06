@@ -1,5 +1,5 @@
 ---
-title: Accessibility statement for NHS check if you need a lung scan
+title: Accessibility statement for NHS {{ serviceName | lower }}
 ---
 
 This statement was created in March 2026.
@@ -98,7 +98,7 @@ We are making sure that accessibility issues highlighted in this statement are b
 
 This statement was prepared on 19th March 2026.
 
-This website was last tested on 17th March 2026 against the WCAG 2.2 AA standard by the product team of NHS check if you need a lung scan.
+This website was last tested on 17th March 2026 against the WCAG 2.2 AA standard by the product team of NHS {{ serviceName | lower }}.
 
 Content was selected to make sure a good representation of different pages, templates and components were tested as well as key content and user journeys.
 

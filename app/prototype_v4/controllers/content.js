@@ -4,7 +4,28 @@ const matter = require('gray-matter')
 
 const contentDirectory = path.join(__dirname, '..', 'content')
 
-const renderContent = (fileName) => (_req, res, next) => {
+const renderNunjucksData = (value, nunjucks, context) => {
+  if (typeof value === 'string') {
+    return nunjucks.renderString(value, context)
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => renderNunjucksData(item, nunjucks, context))
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [
+        key,
+        renderNunjucksData(item, nunjucks, context)
+      ])
+    )
+  }
+
+  return value
+}
+
+const renderContent = (fileName) => (req, res, next) => {
   const filePath = path.join(contentDirectory, `${fileName}.md`)
 
   fs.readFile(filePath, 'utf8', (error, file) => {
@@ -12,16 +33,34 @@ const renderContent = (fileName) => (_req, res, next) => {
       return next(error)
     }
 
-    const parsed = matter(file)
+    let contentData
+    let renderedMarkdown
 
-    res.render('prototype_v4/views/content/show', {
-      content: parsed.content,
-      contentData: {
+    try {
+      const parsed = matter(file)
+      const nunjucks = req.app.get('nunjucksEnv')
+      const renderedData = renderNunjucksData(parsed.data, nunjucks, res.locals)
+
+      contentData = {
         contents: {
           items: []
         },
-        ...parsed.data
+        ...renderedData
       }
+
+      const templateContext = {
+        ...res.locals,
+        contentData
+      }
+
+      renderedMarkdown = nunjucks.renderString(parsed.content, templateContext)
+    } catch (error) {
+      return next(error)
+    }
+
+    res.render('prototype_v4/views/content/show', {
+      content: renderedMarkdown,
+      contentData
     })
   })
 }
