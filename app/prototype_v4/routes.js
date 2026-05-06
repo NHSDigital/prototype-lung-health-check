@@ -92,11 +92,11 @@ router.post('/prototype_v4/date-of-birth', questionController.dateOfBirth_post)
 router.get('/prototype_v4/face-to-face-appointment', questionController.faceToFaceAppointment_get)
 router.post('/prototype_v4/face-to-face-appointment', questionController.faceToFaceAppointment_post)
 
-router.get('/prototype_v4/not-eligible-for-screening', questionController.phoneQuestionnaire_get)
+router.get('/prototype_v4/not-eligible-for-screening', questionController.notEligibleForScreening_get)
 
-router.get('/prototype_v4/not-eligible-for-scan', questionController.phoneQuestionnaire_get)
+router.get('/prototype_v4/not-eligible-for-scan', questionController.notEligibleForScan_get)
 
-router.get('/prototype_v4/book-appointment', questionController.phoneQuestionnaire_get)
+router.get('/prototype_v4/book-appointment', questionController.bookAppointment_get)
 
 
 /// About you -------------------------------------------------------------- ///

@@ -76,7 +76,7 @@ exports.signInAgreement_post = (req, res) => {
       }
     })
   } else {
-    res.redirect('')
+    res.redirect('/prototype_v4/accept-terms')
   }
 }
 

@@ -70,6 +70,7 @@ exports.smoker_get = (req, res) => {
   res.render(view('questions/smoker'), {
     actions: {
       next: '/prototype_v4/smoker',
+      back: '/prototype_v4/phone-questionnaire',
       cancel: '/prototype_v4/'
     }
   })
@@ -82,6 +83,7 @@ exports.smoker_post = (req, res) => {
     res.render(view('questions/smoker'), {
       actions: {
         next: '/prototype_v4/smoker',
+        back: '/prototype_v4/phone-questionnaire',
         cancel: '/prototype_v4/'
       }
     })
@@ -95,6 +97,7 @@ exports.dateOfBirth_get = (req, res) => {
   res.render(view('questions/date-of-birth'), {
     actions: {
       next: '/prototype_v4/date-of-birth',
+      back: '/prototype_v4/smoker',
       cancel: '/prototype_v4/'
     }
   })
@@ -107,6 +110,7 @@ exports.dateOfBirth_post = (req, res) => {
     res.render(view('questions/date-of-birth'), {
       actions: {
         next: '/prototype_v4/date-of-birth',
+        back: '/prototype_v4/smoker',
         cancel: '/prototype_v4/'
       }
     })
@@ -120,6 +124,7 @@ exports.faceToFaceAppointment_get = (req, res) => {
   res.render(view('questions/face-to-face-appointment'), {
     actions: {
       next: '/prototype_v4/face-to-face-appointment',
+      back: '/prototype_v4/date-of-birth',
       cancel: '/prototype_v4/'
     }
   })
@@ -132,6 +137,7 @@ exports.faceToFaceAppointment_post = (req, res) => {
     res.render(view('questions/face-to-face-appointment'), {
       actions: {
         next: '/prototype_v4/face-to-face-appointment',
+        back: '/prototype_v4/date-of-birth',
         cancel: '/prototype_v4/'
       }
     })
@@ -144,7 +150,8 @@ exports.notEligibleForScreening_get = (req, res) => {
 
   res.render(view('questions/not-elligible-for-screening'), {
     actions: {
-      cancel: '/prototype_v4/'
+      cancel: '/prototype_v4/',
+      back: '/prototype_v4/'
     }
   })
 }
@@ -153,7 +160,8 @@ exports.notEligibleForScan_get = (req, res) => {
 
   res.render(view('questions/not-elligible-for-scan'), {
     actions: {
-      cancel: '/prototype_v4/'
+      cancel: '/prototype_v4/',
+      back: '/prototype_v4/'
     }
   })
 }
@@ -162,7 +170,8 @@ exports.bookAppointment_get = (req, res) => {
 
   res.render(view('questions/book-appointment'), {
     actions: {
-      cancel: '/prototype_v4/'
+      cancel: '/prototype_v4/',
+      back: '/prototype_v4/'
     }
   })
 }
@@ -302,7 +311,7 @@ exports.ethnicity_post = (req, res) => {
       }
     })
   } else {
-    res.redirect('/prototype_v4/')
+    res.redirect('/prototype_v4/education')
   }
 }
 
@@ -414,7 +423,7 @@ exports.asbestosAtHome_post = (req, res) => {
       }
     })
   } else {
-    res.redirect('/prototype_v4/')
+    res.redirect('/prototype_v4/cancer-diagnosis')
   }
 }
 
