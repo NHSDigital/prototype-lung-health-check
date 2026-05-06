@@ -1,0 +1,36 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Sorry, you cannot test the online service" %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {# <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate> #}
+
+      {%- set markdown %}To test the online service, we need to confirm who you are. To do this, you need to agree to let NHS login share your information with us.
+
+If you do not agree to share your NHS login information, you should complete your NHS lung cancer screening by phone.
+
+Call us on {{ serviceTelephone | telephoneLink }}
+
+**Phone lines are open:**
+
+Monday to Friday 8am to 8pm
+
+Saturdays 8am to 1pm{% endset %}
+
+        {{ markdown | markdownToHtml | safe }}
+
+        {{ button({
+          text: "Back to start page",
+          href: actions.back
+        }) }}
+
+      {# </form> #}
+
+    </div>
+  </div>
+{% endblock %}
