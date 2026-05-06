@@ -12,4 +12,4 @@ Saturdays 8am to 1pm
 
 ## If you have questions about the online service
 
-Contact us by email: [england.digitallungcancerscreening@nhs.net](mailto:england.digitallungcancerscreening@nhs.net)
+Contact us by email: {{ serviceEmail }}

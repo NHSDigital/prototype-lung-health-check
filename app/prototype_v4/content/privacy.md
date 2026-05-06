@@ -126,4 +126,4 @@ If you want to access your screening results, contact your GP or local screening
 
 ### 9\. Ask a question or find out more
 
-If you have a general question about using the NHS {{ serviceName | lower }}, you can contact us by email at: [england.digitallungcancerscreening@nhs.net](mailto:england.digitallungcancerscreening@nhs.net)
+If you have a general question about using the NHS {{ serviceName | lower }}, you can contact us by email at: {{ serviceEmail }}

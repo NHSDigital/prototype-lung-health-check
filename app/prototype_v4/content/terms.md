@@ -12,7 +12,7 @@ Version 4, 25 March 2026
 
 1.3. To find out more about who we are and our role, visit the [NHS England website](#).
 
-1.4. Contacting us: if you have any questions about the service, contact us by email: [england.digitallungcancerscreening@nhs.net](mailto:england.digitallungcancerscreening@nhs.net)
+1.4. Contacting us: if you have any questions about the service, contact us by email: {{ serviceEmail }}
 
 ## 2\. When these terms apply
 

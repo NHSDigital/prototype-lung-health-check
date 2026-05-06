@@ -35,11 +35,11 @@ Details of this can be found below in the 'Non-accessible content' section.
 
 ## Feedback and contact information
 
-If you find any problems not listed on this page or think we're not meeting accessibility requirements, contact: [england.digitallungcancerscreening@nhs.net](mailto:england.digitallungcancerscreening@nhs.net)
+If you find any problems not listed on this page or think we're not meeting accessibility requirements, contact: {{ serviceEmail }}
 
 If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille:
 
-- email [england.digitallungcancerscreening@nhs.net](mailto:england.digitallungcancerscreening@nhs.net)
+- email {{ serviceEmail }}
 
 We'll consider your request and get back to you in 7-14 days.
 
