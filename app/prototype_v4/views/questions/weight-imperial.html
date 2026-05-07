@@ -1,0 +1,84 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Your weight" %}
+
+{% set bodyTextMarkdown %}
+An accurate measurement is important.
+
+If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {% call fieldset({
+          legend: {
+            text: "What is your weight in stones and pounds?",
+            classes: "nhsuk-fieldset__legend--m",
+            isPageHeading: false
+          }
+        }) %}
+
+          <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-column-one-quarter">
+              {{ input({
+                id: "weight-imperial-stones",
+                name: "answers[weight][imperial][stones]",
+                label: {
+                  text: "Stones"
+                },
+                suffix: "st",
+                value: data.answers.weight.imperial.stones,
+                classes: "nhsuk-input--width-4"
+              }) }}
+            </div>
+
+            <div class="nhsuk-grid-column-one-quarter">
+              {{ input({
+                id: "weight-imperial-pounds",
+                name: "answers[weight][imperial][pounds]",
+                label: {
+                  text: "Pounds"
+                },
+                suffix: "lb",
+                value: data.answers.weight.imperial.pounds,
+                classes: "nhsuk-input--width-4"
+              }) }}
+            </div>
+          </div>
+
+        {% endcall %}
+
+        <p class="nhsuk-body">
+          <a href="{{ actions.switchUnits }}" class="nhsuk-link">Switch to kilograms</a>
+        </p>
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

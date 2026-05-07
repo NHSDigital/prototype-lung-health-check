@@ -1,7 +1,38 @@
 const version = 'v4'
+
 const view = (template) => {
   return `prototype_${version}/views/${template}`
 }
+
+const getHeightBack = (req) => {
+  const { answers } = req.session.data
+
+  return answers?.height?.imperial ? '/prototype_v4/height-imperial' : '/prototype_v4/height-metric'
+}
+
+const getWeightBack = (req) => {
+  const { answers } = req.session.data
+
+  return answers?.weight?.imperial ? '/prototype_v4/weight-imperial' : '/prototype_v4/weight-metric'
+}
+
+const getWeightNext = (req, defaultUnit) => {
+  const { answers } = req.session.data
+
+  if (answers?.weight?.imperial) {
+    return '/prototype_v4/weight-imperial'
+  }
+
+  if (answers?.weight?.metric) {
+    return '/prototype_v4/weight-metric'
+  }
+
+  return `/prototype_${version}/weight-${defaultUnit}`
+}
+
+/// ------------------------------------------------------------------------ ///
+///
+/// ------------------------------------------------------------------------ ///
 
 exports.acceptTerms_get = (req, res) => {
 
@@ -192,10 +223,10 @@ exports.bookAppointment_get = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.heightMetric_get = (req, res) => {
-
-  res.render(view('questions/height'), {
+  res.render(view('questions/height-metric'), {
     actions: {
       next: '/prototype_v4/height-metric',
+      switchUnits: '/prototype_v4/height-imperial',
       back: '/prototype_v4/face-to-face-appointment',
       cancel: '/prototype_v4/'
     }
@@ -203,27 +234,30 @@ exports.heightMetric_get = (req, res) => {
 }
 
 exports.heightMetric_post = (req, res) => {
+  const { answers } = req.session.data
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/height'), {
+    res.render(view('questions/height-metric'), {
       errors,
       actions: {
         next: '/prototype_v4/height-metric',
+        switchUnits: '/prototype_v4/height-imperial',
         back: '/prototype_v4/face-to-face-appointment',
         cancel: '/prototype_v4/'
       }
     })
   } else {
-    res.redirect('/prototype_v4/weight-metric')
+    delete answers.height?.imperial
+    res.redirect(getWeightNext(req, 'metric'))
   }
 }
 
 exports.heightImperial_get = (req, res) => {
-
-  res.render(view('questions/height'), {
+  res.render(view('questions/height-imperial'), {
     actions: {
       next: '/prototype_v4/height-imperial',
+      switchUnits: '/prototype_v4/height-metric',
       back: '/prototype_v4/face-to-face-appointment',
       cancel: '/prototype_v4/'
     }
@@ -231,90 +265,107 @@ exports.heightImperial_get = (req, res) => {
 }
 
 exports.heightImperial_post = (req, res) => {
+  const { answers } = req.session.data
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/height'), {
+    res.render(view('questions/height-imperial'), {
       errors,
       actions: {
         next: '/prototype_v4/height-imperial',
+        switchUnits: '/prototype_v4/height-metric',
         back: '/prototype_v4/face-to-face-appointment',
         cancel: '/prototype_v4/'
       }
     })
   } else {
-    res.redirect('/prototype_v4/weight-imperial')
+    delete answers.height?.metric
+    res.redirect(getWeightNext(req, 'imperial'))
   }
 }
 
 exports.weightMetric_get = (req, res) => {
+  const back = getHeightBack(req)
 
-  res.render(view('questions/weight'), {
+  res.render(view('questions/weight-metric'), {
     actions: {
       next: '/prototype_v4/weight-metric',
-      back: '/prototype_v4/height',
+      switchUnits: '/prototype_v4/weight-imperial',
+      back,
       cancel: '/prototype_v4/'
     }
   })
 }
 
 exports.weightMetric_post = (req, res) => {
+  const { answers } = req.session.data
+  const back = getHeightBack(req)
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/weight'), {
+    res.render(view('questions/weight-metric'), {
       errors,
       actions: {
         next: '/prototype_v4/weight-metric',
-        back: '/prototype_v4/height',
+        switchUnits: '/prototype_v4/weight-imperial',
+        back,
         cancel: '/prototype_v4/'
       }
     })
   } else {
+    delete answers.weight?.imperial
     res.redirect('/prototype_v4/gender')
   }
 }
 
 exports.weightImperial_get = (req, res) => {
+  const back = getHeightBack(req)
 
-  res.render(view('questions/weight'), {
+  res.render(view('questions/weight-imperial'), {
     actions: {
       next: '/prototype_v4/weight-imperial',
-      back: '/prototype_v4/height',
+      switchUnits: '/prototype_v4/weight-metric',
+      back,
       cancel: '/prototype_v4/'
     }
   })
 }
 
 exports.weightImperial_post = (req, res) => {
+  const { answers } = req.session.data
+  const back = getHeightBack(req)
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/weight'), {
+    res.render(view('questions/weight-imperial'), {
       errors,
       actions: {
         next: '/prototype_v4/weight-imperial',
-        back: '/prototype_v4/height',
+        switchUnits: '/prototype_v4/weight-metric',
+        back,
         cancel: '/prototype_v4/'
       }
     })
   } else {
+    delete answers.weight?.metric
     res.redirect('/prototype_v4/gender')
   }
 }
 
 exports.gender_get = (req, res) => {
+  const back = getWeightBack(req)
 
   res.render(view('questions/gender'), {
     actions: {
       next: '/prototype_v4/gender',
-      back: '/prototype_v4/sex',
+      back,
       cancel: '/prototype_v4/'
     }
   })
 }
 
 exports.gender_post = (req, res) => {
+  const back = getWeightBack(req)
   const errors = []
 
   if (errors.length) {
@@ -322,7 +373,7 @@ exports.gender_post = (req, res) => {
       errors,
       actions: {
         next: '/prototype_v4/gender',
-        back: '/prototype_v4/sex',
+        back,
         cancel: '/prototype_v4/'
       }
     })
@@ -332,11 +383,10 @@ exports.gender_post = (req, res) => {
 }
 
 exports.sex_get = (req, res) => {
-
   res.render(view('questions/sex'), {
     actions: {
       next: '/prototype_v4/sex',
-      back: '/prototype_v4/weight',
+      back: '/prototype_v4/gender',
       cancel: '/prototype_v4/'
     }
   })
@@ -350,7 +400,7 @@ exports.sex_post = (req, res) => {
       errors,
       actions: {
         next: '/prototype_v4/sex',
-        back: '/prototype_v4/weight',
+        back: '/prototype_v4/gender',
         cancel: '/prototype_v4/'
       }
     })
