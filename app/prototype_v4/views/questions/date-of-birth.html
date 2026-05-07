@@ -33,6 +33,9 @@
           hint: {
             text: "For example, 15 3 1964"
           },
+          errorMessage: {
+            text: errors[0].text
+          } if errors | length,
           items: [
             {
               id: "dateOfBirth-day",

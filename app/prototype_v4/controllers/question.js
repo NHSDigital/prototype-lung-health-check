@@ -30,6 +30,46 @@ const getWeightNext = (req, defaultUnit) => {
   return `/prototype_${version}/weight-${defaultUnit}`
 }
 
+const getDateOfBirth = (answers) => {
+  const day = Number(answers?.dateOfBirth?.day)
+  const month = Number(answers?.dateOfBirth?.month)
+  const year = Number(answers?.dateOfBirth?.year)
+
+  if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) {
+    return false
+  }
+
+  const date = new Date(year, month - 1, day)
+
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return false
+  }
+
+  return date
+}
+
+const getAge = (dateOfBirth) => {
+  const today = new Date()
+  let age = today.getFullYear() - dateOfBirth.getFullYear()
+  const monthDiff = today.getMonth() - dateOfBirth.getMonth()
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())) {
+    age--
+  }
+
+  return age
+}
+
+const isEligibleForScanAge = (dateOfBirth) => {
+  const age = getAge(dateOfBirth)
+
+  return age >= 55 && age <= 74
+}
+
 /// ------------------------------------------------------------------------ ///
 ///
 /// ------------------------------------------------------------------------ ///
@@ -116,6 +156,7 @@ exports.smoker_get = (req, res) => {
 }
 
 exports.smoker_post = (req, res) => {
+  const { answers } = req.session.data
   const errors = []
 
   if (errors.length) {
@@ -128,7 +169,11 @@ exports.smoker_post = (req, res) => {
       }
     })
   } else {
-    res.redirect('/prototype_v4/date-of-birth')
+    if (answers.smoker === 'no') {
+      res.redirect('/prototype_v4/not-eligible-for-screening')
+    } else {
+      res.redirect('/prototype_v4/date-of-birth')
+    }
   }
 }
 
@@ -144,7 +189,16 @@ exports.dateOfBirth_get = (req, res) => {
 }
 
 exports.dateOfBirth_post = (req, res) => {
+  const { answers } = req.session.data
   const errors = []
+  const dateOfBirth = getDateOfBirth(answers)
+
+  if (!dateOfBirth) {
+    errors.push({
+      text: 'Enter a real date of birth',
+      href: '#dateOfBirth-day'
+    })
+  }
 
   if (errors.length) {
     res.render(view('questions/date-of-birth'), {
@@ -156,7 +210,11 @@ exports.dateOfBirth_post = (req, res) => {
       }
     })
   } else {
-    res.redirect('/prototype_v4/face-to-face-appointment')
+    if (!isEligibleForScanAge(dateOfBirth)) {
+      res.redirect('/prototype_v4/not-eligible-for-scan')
+    } else {
+      res.redirect('/prototype_v4/face-to-face-appointment')
+    }
   }
 }
 
@@ -172,6 +230,7 @@ exports.faceToFaceAppointment_get = (req, res) => {
 }
 
 exports.faceToFaceAppointment_post = (req, res) => {
+  const { answers } = req.session.data
   const errors = []
 
   if (errors.length) {
@@ -184,36 +243,37 @@ exports.faceToFaceAppointment_post = (req, res) => {
       }
     })
   } else {
-    res.redirect('/prototype_v4/height-metric')
+    if (answers.faceToFaceAppointment === 'yes') {
+      res.redirect('/prototype_v4/book-appointment')
+    } else {
+      res.redirect('/prototype_v4/height-metric')
+    }
   }
 }
 
 exports.notEligibleForScreening_get = (req, res) => {
-
-  res.render(view('questions/not-elligible-for-screening'), {
+  res.render(view('questions/not-eligible-for-screening'), {
     actions: {
-      cancel: '/prototype_v4/',
-      back: '/prototype_v4/'
+      back: '/prototype_v4/smoker',
+      cancel: '/prototype_v4/'
     }
   })
 }
 
 exports.notEligibleForScan_get = (req, res) => {
-
-  res.render(view('questions/not-elligible-for-scan'), {
+  res.render(view('questions/not-eligible-for-scan'), {
     actions: {
-      cancel: '/prototype_v4/',
-      back: '/prototype_v4/'
+      back: '/prototype_v4/date-of-birth',
+      cancel: '/prototype_v4/'
     }
   })
 }
 
 exports.bookAppointment_get = (req, res) => {
-
   res.render(view('questions/book-appointment'), {
     actions: {
-      cancel: '/prototype_v4/',
-      back: '/prototype_v4/'
+      back: '/prototype_v4/face-to-face-appointment',
+      cancel: '/prototype_v4/'
     }
   })
 }
