@@ -7,7 +7,8 @@ exports.acceptTerms_get = (req, res) => {
 
   res.render(view('questions/accept-terms'), {
     actions: {
-      next: '/prototype_v4/accept-terms'
+      next: '/prototype_v4/accept-terms',
+      cancel: '/prototype_v4'
     }
   })
 }
@@ -19,7 +20,8 @@ exports.acceptTerms_post = (req, res) => {
     res.render(view('questions/accept-terms'), {
       errors,
       actions: {
-        next: '/prototype_v4/accept-terms'
+        next: '/prototype_v4/accept-terms',
+        cancel: '/prototype_v4'
       }
     })
   } else {
