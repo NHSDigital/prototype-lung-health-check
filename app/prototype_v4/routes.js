@@ -101,11 +101,17 @@ router.get('/prototype_v4/book-appointment', questionController.bookAppointment_
 
 /// About you -------------------------------------------------------------- ///
 
-router.get('/prototype_v4/height', questionController.height_get)
-router.post('/prototype_v4/height', questionController.height_post)
+router.get('/prototype_v4/height-metric', questionController.heightMetric_get)
+router.post('/prototype_v4/height-metric', questionController.heightMetric_post)
 
-router.get('/prototype_v4/weight', questionController.weight_get)
-router.post('/prototype_v4/weight', questionController.weight_post)
+router.get('/prototype_v4/height-imperial', questionController.heightImperial_get)
+router.post('/prototype_v4/height-imperial', questionController.heightImperial_post)
+
+router.get('/prototype_v4/weight-metric', questionController.weightMetric_get)
+router.post('/prototype_v4/weight-metric', questionController.weightMetric_post)
+
+router.get('/prototype_v4/weight-imperial', questionController.weightImperial_get)
+router.post('/prototype_v4/weight-imperial', questionController.weightImperial_post)
 
 router.get('/prototype_v4/sex', questionController.sex_get)
 router.post('/prototype_v4/sex', questionController.sex_post)
@@ -132,6 +138,9 @@ router.post('/prototype_v4/asbestos-at-home', questionController.asbestosAtHome_
 
 router.get('/prototype_v4/cancer-diagnosis', questionController.cancerDiagnosis_get)
 router.post('/prototype_v4/cancer-diagnosis', questionController.cancerDiagnosis_post)
+
+router.get('/prototype_v4/cancer-diagnosis-relatives', questionController.cancerDiagnosisRelatives_get)
+router.post('/prototype_v4/cancer-diagnosis-relatives', questionController.cancerDiagnosisRelatives_post)
 
 /// Family history --------------------------------------------------------- ///
 

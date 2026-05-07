@@ -18,6 +18,7 @@ exports.signIn_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('authentication/sign-in'), {
+      errors,
       actions: {
         back: '/prototype_v4',
         next: '/prototype_v4/sign-in'
@@ -43,6 +44,7 @@ exports.securityCode_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('authentication/security-code'), {
+      errors,
       actions: {
         back: '/prototype_v4/sign-in',
         next: '/prototype_v4/security-code'
@@ -69,6 +71,7 @@ exports.signInAgreement_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('authentication/sign-in-agreement'), {
+      errors,
       actions: {
         back: '/prototype_v4/security-code',
         accept: '/prototype_v4/sign-in-agreement',

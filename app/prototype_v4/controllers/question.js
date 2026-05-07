@@ -17,6 +17,7 @@ exports.acceptTerms_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/accept-terms'), {
+      errors,
       actions: {
         next: '/prototype_v4/accept-terms'
       }
@@ -37,17 +38,23 @@ exports.phoneQuestionnaire_get = (req, res) => {
 }
 
 exports.phoneQuestionnaire_post = (req, res) => {
+  const { answers } = req.session.data
   const errors = []
 
   if (errors.length) {
     res.render(view('questions/phone-questionnaire'), {
+      errors,
       actions: {
         next: '/prototype_v4/phone-questionnaire',
         cancel: '/prototype_v4/'
       }
     })
   } else {
-    res.redirect('/prototype_v4/smoker')
+    if (answers.phoneQuestionnaire === 'yes') {
+      res.redirect('/prototype_v4/phone-questionnaire-exit')
+    } else {
+      res.redirect('/prototype_v4/smoker')
+    }
   }
 }
 
@@ -55,8 +62,7 @@ exports.phoneQuestionnaireExit_get = (req, res) => {
 
   res.render(view('questions/phone-questionnaire-exit'), {
     actions: {
-      next: '/prototype_v4/phone-questionnaire-exit',
-      cancel: '/prototype_v4/'
+      back: '/prototype_v4/phone-questionnaire'
     }
   })
 }
@@ -81,6 +87,7 @@ exports.smoker_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/smoker'), {
+      errors,
       actions: {
         next: '/prototype_v4/smoker',
         back: '/prototype_v4/phone-questionnaire',
@@ -108,6 +115,7 @@ exports.dateOfBirth_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/date-of-birth'), {
+      errors,
       actions: {
         next: '/prototype_v4/date-of-birth',
         back: '/prototype_v4/smoker',
@@ -135,6 +143,7 @@ exports.faceToFaceAppointment_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/face-to-face-appointment'), {
+      errors,
       actions: {
         next: '/prototype_v4/face-to-face-appointment',
         back: '/prototype_v4/date-of-birth',
@@ -142,7 +151,7 @@ exports.faceToFaceAppointment_post = (req, res) => {
       }
     })
   } else {
-    res.redirect('/prototype_v4/height')
+    res.redirect('/prototype_v4/height-metric')
   }
 }
 
@@ -180,79 +189,110 @@ exports.bookAppointment_get = (req, res) => {
 /// About you
 /// ------------------------------------------------------------------------ ///
 
-exports.height_get = (req, res) => {
+exports.heightMetric_get = (req, res) => {
 
   res.render(view('questions/height'), {
     actions: {
-      next: '/prototype_v4/height',
+      next: '/prototype_v4/height-metric',
       back: '/prototype_v4/face-to-face-appointment',
       cancel: '/prototype_v4/'
     }
   })
 }
 
-exports.height_post = (req, res) => {
+exports.heightMetric_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
     res.render(view('questions/height'), {
+      errors,
       actions: {
-        next: '/prototype_v4/height',
+        next: '/prototype_v4/height-metric',
         back: '/prototype_v4/face-to-face-appointment',
         cancel: '/prototype_v4/'
       }
     })
   } else {
-    res.redirect('/prototype_v4/weight')
+    res.redirect('/prototype_v4/weight-metric')
   }
 }
 
-exports.weight_get = (req, res) => {
+exports.heightImperial_get = (req, res) => {
+
+  res.render(view('questions/height'), {
+    actions: {
+      next: '/prototype_v4/height-imperial',
+      back: '/prototype_v4/face-to-face-appointment',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.heightImperial_post = (req, res) => {
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/height'), {
+      errors,
+      actions: {
+        next: '/prototype_v4/height-imperial',
+        back: '/prototype_v4/face-to-face-appointment',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    res.redirect('/prototype_v4/weight-imperial')
+  }
+}
+
+exports.weightMetric_get = (req, res) => {
 
   res.render(view('questions/weight'), {
     actions: {
-      next: '/prototype_v4/weight',
+      next: '/prototype_v4/weight-metric',
       back: '/prototype_v4/height',
       cancel: '/prototype_v4/'
     }
   })
 }
 
-exports.weight_post = (req, res) => {
+exports.weightMetric_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
     res.render(view('questions/weight'), {
+      errors,
       actions: {
-        next: '/prototype_v4/weight',
+        next: '/prototype_v4/weight-metric',
         back: '/prototype_v4/height',
         cancel: '/prototype_v4/'
       }
     })
   } else {
-    res.redirect('/prototype_v4/sex')
+    res.redirect('/prototype_v4/gender')
   }
 }
 
-exports.sex_get = (req, res) => {
+exports.weightImperial_get = (req, res) => {
 
-  res.render(view('questions/sex'), {
+  res.render(view('questions/weight'), {
     actions: {
-      next: '/prototype_v4/sex',
-      back: '/prototype_v4/weight',
+      next: '/prototype_v4/weight-imperial',
+      back: '/prototype_v4/height',
       cancel: '/prototype_v4/'
     }
   })
 }
 
-exports.sex_post = (req, res) => {
+exports.weightImperial_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/sex'), {
+    res.render(view('questions/weight'), {
+      errors,
       actions: {
-        next: '/prototype_v4/sex',
-        back: '/prototype_v4/weight',
+        next: '/prototype_v4/weight-imperial',
+        back: '/prototype_v4/height',
         cancel: '/prototype_v4/'
       }
     })
@@ -277,9 +317,38 @@ exports.gender_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/gender'), {
+      errors,
       actions: {
         next: '/prototype_v4/gender',
         back: '/prototype_v4/sex',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    res.redirect('/prototype_v4/sex')
+  }
+}
+
+exports.sex_get = (req, res) => {
+
+  res.render(view('questions/sex'), {
+    actions: {
+      next: '/prototype_v4/sex',
+      back: '/prototype_v4/weight',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.sex_post = (req, res) => {
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/sex'), {
+      errors,
+      actions: {
+        next: '/prototype_v4/sex',
+        back: '/prototype_v4/weight',
         cancel: '/prototype_v4/'
       }
     })
@@ -304,6 +373,7 @@ exports.ethnicity_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/ethnicity'), {
+      errors,
       actions: {
         next: '/prototype_v4/ehtnicity',
         back: '/prototype_v4/gender',
@@ -331,6 +401,7 @@ exports.education_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/education'), {
+      errors,
       actions: {
         next: '/prototype_v4/education',
         back: '/prototype_v4/ethnicity',
@@ -362,6 +433,7 @@ exports.respiratoryConditions_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/respiratory-conditions'), {
+      errors,
       actions: {
         next: '/prototype_v4/respiratory-conditions',
         back: '/prototype_v4/education',
@@ -389,6 +461,7 @@ exports.asbestosAtWork_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/asbestos-at-work'), {
+      errors,
       actions: {
         next: '/prototype_v4/asbestos-at-work',
         back: '/prototype_v4/respiratory-conditions',
@@ -416,6 +489,7 @@ exports.asbestosAtHome_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/asbestos-at-home'), {
+      errors,
       actions: {
         next: '/prototype_v4/asbestos-at-home',
         back: '/prototype_v4/asbestos-at-work',
@@ -443,9 +517,38 @@ exports.cancerDiagnosis_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/cancer-diagnosis'), {
+      errors,
       actions: {
         next: '/prototype_v4/cancer-diagnosis',
         back: '/prototype_v4/asbestos-at-work',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    res.redirect('/prototype_v4/cancer-diagnosis-relatives')
+  }
+}
+
+exports.cancerDiagnosisRelatives_get = (req, res) => {
+
+  res.render(view('questions/cancer-diagnosis-relatives'), {
+    actions: {
+      next: '/prototype_v4/cancer-diagnosis-relatives',
+      back: '/prototype_v4/cancer-diagnosis',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.cancerDiagnosisRelatives_post = (req, res) => {
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/cancer-diagnosis-relatives'), {
+      errors,
+      actions: {
+        next: '/prototype_v4/cancer-diagnosis-relatives',
+        back: '/prototype_v4/cancer-diagnosis',
         cancel: '/prototype_v4/'
       }
     })
@@ -489,6 +592,7 @@ exports.XYZ_post = (req, res) => {
 
   if (errors.length) {
     res.render(view('questions/xyz'), {
+      errors,
       actions: {
         next: '/prototype_v4/',
         cancel: '/prototype_v4/'
