@@ -6,8 +6,8 @@ title: Contact us
 
 Call us on: {{ serviceTelephone | telephoneLink }}
 
-**Phone lines are open:**
-Monday to Friday 8am to 8pm
+**Phone lines are open:**<br aria-hidden="true">
+Monday to Friday 8am to 8pm<br aria-hidden="true">
 Saturdays 8am to 1pm
 
 ## If you have questions about the online service
