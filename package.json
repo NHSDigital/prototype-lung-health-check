@@ -15,7 +15,6 @@
   "author": "https://github.com/nhsdigital/",
   "license": "MIT",
   "dependencies": {
-    "connect-flash": "^0.1.1",
     "gray-matter": "^4.0.3",
     "luxon": "^3.7.2",
     "markdown-it": "^14.1.1",
