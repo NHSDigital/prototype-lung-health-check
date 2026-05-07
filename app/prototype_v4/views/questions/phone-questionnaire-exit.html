@@ -2,6 +2,36 @@
 
 {% set title = "You do not need to test the online service" %}
 
+{% set bodyTextMarkdown %}
+Because you have completed the questionnaire by phone you do not need to test the online service. This is because the online service asks the same questions.
+
+Find out more about NHS lung cancer screening in [North West and South West London](https://www.healthylondon.org/our-work/lung-health-check/).
+{% endset %}
+
+{% set cardDescriptionMarkdown %}
+You have any of the following symptoms:
+
+- a cough that does not go away after 3 weeks
+- a long-standing cough that gets worse
+- [chest infections](https://www.nhs.uk/conditions/chest-infection/) that keep coming back
+- [coughing up blood](https://www.nhs.uk/conditions/coughing-up-blood/)
+- an ache or pain when breathing or coughing
+- persistent [breathlessness](https://www.nhs.uk/conditions/shortness-of-breath/)
+- persistent tiredness or lack of energy
+- loss of appetite or unexplained weight loss
+
+They could be [symptoms of lung cancer](https://www.nhs.uk/conditions/lung-cancer/symptoms/). Your GP will ask about your general health and your symptoms.
+
+You may be asked to have a [blood test](https://www.nhs.uk/conditions/blood-tests/) to rule out some of the possible causes of your symptoms, such as a [chest infection](https://www.nhs.uk/conditions/chest-infection/).
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
 {% block content %}
   {% include "prototype_v4/views/includes/error-summary.html" %}
 
@@ -10,7 +40,13 @@
 
       {% include "prototype_v4/views/includes/page-heading.html" %}
 
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
 
+      {{ card({
+        type: "non-urgent",
+        heading: "Speak to a GP if:",
+        descriptionHtml: cardDescriptionMarkdown | markdownToHtml | safe
+      }) }}
 
     </div>
   </div>

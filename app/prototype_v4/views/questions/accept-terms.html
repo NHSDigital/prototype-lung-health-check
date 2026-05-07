@@ -2,6 +2,10 @@
 
 {% set title = "Accept terms of use" %}
 
+{% set bodyTextMarkdown %}
+To continue, confirm that you have read and agree to the [NHS {{ serviceName }} terms of use](/prototype_v4/terms-of-use)
+{% endset %}
+
 {% block content %}
   {% include "prototype_v4/views/includes/error-summary.html" %}
 
@@ -10,9 +14,20 @@
 
       {% include "prototype_v4/views/includes/page-heading.html" %}
 
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
-
+        {{ checkboxes({
+          name: "answers[acceptTerms]",
+          values: data.answers.acceptTerms,
+          items: [
+            {
+              value: "yes",
+              text: "I agree"
+            }
+          ]
+        }) }}
 
         {{ button({
           text: "Continue"

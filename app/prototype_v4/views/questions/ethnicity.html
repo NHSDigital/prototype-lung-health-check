@@ -1,6 +1,10 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = "XYZ" %}
+{% set title = "Your ethnic background" %}
+
+{% set bodyTextMarkdown %}
+We ask this question because your ethnicity may impact your chances of developing lung cancer.
+{% endset %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -17,9 +21,50 @@
 
       {% include "prototype_v4/views/includes/page-heading.html" %}
 
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
-
+        {{ radios({
+          name: "answers[ethnicity]",
+          fieldset: {
+            legend: {
+              text: "What is your ethnic background?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          value: data.answers.ethnicity,
+          items: [
+            {
+              value: "asian_or_asian_british",
+              text: "Asian or Asian British"
+            },
+            {
+              value: "black_african_caribbean_or_black british",
+              text: "Black, African, Caribbean or Black British"
+            },
+            {
+              value: "mixed_or_multiple_ethnic_groups",
+              text: "Mixed or multiple ethnic groups"
+            },
+            {
+              value: "white",
+              text: "White"
+            },
+            {
+              value: "other_ethnic_group",
+              text: "Other ethnic group"
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "prefer_not_to_say",
+              text: "I prefer not to say"
+            }
+          ]
+        }) }}
 
         {{ button({
           text: "Continue"

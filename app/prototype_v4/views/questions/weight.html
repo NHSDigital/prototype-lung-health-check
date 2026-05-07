@@ -1,6 +1,12 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = "XYZ" %}
+{% set title = "Your weight" %}
+
+{% set bodyTextMarkdown %}
+An accurate measurement is important.
+
+If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+{% endset %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -17,9 +23,29 @@
 
       {% include "prototype_v4/views/includes/page-heading.html" %}
 
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
+        {{ input({
+          id: "weight-kilograms",
+          name: "answers[weight]",
+          label: {
+            text: "What is your weight in kilograms?",
+            isPageHeading: false,
+            classes: "nhsuk-label--m"
+          },
+          hint: {
+            text: "Kilograms"
+          } if 1==0,
+          suffix: "kg",
+          value: data.answers.weight,
+          classes: "nhsuk-input--width-4"
+        }) }}
 
+        <p class="nhsuk-body">
+          <a href="#" class="nhsuk-link">Switch to stones and pounds</a>
+        </p>
 
         {{ button({
           text: "Continue"

@@ -1,16 +1,11 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = "Check if you need a face-to-face appointment" %}
+{% set title = "Tell us if your parents, siblings or children have ever been diagnosed with lung cancer" %}
 
 {% set bodyTextMarkdown %}
-This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
+If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
 
-You need to do your questionnaire in person, not online, if you:
-
-- have a condition that affects your height
-- have had a limb amputation, or were born with a limb difference
-- have been diagnosed with an eating disorder, or think you may have one
-- are pregnant
+This question is about lung cancer rather than any other type of cancer. It does not include your grandparents or grandchildren.
 {% endset %}
 
 {% block beforeContent %}
@@ -33,23 +28,27 @@ You need to do your questionnaire in person, not online, if you:
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
         {{ radios({
-          name: "answers[faceToFaceAppointment]",
+          name: "answers[cancerDiagnosisRelatives]",
           fieldset: {
             legend: {
-              text: "Do you need to leave the online service and ask for a face-to-face appointment?",
+              text: "Have any of your parents, siblings or children ever been diagnosed with lung cancer?",
               isPageHeading: false,
               classes: "nhsuk-fieldset__legend--m"
             }
           },
-          value: data.answers.faceToFaceAppointment,
+          value: data.answers.cancerDiagnosisRelatives,
           items: [
             {
               value: "yes",
-              text: "Yes, one or more of these things applies to me and I need a face-to-face appointment"
+              text: "Yes"
             },
             {
               value: "no",
-              text: "No, I can continue online"
+              text: "No"
+            },
+            {
+              value: "do_not_know",
+              text: "I do not know"
             }
           ]
         }) }}

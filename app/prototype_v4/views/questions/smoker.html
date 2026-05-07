@@ -1,6 +1,19 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = "XYZ" %}
+{% set title = "Tobacco smoking" %}
+
+{% set bodyTextMarkdown %}
+We will ask you questions about your smoking habits. This includes different types of tobacco smoking such as:
+
+- cigarettes from a packet
+- rolling tobacco, or roll ups
+- a pipe
+- cigars
+- cigarillos
+- shisha
+
+It does not currently include vaping or e-cigarettes.
+{% endset %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -17,9 +30,42 @@
 
       {% include "prototype_v4/views/includes/page-heading.html" %}
 
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
-
+        {{ radios({
+          name: "answers[smoker]",
+          fieldset: {
+            legend: {
+              text: "Have you ever smoked tobacco?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "This includes social smoking"
+          },
+          value: data.answers.smoker,
+          items: [
+            {
+              value: "yes_current",
+              text: "Yes, I currently smoke"
+            },
+            {
+              value: "yes_previous",
+              text: "Yes, I used to smoke"
+            },
+            {
+              value: "yes_fewer_than_100",
+              text: "Yes, but I have smoked fewer than 100 cigarettes in my lifetime"
+            },
+            {
+              value: "no",
+              text: "No, I have never smoked"
+            }
+          ]
+        }) }}
 
         {{ button({
           text: "Continue"
