@@ -133,11 +133,13 @@ router.post('/prototype_v4/asbestos-at-home', questionController.asbestosAtHome_
 router.get('/prototype_v4/cancer-diagnosis', questionController.cancerDiagnosis_get)
 router.post('/prototype_v4/cancer-diagnosis', questionController.cancerDiagnosis_post)
 
+/// Family history --------------------------------------------------------- ///
+
 router.get('/prototype_v4/cancer-diagnosis-relatives', questionController.cancerDiagnosisRelatives_get)
 router.post('/prototype_v4/cancer-diagnosis-relatives', questionController.cancerDiagnosisRelatives_post)
 
-/// Family history --------------------------------------------------------- ///
-
+router.get('/prototype_v4/cancer-diagnosis-relatives-age', questionController.cancerDiagnosisRelativesAge_get)
+router.post('/prototype_v4/cancer-diagnosis-relatives-age', questionController.cancerDiagnosisRelativesAge_post)
 
 /// Smoking habits --------------------------------------------------------- ///
 

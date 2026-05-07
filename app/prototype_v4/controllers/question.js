@@ -653,6 +653,7 @@ exports.cancerDiagnosisRelatives_get = (req, res) => {
 }
 
 exports.cancerDiagnosisRelatives_post = (req, res) => {
+  const { answers } = req.session.data
   const errors = []
 
   if (errors.length) {
@@ -661,6 +662,38 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
       actions: {
         next: '/prototype_v4/cancer-diagnosis-relatives',
         back: '/prototype_v4/cancer-diagnosis',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    if (answers.cancerDiagnosisRelatives === 'yes') {
+      res.redirect('/prototype_v4/cancer-diagnosis-relatives-age')
+    } else {
+      res.redirect('/prototype_v4/')
+    }
+  }
+}
+
+exports.cancerDiagnosisRelativesAge_get = (req, res) => {
+
+  res.render(view('questions/cancer-diagnosis-relatives-age'), {
+    actions: {
+      next: '/prototype_v4/cancer-diagnosis-relatives-age',
+      back: '/prototype_v4/cancer-diagnosis-relatives',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.cancerDiagnosisRelativesAge_post = (req, res) => {
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/cancer-diagnosis-relatives-age'), {
+      errors,
+      actions: {
+        next: '/prototype_v4/cancer-diagnosis-relatives-age',
+        back: '/prototype_v4/cancer-diagnosis-relatives',
         cancel: '/prototype_v4/'
       }
     })

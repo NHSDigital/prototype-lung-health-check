@@ -1,0 +1,68 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "If your relatives were under 60 when they were diagnosed" %}
+
+{% set bodyTextMarkdown %}
+We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.
+
+If you do not know or cannot remember, select 'I do not know'.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ radios({
+          name: "answers[cancerDiagnosisRelativesAge]",
+          fieldset: {
+            legend: {
+              text: "Were any of your relatives younger than 60 years old when they were diagnosed with lung cancer?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          value: data.answers.cancerDiagnosisRelativesAge,
+          items: [
+            {
+              value: "yes",
+              text: "Yes, they were younger than 60"
+            },
+            {
+              value: "no",
+              text: "No, they were 60 or older"
+            },
+            {
+              value: "do_not_know",
+              text: "I do not know"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}
