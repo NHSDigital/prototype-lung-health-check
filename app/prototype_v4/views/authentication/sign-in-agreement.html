@@ -2,15 +2,7 @@
 
 {% set title = "Agree to share your NHS login information" %}
 
-{% block content %}
-  <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-two-thirds">
-
-      {% include "prototype_v4/views/includes/page-heading.html" %}
-
-      <form action="{{ actions.accept }}" method="post" accept-charset="utf-8" novalidate>
-
-        {%- set markdown %}
+{% set bodyTextMarkdown %}
 To continue, you need to agree to share your NHS login information with **NHS {{ serviceName | lower }}**.
 
 **NHS {{ serviceName | lower }}** will use your:
@@ -26,8 +18,15 @@ Read the terms of use and privacy policy for **NHS {{ serviceName | lower }}** t
 If you do not agree to share this information you will not be able to use NHS login with **NHS {{ serviceName | lower }}**.
 {% endset %}
 
-{{ markdown | markdownToHtml | safe }}
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
 
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      <form action="{{ actions.accept }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ bodyTextMarkdown | markdownToHtml | safe }}
 
         {{ button({
           text: "I agree"
