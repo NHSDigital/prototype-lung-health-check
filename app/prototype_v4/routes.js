@@ -152,8 +152,10 @@ router.post('/prototype_v4/periods-stopped-smoking', questionController.periodsS
 
 /// Tobacco --------------------------------------------------------------- ///
 
+router.get('/prototype_v4/type-of-smoking', questionController.typeOfSmoking_get)
+router.post('/prototype_v4/type-of-smoking', questionController.typeOfSmoking_post)
 
-
+router.get('/prototype_v4/type-of-smoking-exit', questionController.typeOfSmokingExit_get)
 
 /// ------------------------------------------------------------------------ ///
 /// Static pages

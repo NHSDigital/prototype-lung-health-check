@@ -1,0 +1,49 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "You are not eligible for lung cancer screening" %}
+
+{% set bodyTextMarkdown %}
+You told us you have never smoked the types of tobacco listed. This means you are not eligible for NHS lung cancer screening.
+{% endset %}
+
+{% set cardDescriptionMarkdown %}
+You have any of the following symptoms:
+
+- a cough that does not go away after 3 weeks
+- a long-standing cough that gets worse
+- [chest infections](https://www.nhs.uk/conditions/chest-infection/) that keep coming back
+- [coughing up blood](https://www.nhs.uk/conditions/coughing-up-blood/)
+- an ache or pain when breathing or coughing
+- persistent [breathlessness](https://www.nhs.uk/conditions/shortness-of-breath/)
+- persistent tiredness or lack of energy
+- loss of appetite or unexplained weight loss
+
+They could be [symptoms of lung cancer](https://www.nhs.uk/conditions/lung-cancer/symptoms/). Your GP will ask about your general health and your symptoms.
+
+You may be asked to have a [blood test](https://www.nhs.uk/conditions/blood-tests/) to rule out some of the possible causes of your symptoms, such as a [chest infection](https://www.nhs.uk/conditions/chest-infection/).
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      {{ card({
+        type: "non-urgent",
+        heading: "Speak to a GP if:",
+        descriptionHtml: cardDescriptionMarkdown | markdownToHtml | safe
+      }) }}
+
+    </div>
+  </div>
+{% endblock %}

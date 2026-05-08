@@ -784,6 +784,47 @@ exports.periodsStoppedSmoking_post = (req, res) => {
 /// Tobacco
 /// ------------------------------------------------------------------------ ///
 
+exports.typeOfSmoking_get = (req, res) => {
+
+  res.render(view('questions/type-of-smoking'), {
+    actions: {
+      next: '/prototype_v4/type-of-smoking',
+      back: '/prototype_v4/periods-stopped-smoking',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.typeOfSmoking_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/type-of-smoking'), {
+      errors,
+      actions: {
+        next: '/prototype_v4/type-of-smoking',
+        back: '/prototype_v4/periods-stopped-smoking',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    if (answers.typeOfSmoking.includes('none')) {
+      res.redirect('/prototype_v4/type-of-smoking-exit')
+    } else {
+      res.redirect('/prototype_v4/')
+    }
+  }
+}
+
+exports.typeOfSmokingExit_get = (req, res) => {
+  res.render(view('questions/type-of-smoking-exit'), {
+    actions: {
+      back: '/prototype_v4/type-of-smoking'
+    }
+  })
+}
+
 /// Tobacco A -------------------------------------------------------------- ///
 
 /// Tobacco B -------------------------------------------------------------- ///
@@ -796,8 +837,8 @@ exports.XYZ_get = (req, res) => {
 
   res.render(view('questions/xyz'), {
     actions: {
-      next: '/prototype_v4/',
-      back: '/prototype_v4/',
+      next: '/prototype_v4/xyz',
+      back: '/prototype_v4/abc',
       cancel: '/prototype_v4/'
     }
   })
@@ -810,12 +851,12 @@ exports.XYZ_post = (req, res) => {
     res.render(view('questions/xyz'), {
       errors,
       actions: {
-        next: '/prototype_v4/',
-        back: '/prototype_v4/',
+        next: '/prototype_v4/xyz',
+        back: '/prototype_v4/abc',
         cancel: '/prototype_v4/'
       }
     })
   } else {
-    res.redirect('/prototype_v4/')
+    res.redirect('/prototype_v4/mno')
   }
 }
