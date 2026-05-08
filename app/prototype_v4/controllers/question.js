@@ -136,7 +136,7 @@ const smokingTypes = {
   }
 }
 
-const nextStepAfterSmokingTypes = `/prototype_${version}/xyz`
+const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
 
 const getSelectedSmokingTypes = (answers = {}) => {
   const selectedTypes = Array.isArray(answers.typeOfSmoking)
@@ -1049,13 +1049,36 @@ exports.smokingChange_post = (req, res) => {
   }
 }
 
-/// Tobacco A -------------------------------------------------------------- ///
+/// ------------------------------------------------------------------------ ///
+/// Check your answers
+/// ------------------------------------------------------------------------ ///
 
-/// Tobacco B -------------------------------------------------------------- ///
+exports.checkYourAnswers_get = (req, res) => {
 
-/// Tobacco C -------------------------------------------------------------- ///
+  res.render(view('questions/check-your-answers'), {
+    actions: {
+      next: '/prototype_v4/check-your-answers',
+      back: '/prototype_v4/abc',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
 
-/// Tobacco D -------------------------------------------------------------- ///
+exports.checkYourAnswers_post = (req, res) => {
+  res.redirect('/prototype_v4/confirmation')
+}
+
+/// ------------------------------------------------------------------------ ///
+/// Confirmation
+/// ------------------------------------------------------------------------ ///
+
+exports.confirmation_get = (req, res) => {
+  res.render(view('questions/confirmation'))
+}
+
+/// ------------------------------------------------------------------------ ///
+/// Template
+/// ------------------------------------------------------------------------ ///
 
 exports.XYZ_get = (req, res) => {
 

@@ -1,0 +1,40 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Check your answers" %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      <p class="nhsuk-body">
+        Check the information you have given us. If any of the details are wrong, you can change them.
+      </p>
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+
+
+        {{ button({
+          text: "Submit"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

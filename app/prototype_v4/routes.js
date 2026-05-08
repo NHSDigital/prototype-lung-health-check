@@ -168,6 +168,17 @@ router.post('/prototype_v4/smoking-setting', questionController.smokingSetting_p
 router.get('/prototype_v4/smoking-change', questionController.smokingChange_get)
 router.post('/prototype_v4/smoking-change', questionController.smokingChange_post)
 
+// TODO: Change of amount questions
+
+/// Check your answers ----------------------------------------------------- ///
+
+router.get('/prototype_v4/check-your-answers', questionController.checkYourAnswers_get)
+router.post('/prototype_v4/check-your-answers', questionController.checkYourAnswers_post)
+
+/// Confirmation ----------------------------------------------------------- ///
+
+router.get('/prototype_v4/confirmation', questionController.confirmation_get)
+
 /// ------------------------------------------------------------------------ ///
 /// Static pages
 /// ------------------------------------------------------------------------ ///
