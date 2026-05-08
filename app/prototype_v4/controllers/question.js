@@ -70,6 +70,144 @@ const isEligibleForScanAge = (dateOfBirth) => {
   return age >= 55 && age <= 74
 }
 
+const smokingTypes = {
+  cigarettes: {
+    caption: 'Cigarette smoking',
+    frequencyHeading: 'How often do you smoke cigarettes?',
+    quantityHeading: 'How many cigarettes do you currently smoke in a normal day?',
+    changeHeading: 'Has the number of cigarettes you normally smoke changed over time?',
+    quantityUnit: 'cigarettes',
+    suffix: 'cigarettes'
+  },
+  rolling_tobacco: {
+    caption: 'Rolling tobacco smoking',
+    frequencyHeading: 'How often do you smoke rolling tobacco or roll-ups?',
+    quantityHeading: 'How much rolling tobacco do you currently smoke in a normal week?',
+    changeHeading: 'Has the amount of rolling tobacco you normally smoke changed over time?',
+    quantityUnit: 'rolling tobacco'
+  },
+  pipes: {
+    caption: 'Pipe smoking',
+    frequencyHeading: 'How often do you smoke a pipe?',
+    quantityHeading: 'How many full pipe loads do you currently smoke in a normal day?',
+    changeHeading: 'Has the number of full pipe loads you normally smoke changed over time?',
+    quantityUnit: 'full pipe loads',
+    suffix: 'full pipe loads'
+  },
+  small_cigars: {
+    caption: 'Small cigar smoking',
+    frequencyHeading: 'How often do you smoke small cigars?',
+    quantityHeading: 'How many small cigars do you currently smoke in a normal day?',
+    changeHeading: 'Has the number of small cigars you normally smoke changed over time?',
+    quantityUnit: 'small cigars',
+    suffix: 'small cigars'
+  },
+  medium_cigars: {
+    caption: 'Medium cigar smoking',
+    frequencyHeading: 'How often do you smoke medium cigars?',
+    quantityHeading: 'How many medium cigars do you currently smoke in a normal day?',
+    changeHeading: 'Has the number of medium cigars you normally smoke changed over time?',
+    quantityUnit: 'medium cigars',
+    suffix: 'medium cigars'
+  },
+  large_cigars: {
+    caption: 'Large cigar smoking',
+    frequencyHeading: 'How often do you smoke large cigars?',
+    quantityHeading: 'How many large cigars do you currently smoke in a normal day?',
+    changeHeading: 'Has the number of large cigars you normally smoke changed over time?',
+    quantityUnit: 'large cigars',
+    suffix: 'large cigars'
+  },
+  cigarillos: {
+    caption: 'Cigarillo smoking',
+    frequencyHeading: 'How often do you smoke cigarillos?',
+    quantityHeading: 'How many cigarillos do you currently smoke in a normal day?',
+    changeHeading: 'Has the number of cigarillos you normally smoke changed over time?',
+    quantityUnit: 'cigarillos',
+    suffix: 'cigarillos'
+  },
+  shisha: {
+    caption: 'Shisha smoking',
+    settingHeading: 'Do you usually smoke shisha in a group or on your own?',
+    frequencyHeading: 'How often do you smoke shisha?',
+    quantityHeading: 'How many hours do you currently smoke shisha in a normal day?',
+    quantityUnit: 'hours',
+    suffix: 'hours'
+  }
+}
+
+const nextStepAfterSmokingTypes = `/prototype_${version}/xyz`
+
+const getSelectedSmokingTypes = (answers = {}) => {
+  const selectedTypes = Array.isArray(answers.typeOfSmoking)
+    ? answers.typeOfSmoking
+    : [answers.typeOfSmoking].filter(Boolean)
+
+  return Object.keys(smokingTypes).filter((type) => selectedTypes.includes(type))
+}
+
+const getSmokingTypeSteps = (answers = {}) => {
+  return getSelectedSmokingTypes(answers).flatMap((type) => {
+    const steps = []
+
+    if (type === 'shisha') {
+      steps.push({ page: 'smoking-setting', type })
+    }
+
+    steps.push({ page: 'smoking-frequency', type })
+    steps.push({ page: 'smoking-quantity', type })
+
+    if (type !== 'shisha') {
+      steps.push({ page: 'smoking-change', type })
+    }
+
+    return steps
+  })
+}
+
+const getSmokingTypeStepUrl = (step) => {
+  return `/prototype_${version}/${step.page}?type=${encodeURIComponent(step.type)}`
+}
+
+const getSmokingTypeStep = (req, page) => {
+  const { answers } = req.session.data
+  const steps = getSmokingTypeSteps(answers)
+  const queryType = req.query?.type
+  const step = steps.find((step) => step.page === page && step.type === queryType) ||
+    steps.find((step) => step.page === page)
+
+  return { step, steps }
+}
+
+const getSmokingTypeActions = (step, steps) => {
+  const index = steps.findIndex((item) => item.page === step.page && item.type === step.type)
+  const previousStep = steps[index - 1]
+  const nextStep = steps[index + 1]
+
+  return {
+    next: getSmokingTypeStepUrl(step),
+    back: previousStep ? getSmokingTypeStepUrl(previousStep) : `/prototype_${version}/type-of-smoking`,
+    onward: nextStep ? getSmokingTypeStepUrl(nextStep) : nextStepAfterSmokingTypes,
+    cancel: `/prototype_${version}/`
+  }
+}
+
+const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
+  const { step, steps } = getSmokingTypeStep(req, page)
+
+  if (!step) {
+    res.redirect(`/prototype_${version}/type-of-smoking`)
+    return
+  }
+
+  res.render(view(`questions/${page}`), {
+    type: step.type,
+    smokingType: smokingTypes[step.type],
+    errors,
+    actions: getSmokingTypeActions(step, steps)
+  })
+}
+
 /// ------------------------------------------------------------------------ ///
 ///
 /// ------------------------------------------------------------------------ ///
@@ -785,7 +923,6 @@ exports.periodsStoppedSmoking_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.typeOfSmoking_get = (req, res) => {
-
   res.render(view('questions/type-of-smoking'), {
     actions: {
       next: '/prototype_v4/type-of-smoking',
@@ -809,14 +946,17 @@ exports.typeOfSmoking_post = (req, res) => {
       }
     })
   } else {
-    if (answers.typeOfSmoking.includes('none')) {
+    const selectedTypes = Array.isArray(answers.typeOfSmoking)
+      ? answers.typeOfSmoking
+      : [answers.typeOfSmoking].filter(Boolean)
+    const steps = getSmokingTypeSteps(answers)
+
+    if (selectedTypes.includes('none')) {
       res.redirect('/prototype_v4/type-of-smoking-exit')
+    } else if (steps.length) {
+      res.redirect(getSmokingTypeStepUrl(steps[0]))
     } else {
-      if (answers.typeOfSmoking.includes('shisha')) {
-        res.redirect('/prototype_v4/smoking-setting')
-      } else {
-        res.redirect('/prototype_v4/smoking-frequency')
-      }
+      res.redirect('/prototype_v4/type-of-smoking')
     }
   }
 }
@@ -830,131 +970,82 @@ exports.typeOfSmokingExit_get = (req, res) => {
 }
 
 exports.smokingFrequency_get = (req, res) => {
-  const type = 'cigarettes'
-
-  res.render(view('questions/smoking-frequency'), {
-    type,
-    actions: {
-      next: '/prototype_v4/smoking-frequency',
-      back: '/prototype_v4/type-of-smoking',
-      cancel: '/prototype_v4/'
-    }
-  })
+  renderSmokingTypeQuestion(req, res, 'smoking-frequency')
 }
 
 exports.smokingFrequency_post = (req, res) => {
-  const { answers } = req.session.data
-  const type = 'cigarettes'
+  const { step, steps } = getSmokingTypeStep(req, 'smoking-frequency')
   const errors = []
 
+  if (!step) {
+    res.redirect('/prototype_v4/type-of-smoking')
+    return
+  }
+
   if (errors.length) {
-    res.render(view('questions/smoking-frequency'), {
-      type,
-      errors,
-      actions: {
-        next: '/prototype_v4/smoking-frequency',
-        back: '/prototype_v4/type-of-smoking',
-        cancel: '/prototype_v4/'
-      }
-    })
+    renderSmokingTypeQuestion(req, res, 'smoking-frequency', errors)
   } else {
-    res.redirect('/prototype_v4/smoking-quantity')
+    res.redirect(getSmokingTypeActions(step, steps).onward)
   }
 }
 
 exports.smokingQuantity_get = (req, res) => {
-  const type = 'cigarettes'
-
-  res.render(view('questions/smoking-quantity'), {
-    type,
-    actions: {
-      next: '/prototype_v4/smoking-quantity',
-      back: '/prototype_v4/smoking-frequency',
-      cancel: '/prototype_v4/'
-    }
-  })
+  renderSmokingTypeQuestion(req, res, 'smoking-quantity')
 }
 
 exports.smokingQuantity_post = (req, res) => {
-  const { answers } = req.session.data
-  const type = 'cigarettes'
+  const { step, steps } = getSmokingTypeStep(req, 'smoking-quantity')
   const errors = []
 
+  if (!step) {
+    res.redirect('/prototype_v4/type-of-smoking')
+    return
+  }
+
   if (errors.length) {
-    res.render(view('questions/smoking-quantity'), {
-      type,
-      errors,
-      actions: {
-        next: '/prototype_v4/smoking-quantity',
-        back: '/prototype_v4/smoking-frequency',
-        cancel: '/prototype_v4/'
-      }
-    })
+    renderSmokingTypeQuestion(req, res, 'smoking-quantity', errors)
   } else {
-    res.redirect('/prototype_v4/smoking-change')
+    res.redirect(getSmokingTypeActions(step, steps).onward)
   }
 }
 
 exports.smokingSetting_get = (req, res) => {
-
-  res.render(view('questions/smoking-setting'), {
-    actions: {
-      next: '/prototype_v4/smoking-setting',
-      back: '/prototype_v4/type-of-smoking',
-      cancel: '/prototype_v4/'
-    }
-  })
+  renderSmokingTypeQuestion(req, res, 'smoking-setting')
 }
 
 exports.smokingSetting_post = (req, res) => {
-  const { answers } = req.session.data
+  const { step, steps } = getSmokingTypeStep(req, 'smoking-setting')
   const errors = []
 
+  if (!step) {
+    res.redirect('/prototype_v4/type-of-smoking')
+    return
+  }
+
   if (errors.length) {
-    res.render(view('questions/smoking-setting'), {
-      errors,
-      actions: {
-        next: '/prototype_v4/smoking-setting',
-        back: '/prototype_v4/type-of-smoking',
-        cancel: '/prototype_v4/'
-      }
-    })
+    renderSmokingTypeQuestion(req, res, 'smoking-setting', errors)
   } else {
-    res.redirect('/prototype_v4/smoking-frequency')
+    res.redirect(getSmokingTypeActions(step, steps).onward)
   }
 }
 
 exports.smokingChange_get = (req, res) => {
-  const type = 'cigarettes'
-
-  res.render(view('questions/smoking-change'), {
-    type,
-    actions: {
-      next: '/prototype_v4/smoking-change',
-      back: '/prototype_v4/smoking-quantity',
-      cancel: '/prototype_v4/'
-    }
-  })
+  renderSmokingTypeQuestion(req, res, 'smoking-change')
 }
 
 exports.smokingChange_post = (req, res) => {
-  const { answers } = req.session.data
-  const type = 'cigarettes'
-
+  const { step, steps } = getSmokingTypeStep(req, 'smoking-change')
   const errors = []
 
+  if (!step) {
+    res.redirect('/prototype_v4/type-of-smoking')
+    return
+  }
+
   if (errors.length) {
-    res.render(view('questions/smoking-change'), {
-      type,
-      errors,
-      actions: {
-        next: '/prototype_v4/smoking-change',
-        back: '/prototype_v4/smoking-quantity',
-        cancel: '/prototype_v4/'
-      }
-    })
+    renderSmokingTypeQuestion(req, res, 'smoking-change', errors)
   } else {
-    res.redirect('/prototype_v4/smoking-frequency')
+    res.redirect(getSmokingTypeActions(step, steps).onward)
   }
 }
 

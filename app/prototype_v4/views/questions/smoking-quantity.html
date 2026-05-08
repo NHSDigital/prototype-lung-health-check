@@ -1,7 +1,7 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = "How many " + type + " do you currently smoke in a normal day?" %}
-{% set caption = "Cigarette smoking" %}
+{% set title = smokingType.quantityHeading %}
+{% set caption = smokingType.caption %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -78,7 +78,7 @@
             hint: {
               text: "Give an estimate if you are not sure"
             },
-            suffix: "cigarettes",
+            suffix: smokingType.suffix,
             value: data.answers[type].smokingQuantity,
             classes: "nhsuk-input--width-4"
           }) }}

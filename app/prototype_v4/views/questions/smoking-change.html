@@ -1,7 +1,7 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = "Has the number of " + type + " you normally smoke changed over time?" %}
-{% set caption = "Cigarette smoking" %}
+{% set title = smokingType.changeHeading %}
+{% set caption = smokingType.caption %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -38,12 +38,12 @@
           items: [
             {
               value: "more",
-              text: "Yes, I used to smoke more " + type + " a day",
+              text: "Yes, I used to smoke more " + smokingType.quantityUnit + " a day",
               exclusiveGroup: "change-list"
             },
             {
               value: "fewer",
-              text: "Yes, I used to smoke fewer " + type + " a day",
+              text: "Yes, I used to smoke fewer " + smokingType.quantityUnit + " a day",
               exclusiveGroup: "change-list"
             },
             {
