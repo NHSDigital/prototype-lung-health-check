@@ -641,6 +641,10 @@ exports.cancerDiagnosis_post = (req, res) => {
   }
 }
 
+/// ------------------------------------------------------------------------ ///
+/// Family history
+/// ------------------------------------------------------------------------ ///
+
 exports.cancerDiagnosisRelatives_get = (req, res) => {
 
   res.render(view('questions/cancer-diagnosis-relatives'), {
@@ -669,7 +673,8 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
     if (answers.cancerDiagnosisRelatives === 'yes') {
       res.redirect('/prototype_v4/cancer-diagnosis-relatives-age')
     } else {
-      res.redirect('/prototype_v4/')
+      delete answers.cancerDiagnosisRelativesAge
+      res.redirect('/prototype_v4/age-started-smoking')
     }
   }
 }
@@ -698,17 +703,82 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
       }
     })
   } else {
-    res.redirect('/prototype_v4/')
+    res.redirect('/prototype_v4/age-started-smoking')
   }
 }
 
 /// ------------------------------------------------------------------------ ///
-/// Family history
-/// ------------------------------------------------------------------------ ///
-
-/// ------------------------------------------------------------------------ ///
 /// Smoking habits
 /// ------------------------------------------------------------------------ ///
+
+exports.ageStartedSmoking_get = (req, res) => {
+  const { answers } = req.session.data
+  const back = answers?.cancerDiagnosisRelativesAge ? '/prototype_v4/cancer-diagnosis-relatives-age' : '/prototype_v4/cancer-diagnosis-relatives'
+
+  res.render(view('questions/age-started-smoking'), {
+    actions: {
+      next: '/prototype_v4/age-started-smoking',
+      back,
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.ageStartedSmoking_post = (req, res) => {
+  const { answers } = req.session.data
+  const back = answers?.cancerDiagnosisRelativesAge ? '/prototype_v4/cancer-diagnosis-relatives-age' : '/prototype_v4/cancer-diagnosis-relatives'
+
+  const errors = []
+
+  // TODO:
+  // If not answered, throw error
+  // If the age started smoking is older than person's age
+  // based on date of birth, throw error
+
+  if (errors.length) {
+    res.render(view('questions/age-started-smoking'), {
+      errors,
+      actions: {
+        next: '/prototype_v4/age-started-smoking',
+        back,
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    res.redirect('/prototype_v4/periods-stopped-smoking')
+  }
+}
+
+exports.periodsStoppedSmoking_get = (req, res) => {
+  res.render(view('questions/periods-stopped-smoking'), {
+    actions: {
+      next: '/prototype_v4/periods-stopped-smoking',
+      back: '/prototype_v4/age-started-smoking',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.periodsStoppedSmoking_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/periods-stopped-smoking'), {
+      errors,
+      actions: {
+        next: '/prototype_v4/periods-stopped-smoking',
+        back: '/prototype_v4/age-started-smoking',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    if (answers.periodsStoppedSmoking === 'no') {
+      delete answers.yearsStoppedSmoking
+    }
+    res.redirect('/prototype_v4/type-of-smoking')
+  }
+}
 
 /// ------------------------------------------------------------------------ ///
 /// Tobacco
@@ -727,6 +797,7 @@ exports.XYZ_get = (req, res) => {
   res.render(view('questions/xyz'), {
     actions: {
       next: '/prototype_v4/',
+      back: '/prototype_v4/',
       cancel: '/prototype_v4/'
     }
   })
@@ -740,6 +811,7 @@ exports.XYZ_post = (req, res) => {
       errors,
       actions: {
         next: '/prototype_v4/',
+        back: '/prototype_v4/',
         cancel: '/prototype_v4/'
       }
     })

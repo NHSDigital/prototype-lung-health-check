@@ -143,6 +143,12 @@ router.post('/prototype_v4/cancer-diagnosis-relatives-age', questionController.c
 
 /// Smoking habits --------------------------------------------------------- ///
 
+router.get('/prototype_v4/age-started-smoking', questionController.ageStartedSmoking_get)
+router.post('/prototype_v4/age-started-smoking', questionController.ageStartedSmoking_post)
+
+router.get('/prototype_v4/periods-stopped-smoking', questionController.periodsStoppedSmoking_get)
+router.post('/prototype_v4/periods-stopped-smoking', questionController.periodsStoppedSmoking_post)
+
 
 /// Tobacco --------------------------------------------------------------- ///
 
