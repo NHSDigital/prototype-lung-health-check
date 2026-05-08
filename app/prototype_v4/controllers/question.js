@@ -812,7 +812,11 @@ exports.typeOfSmoking_post = (req, res) => {
     if (answers.typeOfSmoking.includes('none')) {
       res.redirect('/prototype_v4/type-of-smoking-exit')
     } else {
-      res.redirect('/prototype_v4/')
+      if (answers.typeOfSmoking.includes('shisha')) {
+        res.redirect('/prototype_v4/smoking-setting')
+      } else {
+        res.redirect('/prototype_v4/smoking-frequency')
+      }
     }
   }
 }
@@ -823,6 +827,135 @@ exports.typeOfSmokingExit_get = (req, res) => {
       back: '/prototype_v4/type-of-smoking'
     }
   })
+}
+
+exports.smokingFrequency_get = (req, res) => {
+  const type = 'cigarettes'
+
+  res.render(view('questions/smoking-frequency'), {
+    type,
+    actions: {
+      next: '/prototype_v4/smoking-frequency',
+      back: '/prototype_v4/type-of-smoking',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.smokingFrequency_post = (req, res) => {
+  const { answers } = req.session.data
+  const type = 'cigarettes'
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/smoking-frequency'), {
+      type,
+      errors,
+      actions: {
+        next: '/prototype_v4/smoking-frequency',
+        back: '/prototype_v4/type-of-smoking',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    res.redirect('/prototype_v4/smoking-quantity')
+  }
+}
+
+exports.smokingQuantity_get = (req, res) => {
+  const type = 'cigarettes'
+
+  res.render(view('questions/smoking-quantity'), {
+    type,
+    actions: {
+      next: '/prototype_v4/smoking-quantity',
+      back: '/prototype_v4/smoking-frequency',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.smokingQuantity_post = (req, res) => {
+  const { answers } = req.session.data
+  const type = 'cigarettes'
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/smoking-quantity'), {
+      type,
+      errors,
+      actions: {
+        next: '/prototype_v4/smoking-quantity',
+        back: '/prototype_v4/smoking-frequency',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    res.redirect('/prototype_v4/smoking-change')
+  }
+}
+
+exports.smokingSetting_get = (req, res) => {
+
+  res.render(view('questions/smoking-setting'), {
+    actions: {
+      next: '/prototype_v4/smoking-setting',
+      back: '/prototype_v4/type-of-smoking',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.smokingSetting_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/smoking-setting'), {
+      errors,
+      actions: {
+        next: '/prototype_v4/smoking-setting',
+        back: '/prototype_v4/type-of-smoking',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    res.redirect('/prototype_v4/smoking-frequency')
+  }
+}
+
+exports.smokingChange_get = (req, res) => {
+  const type = 'cigarettes'
+
+  res.render(view('questions/smoking-change'), {
+    type,
+    actions: {
+      next: '/prototype_v4/smoking-change',
+      back: '/prototype_v4/smoking-quantity',
+      cancel: '/prototype_v4/'
+    }
+  })
+}
+
+exports.smokingChange_post = (req, res) => {
+  const { answers } = req.session.data
+  const type = 'cigarettes'
+
+  const errors = []
+
+  if (errors.length) {
+    res.render(view('questions/smoking-change'), {
+      type,
+      errors,
+      actions: {
+        next: '/prototype_v4/smoking-change',
+        back: '/prototype_v4/smoking-quantity',
+        cancel: '/prototype_v4/'
+      }
+    })
+  } else {
+    res.redirect('/prototype_v4/smoking-frequency')
+  }
 }
 
 /// Tobacco A -------------------------------------------------------------- ///
@@ -845,6 +978,7 @@ exports.XYZ_get = (req, res) => {
 }
 
 exports.XYZ_post = (req, res) => {
+  const { answers } = req.session.data
   const errors = []
 
   if (errors.length) {

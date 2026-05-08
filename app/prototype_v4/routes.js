@@ -149,13 +149,24 @@ router.post('/prototype_v4/age-started-smoking', questionController.ageStartedSm
 router.get('/prototype_v4/periods-stopped-smoking', questionController.periodsStoppedSmoking_get)
 router.post('/prototype_v4/periods-stopped-smoking', questionController.periodsStoppedSmoking_post)
 
-
 /// Tobacco --------------------------------------------------------------- ///
 
 router.get('/prototype_v4/type-of-smoking', questionController.typeOfSmoking_get)
 router.post('/prototype_v4/type-of-smoking', questionController.typeOfSmoking_post)
 
 router.get('/prototype_v4/type-of-smoking-exit', questionController.typeOfSmokingExit_get)
+
+router.get('/prototype_v4/smoking-frequency', questionController.smokingFrequency_get)
+router.post('/prototype_v4/smoking-frequency', questionController.smokingFrequency_post)
+
+router.get('/prototype_v4/smoking-quantity', questionController.smokingQuantity_get)
+router.post('/prototype_v4/smoking-quantity', questionController.smokingQuantity_post)
+
+router.get('/prototype_v4/smoking-setting', questionController.smokingSetting_get)
+router.post('/prototype_v4/smoking-setting', questionController.smokingSetting_post)
+
+router.get('/prototype_v4/smoking-change', questionController.smokingChange_get)
+router.post('/prototype_v4/smoking-change', questionController.smokingChange_post)
 
 /// ------------------------------------------------------------------------ ///
 /// Static pages

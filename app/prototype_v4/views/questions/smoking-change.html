@@ -1,0 +1,73 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Has the number of " + type + " you normally smoke changed over time?" %}
+{% set caption = "Cigarette smoking" %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% set legendText %}
+        {% include "prototype_v4/views/includes/page-heading-legend.html" %}
+      {% endset %}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ checkboxes({
+          name: "answers[" + type + "][smokingChange]",
+          fieldset: {
+            legend: {
+              text: legendText,
+              isPageHeading: true,
+              classes: "nhsuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          values: data.answers[type].smokingChange,
+          items: [
+            {
+              value: "more",
+              text: "Yes, I used to smoke more " + type + " a day",
+              exclusiveGroup: "change-list"
+            },
+            {
+              value: "fewer",
+              text: "Yes, I used to smoke fewer " + type + " a day",
+              exclusiveGroup: "change-list"
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "no",
+              text: "No, it has not changed",
+              exclusive: true,
+              exclusiveGroup: "change-list"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}
