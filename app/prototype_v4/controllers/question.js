@@ -359,22 +359,22 @@ const getSmokingQuantity = (type, answer) => {
   return suffix ? `${answer} ${suffix}` : answer
 }
 
-const formatTobaccoTypes = (typeOfSmoking) => {
-  if (!typeOfSmoking) {
+const formatListValue = (value, labels) => {
+  if (!value) {
     return {}
   }
 
-  const types = Array.isArray(typeOfSmoking) ? typeOfSmoking : [typeOfSmoking]
-  const labels = types.map((type) => valueLabels.typeOfSmoking[type] || type)
+  const values = Array.isArray(value) ? value : [value]
+  const labelValues = values.map((item) => labels[item] || item)
 
-  if (labels.length > 1) {
+  if (labelValues.length > 1) {
     return {
-      html: `<ul class="nhsuk-list nhsuk-list--bullet">${labels.map((label) => `<li>${label}</li>`).join('')}</ul>`
+      html: `<ul class="nhsuk-list nhsuk-list--bullet">${labelValues.map((label) => `<li>${label}</li>`).join('')}</ul>`
     }
   }
 
   return {
-    value: labels[0]
+    value: labelValues[0]
   }
 }
 
@@ -467,7 +467,7 @@ const getCheckYourAnswers = (answers = {}) => {
     health: makeSummaryRows([
       makeSummaryRow({
         key: 'Respiratory conditions',
-        value: formatValue(answers.respiratoryConditions, valueLabels.respiratoryConditions),
+        ...formatListValue(answers.respiratoryConditions, valueLabels.respiratoryConditions),
         href: `/prototype_${version}/respiratory-conditions`
       }),
       makeSummaryRow({
@@ -516,7 +516,7 @@ const getCheckYourAnswers = (answers = {}) => {
       }),
       makeSummaryRow({
         key: 'Types of tobacco smoked',
-        ...formatTobaccoTypes(answers.typeOfSmoking),
+        ...formatListValue(answers.typeOfSmoking, valueLabels.typeOfSmoking),
         href: `/prototype_${version}/type-of-smoking`
       })
     ]),
