@@ -73,6 +73,7 @@ const isEligibleForScanAge = (dateOfBirth) => {
 const smokingTypes = {
   cigarettes: {
     caption: 'Cigarette smoking',
+    statusHeading: 'Do you currently smoke cigarettes?',
     frequencyHeading: 'How often do you smoke cigarettes?',
     quantityHeading: 'How many cigarettes do you currently smoke in a normal day?',
     changeHeading: 'Has the number of cigarettes you normally smoke changed over time?',
@@ -81,6 +82,7 @@ const smokingTypes = {
   },
   rolling_tobacco: {
     caption: 'Rolling tobacco smoking',
+    statusHeading: 'Do you currently smoke rolling tobacco or roll-ups?',
     frequencyHeading: 'How often do you smoke rolling tobacco or roll-ups?',
     quantityHeading: 'How much rolling tobacco do you currently smoke in a normal week?',
     changeHeading: 'Has the amount of rolling tobacco you normally smoke changed over time?',
@@ -88,6 +90,7 @@ const smokingTypes = {
   },
   pipes: {
     caption: 'Pipe smoking',
+    statusHeading: 'Do you currently smoke a pipe?',
     frequencyHeading: 'How often do you smoke a pipe?',
     quantityHeading: 'How many full pipe loads do you currently smoke in a normal day?',
     changeHeading: 'Has the number of full pipe loads you normally smoke changed over time?',
@@ -96,6 +99,7 @@ const smokingTypes = {
   },
   small_cigars: {
     caption: 'Small cigar smoking',
+    statusHeading: 'Do you currently smoke small cigars?',
     frequencyHeading: 'How often do you smoke small cigars?',
     quantityHeading: 'How many small cigars do you currently smoke in a normal day?',
     changeHeading: 'Has the number of small cigars you normally smoke changed over time?',
@@ -104,6 +108,7 @@ const smokingTypes = {
   },
   medium_cigars: {
     caption: 'Medium cigar smoking',
+    statusHeading: 'Do you currently smoke medium cigars?',
     frequencyHeading: 'How often do you smoke medium cigars?',
     quantityHeading: 'How many medium cigars do you currently smoke in a normal day?',
     changeHeading: 'Has the number of medium cigars you normally smoke changed over time?',
@@ -112,6 +117,7 @@ const smokingTypes = {
   },
   large_cigars: {
     caption: 'Large cigar smoking',
+    statusHeading: 'Do you currently smoke large cigars?',
     frequencyHeading: 'How often do you smoke large cigars?',
     quantityHeading: 'How many large cigars do you currently smoke in a normal day?',
     changeHeading: 'Has the number of large cigars you normally smoke changed over time?',
@@ -120,6 +126,7 @@ const smokingTypes = {
   },
   cigarillos: {
     caption: 'Cigarillo smoking',
+    statusHeading: 'Do you currently smoke cigarillos?',
     frequencyHeading: 'How often do you smoke cigarillos?',
     quantityHeading: 'How many cigarillos do you currently smoke in a normal day?',
     changeHeading: 'Has the number of cigarillos you normally smoke changed over time?',
@@ -128,6 +135,7 @@ const smokingTypes = {
   },
   shisha: {
     caption: 'Shisha smoking',
+    statusHeading: 'Do you currently smoke shisha?',
     settingHeading: 'Do you usually smoke shisha in a group or on your own?',
     frequencyHeading: 'How often do you smoke shisha?',
     quantityHeading: 'How many hours do you currently smoke shisha in a normal day?',
@@ -164,6 +172,7 @@ const getSmokingTypeSteps = (answers = {}) => {
       steps.push({ page: 'smoking-setting', type })
     }
 
+    steps.push({ page: 'smoking-status', type })
     steps.push({ page: 'smoking-frequency', type })
     steps.push({ page: 'smoking-quantity', type })
 
@@ -294,6 +303,10 @@ const valueLabels = {
     monthly: 'Monthly',
     yearly: 'Yearly'
   },
+  smokingStatus: {
+    yes: 'Yes',
+    no: 'No'
+  },
   smokingQuantityRollingTobacco: {
     less_than_10: 'Less than 10g',
     '10_to_30': '10g to 30g',
@@ -399,6 +412,11 @@ const getCheckYourAnswers = (answers = {}) => {
         key: 'How you usually smoke shisha',
         value: formatValue(answer.smokingSetting, valueLabels.smokingSetting),
         href: getSmokingTypeStepUrl({ page: 'smoking-setting', type })
+      }),
+      makeSummaryRow({
+        key: smokingType.statusHeading,
+        value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
+        href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
       }),
       makeSummaryRow({
         key: smokingType.frequencyHeading,
@@ -1333,6 +1351,26 @@ exports.typeOfSmokingExit_get = (req, res) => {
       back: '/prototype_v4/type-of-smoking'
     }
   })
+}
+
+exports.smokingStatus_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-status')
+}
+
+exports.smokingStatus_post = (req, res) => {
+  const { step, steps } = getSmokingTypeStep(req, 'smoking-status')
+  const errors = []
+
+  if (!step) {
+    res.redirect('/prototype_v4/type-of-smoking')
+    return
+  }
+
+  if (errors.length) {
+    renderSmokingTypeQuestion(req, res, 'smoking-status', errors)
+  } else {
+    res.redirect(getSmokingTypeActions(step, steps).onward)
+  }
 }
 
 exports.smokingFrequency_get = (req, res) => {

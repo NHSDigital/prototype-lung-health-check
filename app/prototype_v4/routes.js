@@ -156,6 +156,9 @@ router.post('/prototype_v4/type-of-smoking', questionController.typeOfSmoking_po
 
 router.get('/prototype_v4/type-of-smoking-exit', questionController.typeOfSmokingExit_get)
 
+router.get('/prototype_v4/smoking-status', questionController.smokingStatus_get)
+router.post('/prototype_v4/smoking-status', questionController.smokingStatus_post)
+
 router.get('/prototype_v4/smoking-frequency', questionController.smokingFrequency_get)
 router.post('/prototype_v4/smoking-frequency', questionController.smokingFrequency_post)
 
