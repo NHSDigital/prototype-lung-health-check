@@ -146,6 +146,16 @@ const getSelectedSmokingTypes = (answers = {}) => {
   return Object.keys(smokingTypes).filter((type) => selectedTypes.includes(type))
 }
 
+const deleteUnselectedSmokingTypeAnswers = (answers = {}) => {
+  const selectedTypes = getSelectedSmokingTypes(answers)
+
+  Object.keys(smokingTypes).forEach((type) => {
+    if (!selectedTypes.includes(type)) {
+      delete answers[type]
+    }
+  })
+}
+
 const getSmokingTypeSteps = (answers = {}) => {
   return getSelectedSmokingTypes(answers).flatMap((type) => {
     const steps = []
@@ -1304,6 +1314,7 @@ exports.typeOfSmoking_post = (req, res) => {
     const selectedTypes = Array.isArray(answers.typeOfSmoking)
       ? answers.typeOfSmoking
       : [answers.typeOfSmoking].filter(Boolean)
+    deleteUnselectedSmokingTypeAnswers(answers)
     const steps = getSmokingTypeSteps(answers)
 
     if (selectedTypes.includes('none')) {
