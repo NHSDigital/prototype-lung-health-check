@@ -21,16 +21,50 @@ As a thank you for testing the online service we will offer you a £10 voucher a
 {% endset %}
 
 {% block content %}
-  {% include "prototype_v4/views/includes/error-summary.html" %}
-
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      {{ panel({
-        titleText: title
-      }) }}
+      {% if query.risk and query.risk == "high" %}
 
-      {{ whatHappensNextMarkdown | markdownToHtml | safe }}
+{% set highRiskContentMarkdown %}
+{{ insetText({
+  text: "Based on the information you have provided we recommend that you call to book an appointment to see a healthcare professional"
+}) }}
+
+## About the appointment
+
+The appointment will be in person and offered within 2 weeks of your call. A healthcare professional will review your responses and answer any questions you may have.
+
+Your appointment will take place at your local hospital or a mobile unit in a convenient location such as a supermarket car park.
+
+## You may be offered a CT scan
+
+If the healthcare professional recommends a CT scan, a machine will take detailed pictures of the inside of your chest. It is non-invasive and pain free. The scan is used to detect any abnormalities in your lungs.
+
+For every 100 people who are scanned 2 people are diagnosed with lung cancer. The aim is to find lung cancer early. Early diagnosis can make lung cancer more treatable and make treatment more successful.
+
+## Book a CT scan
+
+Call {{ serviceTelephone | telephoneLink }} to book an appointment.
+{% endset %}
+
+        {{ card({
+          heading: "You may benefit from further tests",
+          headingSize: "l",
+          descriptionHtml: highRiskContentMarkdown | markdownToHtml | safe
+        }) }}
+
+      {% else %}
+
+        {% set title = "Thank you for testing the online service" %}
+
+        {{ panel({
+          titleText: title
+        }) }}
+
+        {{ whatHappensNextMarkdown | markdownToHtml | safe }}
+
+      {% endif %}
 
       {% include "prototype_v4/views/includes/speak-to-a-gp.html" %}
 
@@ -39,6 +73,10 @@ As a thank you for testing the online service we will offer you a £10 voucher a
       {% include "prototype_v4/views/includes/benefits-of-stopping-smoking.html" %}
 
       {% include "prototype_v4/views/includes/help-stop-smoking.html" %}
+
+      {% if query.risk and query.risk == "high" %}
+        {% include "prototype_v4/views/includes/vaping-to-quit-smoking.html" %}
+      {% endif %}
 
       {% include "prototype_v4/views/includes/smoking-anxiety-and-mood.html" %}
 
