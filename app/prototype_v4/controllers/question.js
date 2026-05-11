@@ -320,8 +320,8 @@ const formatValue = (value, labels) => {
   return values.map((item) => labels?.[item] || item).join(', ')
 }
 
-const makeSummaryRow = ({ key, value, href, visuallyHiddenText }) => {
-  if (!value) {
+const makeSummaryRow = ({ key, value, html, href, visuallyHiddenText }) => {
+  if (!value && !html) {
     return false
   }
 
@@ -329,9 +329,9 @@ const makeSummaryRow = ({ key, value, href, visuallyHiddenText }) => {
     key: {
       text: key
     },
-    value: {
-      text: value
-    },
+    value: html
+      ? { html }
+      : { text: value },
     actions: {
       items: [
         {
@@ -357,6 +357,25 @@ const getSmokingQuantity = (type, answer) => {
 
   const suffix = smokingTypes[type]?.suffix
   return suffix ? `${answer} ${suffix}` : answer
+}
+
+const formatTobaccoTypes = (typeOfSmoking) => {
+  if (!typeOfSmoking) {
+    return {}
+  }
+
+  const types = Array.isArray(typeOfSmoking) ? typeOfSmoking : [typeOfSmoking]
+  const labels = types.map((type) => valueLabels.typeOfSmoking[type] || type)
+
+  if (labels.length > 1) {
+    return {
+      html: `<ul class="nhsuk-list nhsuk-list--bullet">${labels.map((label) => `<li>${label}</li>`).join('')}</ul>`
+    }
+  }
+
+  return {
+    value: labels[0]
+  }
 }
 
 const getCheckYourAnswers = (answers = {}) => {
@@ -497,7 +516,7 @@ const getCheckYourAnswers = (answers = {}) => {
       }),
       makeSummaryRow({
         key: 'Types of tobacco smoked',
-        value: formatValue(answers.typeOfSmoking, valueLabels.typeOfSmoking),
+        ...formatTobaccoTypes(answers.typeOfSmoking),
         href: `/prototype_${version}/type-of-smoking`
       })
     ]),
