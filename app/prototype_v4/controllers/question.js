@@ -169,6 +169,342 @@ const getSmokingTypeStepUrl = (step) => {
   return `/prototype_${version}/${step.page}?type=${encodeURIComponent(step.type)}`
 }
 
+const formatDateOfBirth = (dateOfBirth = {}) => {
+  if (!dateOfBirth.day || !dateOfBirth.month || !dateOfBirth.year) {
+    return ''
+  }
+
+  return `${dateOfBirth.day}/${dateOfBirth.month}/${dateOfBirth.year}`
+}
+
+const formatHeight = (height = {}) => {
+  if (height.metric) {
+    return `${height.metric} cm`
+  }
+
+  if (height.imperial?.feet || height.imperial?.inches) {
+    return `${height.imperial.feet || 0} feet ${height.imperial.inches || 0} inches`
+  }
+
+  return ''
+}
+
+const formatWeight = (weight = {}) => {
+  if (weight.metric) {
+    return `${weight.metric} kg`
+  }
+
+  if (weight.imperial?.stones || weight.imperial?.pounds) {
+    return `${weight.imperial.stones || 0} stone ${weight.imperial.pounds || 0} pounds`
+  }
+
+  return ''
+}
+
+const valueLabels = {
+  asbestosAtHome: {
+    yes: 'Yes',
+    no: 'No'
+  },
+  asbestosAtWork: {
+    yes: 'Yes',
+    no: 'No'
+  },
+  cancerDiagnosis: {
+    yes: 'Yes',
+    no: 'No'
+  },
+  cancerDiagnosisRelatives: {
+    yes: 'Yes',
+    no: 'No',
+    do_not_know: 'I do not know'
+  },
+  cancerDiagnosisRelativesAge: {
+    yes: 'Yes, they were younger than 60',
+    no: 'No, they were 60 or older',
+    do_not_know: 'I do not know'
+  },
+  education: {
+    before_15: 'I finished school before the age of 15',
+    gcse: 'GCSEs',
+    a_level: 'A-levels',
+    further_education: 'Further education',
+    undergraduate_degree: 'Undergraduate degree',
+    postgraduate_degree: 'Postgraduate degree',
+    prefer_not_to_say: 'I prefer not to say'
+  },
+  ethnicity: {
+    asian_or_asian_british: 'Asian or Asian British',
+    'black_african_caribbean_or_black british': 'Black, African, Caribbean or Black British',
+    mixed_or_multiple_ethnic_groups: 'Mixed or multiple ethnic groups',
+    white: 'White',
+    other_ethnic_group: 'Other ethnic group',
+    prefer_not_to_say: 'I prefer not to say'
+  },
+  faceToFaceAppointment: {
+    yes: 'Yes',
+    no: 'No'
+  },
+  gender: {
+    female: 'Female',
+    male: 'Male',
+    non_binary: 'Non-binary',
+    prefer_not_to_say: 'I prefer not to say'
+  },
+  periodsStoppedSmoking: {
+    yes: 'Yes',
+    no: 'No'
+  },
+  respiratoryConditions: {
+    pneumonia: 'Pneumonia',
+    emphysema: 'Emphysema',
+    bronchitis: 'Bronchitis',
+    tuberculosis: 'Tuberculosis (TB)',
+    chronic_obstructive_pulmonary_disease: 'Chronic obstructive pulmonary disease (COPD)',
+    no: 'No, I have not had any of these respiratory conditions'
+  },
+  sex: {
+    female: 'Female',
+    male: 'Male'
+  },
+  smoker: {
+    yes_current: 'Yes, I currently smoke',
+    yes_previous: 'Yes, I used to smoke',
+    yes_fewer_than_100: 'Yes, but I have smoked fewer than 100 cigarettes in my lifetime',
+    no: 'No, I have never smoked'
+  },
+  smokingChange: {
+    more: 'Yes, I used to smoke more',
+    fewer: 'Yes, I used to smoke fewer',
+    no: 'No, it has not changed'
+  },
+  smokingFrequency: {
+    daily: 'Daily',
+    weekly: 'Weekly',
+    monthly: 'Monthly',
+    yearly: 'Yearly'
+  },
+  smokingQuantityRollingTobacco: {
+    less_than_10: 'Less than 10g',
+    '10_to_30': '10g to 30g',
+    '31_to_50': '31g to 50g',
+    '51_to_75': '51g to 75g',
+    '76_to_100': '76g to 100g',
+    more_than_100: 'More than 100g'
+  },
+  smokingSetting: {
+    group: 'In a group',
+    own: 'On my own',
+    both: 'Both'
+  },
+  typeOfSmoking: {
+    cigarettes: 'Cigarettes',
+    rolling_tobacco: 'Rolling tobacco, or roll-ups',
+    pipes: 'Pipes',
+    small_cigars: 'Small cigars',
+    medium_cigars: 'Medium cigars',
+    large_cigars: 'Large cigars',
+    cigarillos: 'Cigarillos',
+    shisha: 'Shisha',
+    none: 'I have not smoked any of these types of tobacco'
+  }
+}
+
+const formatValue = (value, labels) => {
+  if (!value) {
+    return ''
+  }
+
+  const values = Array.isArray(value) ? value : [value]
+
+  return values.map((item) => labels?.[item] || item).join(', ')
+}
+
+const makeSummaryRow = ({ key, value, href, visuallyHiddenText }) => {
+  if (!value) {
+    return false
+  }
+
+  return {
+    key: {
+      text: key
+    },
+    value: {
+      text: value
+    },
+    actions: {
+      items: [
+        {
+          href,
+          text: 'Change',
+          visuallyHiddenText: visuallyHiddenText || key
+        }
+      ]
+    }
+  }
+}
+
+const makeSummaryRows = (rows) => rows.filter(Boolean)
+
+const getSmokingQuantity = (type, answer) => {
+  if (!answer) {
+    return ''
+  }
+
+  if (type === 'rolling_tobacco') {
+    return valueLabels.smokingQuantityRollingTobacco[answer] || answer
+  }
+
+  const suffix = smokingTypes[type]?.suffix
+  return suffix ? `${answer} ${suffix}` : answer
+}
+
+const getCheckYourAnswers = (answers = {}) => {
+  const selectedSmokingTypes = getSelectedSmokingTypes(answers)
+
+  const tobaccoRows = selectedSmokingTypes.map((type) => {
+    const answer = answers[type] || {}
+    const smokingType = smokingTypes[type]
+    const rows = makeSummaryRows([
+      type === 'shisha' && makeSummaryRow({
+        key: 'How you usually smoke shisha',
+        value: formatValue(answer.smokingSetting, valueLabels.smokingSetting),
+        href: getSmokingTypeStepUrl({ page: 'smoking-setting', type })
+      }),
+      makeSummaryRow({
+        key: smokingType.frequencyHeading,
+        value: formatValue(answer.smokingFrequency, valueLabels.smokingFrequency),
+        href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type })
+      }),
+      makeSummaryRow({
+        key: smokingType.quantityHeading,
+        value: getSmokingQuantity(type, answer.smokingQuantity),
+        href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type })
+      }),
+      type !== 'shisha' && makeSummaryRow({
+        key: smokingType.changeHeading,
+        value: formatValue(answer.smokingChange, valueLabels.smokingChange),
+        href: getSmokingTypeStepUrl({ page: 'smoking-change', type })
+      })
+    ])
+
+    return {
+      heading: valueLabels.typeOfSmoking[type],
+      rows
+    }
+  }).filter((section) => section.rows.length)
+
+  return {
+    eligibility: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Have you ever smoked tobacco?',
+        value: formatValue(answers.smoker, valueLabels.smoker),
+        href: `/prototype_${version}/smoker`,
+        visuallyHiddenText: 'whether you have ever smoked tobacco'
+      }),
+      makeSummaryRow({
+        key: 'Date of birth',
+        value: formatDateOfBirth(answers.dateOfBirth),
+        href: `/prototype_${version}/date-of-birth`
+      }),
+      makeSummaryRow({
+        key: 'Able to attend a face to face appointment',
+        value: formatValue(answers.faceToFaceAppointment, valueLabels.faceToFaceAppointment),
+        href: `/prototype_${version}/face-to-face-appointment`
+      })
+    ]),
+    aboutYou: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Height',
+        value: formatHeight(answers.height),
+        href: answers.height?.imperial ? `/prototype_${version}/height-imperial` : `/prototype_${version}/height-metric`
+      }),
+      makeSummaryRow({
+        key: 'Weight',
+        value: formatWeight(answers.weight),
+        href: answers.weight?.imperial ? `/prototype_${version}/weight-imperial` : `/prototype_${version}/weight-metric`
+      }),
+      makeSummaryRow({
+        key: 'Gender identity',
+        value: formatValue(answers.gender, valueLabels.gender),
+        href: `/prototype_${version}/gender`
+      }),
+      makeSummaryRow({
+        key: 'Sex at birth',
+        value: formatValue(answers.sex, valueLabels.sex),
+        href: `/prototype_${version}/sex`
+      }),
+      makeSummaryRow({
+        key: 'Ethnic background',
+        value: formatValue(answers.ethnicity, valueLabels.ethnicity),
+        href: `/prototype_${version}/ethnicity`
+      }),
+      makeSummaryRow({
+        key: 'Education',
+        value: formatValue(answers.education, valueLabels.education),
+        href: `/prototype_${version}/education`
+      })
+    ]),
+    health: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Respiratory conditions',
+        value: formatValue(answers.respiratoryConditions, valueLabels.respiratoryConditions),
+        href: `/prototype_${version}/respiratory-conditions`
+      }),
+      makeSummaryRow({
+        key: 'Worked in a job where you might have been exposed to asbestos',
+        value: formatValue(answers.asbestosAtWork, valueLabels.asbestosAtWork),
+        href: `/prototype_${version}/asbestos-at-work`
+      }),
+      makeSummaryRow({
+        key: 'Lived with anyone who worked with asbestos',
+        value: formatValue(answers.asbestosAtHome, valueLabels.asbestosAtHome),
+        href: `/prototype_${version}/asbestos-at-home`
+      }),
+      makeSummaryRow({
+        key: 'Ever been diagnosed with cancer',
+        value: formatValue(answers.cancerDiagnosis, valueLabels.cancerDiagnosis),
+        href: `/prototype_${version}/cancer-diagnosis`
+      })
+    ]),
+    familyHistory: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Parents, siblings or children diagnosed with lung cancer',
+        value: formatValue(answers.cancerDiagnosisRelatives, valueLabels.cancerDiagnosisRelatives),
+        href: `/prototype_${version}/cancer-diagnosis-relatives`
+      }),
+      answers.cancerDiagnosisRelatives === 'yes' && makeSummaryRow({
+        key: 'Relatives younger than 60 when diagnosed with lung cancer',
+        value: formatValue(answers.cancerDiagnosisRelativesAge, valueLabels.cancerDiagnosisRelativesAge),
+        href: `/prototype_${version}/cancer-diagnosis-relatives-age`
+      })
+    ]),
+    smokingHabits: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Age you started smoking',
+        value: answers.ageStartedSmoking && `Age ${answers.ageStartedSmoking}`,
+        href: `/prototype_${version}/age-started-smoking`
+      }),
+      makeSummaryRow({
+        key: 'Stopped smoking for periods of 1 year or longer',
+        value: formatValue(answers.periodsStoppedSmoking, valueLabels.periodsStoppedSmoking),
+        href: `/prototype_${version}/periods-stopped-smoking`
+      }),
+      answers.periodsStoppedSmoking === 'yes' && makeSummaryRow({
+        key: 'Total number of years you stopped smoking',
+        value: answers.yearsStoppedSmoking && `${answers.yearsStoppedSmoking} years`,
+        href: `/prototype_${version}/periods-stopped-smoking`
+      }),
+      makeSummaryRow({
+        key: 'Types of tobacco smoked',
+        value: formatValue(answers.typeOfSmoking, valueLabels.typeOfSmoking),
+        href: `/prototype_${version}/type-of-smoking`
+      })
+    ]),
+    tobaccoRows
+  }
+}
+
 const getSmokingTypeStep = (req, page) => {
   const { answers } = req.session.data
   const steps = getSmokingTypeSteps(answers)
@@ -1054,11 +1390,15 @@ exports.smokingChange_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.checkYourAnswers_get = (req, res) => {
+  const { answers } = req.session.data
+  const smokingSteps = getSmokingTypeSteps(answers)
+  const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
 
   res.render(view('questions/check-your-answers'), {
+    checkYourAnswers: getCheckYourAnswers(answers),
     actions: {
       next: '/prototype_v4/check-your-answers',
-      back: '/prototype_v4/abc',
+      back: lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : '/prototype_v4/type-of-smoking',
       cancel: '/prototype_v4/'
     }
   })
