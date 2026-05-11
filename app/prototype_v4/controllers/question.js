@@ -455,7 +455,7 @@ const getCheckYourAnswers = (answers = {}) => {
         href: `/prototype_${version}/date-of-birth`
       }),
       makeSummaryRow({
-        key: 'Able to attend a face to face appointment',
+        key: 'Do you need to leave the online service and ask for a face-to-face appointment?',
         value: formatValue(answers.faceToFaceAppointment, valueLabels.faceToFaceAppointment),
         href: `/prototype_${version}/face-to-face-appointment`
       })
