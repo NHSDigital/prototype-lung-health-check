@@ -147,9 +147,9 @@ const smokingTypes = {
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
 
 const getSelectedSmokingTypes = (answers = {}) => {
-  const selectedTypes = Array.isArray(answers.typeOfSmoking)
-    ? answers.typeOfSmoking
-    : [answers.typeOfSmoking].filter(Boolean)
+  const selectedTypes = Array.isArray(answers.smokingType)
+    ? answers.smokingType
+    : [answers.smokingType].filter(Boolean)
 
   return Object.keys(smokingTypes).filter((type) => selectedTypes.includes(type))
 }
@@ -320,7 +320,7 @@ const valueLabels = {
     own: 'On my own',
     both: 'Both'
   },
-  typeOfSmoking: {
+  smokingType: {
     cigarettes: 'Cigarettes',
     rolling_tobacco: 'Rolling tobacco, or roll-ups',
     pipes: 'Pipes',
@@ -436,7 +436,7 @@ const getCheckYourAnswers = (answers = {}) => {
     ])
 
     return {
-      heading: valueLabels.typeOfSmoking[type],
+      heading: valueLabels.smokingType[type],
       rows
     }
   }).filter((section) => section.rows.length)
@@ -544,8 +544,8 @@ const getCheckYourAnswers = (answers = {}) => {
       }),
       makeSummaryRow({
         key: 'Types of tobacco smoked',
-        ...formatListValue(answers.typeOfSmoking, valueLabels.typeOfSmoking),
-        href: `/prototype_${version}/type-of-smoking`
+        ...formatListValue(answers.smokingType, valueLabels.smokingType),
+        href: `/prototype_${version}/smoking-type`
       })
     ]),
     tobaccoRows
@@ -569,7 +569,7 @@ const getSmokingTypeActions = (step, steps) => {
 
   return {
     next: getSmokingTypeStepUrl(step),
-    back: previousStep ? getSmokingTypeStepUrl(previousStep) : `/prototype_${version}/type-of-smoking`,
+    back: previousStep ? getSmokingTypeStepUrl(previousStep) : `/prototype_${version}/smoking-type`,
     onward: nextStep ? getSmokingTypeStepUrl(nextStep) : nextStepAfterSmokingTypes,
     cancel: `/prototype_${version}/`
   }
@@ -579,7 +579,7 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
   const { step, steps } = getSmokingTypeStep(req, page)
 
   if (!step) {
-    res.redirect(`/prototype_${version}/type-of-smoking`)
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1297,7 +1297,7 @@ exports.periodsStoppedSmoking_post = (req, res) => {
     if (answers.periodsStoppedSmoking === 'no') {
       delete answers.yearsStoppedSmoking
     }
-    res.redirect('/prototype_v4/type-of-smoking')
+    res.redirect('/prototype_v4/smoking-type')
   }
 }
 
@@ -1305,50 +1305,50 @@ exports.periodsStoppedSmoking_post = (req, res) => {
 /// Tobacco
 /// ------------------------------------------------------------------------ ///
 
-exports.typeOfSmoking_get = (req, res) => {
-  res.render(view('questions/type-of-smoking'), {
+exports.smokingType_get = (req, res) => {
+  res.render(view('questions/smoking-type'), {
     actions: {
-      next: '/prototype_v4/type-of-smoking',
+      next: '/prototype_v4/smoking-type',
       back: '/prototype_v4/periods-stopped-smoking',
       cancel: '/prototype_v4/'
     }
   })
 }
 
-exports.typeOfSmoking_post = (req, res) => {
+exports.smokingType_post = (req, res) => {
   const { answers } = req.session.data
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/type-of-smoking'), {
+    res.render(view('questions/smoking-type'), {
       errors,
       actions: {
-        next: '/prototype_v4/type-of-smoking',
+        next: '/prototype_v4/smoking-type',
         back: '/prototype_v4/periods-stopped-smoking',
         cancel: '/prototype_v4/'
       }
     })
   } else {
-    const selectedTypes = Array.isArray(answers.typeOfSmoking)
-      ? answers.typeOfSmoking
-      : [answers.typeOfSmoking].filter(Boolean)
+    const selectedTypes = Array.isArray(answers.smokingType)
+      ? answers.smokingType
+      : [answers.smokingType].filter(Boolean)
     deleteUnselectedSmokingTypeAnswers(answers)
     const steps = getSmokingTypeSteps(answers)
 
     if (selectedTypes.includes('none')) {
-      res.redirect('/prototype_v4/type-of-smoking-exit')
+      res.redirect('/prototype_v4/smoking-type-exit')
     } else if (steps.length) {
       res.redirect(getSmokingTypeStepUrl(steps[0]))
     } else {
-      res.redirect('/prototype_v4/type-of-smoking')
+      res.redirect('/prototype_v4/smoking-type')
     }
   }
 }
 
-exports.typeOfSmokingExit_get = (req, res) => {
-  res.render(view('questions/type-of-smoking-exit'), {
+exports.smokingTypeExit_get = (req, res) => {
+  res.render(view('questions/smoking-type-exit'), {
     actions: {
-      back: '/prototype_v4/type-of-smoking'
+      back: '/prototype_v4/smoking-type'
     }
   })
 }
@@ -1362,7 +1362,7 @@ exports.smokingStatus_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/type-of-smoking')
+    res.redirect('/prototype_v4/smoking-type')
     return
   }
 
@@ -1382,7 +1382,7 @@ exports.smokingFrequency_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/type-of-smoking')
+    res.redirect('/prototype_v4/smoking-type')
     return
   }
 
@@ -1402,7 +1402,7 @@ exports.smokingQuantity_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/type-of-smoking')
+    res.redirect('/prototype_v4/smoking-type')
     return
   }
 
@@ -1422,7 +1422,7 @@ exports.smokingSetting_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/type-of-smoking')
+    res.redirect('/prototype_v4/smoking-type')
     return
   }
 
@@ -1442,7 +1442,7 @@ exports.smokingChange_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/type-of-smoking')
+    res.redirect('/prototype_v4/smoking-type')
     return
   }
 
@@ -1466,7 +1466,7 @@ exports.checkYourAnswers_get = (req, res) => {
     checkYourAnswers: getCheckYourAnswers(answers),
     actions: {
       next: '/prototype_v4/check-your-answers',
-      back: lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : '/prototype_v4/type-of-smoking',
+      back: lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : '/prototype_v4/smoking-type',
       cancel: '/prototype_v4/'
     }
   })

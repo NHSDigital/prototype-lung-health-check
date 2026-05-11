@@ -30,7 +30,7 @@ You do not need to tell us about less frequent forms of smoking. For example, a 
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
         {{ checkboxes({
-          name: "answers[typeOfSmoking]",
+          name: "answers[smokingType]",
           fieldset: {
             legend: {
               text: "What do you or have you smoked?",
@@ -41,7 +41,7 @@ You do not need to tell us about less frequent forms of smoking. For example, a 
           hint: {
             text: "Select all that apply"
           },
-          values: data.answers.typeOfSmoking,
+          values: data.answers.smokingType,
           items: [
             {
               value: "cigarettes",

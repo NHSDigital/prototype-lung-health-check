@@ -151,10 +151,10 @@ router.post('/prototype_v4/periods-stopped-smoking', questionController.periodsS
 
 /// Tobacco --------------------------------------------------------------- ///
 
-router.get('/prototype_v4/type-of-smoking', questionController.typeOfSmoking_get)
-router.post('/prototype_v4/type-of-smoking', questionController.typeOfSmoking_post)
+router.get('/prototype_v4/smoking-type', questionController.smokingType_get)
+router.post('/prototype_v4/smoking-type', questionController.smokingType_post)
 
-router.get('/prototype_v4/type-of-smoking-exit', questionController.typeOfSmokingExit_get)
+router.get('/prototype_v4/smoking-type-exit', questionController.smokingTypeExit_get)
 
 router.get('/prototype_v4/smoking-status', questionController.smokingStatus_get)
 router.post('/prototype_v4/smoking-status', questionController.smokingStatus_post)
