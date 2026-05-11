@@ -2,6 +2,24 @@
 
 {% set title = "Thank you for testing the online service" %}
 
+{% set whatHappensNextMarkdown %}
+## What happens next
+
+You will need to complete your NHS lung cancer screening by phone.
+
+Call us on {{ serviceTelephone | telephoneLink }}
+
+An advisor will ask you similar questions about your medical history and lifestyle. They will not have access to the answers you have submitted online. This is because we are testing the online service.
+
+**Phone lines are open:**<br aria-hidden="true">
+Monday to Friday 8am to 8pm<br aria-hidden="true">
+Saturdays 8am to 1pm
+
+If we do not hear from you in 14 days we will call you to complete the questionnaire by phone. If you are unable to answer the phone we will call you back.
+
+As a thank you for testing the online service we will offer you a £10 voucher after you have completed your phone appointment.
+{% endset %}
+
 {% block content %}
   {% include "prototype_v4/views/includes/error-summary.html" %}
 
@@ -12,7 +30,9 @@
         titleText: title
       }) }}
 
+      {{ whatHappensNextMarkdown | markdownToHtml | safe }}
 
+      {% include "prototype_v4/views/includes/speak-to-a-gp.html" %}
 
     </div>
   </div>
