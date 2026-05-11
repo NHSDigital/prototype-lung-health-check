@@ -1,6 +1,6 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = smokingType.changeHeading %}
+{% set title = changeHeading %}
 {% set caption = smokingType.caption %}
 
 {% block beforeContent %}
@@ -16,44 +16,47 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      {% set legendText %}
+      {% set headingText %}
         {% include "prototype_v4/views/includes/page-heading-legend.html" %}
       {% endset %}
 
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
-        {{ checkboxes({
-          name: "answers[" + type + "][smokingChange]",
+        {{ radios({
+          name: "answers[" + type + "][" + smokingChange.answerKey + "][frequency]",
           fieldset: {
             legend: {
-              text: legendText,
+              text: headingText,
               isPageHeading: true,
               classes: "nhsuk-fieldset__legend--l"
             }
           },
-          hint: {
-            text: "Select all that apply"
-          },
-          values: data.answers[type].smokingChange,
+          value: changeAnswer.frequency,
           items: [
             {
-              value: "increased",
-              text: "Yes, my smoking increased",
-              exclusiveGroup: "change-list"
+              value: "daily",
+              text: "Daily"
             },
             {
-              value: "decreased",
-              text: "Yes, my smoking decreased",
-              exclusiveGroup: "change-list"
+              value: "weekly",
+              text: "Weekly",
+              hint: {
+                text: "For example, on the weekend"
+              }
             },
             {
-              divider: "or"
+              value: "monthly",
+              text: "Monthly",
+              hint: {
+                text: "Select this option if you smoke at least once a month"
+              }
             },
             {
-              value: "no",
-              text: "No, it has not changed",
-              exclusive: true,
-              exclusiveGroup: "change-list"
+              value: "yearly",
+              text: "Yearly",
+              hint: {
+                text: "For example, 2 to 3 times a year or fewer"
+              }
             }
           ]
         }) }}

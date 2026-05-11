@@ -146,6 +146,17 @@ const smokingTypes = {
 
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
 
+const smokingChangeTypes = {
+  increased: {
+    answerKey: 'smokingChangeIncrease',
+    label: 'increased'
+  },
+  decreased: {
+    answerKey: 'smokingChangeDecrease',
+    label: 'decreased'
+  }
+}
+
 const getSelectedSmokingTypes = (answers = {}) => {
   const selectedTypes = Array.isArray(answers.smokingType)
     ? answers.smokingType
@@ -164,9 +175,28 @@ const deleteUnselectedSmokingTypeAnswers = (answers = {}) => {
   })
 }
 
+const getSelectedSmokingChanges = (answer = {}) => {
+  const selectedChanges = Array.isArray(answer.smokingChange)
+    ? answer.smokingChange
+    : [answer.smokingChange].filter(Boolean)
+
+  return Object.keys(smokingChangeTypes).filter((change) => selectedChanges.includes(change))
+}
+
+const deleteUnselectedSmokingChangeAnswers = (answer = {}) => {
+  const selectedChanges = getSelectedSmokingChanges(answer)
+
+  Object.entries(smokingChangeTypes).forEach(([change, changeType]) => {
+    if (!selectedChanges.includes(change)) {
+      delete answer[changeType.answerKey]
+    }
+  })
+}
+
 const getSmokingTypeSteps = (answers = {}) => {
   return getSelectedSmokingTypes(answers).flatMap((type) => {
     const steps = []
+    const answer = answers[type] || {}
 
     if (type === 'shisha') {
       steps.push({ page: 'smoking-setting', type })
@@ -178,6 +208,11 @@ const getSmokingTypeSteps = (answers = {}) => {
 
     if (type !== 'shisha') {
       steps.push({ page: 'smoking-change', type })
+      getSelectedSmokingChanges(answer).forEach((change) => {
+        steps.push({ page: 'smoking-frequency-change', type, change })
+        steps.push({ page: 'smoking-quantity-change', type, change })
+        steps.push({ page: 'smoking-years-change', type, change })
+      })
     }
 
     return steps
@@ -185,7 +220,13 @@ const getSmokingTypeSteps = (answers = {}) => {
 }
 
 const getSmokingTypeStepUrl = (step) => {
-  return `/prototype_${version}/${step.page}?type=${encodeURIComponent(step.type)}`
+  const searchParams = new URLSearchParams({ type: step.type })
+
+  if (step.change) {
+    searchParams.set('change', step.change)
+  }
+
+  return `/prototype_${version}/${step.page}?${searchParams}`
 }
 
 const formatDateOfBirth = (dateOfBirth = {}) => {
@@ -293,8 +334,8 @@ const valueLabels = {
     no: 'No, I have never smoked'
   },
   smokingChange: {
-    more: 'Yes, I used to smoke more',
-    fewer: 'Yes, I used to smoke fewer',
+    increased: 'Yes, my smoking increased',
+    decreased: 'Yes, my smoking decreased',
     no: 'No, it has not changed'
   },
   smokingFrequency: {
@@ -382,6 +423,36 @@ const getSmokingQuantity = (type, answer) => {
   return suffix ? `${answer} ${suffix}` : answer
 }
 
+const getSmokingChangeAnswer = (answer = {}, change) => {
+  const answerKey = smokingChangeTypes[change]?.answerKey
+
+  return answerKey ? answer[answerKey] || {} : {}
+}
+
+const getSmokingChangeHeading = (page, type, change, changeAnswer = {}) => {
+  const smokingType = smokingTypes[type]
+  const smokingChange = smokingChangeTypes[change]
+
+  if (!smokingType || !smokingChange) {
+    return ''
+  }
+
+  if (page === 'smoking-frequency-change') {
+    return `${smokingType.frequencyHeading.replace('How often do you smoke', 'How often did you smoke').replace('?', '')} when your smoking ${smokingChange.label}?`
+  }
+
+  if (page === 'smoking-quantity-change') {
+    return `${smokingType.quantityHeading.replace('do you', 'did you').replace('currently ', '').replace('?', '')} when your smoking ${smokingChange.label}?`
+  }
+
+  if (page === 'smoking-years-change') {
+    const quantity = getSmokingQuantity(type, changeAnswer.quantity) || `[${smokingType.quantityUnit}]`
+    return `How many years did you smoke ${quantity} a day?`
+  }
+
+  return ''
+}
+
 const formatListValue = (value, labels) => {
   if (!value) {
     return {}
@@ -407,6 +478,27 @@ const getCheckYourAnswers = (answers = {}) => {
   const tobaccoRows = selectedSmokingTypes.map((type) => {
     const answer = answers[type] || {}
     const smokingType = smokingTypes[type]
+    const smokingChangeRows = getSelectedSmokingChanges(answer).flatMap((change) => {
+      const changeAnswer = getSmokingChangeAnswer(answer, change)
+
+      return [
+        makeSummaryRow({
+          key: getSmokingChangeHeading('smoking-frequency-change', type, change),
+          value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
+          href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
+        }),
+        makeSummaryRow({
+          key: getSmokingChangeHeading('smoking-quantity-change', type, change),
+          value: getSmokingQuantity(type, changeAnswer.quantity),
+          href: getSmokingTypeStepUrl({ page: 'smoking-quantity-change', type, change })
+        }),
+        makeSummaryRow({
+          key: getSmokingChangeHeading('smoking-years-change', type, change, changeAnswer),
+          value: changeAnswer.years && `${changeAnswer.years} years`,
+          href: getSmokingTypeStepUrl({ page: 'smoking-years-change', type, change })
+        })
+      ]
+    })
     const rows = makeSummaryRows([
       type === 'shisha' && makeSummaryRow({
         key: 'How you usually smoke shisha',
@@ -430,9 +522,10 @@ const getCheckYourAnswers = (answers = {}) => {
       }),
       type !== 'shisha' && makeSummaryRow({
         key: smokingType.changeHeading,
-        value: formatValue(answer.smokingChange, valueLabels.smokingChange),
+        ...formatListValue(answer.smokingChange, valueLabels.smokingChange),
         href: getSmokingTypeStepUrl({ page: 'smoking-change', type })
-      })
+      }),
+      ...smokingChangeRows
     ])
 
     return {
@@ -556,14 +649,16 @@ const getSmokingTypeStep = (req, page) => {
   const { answers } = req.session.data
   const steps = getSmokingTypeSteps(answers)
   const queryType = req.query?.type
-  const step = steps.find((step) => step.page === page && step.type === queryType) ||
+  const queryChange = req.query?.change
+  const step = steps.find((step) => step.page === page && step.type === queryType && step.change === queryChange) ||
+    steps.find((step) => step.page === page && step.type === queryType && !step.change) ||
     steps.find((step) => step.page === page)
 
   return { step, steps }
 }
 
 const getSmokingTypeActions = (step, steps) => {
-  const index = steps.findIndex((item) => item.page === step.page && item.type === step.type)
+  const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change)
   const previousStep = steps[index - 1]
   const nextStep = steps[index + 1]
 
@@ -583,9 +678,16 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
     return
   }
 
+  const answer = req.session.data.answers[step.type] || {}
+  const changeAnswer = getSmokingChangeAnswer(answer, step.change)
+
   res.render(view(`questions/${page}`), {
     type: step.type,
+    change: step.change,
     smokingType: smokingTypes[step.type],
+    smokingChange: smokingChangeTypes[step.change],
+    changeAnswer,
+    changeHeading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer),
     errors,
     actions: getSmokingTypeActions(step, steps)
   })
@@ -1439,6 +1541,29 @@ exports.smokingChange_get = (req, res) => {
 
 exports.smokingChange_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-change')
+  const { answers } = req.session.data
+  const errors = []
+
+  if (!step) {
+    res.redirect('/prototype_v4/smoking-type')
+    return
+  }
+
+  deleteUnselectedSmokingChangeAnswers(answers[step.type])
+
+  if (errors.length) {
+    renderSmokingTypeQuestion(req, res, 'smoking-change', errors)
+  } else {
+    res.redirect(getSmokingTypeActions(step, steps).onward)
+  }
+}
+
+exports.smokingFrequencyChange_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-frequency-change')
+}
+
+exports.smokingFrequencyChange_post = (req, res) => {
+  const { step, steps } = getSmokingTypeStep(req, 'smoking-frequency-change')
   const errors = []
 
   if (!step) {
@@ -1447,7 +1572,47 @@ exports.smokingChange_post = (req, res) => {
   }
 
   if (errors.length) {
-    renderSmokingTypeQuestion(req, res, 'smoking-change', errors)
+    renderSmokingTypeQuestion(req, res, 'smoking-frequency-change', errors)
+  } else {
+    res.redirect(getSmokingTypeActions(step, steps).onward)
+  }
+}
+
+exports.smokingQuantityChange_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-quantity-change')
+}
+
+exports.smokingQuantityChange_post = (req, res) => {
+  const { step, steps } = getSmokingTypeStep(req, 'smoking-quantity-change')
+  const errors = []
+
+  if (!step) {
+    res.redirect('/prototype_v4/smoking-type')
+    return
+  }
+
+  if (errors.length) {
+    renderSmokingTypeQuestion(req, res, 'smoking-quantity-change', errors)
+  } else {
+    res.redirect(getSmokingTypeActions(step, steps).onward)
+  }
+}
+
+exports.smokingYearsChange_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-years-change')
+}
+
+exports.smokingYearsChange_post = (req, res) => {
+  const { step, steps } = getSmokingTypeStep(req, 'smoking-years-change')
+  const errors = []
+
+  if (!step) {
+    res.redirect('/prototype_v4/smoking-type')
+    return
+  }
+
+  if (errors.length) {
+    renderSmokingTypeQuestion(req, res, 'smoking-years-change', errors)
   } else {
     res.redirect(getSmokingTypeActions(step, steps).onward)
   }

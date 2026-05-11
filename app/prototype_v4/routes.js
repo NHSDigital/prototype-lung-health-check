@@ -171,7 +171,14 @@ router.post('/prototype_v4/smoking-setting', questionController.smokingSetting_p
 router.get('/prototype_v4/smoking-change', questionController.smokingChange_get)
 router.post('/prototype_v4/smoking-change', questionController.smokingChange_post)
 
-// TODO: Change of amount questions
+router.get('/prototype_v4/smoking-frequency-change', questionController.smokingFrequencyChange_get)
+router.post('/prototype_v4/smoking-frequency-change', questionController.smokingFrequencyChange_post)
+
+router.get('/prototype_v4/smoking-quantity-change', questionController.smokingQuantityChange_get)
+router.post('/prototype_v4/smoking-quantity-change', questionController.smokingQuantityChange_post)
+
+router.get('/prototype_v4/smoking-years-change', questionController.smokingYearsChange_get)
+router.post('/prototype_v4/smoking-years-change', questionController.smokingYearsChange_post)
 
 /// Check your answers ----------------------------------------------------- ///
 
