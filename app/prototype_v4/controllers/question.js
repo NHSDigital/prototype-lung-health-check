@@ -598,7 +598,7 @@ const getCheckYourAnswers = (answers = {}) => {
         href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
       }),
       type === 'shisha' && makeSummaryRow({
-        key: 'How you usually smoke shisha',
+        key: 'Do you usually smoke shisha in a group or on your own?',
         ...formatListValue(answer.smokingSetting, valueLabels.smokingSetting),
         href: getSmokingTypeStepUrl({ page: 'smoking-setting', type })
       }),
