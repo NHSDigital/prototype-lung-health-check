@@ -156,13 +156,13 @@ const smokingTypes = {
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
 
 const smokingChangeTypes = {
-  increased: {
+  greater: {
     answerKey: 'smokingChangeIncrease',
-    label: 'increased'
+    label: 'more'
   },
-  decreased: {
+  fewer: {
     answerKey: 'smokingChangeDecrease',
-    label: 'decreased'
+    label: 'fewer'
   }
 }
 
@@ -380,8 +380,8 @@ const valueLabels = {
     no: 'No, I have never smoked'
   },
   smokingChange: {
-    increased: 'Yes, my smoking increased',
-    decreased: 'Yes, my smoking decreased',
+    greater: 'Yes, I used to smoke more',
+    fewer: 'Yes, I used to smoke fewer',
     no: 'No, it has not changed'
   },
   smokingFrequency: {
@@ -459,6 +459,22 @@ const formatQuantity = (value, singular, plural) => {
   return `${value} ${Number(value) === 1 ? singular : plural}`
 }
 
+const frequencyPeriods = {
+  daily: 'a day',
+  weekly: 'a week',
+  monthly: 'a month',
+  yearly: 'a year'
+}
+
+const escapeHtml = (value) => {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 const getSmokingQuantity = (type, answer) => {
   if (!answer) {
     return ''
@@ -472,6 +488,49 @@ const getSmokingQuantity = (type, answer) => {
   return smokingType?.suffix
     ? formatQuantity(answer, smokingType.singularSuffix || smokingType.suffix, smokingType.suffix)
     : answer
+}
+
+const getRollingTobaccoComparisonQuantity = (answer) => {
+  const comparisonQuantities = {
+    less_than_10: '10g',
+    more_than_100: '100g'
+  }
+
+  return comparisonQuantities[answer] || getSmokingQuantity('rolling_tobacco', answer)
+}
+
+const getSmokingComparisonQuantity = (type, answer) => {
+  if (type === 'rolling_tobacco') {
+    return getRollingTobaccoComparisonQuantity(answer)
+  }
+
+  return getSmokingQuantity(type, answer)
+}
+
+const getSmokingCurrentAmount = (type, answer = {}) => {
+  const quantity = getSmokingComparisonQuantity(type, answer.smokingQuantity)
+  const period = frequencyPeriods[answer.smokingFrequency]
+
+  if (!quantity) {
+    return ''
+  }
+
+  return [quantity, period].filter(Boolean).join(' ')
+}
+
+const getSmokingChangeLabels = (type, answer = {}) => {
+  const amount = getSmokingCurrentAmount(type, answer)
+  const fewerLabel = type === 'rolling_tobacco' ? 'less' : 'fewer'
+
+  if (!amount) {
+    return valueLabels.smokingChange
+  }
+
+  return {
+    ...valueLabels.smokingChange,
+    greater: `Yes, I used to smoke more than ${amount}`,
+    fewer: `Yes, I used to smoke ${fewerLabel} than ${amount}`
+  }
 }
 
 const getShishaSettingAnswer = (answer = {}, setting) => {
@@ -505,7 +564,25 @@ const getSmokingChangeAnswer = (answer = {}, change) => {
   return answerKey ? answer[answerKey] || {} : {}
 }
 
-const getSmokingChangeHeading = (page, type, change, changeAnswer = {}) => {
+const getSmokingChangeComparisonText = (type, change, answer = {}) => {
+  const smokingChange = smokingChangeTypes[change]
+  const amount = getSmokingCurrentAmount(type, answer)
+  const changeLabel = type === 'rolling_tobacco' && change === 'fewer'
+    ? 'less'
+    : smokingChange?.label
+
+  if (!smokingChange) {
+    return ''
+  }
+
+  if (!amount) {
+    return `when you smoked ${changeLabel}`
+  }
+
+  return `when you smoked ${changeLabel} than ${amount}`
+}
+
+const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer = {}) => {
   const smokingType = smokingTypes[type]
   const smokingChange = smokingChangeTypes[change]
 
@@ -513,12 +590,14 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}) => {
     return ''
   }
 
+  const comparisonText = getSmokingChangeComparisonText(type, change, answer)
+
   if (page === 'smoking-frequency-change') {
-    return `${smokingType.frequencyHeading.replace('How often do you smoke', 'How often did you smoke').replace('?', '')} when your smoking ${smokingChange.label}?`
+    return `${smokingType.frequencyHeading.replace('How often do you smoke', 'How often did you smoke').replace('?', '')} ${comparisonText}?`
   }
 
   if (page === 'smoking-quantity-change') {
-    return `${smokingType.quantityHeading.replace('do you', 'did you').replace('currently ', '').replace('?', '')} when your smoking ${smokingChange.label}?`
+    return `${smokingType.quantityHeading.replace('do you', 'did you').replace('currently ', '').replace('?', '')} ${comparisonText}?`
   }
 
   if (page === 'smoking-years-change') {
@@ -539,7 +618,7 @@ const formatListValue = (value, labels) => {
 
   if (labelValues.length > 1) {
     return {
-      html: `<ul class="nhsuk-list nhsuk-list--bullet">${labelValues.map((label) => `<li>${label}</li>`).join('')}</ul>`
+      html: `<ul class="nhsuk-list nhsuk-list--bullet">${labelValues.map((label) => `<li>${escapeHtml(label)}</li>`).join('')}</ul>`
     }
   }
 
@@ -575,17 +654,17 @@ const getCheckYourAnswers = (answers = {}) => {
 
       return [
         makeSummaryRow({
-          key: getSmokingChangeHeading('smoking-frequency-change', type, change),
+          key: getSmokingChangeHeading('smoking-frequency-change', type, change, changeAnswer, answer),
           value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
           href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
         }),
         makeSummaryRow({
-          key: getSmokingChangeHeading('smoking-quantity-change', type, change),
+          key: getSmokingChangeHeading('smoking-quantity-change', type, change, changeAnswer, answer),
           value: getSmokingQuantity(type, changeAnswer.quantity),
           href: getSmokingTypeStepUrl({ page: 'smoking-quantity-change', type, change })
         }),
         makeSummaryRow({
-          key: getSmokingChangeHeading('smoking-years-change', type, change, changeAnswer),
+          key: getSmokingChangeHeading('smoking-years-change', type, change, changeAnswer, answer),
           value: changeAnswer.years && formatQuantity(changeAnswer.years, 'year', 'years'),
           href: getSmokingTypeStepUrl({ page: 'smoking-years-change', type, change })
         })
@@ -614,7 +693,7 @@ const getCheckYourAnswers = (answers = {}) => {
       }),
       type !== 'shisha' && makeSummaryRow({
         key: smokingType.changeHeading,
-        ...formatListValue(answer.smokingChange, valueLabels.smokingChange),
+        ...formatListValue(answer.smokingChange, getSmokingChangeLabels(type, answer)),
         href: getSmokingTypeStepUrl({ page: 'smoking-change', type })
       }),
       ...shishaSettingRows,
@@ -782,11 +861,12 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
     setting: step.setting,
     smokingType: smokingTypes[step.type],
     smokingChange: smokingChangeTypes[step.change],
+    smokingChangeLabels: getSmokingChangeLabels(step.type, answer),
     smokingSetting: shishaSmokingSettings[step.setting],
     changeAnswer,
     settingAnswer,
     questionHeading: getSmokingStepHeading(page, step.type, step.setting),
-    changeHeading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer),
+    changeHeading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
     errors,
     actions: getSmokingTypeActions(step, steps)
   })
