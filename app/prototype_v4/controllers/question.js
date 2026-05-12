@@ -1729,7 +1729,7 @@ exports.checkYourAnswers_get = (req, res) => {
   const smokingSteps = getSmokingTypeSteps(answers)
   const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
 
-  res.render(view('questions/check-your-answers'), {
+  res.render(view('check-your-answers'), {
     checkYourAnswers: getCheckYourAnswers(answers),
     actions: {
       next: `/prototype_${version}/check-your-answers`,
@@ -1748,7 +1748,7 @@ exports.checkYourAnswers_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.confirmation_get = (req, res) => {
-  res.render(view('questions/confirmation'))
+  res.render(view('confirmation'))
 }
 
 /// ------------------------------------------------------------------------ ///
