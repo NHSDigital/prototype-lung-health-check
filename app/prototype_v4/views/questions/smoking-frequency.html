@@ -1,6 +1,6 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = smokingType.frequencyHeading %}
+{% set title = questionHeading or smokingType.frequencyHeading %}
 {% set caption = smokingType.caption %}
 
 {% block beforeContent %}
@@ -21,9 +21,16 @@
       {% endset %}
 
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+        {% if setting %}
+          {% set answerName = "answers[" + type + "][" + setting + "][smokingFrequency]" %}
+          {% set answerValue = settingAnswer.smokingFrequency %}
+        {% else %}
+          {% set answerName = "answers[" + type + "][smokingFrequency]" %}
+          {% set answerValue = data.answers[type].smokingFrequency %}
+        {% endif %}
 
         {{ radios({
-          name: "answers[" + type + "][smokingFrequency]",
+          name: answerName,
           fieldset: {
             legend: {
               text: headingText,
@@ -31,7 +38,7 @@
               classes: "nhsuk-fieldset__legend--l"
             }
           },
-          value: data.answers[type].smokingFrequency,
+          value: answerValue,
           items: [
             {
               value: "daily",

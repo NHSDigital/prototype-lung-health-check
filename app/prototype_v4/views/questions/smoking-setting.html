@@ -22,7 +22,7 @@
           {% include "prototype_v4/views/includes/page-heading-legend.html" %}
         {% endset %}
 
-        {{ radios({
+        {{ checkboxes({
           name: "answers[" + type + "][smokingSetting]",
           fieldset: {
             legend: {
@@ -31,19 +31,15 @@
               classes: "nhsuk-fieldset__legend--l"
             }
           },
-          value: data.answers[type].smokingSetting,
+          values: data.answers[type].smokingSetting,
           items: [
             {
               value: "group",
               text: "In a group"
             },
             {
-              value: "own",
-              text: "On my own"
-            },
-            {
-              value: "both",
-              text: "Both"
+              value: "individual",
+              text: "By myself"
             }
           ]
         }) }}

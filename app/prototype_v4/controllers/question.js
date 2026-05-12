@@ -157,6 +157,17 @@ const smokingChangeTypes = {
   }
 }
 
+const shishaSmokingSettings = {
+  group: {
+    label: 'In a group',
+    headingText: 'in a group'
+  },
+  individual: {
+    label: 'By myself',
+    headingText: 'by yourself'
+  }
+}
+
 const getSelectedSmokingTypes = (answers = {}) => {
   const selectedTypes = Array.isArray(answers.smokingType)
     ? answers.smokingType
@@ -193,20 +204,40 @@ const deleteUnselectedSmokingChangeAnswers = (answer = {}) => {
   })
 }
 
+const getSelectedShishaSettings = (answer = {}) => {
+  const selectedSettings = Array.isArray(answer.smokingSetting)
+    ? answer.smokingSetting
+    : [answer.smokingSetting].filter(Boolean)
+
+  return Object.keys(shishaSmokingSettings).filter((setting) => selectedSettings.includes(setting))
+}
+
+const deleteUnselectedShishaSettingAnswers = (answer = {}) => {
+  const selectedSettings = getSelectedShishaSettings(answer)
+
+  Object.keys(shishaSmokingSettings).forEach((setting) => {
+    if (!selectedSettings.includes(setting)) {
+      delete answer[setting]
+    }
+  })
+}
+
 const getSmokingTypeSteps = (answers = {}) => {
   return getSelectedSmokingTypes(answers).flatMap((type) => {
     const steps = []
     const answer = answers[type] || {}
 
+    steps.push({ page: 'smoking-status', type })
+
     if (type === 'shisha') {
       steps.push({ page: 'smoking-setting', type })
-    }
-
-    steps.push({ page: 'smoking-status', type })
-    steps.push({ page: 'smoking-frequency', type })
-    steps.push({ page: 'smoking-quantity', type })
-
-    if (type !== 'shisha') {
+      getSelectedShishaSettings(answer).forEach((setting) => {
+        steps.push({ page: 'smoking-frequency', type, setting })
+        steps.push({ page: 'smoking-quantity', type, setting })
+      })
+    } else {
+      steps.push({ page: 'smoking-frequency', type })
+      steps.push({ page: 'smoking-quantity', type })
       steps.push({ page: 'smoking-change', type })
       getSelectedSmokingChanges(answer).forEach((change) => {
         steps.push({ page: 'smoking-frequency-change', type, change })
@@ -224,6 +255,10 @@ const getSmokingTypeStepUrl = (step) => {
 
   if (step.change) {
     searchParams.set('change', step.change)
+  }
+
+  if (step.setting) {
+    searchParams.set('setting', step.setting)
   }
 
   return `/prototype_${version}/${step.page}?${searchParams}`
@@ -358,8 +393,7 @@ const valueLabels = {
   },
   smokingSetting: {
     group: 'In a group',
-    own: 'On my own',
-    both: 'Both'
+    individual: 'By myself'
   },
   smokingType: {
     cigarettes: 'Cigarettes',
@@ -423,6 +457,31 @@ const getSmokingQuantity = (type, answer) => {
   return suffix ? `${answer} ${suffix}` : answer
 }
 
+const getShishaSettingAnswer = (answer = {}, setting) => {
+  return setting ? answer[setting] || {} : {}
+}
+
+const getSmokingStepHeading = (page, type, setting) => {
+  const smokingType = smokingTypes[type]
+  const shishaSetting = shishaSmokingSettings[setting]
+
+  if (!smokingType) {
+    return ''
+  }
+
+  if (type === 'shisha' && shishaSetting) {
+    if (page === 'smoking-frequency') {
+      return `How often do you smoke shisha ${shishaSetting.headingText}?`
+    }
+
+    if (page === 'smoking-quantity') {
+      return `How many hours do you currently smoke shisha ${shishaSetting.headingText} in a normal day?`
+    }
+  }
+
+  return smokingType[`${page.replace('smoking-', '')}Heading`] || ''
+}
+
 const getSmokingChangeAnswer = (answer = {}, change) => {
   const answerKey = smokingChangeTypes[change]?.answerKey
 
@@ -478,6 +537,22 @@ const getCheckYourAnswers = (answers = {}) => {
   const tobaccoRows = selectedSmokingTypes.map((type) => {
     const answer = answers[type] || {}
     const smokingType = smokingTypes[type]
+    const shishaSettingRows = getSelectedShishaSettings(answer).flatMap((setting) => {
+      const settingAnswer = getShishaSettingAnswer(answer, setting)
+
+      return [
+        makeSummaryRow({
+          key: getSmokingStepHeading('smoking-frequency', type, setting),
+          value: formatValue(settingAnswer.smokingFrequency, valueLabels.smokingFrequency),
+          href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type, setting })
+        }),
+        makeSummaryRow({
+          key: getSmokingStepHeading('smoking-quantity', type, setting),
+          value: getSmokingQuantity(type, settingAnswer.smokingQuantity),
+          href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type, setting })
+        })
+      ]
+    })
     const smokingChangeRows = getSelectedSmokingChanges(answer).flatMap((change) => {
       const changeAnswer = getSmokingChangeAnswer(answer, change)
 
@@ -500,22 +575,22 @@ const getCheckYourAnswers = (answers = {}) => {
       ]
     })
     const rows = makeSummaryRows([
-      type === 'shisha' && makeSummaryRow({
-        key: 'How you usually smoke shisha',
-        value: formatValue(answer.smokingSetting, valueLabels.smokingSetting),
-        href: getSmokingTypeStepUrl({ page: 'smoking-setting', type })
-      }),
       makeSummaryRow({
         key: smokingType.statusHeading,
         value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
         href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
       }),
-      makeSummaryRow({
+      type === 'shisha' && makeSummaryRow({
+        key: 'How you usually smoke shisha',
+        ...formatListValue(answer.smokingSetting, valueLabels.smokingSetting),
+        href: getSmokingTypeStepUrl({ page: 'smoking-setting', type })
+      }),
+      type !== 'shisha' && makeSummaryRow({
         key: smokingType.frequencyHeading,
         value: formatValue(answer.smokingFrequency, valueLabels.smokingFrequency),
         href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type })
       }),
-      makeSummaryRow({
+      type !== 'shisha' && makeSummaryRow({
         key: smokingType.quantityHeading,
         value: getSmokingQuantity(type, answer.smokingQuantity),
         href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type })
@@ -525,6 +600,7 @@ const getCheckYourAnswers = (answers = {}) => {
         ...formatListValue(answer.smokingChange, valueLabels.smokingChange),
         href: getSmokingTypeStepUrl({ page: 'smoking-change', type })
       }),
+      ...shishaSettingRows,
       ...smokingChangeRows
     ])
 
@@ -650,15 +726,16 @@ const getSmokingTypeStep = (req, page) => {
   const steps = getSmokingTypeSteps(answers)
   const queryType = req.query?.type
   const queryChange = req.query?.change
-  const step = steps.find((step) => step.page === page && step.type === queryType && step.change === queryChange) ||
-    steps.find((step) => step.page === page && step.type === queryType && !step.change) ||
+  const querySetting = req.query?.setting
+  const step = steps.find((step) => step.page === page && step.type === queryType && step.change === queryChange && step.setting === querySetting) ||
+    steps.find((step) => step.page === page && step.type === queryType && !step.change && !step.setting) ||
     steps.find((step) => step.page === page)
 
   return { step, steps }
 }
 
 const getSmokingTypeActions = (step, steps) => {
-  const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change)
+  const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change && item.setting === step.setting)
   const previousStep = steps[index - 1]
   const nextStep = steps[index + 1]
 
@@ -680,13 +757,18 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
 
   const answer = req.session.data.answers[step.type] || {}
   const changeAnswer = getSmokingChangeAnswer(answer, step.change)
+  const settingAnswer = getShishaSettingAnswer(answer, step.setting)
 
   res.render(view(`questions/${page}`), {
     type: step.type,
     change: step.change,
+    setting: step.setting,
     smokingType: smokingTypes[step.type],
     smokingChange: smokingChangeTypes[step.change],
+    smokingSetting: shishaSmokingSettings[step.setting],
     changeAnswer,
+    settingAnswer,
+    questionHeading: getSmokingStepHeading(page, step.type, step.setting),
     changeHeading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer),
     errors,
     actions: getSmokingTypeActions(step, steps)
@@ -1521,12 +1603,15 @@ exports.smokingSetting_get = (req, res) => {
 
 exports.smokingSetting_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-setting')
+  const { answers } = req.session.data
   const errors = []
 
   if (!step) {
     res.redirect('/prototype_v4/smoking-type')
     return
   }
+
+  deleteUnselectedShishaSettingAnswers(answers[step.type])
 
   if (errors.length) {
     renderSmokingTypeQuestion(req, res, 'smoking-setting', errors)

@@ -1,6 +1,6 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = smokingType.quantityHeading %}
+{% set title = questionHeading or smokingType.quantityHeading %}
 {% set caption = smokingType.caption %}
 
 {% block beforeContent %}
@@ -21,11 +21,18 @@
       {% endset %}
 
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+        {% if setting %}
+          {% set answerName = "answers[" + type + "][" + setting + "][smokingQuantity]" %}
+          {% set answerValue = settingAnswer.smokingQuantity %}
+        {% else %}
+          {% set answerName = "answers[" + type + "][smokingQuantity]" %}
+          {% set answerValue = data.answers[type].smokingQuantity %}
+        {% endif %}
 
         {% if type == "rolling_tobacco" %}
 
           {{ radios({
-            name: "answers[" + type + "][smokingQuantity]",
+            name: answerName,
             fieldset: {
               legend: {
                 text: headingText,
@@ -36,7 +43,7 @@
             hint: {
               text: "Give an estimate if you are not sure"
             },
-            value: data.answers[type].smokingQuantity,
+            value: answerValue,
             items: [
               {
                 value: "less_than_10",
@@ -69,7 +76,7 @@
 
           {{ input({
             id: "smoking-quantity",
-            name: "answers[" + type + "][smokingQuantity]",
+            name: answerName,
             label: {
               text: headingText,
               isPageHeading: true,
@@ -79,7 +86,7 @@
               text: "Give an estimate if you are not sure"
             },
             suffix: smokingType.suffix,
-            value: data.answers[type].smokingQuantity,
+            value: answerValue,
             classes: "nhsuk-input--width-4"
           }) }}
 
