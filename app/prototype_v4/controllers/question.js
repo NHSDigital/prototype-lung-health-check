@@ -1,3 +1,5 @@
+const { nhsukDate } = require('../../filters/dates')
+
 const version = 'v4'
 
 const view = (template) => {
@@ -269,7 +271,9 @@ const formatDateOfBirth = (dateOfBirth = {}) => {
     return ''
   }
 
-  return `${dateOfBirth.day}/${dateOfBirth.month}/${dateOfBirth.year}`
+  return nhsukDate(
+    `${dateOfBirth.year}-${String(dateOfBirth.month).padStart(2, '0')}-${String(dateOfBirth.day).padStart(2, '0')}`
+  )
 }
 
 const formatHeight = (height = {}) => {
