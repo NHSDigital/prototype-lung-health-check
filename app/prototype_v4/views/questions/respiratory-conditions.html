@@ -36,10 +36,18 @@
           values: data.answers.respiratoryConditions,
           items: [
             {
-              value: "pneumonia",
-              text: "Pneumonia",
+              value: "bronchitis",
+              text: "Bronchitis",
               hint: {
-                text: "An infection of the lungs, usually diagnosed by a chest x-ray"
+                text: "An inflammation of the airways in the lungs that is usually caused by an infection"
+              },
+              exclusiveGroup: "conditions-list"
+            },
+            {
+              value: "chronic_obstructive_pulmonary_disease",
+              text: "Chronic obstructive pulmonary disease (COPD)",
+              hint: {
+                text: "A group of lung conditions that cause breathing difficulties"
               },
               exclusiveGroup: "conditions-list"
             },
@@ -52,10 +60,10 @@
               exclusiveGroup: "conditions-list"
             },
             {
-              value: "bronchitis",
-              text: "Bronchitis",
+              value: "pneumonia",
+              text: "Pneumonia",
               hint: {
-                text: "An inflammation of the airways in the lungs that is usually caused by an infection"
+                text: "An infection of the lungs, usually diagnosed by a chest x-ray"
               },
               exclusiveGroup: "conditions-list"
             },
@@ -64,14 +72,6 @@
               text: "Tuberculosis (TB)",
               hint: {
                 text: "An infection that usually affects the lungs, but can affect any part of the body"
-              },
-              exclusiveGroup: "conditions-list"
-            },
-            {
-              value: "chronic_obstructive_pulmonary_disease",
-              text: "Chronic obstructive pulmonary disease (COPD)",
-              hint: {
-                text: "A group of lung conditions that cause breathing difficulties"
               },
               exclusiveGroup: "conditions-list"
             },
