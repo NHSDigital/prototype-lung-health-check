@@ -80,6 +80,7 @@ const smokingTypes = {
     quantityHeading: 'How many cigarettes do you currently smoke in a normal day?',
     changeHeading: 'Has the number of cigarettes you normally smoke changed over time?',
     quantityUnit: 'cigarettes',
+    singularSuffix: 'cigarette',
     suffix: 'cigarettes'
   },
   rolling_tobacco: {
@@ -97,6 +98,7 @@ const smokingTypes = {
     quantityHeading: 'How many full pipe loads do you currently smoke in a normal day?',
     changeHeading: 'Has the number of full pipe loads you normally smoke changed over time?',
     quantityUnit: 'full pipe loads',
+    singularSuffix: 'full pipe load',
     suffix: 'full pipe loads'
   },
   small_cigars: {
@@ -106,6 +108,7 @@ const smokingTypes = {
     quantityHeading: 'How many small cigars do you currently smoke in a normal day?',
     changeHeading: 'Has the number of small cigars you normally smoke changed over time?',
     quantityUnit: 'small cigars',
+    singularSuffix: 'small cigar',
     suffix: 'small cigars'
   },
   medium_cigars: {
@@ -115,6 +118,7 @@ const smokingTypes = {
     quantityHeading: 'How many medium cigars do you currently smoke in a normal day?',
     changeHeading: 'Has the number of medium cigars you normally smoke changed over time?',
     quantityUnit: 'medium cigars',
+    singularSuffix: 'medium cigar',
     suffix: 'medium cigars'
   },
   large_cigars: {
@@ -124,6 +128,7 @@ const smokingTypes = {
     quantityHeading: 'How many large cigars do you currently smoke in a normal day?',
     changeHeading: 'Has the number of large cigars you normally smoke changed over time?',
     quantityUnit: 'large cigars',
+    singularSuffix: 'large cigar',
     suffix: 'large cigars'
   },
   cigarillos: {
@@ -133,6 +138,7 @@ const smokingTypes = {
     quantityHeading: 'How many cigarillos do you currently smoke in a normal day?',
     changeHeading: 'Has the number of cigarillos you normally smoke changed over time?',
     quantityUnit: 'cigarillos',
+    singularSuffix: 'cigarillo',
     suffix: 'cigarillos'
   },
   shisha: {
@@ -142,6 +148,7 @@ const smokingTypes = {
     frequencyHeading: 'How often do you smoke shisha?',
     quantityHeading: 'How many hours do you currently smoke shisha in a normal day?',
     quantityUnit: 'hours',
+    singularSuffix: 'hour',
     suffix: 'hours'
   }
 }
@@ -448,6 +455,10 @@ const makeSummaryRow = ({ key, value, html, href, visuallyHiddenText }) => {
 
 const makeSummaryRows = (rows) => rows.filter(Boolean)
 
+const formatQuantity = (value, singular, plural) => {
+  return `${value} ${Number(value) === 1 ? singular : plural}`
+}
+
 const getSmokingQuantity = (type, answer) => {
   if (!answer) {
     return ''
@@ -457,8 +468,10 @@ const getSmokingQuantity = (type, answer) => {
     return valueLabels.smokingQuantityRollingTobacco[answer] || answer
   }
 
-  const suffix = smokingTypes[type]?.suffix
-  return suffix ? `${answer} ${suffix}` : answer
+  const smokingType = smokingTypes[type]
+  return smokingType?.suffix
+    ? formatQuantity(answer, smokingType.singularSuffix || smokingType.suffix, smokingType.suffix)
+    : answer
 }
 
 const getShishaSettingAnswer = (answer = {}, setting) => {
@@ -573,7 +586,7 @@ const getCheckYourAnswers = (answers = {}) => {
         }),
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-years-change', type, change, changeAnswer),
-          value: changeAnswer.years && `${changeAnswer.years} years`,
+          value: changeAnswer.years && formatQuantity(changeAnswer.years, 'year', 'years'),
           href: getSmokingTypeStepUrl({ page: 'smoking-years-change', type, change })
         })
       ]
@@ -712,7 +725,7 @@ const getCheckYourAnswers = (answers = {}) => {
       }),
       answers.periodsStoppedSmoking === 'yes' && makeSummaryRow({
         key: 'Total number of years you stopped smoking',
-        value: answers.yearsStoppedSmoking && `${answers.yearsStoppedSmoking} years`,
+        value: answers.yearsStoppedSmoking && formatQuantity(answers.yearsStoppedSmoking, 'year', 'years'),
         href: `/prototype_${version}/periods-stopped-smoking`
       }),
       makeSummaryRow({
