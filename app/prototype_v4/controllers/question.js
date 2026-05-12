@@ -9,24 +9,24 @@ const view = (template) => {
 const getHeightBack = (req) => {
   const { answers } = req.session.data
 
-  return answers?.height?.imperial ? '/prototype_v4/height-imperial' : '/prototype_v4/height-metric'
+  return answers?.height?.imperial ? `/prototype_${version}/height-imperial` : `/prototype_${version}/height-metric`
 }
 
 const getWeightBack = (req) => {
   const { answers } = req.session.data
 
-  return answers?.weight?.imperial ? '/prototype_v4/weight-imperial' : '/prototype_v4/weight-metric'
+  return answers?.weight?.imperial ? `/prototype_${version}/weight-imperial` : `/prototype_${version}/weight-metric`
 }
 
 const getWeightNext = (req, defaultUnit) => {
   const { answers } = req.session.data
 
   if (answers?.weight?.imperial) {
-    return '/prototype_v4/weight-imperial'
+    return `/prototype_${version}/weight-imperial`
   }
 
   if (answers?.weight?.metric) {
-    return '/prototype_v4/weight-metric'
+    return `/prototype_${version}/weight-metric`
   }
 
   return `/prototype_${version}/weight-${defaultUnit}`
@@ -800,8 +800,8 @@ exports.acceptTerms_get = (req, res) => {
 
   res.render(view('questions/accept-terms'), {
     actions: {
-      next: '/prototype_v4/accept-terms',
-      cancel: '/prototype_v4'
+      next: `/prototype_${version}/accept-terms`,
+      cancel: `/prototype_${version}`
     }
   })
 }
@@ -813,12 +813,12 @@ exports.acceptTerms_post = (req, res) => {
     res.render(view('questions/accept-terms'), {
       errors,
       actions: {
-        next: '/prototype_v4/accept-terms',
-        cancel: '/prototype_v4'
+        next: `/prototype_${version}/accept-terms`,
+        cancel: `/prototype_${version}`
       }
     })
   } else {
-    res.redirect('/prototype_v4/phone-questionnaire')
+    res.redirect(`/prototype_${version}/phone-questionnaire`)
   }
 }
 
@@ -826,8 +826,8 @@ exports.phoneQuestionnaire_get = (req, res) => {
 
   res.render(view('questions/phone-questionnaire'), {
     actions: {
-      next: '/prototype_v4/phone-questionnaire',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/phone-questionnaire`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -840,15 +840,15 @@ exports.phoneQuestionnaire_post = (req, res) => {
     res.render(view('questions/phone-questionnaire'), {
       errors,
       actions: {
-        next: '/prototype_v4/phone-questionnaire',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/phone-questionnaire`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
     if (answers.phoneQuestionnaire === 'yes') {
-      res.redirect('/prototype_v4/phone-questionnaire-exit')
+      res.redirect(`/prototype_${version}/phone-questionnaire-exit`)
     } else {
-      res.redirect('/prototype_v4/smoker')
+      res.redirect(`/prototype_${version}/smoker`)
     }
   }
 }
@@ -857,7 +857,7 @@ exports.phoneQuestionnaireExit_get = (req, res) => {
 
   res.render(view('questions/phone-questionnaire-exit'), {
     actions: {
-      back: '/prototype_v4/phone-questionnaire'
+      back: `/prototype_${version}/phone-questionnaire`
     }
   })
 }
@@ -870,9 +870,9 @@ exports.smoker_get = (req, res) => {
 
   res.render(view('questions/smoker'), {
     actions: {
-      next: '/prototype_v4/smoker',
-      back: '/prototype_v4/phone-questionnaire',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/smoker`,
+      back: `/prototype_${version}/phone-questionnaire`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -885,16 +885,16 @@ exports.smoker_post = (req, res) => {
     res.render(view('questions/smoker'), {
       errors,
       actions: {
-        next: '/prototype_v4/smoker',
-        back: '/prototype_v4/phone-questionnaire',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/smoker`,
+        back: `/prototype_${version}/phone-questionnaire`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
     if (answers.smoker === 'no') {
-      res.redirect('/prototype_v4/not-eligible-for-screening')
+      res.redirect(`/prototype_${version}/not-eligible-for-screening`)
     } else {
-      res.redirect('/prototype_v4/date-of-birth')
+      res.redirect(`/prototype_${version}/date-of-birth`)
     }
   }
 }
@@ -903,9 +903,9 @@ exports.dateOfBirth_get = (req, res) => {
 
   res.render(view('questions/date-of-birth'), {
     actions: {
-      next: '/prototype_v4/date-of-birth',
-      back: '/prototype_v4/smoker',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/date-of-birth`,
+      back: `/prototype_${version}/smoker`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -926,16 +926,16 @@ exports.dateOfBirth_post = (req, res) => {
     res.render(view('questions/date-of-birth'), {
       errors,
       actions: {
-        next: '/prototype_v4/date-of-birth',
-        back: '/prototype_v4/smoker',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/date-of-birth`,
+        back: `/prototype_${version}/smoker`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
     if (!isEligibleForScanAge(dateOfBirth)) {
-      res.redirect('/prototype_v4/not-eligible-for-scan')
+      res.redirect(`/prototype_${version}/not-eligible-for-scan`)
     } else {
-      res.redirect('/prototype_v4/face-to-face-appointment')
+      res.redirect(`/prototype_${version}/face-to-face-appointment`)
     }
   }
 }
@@ -944,9 +944,9 @@ exports.faceToFaceAppointment_get = (req, res) => {
 
   res.render(view('questions/face-to-face-appointment'), {
     actions: {
-      next: '/prototype_v4/face-to-face-appointment',
-      back: '/prototype_v4/date-of-birth',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/face-to-face-appointment`,
+      back: `/prototype_${version}/date-of-birth`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -959,16 +959,16 @@ exports.faceToFaceAppointment_post = (req, res) => {
     res.render(view('questions/face-to-face-appointment'), {
       errors,
       actions: {
-        next: '/prototype_v4/face-to-face-appointment',
-        back: '/prototype_v4/date-of-birth',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/face-to-face-appointment`,
+        back: `/prototype_${version}/date-of-birth`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
     if (answers.faceToFaceAppointment === 'yes') {
-      res.redirect('/prototype_v4/book-appointment')
+      res.redirect(`/prototype_${version}/book-appointment`)
     } else {
-      res.redirect('/prototype_v4/height-metric')
+      res.redirect(`/prototype_${version}/height-metric`)
     }
   }
 }
@@ -976,8 +976,8 @@ exports.faceToFaceAppointment_post = (req, res) => {
 exports.notEligibleForScreening_get = (req, res) => {
   res.render(view('questions/not-eligible-for-screening'), {
     actions: {
-      back: '/prototype_v4/smoker',
-      cancel: '/prototype_v4/'
+      back: `/prototype_${version}/smoker`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -985,8 +985,8 @@ exports.notEligibleForScreening_get = (req, res) => {
 exports.notEligibleForScan_get = (req, res) => {
   res.render(view('questions/not-eligible-for-scan'), {
     actions: {
-      back: '/prototype_v4/date-of-birth',
-      cancel: '/prototype_v4/'
+      back: `/prototype_${version}/date-of-birth`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -994,8 +994,8 @@ exports.notEligibleForScan_get = (req, res) => {
 exports.bookAppointment_get = (req, res) => {
   res.render(view('questions/book-appointment'), {
     actions: {
-      back: '/prototype_v4/face-to-face-appointment',
-      cancel: '/prototype_v4/'
+      back: `/prototype_${version}/face-to-face-appointment`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1007,10 +1007,10 @@ exports.bookAppointment_get = (req, res) => {
 exports.heightMetric_get = (req, res) => {
   res.render(view('questions/height-metric'), {
     actions: {
-      next: '/prototype_v4/height-metric',
-      switchUnits: '/prototype_v4/height-imperial',
-      back: '/prototype_v4/face-to-face-appointment',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/height-metric`,
+      switchUnits: `/prototype_${version}/height-imperial`,
+      back: `/prototype_${version}/face-to-face-appointment`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1023,10 +1023,10 @@ exports.heightMetric_post = (req, res) => {
     res.render(view('questions/height-metric'), {
       errors,
       actions: {
-        next: '/prototype_v4/height-metric',
-        switchUnits: '/prototype_v4/height-imperial',
-        back: '/prototype_v4/face-to-face-appointment',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/height-metric`,
+        switchUnits: `/prototype_${version}/height-imperial`,
+        back: `/prototype_${version}/face-to-face-appointment`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
@@ -1038,10 +1038,10 @@ exports.heightMetric_post = (req, res) => {
 exports.heightImperial_get = (req, res) => {
   res.render(view('questions/height-imperial'), {
     actions: {
-      next: '/prototype_v4/height-imperial',
-      switchUnits: '/prototype_v4/height-metric',
-      back: '/prototype_v4/face-to-face-appointment',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/height-imperial`,
+      switchUnits: `/prototype_${version}/height-metric`,
+      back: `/prototype_${version}/face-to-face-appointment`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1054,10 +1054,10 @@ exports.heightImperial_post = (req, res) => {
     res.render(view('questions/height-imperial'), {
       errors,
       actions: {
-        next: '/prototype_v4/height-imperial',
-        switchUnits: '/prototype_v4/height-metric',
-        back: '/prototype_v4/face-to-face-appointment',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/height-imperial`,
+        switchUnits: `/prototype_${version}/height-metric`,
+        back: `/prototype_${version}/face-to-face-appointment`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
@@ -1071,10 +1071,10 @@ exports.weightMetric_get = (req, res) => {
 
   res.render(view('questions/weight-metric'), {
     actions: {
-      next: '/prototype_v4/weight-metric',
-      switchUnits: '/prototype_v4/weight-imperial',
+      next: `/prototype_${version}/weight-metric`,
+      switchUnits: `/prototype_${version}/weight-imperial`,
       back,
-      cancel: '/prototype_v4/'
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1088,15 +1088,15 @@ exports.weightMetric_post = (req, res) => {
     res.render(view('questions/weight-metric'), {
       errors,
       actions: {
-        next: '/prototype_v4/weight-metric',
-        switchUnits: '/prototype_v4/weight-imperial',
+        next: `/prototype_${version}/weight-metric`,
+        switchUnits: `/prototype_${version}/weight-imperial`,
         back,
-        cancel: '/prototype_v4/'
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
     delete answers.weight?.imperial
-    res.redirect('/prototype_v4/gender')
+    res.redirect(`/prototype_${version}/gender`)
   }
 }
 
@@ -1105,10 +1105,10 @@ exports.weightImperial_get = (req, res) => {
 
   res.render(view('questions/weight-imperial'), {
     actions: {
-      next: '/prototype_v4/weight-imperial',
-      switchUnits: '/prototype_v4/weight-metric',
+      next: `/prototype_${version}/weight-imperial`,
+      switchUnits: `/prototype_${version}/weight-metric`,
       back,
-      cancel: '/prototype_v4/'
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1122,15 +1122,15 @@ exports.weightImperial_post = (req, res) => {
     res.render(view('questions/weight-imperial'), {
       errors,
       actions: {
-        next: '/prototype_v4/weight-imperial',
-        switchUnits: '/prototype_v4/weight-metric',
+        next: `/prototype_${version}/weight-imperial`,
+        switchUnits: `/prototype_${version}/weight-metric`,
         back,
-        cancel: '/prototype_v4/'
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
     delete answers.weight?.metric
-    res.redirect('/prototype_v4/gender')
+    res.redirect(`/prototype_${version}/gender`)
   }
 }
 
@@ -1139,9 +1139,9 @@ exports.gender_get = (req, res) => {
 
   res.render(view('questions/gender'), {
     actions: {
-      next: '/prototype_v4/gender',
+      next: `/prototype_${version}/gender`,
       back,
-      cancel: '/prototype_v4/'
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1154,22 +1154,22 @@ exports.gender_post = (req, res) => {
     res.render(view('questions/gender'), {
       errors,
       actions: {
-        next: '/prototype_v4/gender',
+        next: `/prototype_${version}/gender`,
         back,
-        cancel: '/prototype_v4/'
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/sex')
+    res.redirect(`/prototype_${version}/sex`)
   }
 }
 
 exports.sex_get = (req, res) => {
   res.render(view('questions/sex'), {
     actions: {
-      next: '/prototype_v4/sex',
-      back: '/prototype_v4/gender',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/sex`,
+      back: `/prototype_${version}/gender`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1181,13 +1181,13 @@ exports.sex_post = (req, res) => {
     res.render(view('questions/sex'), {
       errors,
       actions: {
-        next: '/prototype_v4/sex',
-        back: '/prototype_v4/gender',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/sex`,
+        back: `/prototype_${version}/gender`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/ethnicity')
+    res.redirect(`/prototype_${version}/ethnicity`)
   }
 }
 
@@ -1195,9 +1195,9 @@ exports.ethnicity_get = (req, res) => {
 
   res.render(view('questions/ethnicity'), {
     actions: {
-      next: '/prototype_v4/ethnicity',
-      back: '/prototype_v4/gender',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/ethnicity`,
+      back: `/prototype_${version}/gender`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1209,13 +1209,13 @@ exports.ethnicity_post = (req, res) => {
     res.render(view('questions/ethnicity'), {
       errors,
       actions: {
-        next: '/prototype_v4/ehtnicity',
-        back: '/prototype_v4/gender',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/ehtnicity`,
+        back: `/prototype_${version}/gender`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/education')
+    res.redirect(`/prototype_${version}/education`)
   }
 }
 
@@ -1223,9 +1223,9 @@ exports.education_get = (req, res) => {
 
   res.render(view('questions/education'), {
     actions: {
-      next: '/prototype_v4/education',
-      back: '/prototype_v4/ethnicity',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/education`,
+      back: `/prototype_${version}/ethnicity`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1237,13 +1237,13 @@ exports.education_post = (req, res) => {
     res.render(view('questions/education'), {
       errors,
       actions: {
-        next: '/prototype_v4/education',
-        back: '/prototype_v4/ethnicity',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/education`,
+        back: `/prototype_${version}/ethnicity`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/respiratory-conditions')
+    res.redirect(`/prototype_${version}/respiratory-conditions`)
   }
 }
 
@@ -1255,9 +1255,9 @@ exports.respiratoryConditions_get = (req, res) => {
 
   res.render(view('questions/respiratory-conditions'), {
     actions: {
-      next: '/prototype_v4/respiratory-conditions',
-      back: '/prototype_v4/education',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/respiratory-conditions`,
+      back: `/prototype_${version}/education`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1269,13 +1269,13 @@ exports.respiratoryConditions_post = (req, res) => {
     res.render(view('questions/respiratory-conditions'), {
       errors,
       actions: {
-        next: '/prototype_v4/respiratory-conditions',
-        back: '/prototype_v4/education',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/respiratory-conditions`,
+        back: `/prototype_${version}/education`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/asbestos-at-work')
+    res.redirect(`/prototype_${version}/asbestos-at-work`)
   }
 }
 
@@ -1283,9 +1283,9 @@ exports.asbestosAtWork_get = (req, res) => {
 
   res.render(view('questions/asbestos-at-work'), {
     actions: {
-      next: '/prototype_v4/asbestos-at-work',
-      back: '/prototype_v4/respiratory-conditions',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/asbestos-at-work`,
+      back: `/prototype_${version}/respiratory-conditions`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1297,13 +1297,13 @@ exports.asbestosAtWork_post = (req, res) => {
     res.render(view('questions/asbestos-at-work'), {
       errors,
       actions: {
-        next: '/prototype_v4/asbestos-at-work',
-        back: '/prototype_v4/respiratory-conditions',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/asbestos-at-work`,
+        back: `/prototype_${version}/respiratory-conditions`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/asbestos-at-home')
+    res.redirect(`/prototype_${version}/asbestos-at-home`)
   }
 }
 
@@ -1311,9 +1311,9 @@ exports.asbestosAtHome_get = (req, res) => {
 
   res.render(view('questions/asbestos-at-home'), {
     actions: {
-      next: '/prototype_v4/asbestos-at-home',
-      back: '/prototype_v4/asbestos-at-work',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/asbestos-at-home`,
+      back: `/prototype_${version}/asbestos-at-work`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1325,13 +1325,13 @@ exports.asbestosAtHome_post = (req, res) => {
     res.render(view('questions/asbestos-at-home'), {
       errors,
       actions: {
-        next: '/prototype_v4/asbestos-at-home',
-        back: '/prototype_v4/asbestos-at-work',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/asbestos-at-home`,
+        back: `/prototype_${version}/asbestos-at-work`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/cancer-diagnosis')
+    res.redirect(`/prototype_${version}/cancer-diagnosis`)
   }
 }
 
@@ -1339,9 +1339,9 @@ exports.cancerDiagnosis_get = (req, res) => {
 
   res.render(view('questions/cancer-diagnosis'), {
     actions: {
-      next: '/prototype_v4/cancer-diagnosis',
-      back: '/prototype_v4/asbestos-at-work',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/cancer-diagnosis`,
+      back: `/prototype_${version}/asbestos-at-work`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1353,13 +1353,13 @@ exports.cancerDiagnosis_post = (req, res) => {
     res.render(view('questions/cancer-diagnosis'), {
       errors,
       actions: {
-        next: '/prototype_v4/cancer-diagnosis',
-        back: '/prototype_v4/asbestos-at-work',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/cancer-diagnosis`,
+        back: `/prototype_${version}/asbestos-at-work`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/cancer-diagnosis-relatives')
+    res.redirect(`/prototype_${version}/cancer-diagnosis-relatives`)
   }
 }
 
@@ -1371,9 +1371,9 @@ exports.cancerDiagnosisRelatives_get = (req, res) => {
 
   res.render(view('questions/cancer-diagnosis-relatives'), {
     actions: {
-      next: '/prototype_v4/cancer-diagnosis-relatives',
-      back: '/prototype_v4/cancer-diagnosis',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/cancer-diagnosis-relatives`,
+      back: `/prototype_${version}/cancer-diagnosis`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1386,17 +1386,17 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
     res.render(view('questions/cancer-diagnosis-relatives'), {
       errors,
       actions: {
-        next: '/prototype_v4/cancer-diagnosis-relatives',
-        back: '/prototype_v4/cancer-diagnosis',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/cancer-diagnosis-relatives`,
+        back: `/prototype_${version}/cancer-diagnosis`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
     if (answers.cancerDiagnosisRelatives === 'yes') {
-      res.redirect('/prototype_v4/cancer-diagnosis-relatives-age')
+      res.redirect(`/prototype_${version}/cancer-diagnosis-relatives-age`)
     } else {
       delete answers.cancerDiagnosisRelativesAge
-      res.redirect('/prototype_v4/age-started-smoking')
+      res.redirect(`/prototype_${version}/age-started-smoking`)
     }
   }
 }
@@ -1405,9 +1405,9 @@ exports.cancerDiagnosisRelativesAge_get = (req, res) => {
 
   res.render(view('questions/cancer-diagnosis-relatives-age'), {
     actions: {
-      next: '/prototype_v4/cancer-diagnosis-relatives-age',
-      back: '/prototype_v4/cancer-diagnosis-relatives',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/cancer-diagnosis-relatives-age`,
+      back: `/prototype_${version}/cancer-diagnosis-relatives`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1419,13 +1419,13 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
     res.render(view('questions/cancer-diagnosis-relatives-age'), {
       errors,
       actions: {
-        next: '/prototype_v4/cancer-diagnosis-relatives-age',
-        back: '/prototype_v4/cancer-diagnosis-relatives',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/cancer-diagnosis-relatives-age`,
+        back: `/prototype_${version}/cancer-diagnosis-relatives`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/age-started-smoking')
+    res.redirect(`/prototype_${version}/age-started-smoking`)
   }
 }
 
@@ -1435,20 +1435,20 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
 
 exports.ageStartedSmoking_get = (req, res) => {
   const { answers } = req.session.data
-  const back = answers?.cancerDiagnosisRelativesAge ? '/prototype_v4/cancer-diagnosis-relatives-age' : '/prototype_v4/cancer-diagnosis-relatives'
+  const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
 
   res.render(view('questions/age-started-smoking'), {
     actions: {
-      next: '/prototype_v4/age-started-smoking',
+      next: `/prototype_${version}/age-started-smoking`,
       back,
-      cancel: '/prototype_v4/'
+      cancel: `/prototype_${version}/`
     }
   })
 }
 
 exports.ageStartedSmoking_post = (req, res) => {
   const { answers } = req.session.data
-  const back = answers?.cancerDiagnosisRelativesAge ? '/prototype_v4/cancer-diagnosis-relatives-age' : '/prototype_v4/cancer-diagnosis-relatives'
+  const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
 
   const errors = []
 
@@ -1461,22 +1461,22 @@ exports.ageStartedSmoking_post = (req, res) => {
     res.render(view('questions/age-started-smoking'), {
       errors,
       actions: {
-        next: '/prototype_v4/age-started-smoking',
+        next: `/prototype_${version}/age-started-smoking`,
         back,
-        cancel: '/prototype_v4/'
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/periods-stopped-smoking')
+    res.redirect(`/prototype_${version}/periods-stopped-smoking`)
   }
 }
 
 exports.periodsStoppedSmoking_get = (req, res) => {
   res.render(view('questions/periods-stopped-smoking'), {
     actions: {
-      next: '/prototype_v4/periods-stopped-smoking',
-      back: '/prototype_v4/age-started-smoking',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/periods-stopped-smoking`,
+      back: `/prototype_${version}/age-started-smoking`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1489,16 +1489,16 @@ exports.periodsStoppedSmoking_post = (req, res) => {
     res.render(view('questions/periods-stopped-smoking'), {
       errors,
       actions: {
-        next: '/prototype_v4/periods-stopped-smoking',
-        back: '/prototype_v4/age-started-smoking',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/periods-stopped-smoking`,
+        back: `/prototype_${version}/age-started-smoking`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
     if (answers.periodsStoppedSmoking === 'no') {
       delete answers.yearsStoppedSmoking
     }
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
   }
 }
 
@@ -1509,9 +1509,9 @@ exports.periodsStoppedSmoking_post = (req, res) => {
 exports.smokingType_get = (req, res) => {
   res.render(view('questions/smoking-type'), {
     actions: {
-      next: '/prototype_v4/smoking-type',
-      back: '/prototype_v4/periods-stopped-smoking',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/smoking-type`,
+      back: `/prototype_${version}/periods-stopped-smoking`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1524,9 +1524,9 @@ exports.smokingType_post = (req, res) => {
     res.render(view('questions/smoking-type'), {
       errors,
       actions: {
-        next: '/prototype_v4/smoking-type',
-        back: '/prototype_v4/periods-stopped-smoking',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/smoking-type`,
+        back: `/prototype_${version}/periods-stopped-smoking`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
@@ -1537,11 +1537,11 @@ exports.smokingType_post = (req, res) => {
     const steps = getSmokingTypeSteps(answers)
 
     if (selectedTypes.includes('none')) {
-      res.redirect('/prototype_v4/smoking-type-exit')
+      res.redirect(`/prototype_${version}/smoking-type-exit`)
     } else if (steps.length) {
       res.redirect(getSmokingTypeStepUrl(steps[0]))
     } else {
-      res.redirect('/prototype_v4/smoking-type')
+      res.redirect(`/prototype_${version}/smoking-type`)
     }
   }
 }
@@ -1549,7 +1549,7 @@ exports.smokingType_post = (req, res) => {
 exports.smokingTypeExit_get = (req, res) => {
   res.render(view('questions/smoking-type-exit'), {
     actions: {
-      back: '/prototype_v4/smoking-type'
+      back: `/prototype_${version}/smoking-type`
     }
   })
 }
@@ -1563,7 +1563,7 @@ exports.smokingStatus_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1583,7 +1583,7 @@ exports.smokingFrequency_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1603,7 +1603,7 @@ exports.smokingQuantity_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1624,7 +1624,7 @@ exports.smokingSetting_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1647,7 +1647,7 @@ exports.smokingChange_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1669,7 +1669,7 @@ exports.smokingFrequencyChange_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1689,7 +1689,7 @@ exports.smokingQuantityChange_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1709,7 +1709,7 @@ exports.smokingYearsChange_post = (req, res) => {
   const errors = []
 
   if (!step) {
-    res.redirect('/prototype_v4/smoking-type')
+    res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
@@ -1732,15 +1732,15 @@ exports.checkYourAnswers_get = (req, res) => {
   res.render(view('questions/check-your-answers'), {
     checkYourAnswers: getCheckYourAnswers(answers),
     actions: {
-      next: '/prototype_v4/check-your-answers',
-      back: lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : '/prototype_v4/smoking-type',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/check-your-answers`,
+      back: lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : `/prototype_${version}/smoking-type`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
 
 exports.checkYourAnswers_post = (req, res) => {
-  res.redirect('/prototype_v4/confirmation')
+  res.redirect(`/prototype_${version}/confirmation`)
 }
 
 /// ------------------------------------------------------------------------ ///
@@ -1759,9 +1759,9 @@ exports.XYZ_get = (req, res) => {
 
   res.render(view('questions/xyz'), {
     actions: {
-      next: '/prototype_v4/xyz',
-      back: '/prototype_v4/abc',
-      cancel: '/prototype_v4/'
+      next: `/prototype_${version}/xyz`,
+      back: `/prototype_${version}/abc`,
+      cancel: `/prototype_${version}/`
     }
   })
 }
@@ -1774,12 +1774,12 @@ exports.XYZ_post = (req, res) => {
     res.render(view('questions/xyz'), {
       errors,
       actions: {
-        next: '/prototype_v4/xyz',
-        back: '/prototype_v4/abc',
-        cancel: '/prototype_v4/'
+        next: `/prototype_${version}/xyz`,
+        back: `/prototype_${version}/abc`,
+        cancel: `/prototype_${version}/`
       }
     })
   } else {
-    res.redirect('/prototype_v4/mno')
+    res.redirect(`/prototype_${version}/mno`)
   }
 }
