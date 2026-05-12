@@ -1830,36 +1830,3 @@ exports.checkYourAnswers_post = (req, res) => {
 exports.confirmation_get = (req, res) => {
   res.render(view('confirmation'))
 }
-
-/// ------------------------------------------------------------------------ ///
-/// Template
-/// ------------------------------------------------------------------------ ///
-
-exports.XYZ_get = (req, res) => {
-
-  res.render(view('questions/xyz'), {
-    actions: {
-      next: `/prototype_${version}/xyz`,
-      back: `/prototype_${version}/abc`,
-      cancel: `/prototype_${version}/`
-    }
-  })
-}
-
-exports.XYZ_post = (req, res) => {
-  const { answers } = req.session.data
-  const errors = []
-
-  if (errors.length) {
-    res.render(view('questions/xyz'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/xyz`,
-        back: `/prototype_${version}/abc`,
-        cancel: `/prototype_${version}/`
-      }
-    })
-  } else {
-    res.redirect(`/prototype_${version}/mno`)
-  }
-}
