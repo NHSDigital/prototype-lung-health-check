@@ -4,6 +4,7 @@ const view = (template) => {
 }
 
 exports.signIn_get = (req, res) => {
+  delete req.session.data
 
   res.render(view('authentication/sign-in'), {
     actions: {

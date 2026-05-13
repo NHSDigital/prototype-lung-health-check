@@ -146,6 +146,9 @@ router.post(`/prototype_${version}/cancer-diagnosis-relatives-age`, questionCont
 router.get(`/prototype_${version}/age-started-smoking`, questionController.ageStartedSmoking_get)
 router.post(`/prototype_${version}/age-started-smoking`, questionController.ageStartedSmoking_post)
 
+router.get(`/prototype_${version}/age-stopped-smoking`, questionController.ageStoppedSmoking_get)
+router.post(`/prototype_${version}/age-stopped-smoking`, questionController.ageStoppedSmoking_post)
+
 router.get(`/prototype_${version}/periods-stopped-smoking`, questionController.periodsStoppedSmoking_get)
 router.post(`/prototype_${version}/periods-stopped-smoking`, questionController.periodsStoppedSmoking_post)
 

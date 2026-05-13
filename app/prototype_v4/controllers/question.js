@@ -232,11 +232,15 @@ const deleteUnselectedShishaSettingAnswers = (answer = {}) => {
 }
 
 const getSmokingTypeSteps = (answers = {}) => {
+  const includeSmokingStatus = answers.smoker !== 'yes_previous'
+
   return getSelectedSmokingTypes(answers).flatMap((type) => {
     const steps = []
     const answer = answers[type] || {}
 
-    steps.push({ page: 'smoking-status', type })
+    if (includeSmokingStatus) {
+      steps.push({ page: 'smoking-status', type })
+    }
 
     if (type === 'shisha') {
       steps.push({ page: 'smoking-setting', type })
@@ -518,18 +522,29 @@ const getSmokingCurrentAmount = (type, answer = {}) => {
   return [quantity, period].filter(Boolean).join(' ')
 }
 
-const getSmokingChangeLabels = (type, answer = {}) => {
+const isPastSmokingType = (answers = {}, answer = {}) => {
+  return answers.smoker === 'yes_previous' || answer.smokingStatus === 'no'
+}
+
+const getSmokingChangeLabels = (type, answer = {}, isPast = false) => {
   const amount = getSmokingCurrentAmount(type, answer)
   const fewerLabel = type === 'rolling_tobacco' ? 'less' : 'fewer'
+  const defaultLabels = isPast
+    ? {
+        greater: 'Yes, I smoked more',
+        fewer: `Yes, I smoked ${fewerLabel}`,
+        no: 'No, it did not change'
+      }
+    : valueLabels.smokingChange
 
   if (!amount) {
-    return valueLabels.smokingChange
+    return defaultLabels
   }
 
   return {
-    ...valueLabels.smokingChange,
-    greater: `Yes, I used to smoke more than ${amount}`,
-    fewer: `Yes, I used to smoke ${fewerLabel} than ${amount}`
+    ...defaultLabels,
+    greater: `Yes, I ${isPast ? 'smoked' : 'used to smoke'} more than ${amount}`,
+    fewer: `Yes, I ${isPast ? 'smoked' : 'used to smoke'} ${fewerLabel} than ${amount}`
   }
 }
 
@@ -537,7 +552,48 @@ const getShishaSettingAnswer = (answer = {}, setting) => {
   return setting ? answer[setting] || {} : {}
 }
 
-const getSmokingStepHeading = (page, type, setting) => {
+const getPastSmokingHeading = (heading = '') => {
+  return heading
+    .replace('How often do you smoke', 'How often did you smoke')
+    .replace('How many cigarettes do you currently smoke', 'How many cigarettes did you smoke')
+    .replace('How much rolling tobacco do you currently smoke', 'How much rolling tobacco did you smoke')
+    .replace('How many full pipe loads do you currently smoke', 'How many full pipe loads did you smoke')
+    .replace('How many small cigars do you currently smoke', 'How many small cigars did you smoke')
+    .replace('How many medium cigars do you currently smoke', 'How many medium cigars did you smoke')
+    .replace('How many large cigars do you currently smoke', 'How many large cigars did you smoke')
+    .replace('How many cigarillos do you currently smoke', 'How many cigarillos did you smoke')
+    .replace('How many hours do you currently smoke', 'How many hours did you smoke')
+    .replace('Do you usually smoke', 'Did you usually smoke')
+    .replace('Has the number of cigarettes you normally smoke changed over time?', 'Did the number of cigarettes you normally smoked change over time?')
+    .replace('Has the amount of rolling tobacco you normally smoke changed over time?', 'Did the amount of rolling tobacco you normally smoked change over time?')
+    .replace('Has the number of full pipe loads you normally smoke changed over time?', 'Did the number of full pipe loads you normally smoked change over time?')
+    .replace('Has the number of small cigars you normally smoke changed over time?', 'Did the number of small cigars you normally smoked change over time?')
+    .replace('Has the number of medium cigars you normally smoke changed over time?', 'Did the number of medium cigars you normally smoked change over time?')
+    .replace('Has the number of large cigars you normally smoke changed over time?', 'Did the number of large cigars you normally smoked change over time?')
+    .replace('Has the number of cigarillos you normally smoke changed over time?', 'Did the number of cigarillos you normally smoked change over time?')
+}
+
+const getSmokingTypeHeadings = (type, isPast = false) => {
+  const smokingType = smokingTypes[type]
+
+  if (!smokingType) {
+    return {}
+  }
+
+  if (!isPast) {
+    return smokingType
+  }
+
+  return {
+    ...smokingType,
+    frequencyHeading: getPastSmokingHeading(smokingType.frequencyHeading),
+    quantityHeading: getPastSmokingHeading(smokingType.quantityHeading),
+    changeHeading: getPastSmokingHeading(smokingType.changeHeading),
+    settingHeading: getPastSmokingHeading(smokingType.settingHeading)
+  }
+}
+
+const getSmokingStepHeading = (page, type, setting, isPast = false) => {
   const smokingType = smokingTypes[type]
   const shishaSetting = shishaSmokingSettings[setting]
 
@@ -547,15 +603,15 @@ const getSmokingStepHeading = (page, type, setting) => {
 
   if (type === 'shisha' && shishaSetting) {
     if (page === 'smoking-frequency') {
-      return `How often do you smoke shisha ${shishaSetting.headingText}?`
+      return `How often ${isPast ? 'did' : 'do'} you smoke shisha ${shishaSetting.headingText}?`
     }
 
     if (page === 'smoking-quantity') {
-      return `How many hours do you currently smoke shisha ${shishaSetting.headingText} in a normal day?`
+      return `How many hours ${isPast ? 'did' : 'do'} you ${isPast ? '' : 'currently '}smoke shisha ${shishaSetting.headingText} in a normal day?`
     }
   }
 
-  return smokingType[`${page.replace('smoking-', '')}Heading`] || ''
+  return getSmokingTypeHeadings(type, isPast)[`${page.replace('smoking-', '')}Heading`] || ''
 }
 
 const getSmokingChangeAnswer = (answer = {}, change) => {
@@ -629,21 +685,23 @@ const formatListValue = (value, labels) => {
 
 const getCheckYourAnswers = (answers = {}) => {
   const selectedSmokingTypes = getSelectedSmokingTypes(answers)
+  const isFormerSmoker = answers.smoker === 'yes_previous'
 
   const tobaccoRows = selectedSmokingTypes.map((type) => {
     const answer = answers[type] || {}
-    const smokingType = smokingTypes[type]
+    const isPast = isPastSmokingType(answers, answer)
+    const smokingType = getSmokingTypeHeadings(type, isPast)
     const shishaSettingRows = getSelectedShishaSettings(answer).flatMap((setting) => {
       const settingAnswer = getShishaSettingAnswer(answer, setting)
 
       return [
         makeSummaryRow({
-          key: getSmokingStepHeading('smoking-frequency', type, setting),
+          key: getSmokingStepHeading('smoking-frequency', type, setting, isPast),
           value: formatValue(settingAnswer.smokingFrequency, valueLabels.smokingFrequency),
           href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type, setting })
         }),
         makeSummaryRow({
-          key: getSmokingStepHeading('smoking-quantity', type, setting),
+          key: getSmokingStepHeading('smoking-quantity', type, setting, isPast),
           value: getSmokingQuantity(type, settingAnswer.smokingQuantity),
           href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type, setting })
         })
@@ -671,13 +729,13 @@ const getCheckYourAnswers = (answers = {}) => {
       ]
     })
     const rows = makeSummaryRows([
-      makeSummaryRow({
+      !isFormerSmoker && makeSummaryRow({
         key: smokingType.statusHeading,
         value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
         href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
       }),
       type === 'shisha' && makeSummaryRow({
-        key: 'Do you usually smoke shisha in a group or on your own?',
+        key: smokingType.settingHeading,
         ...formatListValue(answer.smokingSetting, valueLabels.smokingSetting),
         href: getSmokingTypeStepUrl({ page: 'smoking-setting', type })
       }),
@@ -693,7 +751,7 @@ const getCheckYourAnswers = (answers = {}) => {
       }),
       type !== 'shisha' && makeSummaryRow({
         key: smokingType.changeHeading,
-        ...formatListValue(answer.smokingChange, getSmokingChangeLabels(type, answer)),
+        ...formatListValue(answer.smokingChange, getSmokingChangeLabels(type, answer, isPast)),
         href: getSmokingTypeStepUrl({ page: 'smoking-change', type })
       }),
       ...shishaSettingRows,
@@ -797,6 +855,11 @@ const getCheckYourAnswers = (answers = {}) => {
         value: answers.ageStartedSmoking && `Age ${answers.ageStartedSmoking}`,
         href: `/prototype_${version}/age-started-smoking`
       }),
+      isFormerSmoker && makeSummaryRow({
+        key: 'Age you stopped smoking',
+        value: answers.ageStoppedSmoking && `Age ${answers.ageStoppedSmoking}`,
+        href: `/prototype_${version}/age-stopped-smoking`
+      }),
       makeSummaryRow({
         key: 'Stopped smoking for periods of 1 year or longer',
         value: formatValue(answers.periodsStoppedSmoking, valueLabels.periodsStoppedSmoking),
@@ -830,6 +893,28 @@ const getSmokingTypeStep = (req, page) => {
   return { step, steps }
 }
 
+const getFormerSmokerFallbackStep = (req, page, steps) => {
+  if (page !== 'smoking-status' || req.session.data.answers?.smoker !== 'yes_previous') {
+    return false
+  }
+
+  return steps.find((step) => step.type === req.query?.type) || steps[0]
+}
+
+const getSmokingTypeQuestionText = (answers = {}) => {
+  if (answers.smoker === 'yes_previous') {
+    return {
+      title: 'The type of tobacco you have smoked',
+      legend: 'What have you smoked?'
+    }
+  }
+
+  return {
+    title: 'The type of tobacco you smoke or used to smoke',
+    legend: 'What do you or have you smoked?'
+  }
+}
+
 const getSmokingTypeActions = (step, steps) => {
   const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change && item.setting === step.setting)
   const previousStep = steps[index - 1]
@@ -847,11 +932,19 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
   const { step, steps } = getSmokingTypeStep(req, page)
 
   if (!step) {
+    const fallbackStep = getFormerSmokerFallbackStep(req, page, steps)
+
+    if (fallbackStep) {
+      res.redirect(getSmokingTypeStepUrl(fallbackStep))
+      return
+    }
+
     res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
 
   const answer = req.session.data.answers[step.type] || {}
+  const isPast = isPastSmokingType(req.session.data.answers, answer)
   const changeAnswer = getSmokingChangeAnswer(answer, step.change)
   const settingAnswer = getShishaSettingAnswer(answer, step.setting)
 
@@ -859,13 +952,14 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
     type: step.type,
     change: step.change,
     setting: step.setting,
-    smokingType: smokingTypes[step.type],
+    smokingType: getSmokingTypeHeadings(step.type, isPast),
     smokingChange: smokingChangeTypes[step.change],
-    smokingChangeLabels: getSmokingChangeLabels(step.type, answer),
+    smokingChangeLabels: getSmokingChangeLabels(step.type, answer, isPast),
     smokingSetting: shishaSmokingSettings[step.setting],
     changeAnswer,
     settingAnswer,
-    questionHeading: getSmokingStepHeading(page, step.type, step.setting),
+    isPastSmokingType: isPast,
+    questionHeading: getSmokingStepHeading(page, step.type, step.setting, isPast),
     changeHeading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
     errors,
     actions: getSmokingTypeActions(step, steps)
@@ -1547,15 +1641,69 @@ exports.ageStartedSmoking_post = (req, res) => {
       }
     })
   } else {
+    if (answers.smoker === 'yes_previous') {
+      res.redirect(`/prototype_${version}/age-stopped-smoking`)
+    } else {
+      delete answers.ageStoppedSmoking
+      res.redirect(`/prototype_${version}/periods-stopped-smoking`)
+    }
+  }
+}
+
+exports.ageStoppedSmoking_get = (req, res) => {
+  const { answers } = req.session.data
+
+  if (answers.smoker !== 'yes_previous') {
+    res.redirect(`/prototype_${version}/periods-stopped-smoking`)
+    return
+  }
+
+  res.render(view('questions/age-stopped-smoking'), {
+    actions: {
+      next: `/prototype_${version}/age-stopped-smoking`,
+      back: `/prototype_${version}/age-started-smoking`,
+      cancel: `/prototype_${version}/`
+    }
+  })
+}
+
+exports.ageStoppedSmoking_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = []
+
+  if (answers.smoker !== 'yes_previous') {
+    delete answers.ageStoppedSmoking
+    res.redirect(`/prototype_${version}/periods-stopped-smoking`)
+    return
+  }
+
+  // TODO:
+  // If not answered, throw error
+  // If the age stopped smoking is older than person's age
+  // based on date of birth, throw error
+
+  if (errors.length) {
+    res.render(view('questions/age-stopped-smoking'), {
+      errors,
+      actions: {
+        next: `/prototype_${version}/age-stopped-smoking`,
+        back: `/prototype_${version}/age-started-smoking`,
+        cancel: `/prototype_${version}/`
+      }
+    })
+  } else {
     res.redirect(`/prototype_${version}/periods-stopped-smoking`)
   }
 }
 
 exports.periodsStoppedSmoking_get = (req, res) => {
+  const { answers } = req.session.data
+  const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
+
   res.render(view('questions/periods-stopped-smoking'), {
     actions: {
       next: `/prototype_${version}/periods-stopped-smoking`,
-      back: `/prototype_${version}/age-started-smoking`,
+      back,
       cancel: `/prototype_${version}/`
     }
   })
@@ -1563,6 +1711,7 @@ exports.periodsStoppedSmoking_get = (req, res) => {
 
 exports.periodsStoppedSmoking_post = (req, res) => {
   const { answers } = req.session.data
+  const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
   const errors = []
 
   if (errors.length) {
@@ -1570,7 +1719,7 @@ exports.periodsStoppedSmoking_post = (req, res) => {
       errors,
       actions: {
         next: `/prototype_${version}/periods-stopped-smoking`,
-        back: `/prototype_${version}/age-started-smoking`,
+        back,
         cancel: `/prototype_${version}/`
       }
     })
@@ -1587,7 +1736,12 @@ exports.periodsStoppedSmoking_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.smokingType_get = (req, res) => {
+  const { answers } = req.session.data
+  const smokingTypeQuestionText = getSmokingTypeQuestionText(answers)
+
   res.render(view('questions/smoking-type'), {
+    smokingTypeTitle: smokingTypeQuestionText.title,
+    smokingTypeLegend: smokingTypeQuestionText.legend,
     actions: {
       next: `/prototype_${version}/smoking-type`,
       back: `/prototype_${version}/periods-stopped-smoking`,
@@ -1598,11 +1752,14 @@ exports.smokingType_get = (req, res) => {
 
 exports.smokingType_post = (req, res) => {
   const { answers } = req.session.data
+  const smokingTypeQuestionText = getSmokingTypeQuestionText(answers)
   const errors = []
 
   if (errors.length) {
     res.render(view('questions/smoking-type'), {
       errors,
+      smokingTypeTitle: smokingTypeQuestionText.title,
+      smokingTypeLegend: smokingTypeQuestionText.legend,
       actions: {
         next: `/prototype_${version}/smoking-type`,
         back: `/prototype_${version}/periods-stopped-smoking`,
@@ -1614,6 +1771,11 @@ exports.smokingType_post = (req, res) => {
       ? answers.smokingType
       : [answers.smokingType].filter(Boolean)
     deleteUnselectedSmokingTypeAnswers(answers)
+    if (answers.smoker === 'yes_previous') {
+      getSelectedSmokingTypes(answers).forEach((type) => {
+        delete answers[type]?.smokingStatus
+      })
+    }
     const steps = getSmokingTypeSteps(answers)
 
     if (selectedTypes.includes('none')) {
@@ -1643,6 +1805,13 @@ exports.smokingStatus_post = (req, res) => {
   const errors = []
 
   if (!step) {
+    const fallbackStep = getFormerSmokerFallbackStep(req, 'smoking-status', steps)
+
+    if (fallbackStep) {
+      res.redirect(getSmokingTypeStepUrl(fallbackStep))
+      return
+    }
+
     res.redirect(`/prototype_${version}/smoking-type`)
     return
   }

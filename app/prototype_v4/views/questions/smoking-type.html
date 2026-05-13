@@ -1,6 +1,6 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = "The type of tobacco you smoke or used to smoke" %}
+{% set title = smokingTypeTitle or "The type of tobacco you smoke or used to smoke" %}
 
 {% set bodyTextMarkdown %}
 Smoking affects your health in different ways depending on what you smoke.
@@ -33,7 +33,7 @@ You do not need to tell us about less frequent forms of smoking. For example, a 
           name: "answers[smokingType]",
           fieldset: {
             legend: {
-              text: "What do you or have you smoked?",
+              text: smokingTypeLegend or "What do you or have you smoked?",
               isPageHeading: false,
               classes: "nhsuk-fieldset__legend--m"
             }
