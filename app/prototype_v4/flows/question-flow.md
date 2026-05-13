@@ -59,8 +59,6 @@ flowchart TD
   cya --> confirmation["Confirmation<br>End"]
 ```
 
-![NHS check if you need a lung scan core flow](nhs-lung-cancer-screening--core-flow.png "NHS check if you need a lung scan core flow")
-
 ## Tobacco subflow
 
 The tobacco questions repeat for each selected tobacco type, in this order:
@@ -112,8 +110,6 @@ flowchart TD
 
   nextTypeOrCya["Next selected tobacco type<br>or Check your answers"]
 ```
-
-![NHS check if you need a lung scan tobacco sub-flow](nhs-lung-cancer-screening--core-flow.png "NHS check if you need a lung scan tobacco sub-flow")
 
 ## Notes
 
