@@ -232,11 +232,15 @@ const deleteUnselectedShishaSettingAnswers = (answer = {}) => {
 }
 
 const getSmokingTypeSteps = (answers = {}) => {
+  const includeSmokingStatus = answers.smoker !== 'yes_previous'
+
   return getSelectedSmokingTypes(answers).flatMap((type) => {
     const steps = []
     const answer = answers[type] || {}
 
-    steps.push({ page: 'smoking-status', type })
+    if (includeSmokingStatus) {
+      steps.push({ page: 'smoking-status', type })
+    }
 
     if (type === 'shisha') {
       steps.push({ page: 'smoking-setting', type })
@@ -629,6 +633,7 @@ const formatListValue = (value, labels) => {
 
 const getCheckYourAnswers = (answers = {}) => {
   const selectedSmokingTypes = getSelectedSmokingTypes(answers)
+  const isFormerSmoker = answers.smoker === 'yes_previous'
 
   const tobaccoRows = selectedSmokingTypes.map((type) => {
     const answer = answers[type] || {}
@@ -671,7 +676,7 @@ const getCheckYourAnswers = (answers = {}) => {
       ]
     })
     const rows = makeSummaryRows([
-      makeSummaryRow({
+      !isFormerSmoker && makeSummaryRow({
         key: smokingType.statusHeading,
         value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
         href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
@@ -797,6 +802,11 @@ const getCheckYourAnswers = (answers = {}) => {
         value: answers.ageStartedSmoking && `Age ${answers.ageStartedSmoking}`,
         href: `/prototype_${version}/age-started-smoking`
       }),
+      isFormerSmoker && makeSummaryRow({
+        key: 'Age you stopped smoking',
+        value: answers.ageStoppedSmoking && `Age ${answers.ageStoppedSmoking}`,
+        href: `/prototype_${version}/age-stopped-smoking`
+      }),
       makeSummaryRow({
         key: 'Stopped smoking for periods of 1 year or longer',
         value: formatValue(answers.periodsStoppedSmoking, valueLabels.periodsStoppedSmoking),
@@ -830,6 +840,14 @@ const getSmokingTypeStep = (req, page) => {
   return { step, steps }
 }
 
+const getFormerSmokerFallbackStep = (req, page, steps) => {
+  if (page !== 'smoking-status' || req.session.data.answers?.smoker !== 'yes_previous') {
+    return false
+  }
+
+  return steps.find((step) => step.type === req.query?.type) || steps[0]
+}
+
 const getSmokingTypeActions = (step, steps) => {
   const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change && item.setting === step.setting)
   const previousStep = steps[index - 1]
@@ -847,6 +865,13 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
   const { step, steps } = getSmokingTypeStep(req, page)
 
   if (!step) {
+    const fallbackStep = getFormerSmokerFallbackStep(req, page, steps)
+
+    if (fallbackStep) {
+      res.redirect(getSmokingTypeStepUrl(fallbackStep))
+      return
+    }
+
     res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
@@ -1550,6 +1575,7 @@ exports.ageStartedSmoking_post = (req, res) => {
     if (answers.smoker === 'yes_previous') {
       res.redirect(`/prototype_${version}/age-stopped-smoking`)
     } else {
+      delete answers.ageStoppedSmoking
       res.redirect(`/prototype_${version}/periods-stopped-smoking`)
     }
   }
@@ -1557,6 +1583,11 @@ exports.ageStartedSmoking_post = (req, res) => {
 
 exports.ageStoppedSmoking_get = (req, res) => {
   const { answers } = req.session.data
+
+  if (answers.smoker !== 'yes_previous') {
+    res.redirect(`/prototype_${version}/periods-stopped-smoking`)
+    return
+  }
 
   res.render(view('questions/age-stopped-smoking'), {
     actions: {
@@ -1570,6 +1601,12 @@ exports.ageStoppedSmoking_get = (req, res) => {
 exports.ageStoppedSmoking_post = (req, res) => {
   const { answers } = req.session.data
   const errors = []
+
+  if (answers.smoker !== 'yes_previous') {
+    delete answers.ageStoppedSmoking
+    res.redirect(`/prototype_${version}/periods-stopped-smoking`)
+    return
+  }
 
   // TODO:
   // If not answered, throw error
@@ -1592,7 +1629,7 @@ exports.ageStoppedSmoking_post = (req, res) => {
 
 exports.periodsStoppedSmoking_get = (req, res) => {
   const { answers } = req.session.data
-  const back = answers?.ageStoppedSmoking ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
+  const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
 
   res.render(view('questions/periods-stopped-smoking'), {
     actions: {
@@ -1605,7 +1642,7 @@ exports.periodsStoppedSmoking_get = (req, res) => {
 
 exports.periodsStoppedSmoking_post = (req, res) => {
   const { answers } = req.session.data
-  const back = answers?.ageStoppedSmoking ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
+  const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
   const errors = []
 
   if (errors.length) {
@@ -1613,7 +1650,7 @@ exports.periodsStoppedSmoking_post = (req, res) => {
       errors,
       actions: {
         next: `/prototype_${version}/periods-stopped-smoking`,
-        back: `/prototype_${version}/age-started-smoking`,
+        back,
         cancel: `/prototype_${version}/`
       }
     })
@@ -1657,6 +1694,11 @@ exports.smokingType_post = (req, res) => {
       ? answers.smokingType
       : [answers.smokingType].filter(Boolean)
     deleteUnselectedSmokingTypeAnswers(answers)
+    if (answers.smoker === 'yes_previous') {
+      getSelectedSmokingTypes(answers).forEach((type) => {
+        delete answers[type]?.smokingStatus
+      })
+    }
     const steps = getSmokingTypeSteps(answers)
 
     if (selectedTypes.includes('none')) {
@@ -1686,6 +1728,13 @@ exports.smokingStatus_post = (req, res) => {
   const errors = []
 
   if (!step) {
+    const fallbackStep = getFormerSmokerFallbackStep(req, 'smoking-status', steps)
+
+    if (fallbackStep) {
+      res.redirect(getSmokingTypeStepUrl(fallbackStep))
+      return
+    }
+
     res.redirect(`/prototype_${version}/smoking-type`)
     return
   }
