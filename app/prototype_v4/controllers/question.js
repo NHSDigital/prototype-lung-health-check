@@ -1547,15 +1547,57 @@ exports.ageStartedSmoking_post = (req, res) => {
       }
     })
   } else {
+    if (answers.smoker === 'yes_previous') {
+      res.redirect(`/prototype_${version}/age-stopped-smoking`)
+    } else {
+      res.redirect(`/prototype_${version}/periods-stopped-smoking`)
+    }
+  }
+}
+
+exports.ageStoppedSmoking_get = (req, res) => {
+  const { answers } = req.session.data
+
+  res.render(view('questions/age-stopped-smoking'), {
+    actions: {
+      next: `/prototype_${version}/age-stopped-smoking`,
+      back: `/prototype_${version}/age-started-smoking`,
+      cancel: `/prototype_${version}/`
+    }
+  })
+}
+
+exports.ageStoppedSmoking_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = []
+
+  // TODO:
+  // If not answered, throw error
+  // If the age stopped smoking is older than person's age
+  // based on date of birth, throw error
+
+  if (errors.length) {
+    res.render(view('questions/age-stopped-smoking'), {
+      errors,
+      actions: {
+        next: `/prototype_${version}/age-stopped-smoking`,
+        back: `/prototype_${version}/age-started-smoking`,
+        cancel: `/prototype_${version}/`
+      }
+    })
+  } else {
     res.redirect(`/prototype_${version}/periods-stopped-smoking`)
   }
 }
 
 exports.periodsStoppedSmoking_get = (req, res) => {
+  const { answers } = req.session.data
+  const back = answers?.ageStoppedSmoking ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
+
   res.render(view('questions/periods-stopped-smoking'), {
     actions: {
       next: `/prototype_${version}/periods-stopped-smoking`,
-      back: `/prototype_${version}/age-started-smoking`,
+      back,
       cancel: `/prototype_${version}/`
     }
   })
@@ -1563,6 +1605,7 @@ exports.periodsStoppedSmoking_get = (req, res) => {
 
 exports.periodsStoppedSmoking_post = (req, res) => {
   const { answers } = req.session.data
+  const back = answers?.ageStoppedSmoking ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
   const errors = []
 
   if (errors.length) {
