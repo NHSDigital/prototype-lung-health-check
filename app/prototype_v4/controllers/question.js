@@ -971,7 +971,7 @@ exports.smoker_post = (req, res) => {
       }
     })
   } else {
-    if (answers.smoker === 'no') {
+    if (['no','yes_fewer_than_100'].includes(answers.smoker)) {
       res.redirect(`/prototype_${version}/not-eligible-for-screening`)
     } else {
       res.redirect(`/prototype_${version}/date-of-birth`)
