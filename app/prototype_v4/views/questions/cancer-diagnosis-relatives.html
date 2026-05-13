@@ -1,0 +1,68 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Tell us if your parents, siblings or children have ever been diagnosed with lung cancer" %}
+
+{% set bodyTextMarkdown %}
+If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
+
+This question is about lung cancer rather than any other type of cancer. It does not include your grandparents or grandchildren.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ radios({
+          name: "answers[cancerDiagnosisRelatives]",
+          fieldset: {
+            legend: {
+              text: "Have any of your parents, siblings or children ever been diagnosed with lung cancer?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          value: data.answers.cancerDiagnosisRelatives,
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            },
+            {
+              value: "do_not_know",
+              text: "I do not know"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

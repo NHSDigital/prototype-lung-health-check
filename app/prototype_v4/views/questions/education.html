@@ -1,0 +1,102 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Your education" %}
+
+{% set bodyTextMarkdown %}
+We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
+
+If your qualification is not shown choose the closest level.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ radios({
+          name: "answers[education]",
+          fieldset: {
+            legend: {
+              text: "What is the highest level of education have you completed?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          value: data.answers.education,
+          items: [
+            {
+              value: "before_15",
+              text: "I finished school before the age of 15"
+            },
+            {
+              value: "gcse",
+              text: "GCSEs",
+              hint: {
+                text: "Previously O-levels"
+              }
+            },
+            {
+              value: "a_level",
+              text: "A-levels",
+              hint: {
+                text: "Previously Higher School Certificate (HSC)"
+              }
+            },
+            {
+              value: "further_education",
+              text: "Further education",
+              hint: {
+                text: "For example, apprenticeships or Higher National Certificates (HNC)"
+              }
+            },
+            {
+              value: "undergraduate_degree",
+              text: "Undergraduate degree",
+              hint: {
+                text: "A university degree, also known as a bachelor’s degree"
+              }
+            },
+            {
+              value: "postgraduate_degree",
+              text: "Postgraduate degree",
+              hint: {
+                text: "For example, a Masters or PhD"
+              }
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "prefer_not_to_say",
+              text: "I prefer not to say"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

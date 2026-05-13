@@ -1,0 +1,102 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Have you ever been diagnosed with any of the following respiratory conditions?" %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% set headingHtml %}
+        {% include "prototype_v4/views/includes/page-heading-legend.html" %}
+      {% endset %}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ checkboxes({
+          name: "answers[respiratoryConditions]",
+          fieldset: {
+            legend: {
+              html: headingHtml,
+              isPageHeading: true,
+              classes: "nhsuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          values: data.answers.respiratoryConditions,
+          items: [
+            {
+              value: "bronchitis",
+              text: "Bronchitis",
+              hint: {
+                text: "An inflammation of the airways in the lungs that is usually caused by an infection"
+              },
+              exclusiveGroup: "conditions-list"
+            },
+            {
+              value: "chronic_obstructive_pulmonary_disease",
+              text: "Chronic obstructive pulmonary disease (COPD)",
+              hint: {
+                text: "A group of lung conditions that cause breathing difficulties"
+              },
+              exclusiveGroup: "conditions-list"
+            },
+            {
+              value: "emphysema",
+              text: "Emphysema",
+              hint: {
+                text: "Damage to the air sacs in the lungs"
+              },
+              exclusiveGroup: "conditions-list"
+            },
+            {
+              value: "pneumonia",
+              text: "Pneumonia",
+              hint: {
+                text: "An infection of the lungs, usually diagnosed by a chest x-ray"
+              },
+              exclusiveGroup: "conditions-list"
+            },
+            {
+              value: "tuberculosis",
+              text: "Tuberculosis (TB)",
+              hint: {
+                text: "An infection that usually affects the lungs, but can affect any part of the body"
+              },
+              exclusiveGroup: "conditions-list"
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "no",
+              text: "No, I have not had any of these respiratory conditions",
+              exclusive: true,
+              exclusiveGroup: "conditions-list"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

@@ -6,7 +6,7 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      <h1 class="nhsuk-heading-l">{{ title }}</h1>
+      {% include "prototype_v4/views/includes/page-heading.html" %}
 
       <p class="nhsuk-body">We are testing a new online questionnaire for lung cancer screening. This service will ask you some questions about your medical history and lifestyle.</p>
 
@@ -43,13 +43,13 @@
 
       {{ button({
         text: "Continue",
-        href: "start-journey",
+        href: actions.start,
         classes: "nhsuk-button--login"
       }) }}
 
       <h2 class="nhsuk-heading-m">If you do not want to test the online service</h2>
 
-      <p class="nhsuk-body">You should call us on <a href="tel:02075554444" class="nhsuk-link">0207 555 444</a> to complete the questionnaire by phone.</p>
+      <p class="nhsuk-body">You should call us on <a href="tel:{{ serviceTelephone | replace(' ','') }}" class="nhsuk-link">{{ serviceTelephone }}</a> to complete the questionnaire by phone.</p>
 
     </div>
   </div>
