@@ -757,6 +757,52 @@ const getQuestionItemsWithLabels = (id, labels = {}, hintOverrides = {}) => {
   })
 }
 
+const removeQuestionMark = (value = '') => value.replace(/\?$/, '')
+
+const lowerFirst = (value = '') => {
+  return value ? `${value.charAt(0).toLowerCase()}${value.slice(1)}` : ''
+}
+
+const getSelectWhetherText = (heading = '') => {
+  const text = removeQuestionMark(heading)
+  const hasChangedMatch = heading.match(/^Has (.+) changed over time\?$/)
+  const didChangeMatch = heading.match(/^Did (.+) change over time\?$/)
+
+  if (hasChangedMatch) {
+    return `Select whether ${hasChangedMatch[1]} has changed over time`
+  }
+
+  if (didChangeMatch) {
+    return `Select whether ${didChangeMatch[1]} changed over time`
+  }
+
+  return `Select whether ${lowerFirst(text)
+    .replace(/^do you /, 'you ')
+    .replace(/^did you usually smoke /, 'you usually smoked ')
+    .replace(/^did you /, 'you ')
+    .replace(/^have you /, 'you have ')
+    .replace(/^have any /, 'any ')
+    .replace(/^were any /, 'any ')}`
+}
+
+const getContextualRequiredErrorText = (question, overrides) => {
+  const heading = overrides.heading?.title || question.heading?.title || ''
+  const questionType = overrides.type || question.type
+  const headingText = removeQuestionMark(heading)
+
+  if (heading.startsWith('How often')) {
+    return `Select ${lowerFirst(headingText)
+      .replace(/^how often did you smoke /, 'how often you smoked ')
+      .replace(/^how often do you smoke /, 'how often you smoke ')}`
+  }
+
+  if (heading.startsWith('How much') || heading.startsWith('How many')) {
+    return `${questionType === 'single' ? 'Select' : 'Enter'} ${lowerFirst(headingText)}`
+  }
+
+  return getSelectWhetherText(heading)
+}
+
 const getSmokingContentQuestionOverrides = ({
   page,
   step,
@@ -1019,14 +1065,16 @@ const validateSmokingTypeQuestion = (req, page, step) => {
     isPastSmokingType: isPast
   })
   const questionType = overrides.type || getQuestion(page).type
+  const question = getQuestion(page)
   const errorHref = ['single', 'multiple'].includes(questionType)
     ? overrides.input.name
     : overrides.input.id
   const errors = {
     ...overrides.errors,
     required: {
-      ...getQuestion(page).errors?.required,
+      ...question.errors?.required,
       ...overrides.errors?.required,
+      text: getContextualRequiredErrorText(question, overrides),
       href: `#${errorHref}`
     }
   }
