@@ -1,9 +1,18 @@
 const { nhsukDate } = require('../../filters/dates')
+const { getQuestion, getQuestionValueLabels } = require('../lib/questions')
 
 const version = 'v4_1'
 
 const view = (template) => {
   return `prototype_${version}/views/${template}`
+}
+
+const renderQuestion = (res, id, actions, errors = []) => {
+  res.render(view('questions/_question'), {
+    question: getQuestion(id),
+    errors,
+    actions
+  })
 }
 
 const getHeightBack = (req) => {
@@ -312,37 +321,12 @@ const formatWeight = (weight = {}) => {
 }
 
 const valueLabels = {
-  asbestosAtHome: {
-    yes: 'Yes',
-    no: 'No'
-  },
-  asbestosAtWork: {
-    yes: 'Yes',
-    no: 'No'
-  },
-  cancerDiagnosis: {
-    yes: 'Yes',
-    no: 'No'
-  },
-  cancerDiagnosisRelatives: {
-    yes: 'Yes',
-    no: 'No',
-    do_not_know: 'I do not know'
-  },
-  cancerDiagnosisRelativesAge: {
-    yes: 'Yes, they were younger than 60',
-    no: 'No, they were 60 or older',
-    do_not_know: 'I do not know'
-  },
-  education: {
-    before_15: 'I finished school before the age of 15',
-    gcse: 'GCSEs',
-    a_level: 'A-levels',
-    further_education: 'Further education',
-    undergraduate_degree: 'Undergraduate degree',
-    postgraduate_degree: 'Postgraduate degree',
-    prefer_not_to_say: 'I prefer not to say'
-  },
+  asbestosAtHome: getQuestionValueLabels('asbestos-at-home'),
+  asbestosAtWork: getQuestionValueLabels('asbestos-at-work'),
+  cancerDiagnosis: getQuestionValueLabels('cancer-diagnosis'),
+  cancerDiagnosisRelatives: getQuestionValueLabels('cancer-diagnosis-relatives'),
+  cancerDiagnosisRelativesAge: getQuestionValueLabels('cancer-diagnosis-relatives-age'),
+  education: getQuestionValueLabels('education'),
   ethnicity: {
     asian_or_asian_british: 'Asian or Asian British',
     'black_african_caribbean_or_black british': 'Black, African, Caribbean or Black British',
@@ -351,38 +335,15 @@ const valueLabels = {
     other_ethnic_group: 'Other ethnic group',
     prefer_not_to_say: 'I prefer not to say'
   },
-  faceToFaceAppointment: {
-    yes: 'Yes',
-    no: 'No'
-  },
-  gender: {
-    female: 'Female',
-    male: 'Male',
-    non_binary: 'Non-binary',
-    prefer_not_to_say: 'I prefer not to say'
-  },
+  faceToFaceAppointment: getQuestionValueLabels('face-to-face-appointment'),
+  gender: getQuestionValueLabels('gender'),
   periodsStoppedSmoking: {
     yes: 'Yes',
     no: 'No'
   },
-  respiratoryConditions: {
-    pneumonia: 'Pneumonia',
-    emphysema: 'Emphysema',
-    bronchitis: 'Bronchitis',
-    tuberculosis: 'Tuberculosis (TB)',
-    chronic_obstructive_pulmonary_disease: 'Chronic obstructive pulmonary disease (COPD)',
-    no: 'No, I have not had any of these respiratory conditions'
-  },
-  sex: {
-    female: 'Female',
-    male: 'Male'
-  },
-  smoker: {
-    yes_current: 'Yes, I currently smoke',
-    yes_previous: 'Yes, I used to smoke',
-    yes_fewer_than_100: 'Yes, but I have smoked fewer than 100 cigarettes in my lifetime',
-    no: 'No, I have never smoked'
-  },
+  respiratoryConditions: getQuestionValueLabels('respiratory-conditions'),
+  sex: getQuestionValueLabels('sex'),
+  smoker: getQuestionValueLabels('smoker'),
   smokingChange: {
     greater: 'Yes, I used to smoke more',
     fewer: 'Yes, I used to smoke fewer',
@@ -971,7 +932,6 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.acceptTerms_get = (req, res) => {
-
   res.render(view('questions/accept-terms'), {
     actions: {
       next: `/prototype_${version}/accept-terms`,
@@ -997,12 +957,9 @@ exports.acceptTerms_post = (req, res) => {
 }
 
 exports.phoneQuestionnaire_get = (req, res) => {
-
-  res.render(view('questions/phone-questionnaire'), {
-    actions: {
-      next: `/prototype_${version}/phone-questionnaire`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'phone-questionnaire', {
+    next: `/prototype_${version}/phone-questionnaire`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1011,13 +968,10 @@ exports.phoneQuestionnaire_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/phone-questionnaire'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/phone-questionnaire`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'phone-questionnaire', {
+      next: `/prototype_${version}/phone-questionnaire`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     if (answers.phoneQuestionnaire === 'yes') {
       res.redirect(`/prototype_${version}/phone-questionnaire-exit`)
@@ -1028,7 +982,6 @@ exports.phoneQuestionnaire_post = (req, res) => {
 }
 
 exports.phoneQuestionnaireExit_get = (req, res) => {
-
   res.render(view('questions/phone-questionnaire-exit'), {
     actions: {
       back: `/prototype_${version}/phone-questionnaire`
@@ -1041,13 +994,10 @@ exports.phoneQuestionnaireExit_get = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.smoker_get = (req, res) => {
-
-  res.render(view('questions/smoker'), {
-    actions: {
-      next: `/prototype_${version}/smoker`,
-      back: `/prototype_${version}/phone-questionnaire`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'smoker', {
+    next: `/prototype_${version}/smoker`,
+    back: `/prototype_${version}/phone-questionnaire`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1056,16 +1006,13 @@ exports.smoker_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/smoker'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/smoker`,
-        back: `/prototype_${version}/phone-questionnaire`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'smoker', {
+      next: `/prototype_${version}/smoker`,
+      back: `/prototype_${version}/phone-questionnaire`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
-    if (['no','yes_fewer_than_100'].includes(answers.smoker)) {
+    if (['no', 'yes_fewer_than_100'].includes(answers.smoker)) {
       res.redirect(`/prototype_${version}/not-eligible-for-screening`)
     } else {
       res.redirect(`/prototype_${version}/date-of-birth`)
@@ -1074,7 +1021,6 @@ exports.smoker_post = (req, res) => {
 }
 
 exports.dateOfBirth_get = (req, res) => {
-
   res.render(view('questions/date-of-birth'), {
     actions: {
       next: `/prototype_${version}/date-of-birth`,
@@ -1115,13 +1061,10 @@ exports.dateOfBirth_post = (req, res) => {
 }
 
 exports.faceToFaceAppointment_get = (req, res) => {
-
-  res.render(view('questions/face-to-face-appointment'), {
-    actions: {
-      next: `/prototype_${version}/face-to-face-appointment`,
-      back: `/prototype_${version}/date-of-birth`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'face-to-face-appointment', {
+    next: `/prototype_${version}/face-to-face-appointment`,
+    back: `/prototype_${version}/date-of-birth`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1130,14 +1073,11 @@ exports.faceToFaceAppointment_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/face-to-face-appointment'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/face-to-face-appointment`,
-        back: `/prototype_${version}/date-of-birth`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'face-to-face-appointment', {
+      next: `/prototype_${version}/face-to-face-appointment`,
+      back: `/prototype_${version}/date-of-birth`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     if (answers.faceToFaceAppointment === 'yes') {
       res.redirect(`/prototype_${version}/book-appointment`)
@@ -1311,12 +1251,10 @@ exports.weightImperial_post = (req, res) => {
 exports.gender_get = (req, res) => {
   const back = getWeightBack(req)
 
-  res.render(view('questions/gender'), {
-    actions: {
-      next: `/prototype_${version}/gender`,
-      back,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'gender', {
+    next: `/prototype_${version}/gender`,
+    back,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1325,26 +1263,21 @@ exports.gender_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/gender'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/gender`,
-        back,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'gender', {
+      next: `/prototype_${version}/gender`,
+      back,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/sex`)
   }
 }
 
 exports.sex_get = (req, res) => {
-  res.render(view('questions/sex'), {
-    actions: {
-      next: `/prototype_${version}/sex`,
-      back: `/prototype_${version}/gender`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'sex', {
+    next: `/prototype_${version}/sex`,
+    back: `/prototype_${version}/gender`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1352,21 +1285,17 @@ exports.sex_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/sex'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/sex`,
-        back: `/prototype_${version}/gender`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'sex', {
+      next: `/prototype_${version}/sex`,
+      back: `/prototype_${version}/gender`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/ethnicity`)
   }
 }
 
 exports.ethnicity_get = (req, res) => {
-
   res.render(view('questions/ethnicity'), {
     actions: {
       next: `/prototype_${version}/ethnicity`,
@@ -1394,13 +1323,10 @@ exports.ethnicity_post = (req, res) => {
 }
 
 exports.education_get = (req, res) => {
-
-  res.render(view('questions/education'), {
-    actions: {
-      next: `/prototype_${version}/education`,
-      back: `/prototype_${version}/ethnicity`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'education', {
+    next: `/prototype_${version}/education`,
+    back: `/prototype_${version}/ethnicity`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1408,14 +1334,11 @@ exports.education_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/education'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/education`,
-        back: `/prototype_${version}/ethnicity`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'education', {
+      next: `/prototype_${version}/education`,
+      back: `/prototype_${version}/ethnicity`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/respiratory-conditions`)
   }
@@ -1426,13 +1349,10 @@ exports.education_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.respiratoryConditions_get = (req, res) => {
-
-  res.render(view('questions/respiratory-conditions'), {
-    actions: {
-      next: `/prototype_${version}/respiratory-conditions`,
-      back: `/prototype_${version}/education`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'respiratory-conditions', {
+    next: `/prototype_${version}/respiratory-conditions`,
+    back: `/prototype_${version}/education`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1440,27 +1360,21 @@ exports.respiratoryConditions_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/respiratory-conditions'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/respiratory-conditions`,
-        back: `/prototype_${version}/education`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'respiratory-conditions', {
+      next: `/prototype_${version}/respiratory-conditions`,
+      back: `/prototype_${version}/education`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/asbestos-at-work`)
   }
 }
 
 exports.asbestosAtWork_get = (req, res) => {
-
-  res.render(view('questions/asbestos-at-work'), {
-    actions: {
-      next: `/prototype_${version}/asbestos-at-work`,
-      back: `/prototype_${version}/respiratory-conditions`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'asbestos-at-work', {
+    next: `/prototype_${version}/asbestos-at-work`,
+    back: `/prototype_${version}/respiratory-conditions`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1468,27 +1382,21 @@ exports.asbestosAtWork_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/asbestos-at-work'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/asbestos-at-work`,
-        back: `/prototype_${version}/respiratory-conditions`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'asbestos-at-work', {
+      next: `/prototype_${version}/asbestos-at-work`,
+      back: `/prototype_${version}/respiratory-conditions`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/asbestos-at-home`)
   }
 }
 
 exports.asbestosAtHome_get = (req, res) => {
-
-  res.render(view('questions/asbestos-at-home'), {
-    actions: {
-      next: `/prototype_${version}/asbestos-at-home`,
-      back: `/prototype_${version}/asbestos-at-work`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'asbestos-at-home', {
+    next: `/prototype_${version}/asbestos-at-home`,
+    back: `/prototype_${version}/asbestos-at-work`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1496,27 +1404,21 @@ exports.asbestosAtHome_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/asbestos-at-home'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/asbestos-at-home`,
-        back: `/prototype_${version}/asbestos-at-work`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'asbestos-at-home', {
+      next: `/prototype_${version}/asbestos-at-home`,
+      back: `/prototype_${version}/asbestos-at-work`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/cancer-diagnosis`)
   }
 }
 
 exports.cancerDiagnosis_get = (req, res) => {
-
-  res.render(view('questions/cancer-diagnosis'), {
-    actions: {
-      next: `/prototype_${version}/cancer-diagnosis`,
-      back: `/prototype_${version}/asbestos-at-work`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'cancer-diagnosis', {
+    next: `/prototype_${version}/cancer-diagnosis`,
+    back: `/prototype_${version}/asbestos-at-work`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1524,14 +1426,11 @@ exports.cancerDiagnosis_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/cancer-diagnosis'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/cancer-diagnosis`,
-        back: `/prototype_${version}/asbestos-at-work`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'cancer-diagnosis', {
+      next: `/prototype_${version}/cancer-diagnosis`,
+      back: `/prototype_${version}/asbestos-at-work`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/cancer-diagnosis-relatives`)
   }
@@ -1542,13 +1441,10 @@ exports.cancerDiagnosis_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.cancerDiagnosisRelatives_get = (req, res) => {
-
-  res.render(view('questions/cancer-diagnosis-relatives'), {
-    actions: {
-      next: `/prototype_${version}/cancer-diagnosis-relatives`,
-      back: `/prototype_${version}/cancer-diagnosis`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'cancer-diagnosis-relatives', {
+    next: `/prototype_${version}/cancer-diagnosis-relatives`,
+    back: `/prototype_${version}/cancer-diagnosis`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1557,14 +1453,11 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/cancer-diagnosis-relatives'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/cancer-diagnosis-relatives`,
-        back: `/prototype_${version}/cancer-diagnosis`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'cancer-diagnosis-relatives', {
+      next: `/prototype_${version}/cancer-diagnosis-relatives`,
+      back: `/prototype_${version}/cancer-diagnosis`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     if (answers.cancerDiagnosisRelatives === 'yes') {
       res.redirect(`/prototype_${version}/cancer-diagnosis-relatives-age`)
@@ -1576,13 +1469,10 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
 }
 
 exports.cancerDiagnosisRelativesAge_get = (req, res) => {
-
-  res.render(view('questions/cancer-diagnosis-relatives-age'), {
-    actions: {
-      next: `/prototype_${version}/cancer-diagnosis-relatives-age`,
-      back: `/prototype_${version}/cancer-diagnosis-relatives`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'cancer-diagnosis-relatives-age', {
+    next: `/prototype_${version}/cancer-diagnosis-relatives-age`,
+    back: `/prototype_${version}/cancer-diagnosis-relatives`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1590,14 +1480,11 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/cancer-diagnosis-relatives-age'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/cancer-diagnosis-relatives-age`,
-        back: `/prototype_${version}/cancer-diagnosis-relatives`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'cancer-diagnosis-relatives-age', {
+      next: `/prototype_${version}/cancer-diagnosis-relatives-age`,
+      back: `/prototype_${version}/cancer-diagnosis-relatives`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/age-started-smoking`)
   }
@@ -1611,12 +1498,10 @@ exports.ageStartedSmoking_get = (req, res) => {
   const { answers } = req.session.data
   const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
 
-  res.render(view('questions/age-started-smoking'), {
-    actions: {
-      next: `/prototype_${version}/age-started-smoking`,
-      back,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'age-started-smoking', {
+    next: `/prototype_${version}/age-started-smoking`,
+    back,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1632,14 +1517,11 @@ exports.ageStartedSmoking_post = (req, res) => {
   // based on date of birth, throw error
 
   if (errors.length) {
-    res.render(view('questions/age-started-smoking'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/age-started-smoking`,
-        back,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'age-started-smoking', {
+      next: `/prototype_${version}/age-started-smoking`,
+      back,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     if (answers.smoker === 'yes_previous') {
       res.redirect(`/prototype_${version}/age-stopped-smoking`)
@@ -1658,12 +1540,10 @@ exports.ageStoppedSmoking_get = (req, res) => {
     return
   }
 
-  res.render(view('questions/age-stopped-smoking'), {
-    actions: {
-      next: `/prototype_${version}/age-stopped-smoking`,
-      back: `/prototype_${version}/age-started-smoking`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'age-stopped-smoking', {
+    next: `/prototype_${version}/age-stopped-smoking`,
+    back: `/prototype_${version}/age-started-smoking`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1683,14 +1563,11 @@ exports.ageStoppedSmoking_post = (req, res) => {
   // based on date of birth, throw error
 
   if (errors.length) {
-    res.render(view('questions/age-stopped-smoking'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/age-stopped-smoking`,
-        back: `/prototype_${version}/age-started-smoking`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'age-stopped-smoking', {
+      next: `/prototype_${version}/age-stopped-smoking`,
+      back: `/prototype_${version}/age-started-smoking`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/periods-stopped-smoking`)
   }
