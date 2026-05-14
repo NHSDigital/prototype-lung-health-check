@@ -1,0 +1,122 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = smokingTypeTitle or "The type of tobacco you smoke or used to smoke" %}
+
+{% set bodyTextMarkdown %}
+Smoking affects your health in different ways depending on what you smoke.
+
+We need to know what you smoke, or used to smoke, frequently. For example, if you have smoked a pipe on a weekly basis for a year or longer.
+
+You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ checkboxes({
+          name: "answers[smokingType]",
+          fieldset: {
+            legend: {
+              text: smokingTypeLegend or "What do you or have you smoked?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "Select all that apply"
+          },
+          values: data.answers.smokingType,
+          items: [
+            {
+              value: "cigarettes",
+              text: "Cigarettes",
+              exclusiveGroup: "types-list"
+            },
+            {
+              value: "rolling_tobacco",
+              text: "Rolling tobacco, or roll-ups",
+              exclusiveGroup: "types-list"
+            },
+            {
+              value: "pipes",
+              text: "Pipes",
+              exclusiveGroup: "types-list"
+            },
+            {
+              value: "small_cigars",
+              text: "Small cigars",
+              hint: {
+                text: "Petit Corona or Short Panetela, usually 4 to 5 inches long"
+              },
+              exclusiveGroup: "types-list"
+            },
+            {
+              value: "medium_cigars",
+              text: "Medium cigars",
+              hint: {
+                text: "Robusto or Corona, usually 5 to 6 inches long"
+              },
+              exclusiveGroup: "types-list"
+            },
+            {
+              value: "large_cigars",
+              text: "Large cigars",
+              hint: {
+                text: "Churchill or Double Corona, usually 7 to 8 inches long"
+              },
+              exclusiveGroup: "types-list"
+            },
+            {
+              value: "cigarillos",
+              text: "Cigarillos",
+              hint: {
+                text: "Cafe Creme or Signature cigars, roughly the size of a cigarette"
+              },
+              exclusiveGroup: "types-list"
+            },
+            {
+              value: "shisha",
+              text: "Shisha",
+              exclusiveGroup: "types-list"
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: "none",
+              text: "I have not smoked any of these types of tobacco",
+              exclusive: true,
+              exclusiveGroup: "types-list"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

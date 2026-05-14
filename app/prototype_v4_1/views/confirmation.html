@@ -1,0 +1,89 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Thank you for testing the online service" %}
+
+{% set whatHappensNextMarkdown %}
+## What happens next
+
+You will need to complete your NHS lung cancer screening by phone.
+
+Call us on {{ serviceTelephone | telephoneLink }}
+
+An advisor will ask you similar questions about your medical history and lifestyle. They will not have access to the answers you have submitted online. This is because we are testing the online service.
+
+**Phone lines are open:**<br aria-hidden="true">
+Monday to Friday 8am to 8pm<br aria-hidden="true">
+Saturdays 8am to 1pm
+
+If we do not hear from you in 14 days we will call you to complete the questionnaire by phone. If you are unable to answer the phone we will call you back.
+
+As a thank you for testing the online service we will offer you a £10 voucher after you have completed your phone appointment.
+{% endset %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% if query.risk and query.risk == "high" %}
+
+{% set highRiskContentMarkdown %}
+{{ insetText({
+  text: "Based on the information you have provided we recommend that you call to book an appointment to see a healthcare professional"
+}) }}
+
+## About the appointment
+
+The appointment will be in person and offered within 2 weeks of your call. A healthcare professional will review your responses and answer any questions you may have.
+
+Your appointment will take place at your local hospital or a mobile unit in a convenient location such as a supermarket car park.
+
+## You may be offered a CT scan
+
+If the healthcare professional recommends a CT scan, a machine will take detailed pictures of the inside of your chest. It is non-invasive and pain free. The scan is used to detect any abnormalities in your lungs.
+
+For every 100 people who are scanned 2 people are diagnosed with lung cancer. The aim is to find lung cancer early. Early diagnosis can make lung cancer more treatable and make treatment more successful.
+
+## Book a CT scan
+
+Call {{ serviceTelephone | telephoneLink }} to book an appointment.
+{% endset %}
+
+        {{ card({
+          heading: "You may benefit from further tests",
+          headingSize: "l",
+          descriptionHtml: highRiskContentMarkdown | markdownToHtml | safe
+        }) }}
+
+      {% else %}
+
+        {% set title = "Thank you for testing the online service" %}
+
+        {{ panel({
+          titleText: title
+        }) }}
+
+        {{ whatHappensNextMarkdown | markdownToHtml | safe }}
+
+      {% endif %}
+
+      {% include "prototype_v4/views/includes/speak-to-a-gp.html" %}
+
+      {% include "prototype_v4/views/includes/find-your-local-stop-smoking-service.html" %}
+
+      {% include "prototype_v4/views/includes/benefits-of-stopping-smoking.html" %}
+
+      {% include "prototype_v4/views/includes/help-stop-smoking.html" %}
+
+      {% if query.risk and query.risk == "high" %}
+        {% include "prototype_v4/views/includes/vaping-to-quit-smoking.html" %}
+      {% endif %}
+
+      {% include "prototype_v4/views/includes/smoking-anxiety-and-mood.html" %}
+
+      {% include "prototype_v4/views/includes/help-and-support.html" %}
+
+      {% include "prototype_v4/views/includes/give-feedback.html" %}
+
+    </div>
+  </div>
+{% endblock %}

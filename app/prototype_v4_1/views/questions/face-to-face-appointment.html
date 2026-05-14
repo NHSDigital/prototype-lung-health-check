@@ -1,0 +1,69 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Check if you need a face-to-face appointment" %}
+
+{% set bodyTextMarkdown %}
+This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
+
+You need to do your questionnaire in person, not online, if you:
+
+- have a condition that affects your height
+- have had a limb amputation, or were born with a limb difference
+- have been diagnosed with an eating disorder, or think you may have one
+- are pregnant
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ radios({
+          name: "answers[faceToFaceAppointment]",
+          fieldset: {
+            legend: {
+              text: "Do you need to leave the online service and ask for a face-to-face appointment?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          value: data.answers.faceToFaceAppointment,
+          items: [
+            {
+              value: "yes",
+              text: "Yes, one or more of these things apply to me, and I need a face-to-face appointment"
+            },
+            {
+              value: "no",
+              text: "No, I can continue online"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

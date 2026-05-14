@@ -1,0 +1,29 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = contentData.title %}
+
+{% block content %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      <h1 class="nhsuk-heading-l">{{ title }}</h1>
+
+      {% if contentData.contents.items and contentData.contents.items.length %}
+        <h2 class="nhsuk-heading-s">Contents</h2>
+
+        <ul class="nhsuk-list app-list--dash course-contents nhsuk-u-margin-bottom-8">
+          {% for item in contentData.contents.items %}
+            <li><a class="nhsuk-link" href="{{ item.href }}">{{ item.text }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="app-markdown">
+        {{ content | markdownToHtml | safe }}
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

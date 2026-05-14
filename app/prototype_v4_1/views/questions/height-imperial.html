@@ -1,0 +1,86 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Your height" %}
+
+{% set bodyTextMarkdown %}
+An accurate measurement is important.
+
+You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {% call fieldset({
+          legend: {
+            text: "What is your height in feet and inches?",
+            classes: "nhsuk-fieldset__legend--m",
+            isPageHeading: false
+          }
+        }) %}
+
+          <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-column-one-quarter">
+              {{ input({
+                id: "height-imperial-feet",
+                name: "answers[height][imperial][feet]",
+                label: {
+                  text: "Feet"
+                },
+                suffix: "ft",
+                inputmode: "numeric",
+                value: data.answers.height.imperial.feet,
+                classes: "nhsuk-input--width-4"
+              }) }}
+            </div>
+
+            <div class="nhsuk-grid-column-one-quarter">
+              {{ input({
+                id: "height-imperial-inches",
+                name: "answers[height][imperial][inches]",
+                label: {
+                  text: "Inches"
+                },
+                suffix: "in",
+                inputmode: "numeric",
+                value: data.answers.height.imperial.inches,
+                classes: "nhsuk-input--width-4"
+              }) }}
+            </div>
+          </div>
+
+        {% endcall %}
+
+        <p class="nhsuk-body">
+          <a href="{{ actions.switchUnits }}" class="nhsuk-link">Switch to centimetres</a>
+        </p>
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

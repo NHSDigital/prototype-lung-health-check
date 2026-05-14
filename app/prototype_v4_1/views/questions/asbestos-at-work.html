@@ -1,0 +1,95 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Tell us if you might have been exposed to asbestos at work" %}
+
+{% set bodyTextMarkdown %}
+You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+
+You could be exposed to asbestos today if your job involves working in certain roles in old buildings.
+
+Examples include:
+
+- heating and ventilation engineers
+- demolition workers
+- plumbers
+- construction workers
+- electricians
+
+## If you did not work with asbestos but think you might have been exposed
+
+You might know there was asbestos in buildings you have spent time in, or products you have used. But if the asbestos was not damaged, the risk to your health is very low.
+
+If you lived with someone who worked with asbestos you may have been exposed to asbestos yourself. For example, if you washed the clothes they worked in. The question on the next page will ask if you lived with someone who might have been exposed to asbestos at work.
+{% endset %}
+
+{% set detailsTextMarkdown %}
+Asbestos was used in a number of building materials and products. For example:
+
+- boilers and pipes
+- car brakes
+- cement for roofing sheets
+- floor tiles
+- insulating board to protect buildings and ships against fire
+
+If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      {{ details({
+        summaryText: "What is asbestos?",
+        html: detailsTextMarkdown | markdownToHtml | safe
+      }) }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ radios({
+          name: "answers[asbestosAtWork]",
+          fieldset: {
+            legend: {
+              text: "Have you ever worked in a job where you might have been exposed to asbestos?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          value: data.answers.asbestosAtWork,
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = questionHeading or smokingType.quantityHeading %}
+{% set caption = smokingType.caption %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% set headingText %}
+        {% include "prototype_v4/views/includes/page-heading-legend.html" %}
+      {% endset %}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+        {% if setting %}
+          {% set answerName = "answers[" + type + "][" + setting + "][smokingQuantity]" %}
+          {% set answerValue = settingAnswer.smokingQuantity %}
+        {% else %}
+          {% set answerName = "answers[" + type + "][smokingQuantity]" %}
+          {% set answerValue = data.answers[type].smokingQuantity %}
+        {% endif %}
+
+        {% if type == "rolling_tobacco" %}
+
+          {{ radios({
+            name: answerName,
+            fieldset: {
+              legend: {
+                text: headingText,
+                isPageHeading: true,
+                classes: "nhsuk-fieldset__legend--l"
+              }
+            },
+            hint: {
+              text: "A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g"
+            },
+            value: answerValue,
+            items: [
+              {
+                value: "less_than_10",
+                text: "Less than 10g"
+              },
+              {
+                value: "10_to_30",
+                text: "10g to 30g"
+              },
+              {
+                value: "31_to_50",
+                text: "31g to 50g"
+              },
+              {
+                value: "51_to_75",
+                text: "51g to 75g"
+              },
+              {
+                value: "76_to_100",
+                text: "76g to 100g"
+              },
+              {
+                value: "more_than_100",
+                text: "More than 100g"
+              }
+            ]
+          }) }}
+
+        {% else %}
+
+          {{ input({
+            id: "smoking-quantity",
+            name: answerName,
+            label: {
+              text: headingText,
+              isPageHeading: true,
+              classes: "nhsuk-label--l"
+            },
+            hint: {
+              text: "Give an estimate if you are not sure"
+            },
+            suffix: smokingType.suffix,
+            inputmode: "numeric",
+            value: answerValue,
+            classes: "nhsuk-input--width-4"
+          }) }}
+
+        {% endif %}
+
+        {# {{ radios({
+          name: "answers[" + type + "][smokingQuantity]",
+          fieldset: {
+            legend: {
+              text: headingText,
+              isPageHeading: true,
+              classes: "nhsuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "Give an estimate if you are not sure"
+          },
+          value: data.answers[type].smokingQuantity,
+          items: [
+            {
+              value: "0_to_10",
+              text: "Up to 10"
+            },
+            {
+              value: "11_to_20",
+              text: "11 to 20"
+            },
+            {
+              value: "21_to_30",
+              text: "21 to 30"
+            },
+            {
+              value: "more_than_30",
+              text: "More than 30"
+            }
+          ]
+        }) }} #}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

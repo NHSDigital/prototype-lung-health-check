@@ -1,0 +1,62 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "Your sex at birth" %}
+
+{% set bodyTextMarkdown %}
+Your sex may impact your chances of developing lung cancer.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ radios({
+          name: "answers[sex]",
+          fieldset: {
+            legend: {
+              text: "What was your sex at birth?",
+              isPageHeading: false,
+              classes: "nhsuk-fieldset__legend--m"
+            }
+          },
+          value: data.answers.sex,
+          items: [
+            {
+              value: "female",
+              text: "Female"
+            },
+            {
+              value: "male",
+              text: "Male"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}
