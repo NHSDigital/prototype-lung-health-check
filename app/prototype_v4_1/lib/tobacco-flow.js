@@ -1,6 +1,7 @@
 const {
   getQuestion,
   getQuestionValueLabels,
+  refreshData,
   smokingChangeTypes,
   shishaSmokingSettings,
   tobaccoTypes: smokingTypes
@@ -10,13 +11,15 @@ const { validateQuestion } = require('./validate-question')
 
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
 
-const valueLabels = {
-  smokingChange: getQuestionValueLabels('smoking-change'),
-  smokingFrequency: getQuestionValueLabels('smoking-frequency'),
-  smokingQuantityRollingTobacco: getQuestionValueLabels('smoking-quantity'),
-  smokingSetting: getQuestionValueLabels('smoking-setting'),
-  smokingStatus: getQuestionValueLabels('smoking-status'),
-  smokingType: getQuestionValueLabels('smoking-type')
+const getValueLabels = () => {
+  return {
+    smokingChange: getQuestionValueLabels('smoking-change'),
+    smokingFrequency: getQuestionValueLabels('smoking-frequency'),
+    smokingQuantityRollingTobacco: getQuestionValueLabels('smoking-quantity'),
+    smokingSetting: getQuestionValueLabels('smoking-setting'),
+    smokingStatus: getQuestionValueLabels('smoking-status'),
+    smokingType: getQuestionValueLabels('smoking-type')
+  }
 }
 
 /**
@@ -46,6 +49,8 @@ const formatQuantity = (value, singular, plural) => {
  * @returns {string[]} Selected tobacco type keys.
  */
 const getSelectedSmokingTypes = (answers = {}) => {
+  refreshData()
+
   const selectedTypes = Array.isArray(answers.smokingType)
     ? answers.smokingType
     : [answers.smokingType].filter(Boolean)
@@ -75,6 +80,8 @@ const deleteUnselectedSmokingTypeAnswers = (answers = {}) => {
  * @returns {string[]} Selected smoking change keys.
  */
 const getSelectedSmokingChanges = (answer = {}) => {
+  refreshData()
+
   const selectedChanges = Array.isArray(answer.smokingChange)
     ? answer.smokingChange
     : [answer.smokingChange].filter(Boolean)
@@ -104,6 +111,8 @@ const deleteUnselectedSmokingChangeAnswers = (answer = {}) => {
  * @returns {string[]} Selected shisha setting keys.
  */
 const getSelectedShishaSettings = (answer = {}) => {
+  refreshData()
+
   const selectedSettings = Array.isArray(answer.smokingSetting)
     ? answer.smokingSetting
     : [answer.smokingSetting].filter(Boolean)
@@ -192,12 +201,14 @@ const getSmokingTypeStepUrl = (step) => {
  * @returns {string} Display quantity.
  */
 const getSmokingQuantity = (type, answer) => {
+  refreshData()
+
   if (!answer) {
     return ''
   }
 
   if (type === 'rolling_tobacco') {
-    return valueLabels.smokingQuantityRollingTobacco[answer] || answer
+    return getValueLabels().smokingQuantityRollingTobacco[answer] || answer
   }
 
   const smokingType = smokingTypes[type]
@@ -316,7 +327,7 @@ const getSmokingChangeLabels = (type, answer = {}, isPast = false) => {
         fewer: `Yes, I smoked ${fewerLabel}`,
         no: 'No, it did not change'
       }
-    : valueLabels.smokingChange
+    : getValueLabels().smokingChange
 
   if (!amount) {
     return defaultLabels
@@ -348,6 +359,8 @@ const getShishaSettingAnswer = (answer = {}, setting) => {
  * @returns {Object} Tobacco type content.
  */
 const getSmokingTypeHeadings = (type, isPast = false) => {
+  refreshData()
+
   const smokingType = smokingTypes[type]
 
   if (!smokingType) {
@@ -405,6 +418,8 @@ const getSmokingStepHeading = (page, type, setting, isPast = false, answer = {})
  * @returns {Object} Change-specific answer object.
  */
 const getSmokingChangeAnswer = (answer = {}, change) => {
+  refreshData()
+
   const answerKey = smokingChangeTypes[change]?.answerKey
 
   return answerKey ? answer[answerKey] || {} : {}
@@ -419,6 +434,8 @@ const getSmokingChangeAnswer = (answer = {}, change) => {
  * @returns {string} Comparison text.
  */
 const getSmokingChangeComparisonText = (type, change, answer = {}) => {
+  refreshData()
+
   const smokingChange = smokingChangeTypes[change]
   const amount = getSmokingCurrentAmount(type, answer)
   const changeLabel = type === 'rolling_tobacco' && change === 'fewer'
@@ -951,5 +968,5 @@ module.exports = {
   isPastSmokingType,
   renderSmokingTypeQuestion,
   validateSmokingTypeQuestion,
-  valueLabels
+  getValueLabels
 }

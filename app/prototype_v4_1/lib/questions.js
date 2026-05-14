@@ -4,6 +4,13 @@ const yaml = require('js-yaml')
 
 const questionsPath = path.join(__dirname, '../data/questions.yaml')
 const tobaccoPath = path.join(__dirname, '../data/tobacco.yaml')
+const data = {
+  questions: {},
+  smokingChangeTypes: {},
+  shishaSmokingSettings: {},
+  tobaccoTypes: {}
+}
+let loadedAt = {}
 
 /**
  * @typedef {Object} QuestionOption
@@ -36,6 +43,32 @@ const tobaccoPath = path.join(__dirname, '../data/tobacco.yaml')
 const loadYaml = (filePath) => {
   const file = fs.readFileSync(filePath, 'utf8')
   return yaml.load(file) || {}
+}
+
+/**
+ * Get a file's modification timestamp.
+ *
+ * @param {string} filePath - Absolute path to the file.
+ * @returns {number} Modification timestamp in milliseconds.
+ */
+const getFileMtime = (filePath) => {
+  return fs.statSync(filePath).mtimeMs
+}
+
+/**
+ * Replace an object's keys without replacing the object reference.
+ *
+ * This keeps destructured imports of exported data objects up to date.
+ *
+ * @param {Object} target - Object to mutate.
+ * @param {Object} source - Replacement key/value pairs.
+ */
+const replaceObject = (target, source = {}) => {
+  Object.keys(target).forEach((key) => {
+    delete target[key]
+  })
+
+  Object.assign(target, source)
 }
 
 /**
@@ -118,8 +151,35 @@ const loadData = () => {
   }
 }
 
-const data = loadData()
-const questions = data.questions
+/**
+ * Reload YAML content when either data file has changed.
+ *
+ * @param {boolean} [force] - Reload even when mtimes are unchanged.
+ */
+const refreshData = (force = false) => {
+  const mtimes = {
+    questions: getFileMtime(questionsPath),
+    tobacco: getFileMtime(tobaccoPath)
+  }
+  const hasChanged = force ||
+    mtimes.questions !== loadedAt.questions ||
+    mtimes.tobacco !== loadedAt.tobacco
+
+  if (!hasChanged) {
+    return
+  }
+
+  const freshData = loadData()
+
+  replaceObject(data.questions, freshData.questions)
+  replaceObject(data.tobaccoTypes, freshData.tobaccoTypes)
+  replaceObject(data.smokingChangeTypes, freshData.smokingChangeTypes)
+  replaceObject(data.shishaSmokingSettings, freshData.shishaSmokingSettings)
+
+  loadedAt = mtimes
+}
+
+refreshData(true)
 
 /**
  * Get a normalised question by id.
@@ -129,7 +189,9 @@ const questions = data.questions
  * @throws {Error} When the question id is not defined in questions.yaml.
  */
 const getQuestion = (id) => {
-  const question = questions[id]
+  refreshData()
+
+  const question = data.questions[id]
 
   if (!question) {
     throw new Error(`Question not found: ${id}`)
@@ -145,6 +207,8 @@ const getQuestion = (id) => {
  * @returns {Object.<string, string>} Map of submitted values to display labels.
  */
 const getQuestionValueLabels = (id) => {
+  refreshData()
+
   const question = getQuestion(id)
 
   return (question.options || []).reduce((labels, option) => {
@@ -159,6 +223,7 @@ const getQuestionValueLabels = (id) => {
 module.exports = {
   getQuestion,
   getQuestionValueLabels,
+  refreshData,
   smokingChangeTypes: data.smokingChangeTypes,
   shishaSmokingSettings: data.shishaSmokingSettings,
   tobaccoTypes: data.tobaccoTypes

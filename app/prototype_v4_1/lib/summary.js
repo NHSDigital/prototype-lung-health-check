@@ -15,27 +15,29 @@ const {
   getSmokingTypeHeadings,
   getSmokingTypeStepUrl,
   isPastSmokingType,
-  valueLabels: tobaccoValueLabels
+  getValueLabels: getTobaccoValueLabels
 } = require('./tobacco-flow')
 
-const valueLabels = {
-  asbestosAtHome: getQuestionValueLabels('asbestos-at-home'),
-  asbestosAtWork: getQuestionValueLabels('asbestos-at-work'),
-  cancerDiagnosis: getQuestionValueLabels('cancer-diagnosis'),
-  cancerDiagnosisRelatives: getQuestionValueLabels('cancer-diagnosis-relatives'),
-  cancerDiagnosisRelativesAge: getQuestionValueLabels('cancer-diagnosis-relatives-age'),
-  education: getQuestionValueLabels('education'),
-  ethnicity: getQuestionValueLabels('ethnicity'),
-  faceToFaceAppointment: getQuestionValueLabels('face-to-face-appointment'),
-  gender: getQuestionValueLabels('gender'),
-  periodsStoppedSmoking: {
-    yes: 'Yes',
-    no: 'No'
-  },
-  respiratoryConditions: getQuestionValueLabels('respiratory-conditions'),
-  sex: getQuestionValueLabels('sex'),
-  smoker: getQuestionValueLabels('smoker'),
-  ...tobaccoValueLabels
+const getValueLabels = () => {
+  return {
+    asbestosAtHome: getQuestionValueLabels('asbestos-at-home'),
+    asbestosAtWork: getQuestionValueLabels('asbestos-at-work'),
+    cancerDiagnosis: getQuestionValueLabels('cancer-diagnosis'),
+    cancerDiagnosisRelatives: getQuestionValueLabels('cancer-diagnosis-relatives'),
+    cancerDiagnosisRelativesAge: getQuestionValueLabels('cancer-diagnosis-relatives-age'),
+    education: getQuestionValueLabels('education'),
+    ethnicity: getQuestionValueLabels('ethnicity'),
+    faceToFaceAppointment: getQuestionValueLabels('face-to-face-appointment'),
+    gender: getQuestionValueLabels('gender'),
+    periodsStoppedSmoking: {
+      yes: 'Yes',
+      no: 'No'
+    },
+    respiratoryConditions: getQuestionValueLabels('respiratory-conditions'),
+    sex: getQuestionValueLabels('sex'),
+    smoker: getQuestionValueLabels('smoker'),
+    ...getTobaccoValueLabels()
+  }
 }
 
 /**
@@ -205,6 +207,7 @@ const formatListValue = (value, labels) => {
  * @returns {Object} Summary-list rows grouped by section.
  */
 const getCheckYourAnswers = (answers = {}) => {
+  const valueLabels = getValueLabels()
   const selectedSmokingTypes = getSelectedSmokingTypes(answers)
   const isFormerSmoker = answers.smoker === 'yes_previous'
 
@@ -403,5 +406,5 @@ const getCheckYourAnswers = (answers = {}) => {
 
 module.exports = {
   getCheckYourAnswers,
-  valueLabels
+  getValueLabels
 }
