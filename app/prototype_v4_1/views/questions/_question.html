@@ -94,7 +94,7 @@
               legend: legend
             },
             hint: question.input.hintParam,
-            value: data.answers[question.answerKey],
+            value: question.value if question.value is defined else data.answers[question.answerKey],
             items: componentItems
           }) }}
         {% elif question.type == "multiple" %}
@@ -104,7 +104,7 @@
               legend: legend
             },
             hint: question.input.hintParam,
-            values: data.answers[question.answerKey],
+            values: question.values if question.values is defined else data.answers[question.answerKey],
             items: componentItems
           }) }}
         {% elif question.type == "text" %}
@@ -122,6 +122,14 @@
             } %}
           {% endif %}
 
+          {% if question.value is defined %}
+            {% set inputValue = question.value %}
+          {% elif question.input.valueKey %}
+            {% set inputValue = data.answers[question.answerKey][question.input.valueKey] %}
+          {% else %}
+            {% set inputValue = data.answers[question.answerKey] %}
+          {% endif %}
+
           {{ input({
             id: question.input.id,
             name: question.input.name,
@@ -130,7 +138,7 @@
             prefix: question.input.prefix,
             suffix: question.input.suffix,
             inputmode: question.input.inputmode,
-            value: data.answers[question.answerKey][question.input.valueKey] if question.input.valueKey else data.answers[question.answerKey],
+            value: inputValue,
             classes: question.input.classes,
             errorMessage: {
               text: errors[0].text

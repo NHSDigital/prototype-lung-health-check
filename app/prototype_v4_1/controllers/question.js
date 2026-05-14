@@ -7,9 +7,22 @@ const view = (template) => {
   return `prototype_${version}/views/${template}`
 }
 
-const renderQuestion = (res, id, actions, errors = []) => {
+const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
+  const question = getQuestion(id)
+
   res.render(view('questions/_question'), {
-    question: getQuestion(id),
+    question: {
+      ...question,
+      ...overrides,
+      heading: {
+        ...question.heading,
+        ...overrides.heading
+      },
+      input: {
+        ...question.input,
+        ...overrides.input
+      }
+    },
     errors,
     actions
   })
@@ -344,44 +357,12 @@ const valueLabels = {
   respiratoryConditions: getQuestionValueLabels('respiratory-conditions'),
   sex: getQuestionValueLabels('sex'),
   smoker: getQuestionValueLabels('smoker'),
-  smokingChange: {
-    greater: 'Yes, I used to smoke more',
-    fewer: 'Yes, I used to smoke fewer',
-    no: 'No, it has not changed'
-  },
-  smokingFrequency: {
-    daily: 'Daily',
-    weekly: 'Weekly',
-    monthly: 'Monthly',
-    yearly: 'Yearly'
-  },
-  smokingStatus: {
-    yes: 'Yes',
-    no: 'No'
-  },
-  smokingQuantityRollingTobacco: {
-    less_than_10: 'Less than 10g',
-    '10_to_30': '10g to 30g',
-    '31_to_50': '31g to 50g',
-    '51_to_75': '51g to 75g',
-    '76_to_100': '76g to 100g',
-    more_than_100: 'More than 100g'
-  },
-  smokingSetting: {
-    group: 'In a group',
-    individual: 'By myself'
-  },
-  smokingType: {
-    cigarettes: 'Cigarettes',
-    rolling_tobacco: 'Rolling tobacco, or roll-ups',
-    pipes: 'Pipes',
-    small_cigars: 'Small cigars',
-    medium_cigars: 'Medium cigars',
-    large_cigars: 'Large cigars',
-    cigarillos: 'Cigarillos',
-    shisha: 'Shisha',
-    none: 'I have not smoked any of these types of tobacco'
-  }
+  smokingChange: getQuestionValueLabels('smoking-change'),
+  smokingFrequency: getQuestionValueLabels('smoking-frequency'),
+  smokingStatus: getQuestionValueLabels('smoking-status'),
+  smokingQuantityRollingTobacco: getQuestionValueLabels('smoking-quantity'),
+  smokingSetting: getQuestionValueLabels('smoking-setting'),
+  smokingType: getQuestionValueLabels('smoking-type')
 }
 
 const formatValue = (value, labels) => {
@@ -862,18 +843,187 @@ const getFormerSmokerFallbackStep = (req, page, steps) => {
   return steps.find((step) => step.type === req.query?.type) || steps[0]
 }
 
-const getSmokingTypeQuestionText = (answers = {}) => {
+const getSmokingTypeQuestionOverrides = (answers = {}) => {
+  const question = getQuestion('smoking-type')
+
   if (answers.smoker === 'yes_previous') {
+    return question.variants.previous
+  }
+
+  return {}
+}
+
+const getQuestionItemsWithLabels = (id, labels = {}, hintOverrides = {}) => {
+  return getQuestion(id).items.map((item) => {
+    if (!item.value) {
+      return item
+    }
+
     return {
-      title: 'The type of tobacco you have smoked',
-      legend: 'What have you smoked?'
+      ...item,
+      text: labels[item.value] || item.text,
+      hint: hintOverrides[item.value]
+        ? { text: hintOverrides[item.value] }
+        : item.hint
+    }
+  })
+}
+
+const getSmokingContentQuestionOverrides = ({
+  page,
+  step,
+  answer,
+  settingAnswer,
+  changeAnswer,
+  smokingType,
+  smokingChange,
+  smokingChangeLabels,
+  isPastSmokingType
+}) => {
+  if (page === 'smoking-status') {
+    return {
+      heading: {
+        title: smokingType.statusHeading,
+        caption: smokingType.caption
+      },
+      input: {
+        name: `answers[${step.type}][smokingStatus]`
+      },
+      value: answer.smokingStatus
     }
   }
 
-  return {
-    title: 'The type of tobacco you smoke or used to smoke',
-    legend: 'What do you or have you smoked?'
+  if (page === 'smoking-setting') {
+    return {
+      heading: {
+        title: smokingType.settingHeading,
+        caption: smokingType.caption
+      },
+      input: {
+        name: `answers[${step.type}][smokingSetting]`
+      },
+      values: answer.smokingSetting
+    }
   }
+
+  if (page === 'smoking-frequency') {
+    const isSettingSpecific = Boolean(step.setting)
+
+    return {
+      heading: {
+        title: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType),
+        caption: smokingType.caption
+      },
+      input: {
+        name: isSettingSpecific
+          ? `answers[${step.type}][${step.setting}][smokingFrequency]`
+          : `answers[${step.type}][smokingFrequency]`
+      },
+      value: isSettingSpecific ? settingAnswer.smokingFrequency : answer.smokingFrequency,
+      items: getQuestionItemsWithLabels('smoking-frequency', {}, {
+        monthly: `Select this option if you ${isPastSmokingType ? 'smoked' : 'smoke'} at least once a month`
+      })
+    }
+  }
+
+  if (page === 'smoking-quantity') {
+    const isSettingSpecific = Boolean(step.setting)
+    const isRollingTobacco = step.type === 'rolling_tobacco'
+
+    return {
+      type: isRollingTobacco ? 'single' : 'text',
+      heading: {
+        title: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType),
+        caption: smokingType.caption
+      },
+      input: {
+        id: 'smoking-quantity',
+        name: isSettingSpecific
+          ? `answers[${step.type}][${step.setting}][smokingQuantity]`
+          : `answers[${step.type}][smokingQuantity]`,
+        hint: isRollingTobacco
+          ? 'A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g'
+          : 'Give an estimate if you are not sure',
+        hintParam: {
+          text: isRollingTobacco
+            ? 'A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g'
+            : 'Give an estimate if you are not sure'
+        },
+        suffix: isRollingTobacco ? undefined : smokingType.suffix
+      },
+      value: isSettingSpecific ? settingAnswer.smokingQuantity : answer.smokingQuantity
+    }
+  }
+
+  if (page === 'smoking-change') {
+    return {
+      heading: {
+        title: smokingType.changeHeading,
+        caption: smokingType.caption
+      },
+      input: {
+        name: `answers[${step.type}][smokingChange]`
+      },
+      values: answer.smokingChange,
+      items: getQuestionItemsWithLabels('smoking-change', smokingChangeLabels)
+    }
+  }
+
+  if (page === 'smoking-frequency-change') {
+    return {
+      heading: {
+        title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
+        caption: smokingType.caption
+      },
+      input: {
+        name: `answers[${step.type}][${smokingChange.answerKey}][frequency]`
+      },
+      value: changeAnswer.frequency,
+      items: getQuestion('smoking-frequency-change').items
+    }
+  }
+
+  if (page === 'smoking-quantity-change') {
+    const isRollingTobacco = step.type === 'rolling_tobacco'
+
+    return {
+      type: isRollingTobacco ? 'single' : 'text',
+      heading: {
+        title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
+        caption: smokingType.caption
+      },
+      input: {
+        id: 'smoking-quantity-change',
+        name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
+        hint: isRollingTobacco
+          ? 'A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g'
+          : 'Give an estimate if you are not sure',
+        hintParam: {
+          text: isRollingTobacco
+            ? 'A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g'
+            : 'Give an estimate if you are not sure'
+        },
+        suffix: isRollingTobacco ? undefined : smokingType.suffix
+      },
+      value: changeAnswer.quantity
+    }
+  }
+
+  if (page === 'smoking-years-change') {
+    return {
+      heading: {
+        title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
+        caption: smokingType.caption
+      },
+      input: {
+        id: 'smoking-years-change',
+        name: `answers[${step.type}][${smokingChange.answerKey}][years]`
+      },
+      value: changeAnswer.years
+    }
+  }
+
+  return {}
 }
 
 const getSmokingTypeActions = (step, steps) => {
@@ -908,14 +1058,42 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
   const isPast = isPastSmokingType(req.session.data.answers, answer)
   const changeAnswer = getSmokingChangeAnswer(answer, step.change)
   const settingAnswer = getShishaSettingAnswer(answer, step.setting)
+  const smokingType = getSmokingTypeHeadings(step.type, isPast)
+  const smokingChange = smokingChangeTypes[step.change]
+  const smokingChangeLabels = getSmokingChangeLabels(step.type, answer, isPast)
+  const genericQuestionPages = [
+    'smoking-status',
+    'smoking-setting',
+    'smoking-frequency',
+    'smoking-quantity',
+    'smoking-change',
+    'smoking-frequency-change',
+    'smoking-quantity-change',
+    'smoking-years-change'
+  ]
+
+  if (genericQuestionPages.includes(page)) {
+    renderQuestion(res, page, getSmokingTypeActions(step, steps), errors, getSmokingContentQuestionOverrides({
+      page,
+      step,
+      answer,
+      settingAnswer,
+      changeAnswer,
+      smokingType,
+      smokingChange,
+      smokingChangeLabels,
+      isPastSmokingType: isPast
+    }))
+    return
+  }
 
   res.render(view(`questions/${page}`), {
     type: step.type,
     change: step.change,
     setting: step.setting,
-    smokingType: getSmokingTypeHeadings(step.type, isPast),
-    smokingChange: smokingChangeTypes[step.change],
-    smokingChangeLabels: getSmokingChangeLabels(step.type, answer, isPast),
+    smokingType,
+    smokingChange,
+    smokingChangeLabels,
     smokingSetting: shishaSmokingSettings[step.setting],
     changeAnswer,
     settingAnswer,
@@ -1583,36 +1761,25 @@ exports.periodsStoppedSmoking_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.smokingType_get = (req, res) => {
-  const { answers } = req.session.data
-  const smokingTypeQuestionText = getSmokingTypeQuestionText(answers)
+  const answers = req.session.data.answers || {}
 
-  res.render(view('questions/smoking-type'), {
-    smokingTypeTitle: smokingTypeQuestionText.title,
-    smokingTypeLegend: smokingTypeQuestionText.legend,
-    actions: {
-      next: `/prototype_${version}/smoking-type`,
-      back: `/prototype_${version}/periods-stopped-smoking`,
-      cancel: `/prototype_${version}/`
-    }
-  })
+  renderQuestion(res, 'smoking-type', {
+    next: `/prototype_${version}/smoking-type`,
+    back: `/prototype_${version}/periods-stopped-smoking`,
+    cancel: `/prototype_${version}/`
+  }, [], getSmokingTypeQuestionOverrides(answers))
 }
 
 exports.smokingType_post = (req, res) => {
-  const { answers } = req.session.data
-  const smokingTypeQuestionText = getSmokingTypeQuestionText(answers)
+  const answers = req.session.data.answers || {}
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/smoking-type'), {
-      errors,
-      smokingTypeTitle: smokingTypeQuestionText.title,
-      smokingTypeLegend: smokingTypeQuestionText.legend,
-      actions: {
-        next: `/prototype_${version}/smoking-type`,
-        back: `/prototype_${version}/periods-stopped-smoking`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'smoking-type', {
+      next: `/prototype_${version}/smoking-type`,
+      back: `/prototype_${version}/periods-stopped-smoking`,
+      cancel: `/prototype_${version}/`
+    }, errors, getSmokingTypeQuestionOverrides(answers))
   } else {
     const selectedTypes = Array.isArray(answers.smokingType)
       ? answers.smokingType

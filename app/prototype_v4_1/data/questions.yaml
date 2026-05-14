@@ -514,3 +514,202 @@ questions:
       text: Switch to kilograms
     summary:
       label: Weight
+
+  - id: smoking-type
+    type: multiple
+    answerKey: smokingType
+    heading:
+      title: The type of tobacco you smoke or used to smoke
+    description: |
+      Smoking affects your health in different ways depending on what you smoke.
+
+      We need to know what you smoke, or used to smoke, frequently. For example, if you have smoked a pipe on a weekly basis for a year or longer.
+
+      You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+    input:
+      label: What do you or have you smoked?
+      hint: Select all that apply
+    options:
+      - label: Cigarettes
+        value: cigarettes
+        exclusiveGroup: types-list
+      - label: Rolling tobacco, or roll-ups
+        value: rolling_tobacco
+        exclusiveGroup: types-list
+      - label: Pipes
+        value: pipes
+        exclusiveGroup: types-list
+      - label: Small cigars
+        hint: Petit Corona or Short Panetela, usually 4 to 5 inches long
+        value: small_cigars
+        exclusiveGroup: types-list
+      - label: Medium cigars
+        hint: Robusto or Corona, usually 5 to 6 inches long
+        value: medium_cigars
+        exclusiveGroup: types-list
+      - label: Large cigars
+        hint: Churchill or Double Corona, usually 7 to 8 inches long
+        value: large_cigars
+        exclusiveGroup: types-list
+      - label: Cigarillos
+        hint: Cafe Creme or Signature cigars, roughly the size of a cigarette
+        value: cigarillos
+        exclusiveGroup: types-list
+      - label: Shisha
+        value: shisha
+        exclusiveGroup: types-list
+      - divider: or
+      - label: I have not smoked any of these types of tobacco
+        value: none
+        exclusive: true
+        exclusiveGroup: types-list
+    variants:
+      previous:
+        heading:
+          title: The type of tobacco you have smoked
+        input:
+          label: What have you smoked?
+    summary:
+      label: Types of tobacco smoked
+
+  - id: smoking-status
+    type: single
+    heading:
+      title: Do you currently smoke?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+
+  - id: smoking-setting
+    type: multiple
+    heading:
+      title: Do you usually smoke shisha in a group or on your own?
+    input:
+      hint: Select all that apply
+    options:
+      - label: In a group
+        value: group
+      - label: By myself
+        value: individual
+
+  - id: smoking-frequency
+    type: single
+    heading:
+      title: How often do you smoke?
+    options:
+      - label: Daily
+        value: daily
+      - label: Weekly
+        hint: For example, on the weekend
+        value: weekly
+      - label: Monthly
+        hint: Select this option if you smoke at least once a month
+        value: monthly
+      - label: Yearly
+        hint: For example, 2 to 3 times a year or fewer
+        value: yearly
+
+  - id: smoking-change
+    type: multiple
+    heading:
+      title: Has the amount you normally smoke changed over time?
+    input:
+      hint: Select all that apply
+    options:
+      - label: Yes, I used to smoke more
+        value: greater
+        exclusiveGroup: change-list
+      - label: Yes, I used to smoke fewer
+        value: fewer
+        exclusiveGroup: change-list
+      - divider: or
+      - label: No, it has not changed
+        value: no
+        exclusive: true
+        exclusiveGroup: change-list
+
+  - id: smoking-quantity
+    type: text
+    heading:
+      title: How much do you smoke?
+    input:
+      id: smoking-quantity
+      hint: Give an estimate if you are not sure
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    options:
+      - label: Less than 10g
+        value: less_than_10
+      - label: 10g to 30g
+        value: 10_to_30
+      - label: 31g to 50g
+        value: 31_to_50
+      - label: 51g to 75g
+        value: 51_to_75
+      - label: 76g to 100g
+        value: 76_to_100
+      - label: More than 100g
+        value: more_than_100
+    variants:
+      rolling_tobacco:
+        type: single
+        input:
+          hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+
+  - id: smoking-frequency-change
+    type: single
+    heading:
+      title: How often did you smoke?
+    options:
+      - label: Daily
+        value: daily
+      - label: Weekly
+        hint: For example, on the weekend
+        value: weekly
+      - label: Monthly
+        hint: Select this option if you smoked at least once a month
+        value: monthly
+      - label: Yearly
+        hint: For example, 2 to 3 times a year or fewer
+        value: yearly
+
+  - id: smoking-quantity-change
+    type: text
+    heading:
+      title: How much did you smoke?
+    input:
+      id: smoking-quantity-change
+      hint: Give an estimate if you are not sure
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    options:
+      - label: Less than 10g
+        value: less_than_10
+      - label: 10g to 30g
+        value: 10_to_30
+      - label: 31g to 50g
+        value: 31_to_50
+      - label: 51g to 75g
+        value: 51_to_75
+      - label: 76g to 100g
+        value: 76_to_100
+      - label: More than 100g
+        value: more_than_100
+    variants:
+      rolling_tobacco:
+        type: single
+        input:
+          hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+
+  - id: smoking-years-change
+    type: text
+    heading:
+      title: How many years did you smoke this amount?
+    input:
+      id: smoking-years-change
+      hint: Give a rough estimate
+      suffix: years
+      inputmode: numeric
+      classes: nhsuk-input--width-4
