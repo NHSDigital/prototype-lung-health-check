@@ -9,6 +9,10 @@ const isBlank = (value) => {
 }
 
 const getAnswerValue = (answers = {}, question) => {
+  if (question.values !== undefined) {
+    return question.values
+  }
+
   if (question.value !== undefined) {
     return question.value
   }
