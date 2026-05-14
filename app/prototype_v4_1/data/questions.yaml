@@ -576,7 +576,7 @@ questions:
       - label: Asian or Asian British
         value: asian_or_asian_british
       - label: Black, African, Caribbean or Black British
-        value: black_african_caribbean_or_black british
+        value: black_african_caribbean_or_black_british
       - label: Mixed or multiple ethnic groups
         value: mixed_or_multiple_ethnic_groups
       - label: White
@@ -619,7 +619,7 @@ questions:
         hint: For example, apprenticeships or Higher National Certificates (HNC)
         value: further_education
       - label: Undergraduate degree
-        hint: A university degree, also known as a bachelor's degree
+        hint: A university degree, also known as a bachelor’s degree
         value: undergraduate_degree
       - label: Postgraduate degree
         hint: For example, a Masters or PhD
