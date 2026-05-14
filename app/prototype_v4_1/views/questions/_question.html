@@ -1,0 +1,116 @@
+{% extends "prototype_v4_1/views/layouts/main.html" %}
+
+{% set title = question.heading.title %}
+{% set caption = question.heading.caption %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4_1/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% if not question.input.isPageHeading %}
+        {% include "prototype_v4_1/views/includes/page-heading.html" %}
+      {% endif %}
+
+      {% if question.description %}
+        {{ question.description | markdownToHtml | safe }}
+      {% endif %}
+
+      {% if question.details %}
+        {{ details({
+          summaryText: question.details.summary,
+          html: question.details.text | markdownToHtml | safe
+        }) }}
+      {% endif %}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {% if question.input.isPageHeading %}
+          {% set headingHtml %}
+            {% include "prototype_v4_1/views/includes/page-heading-legend.html" %}
+          {% endset %}
+          {% set legend = {
+            html: headingHtml,
+            isPageHeading: true,
+            classes: "nhsuk-fieldset__legend--l"
+          } %}
+        {% else %}
+          {% set legend = {
+            text: question.input.label,
+            isPageHeading: false,
+            classes: "nhsuk-fieldset__legend--m"
+          } %}
+        {% endif %}
+
+        {% if question.type == "single" %}
+          {{ radios({
+            name: question.input.name,
+            fieldset: {
+              legend: legend
+            },
+            hint: question.input.hintParam,
+            value: data.answers[question.answerKey],
+            items: question.items
+          }) }}
+        {% elif question.type == "multiple" %}
+          {{ checkboxes({
+            name: question.input.name,
+            fieldset: {
+              legend: legend
+            },
+            hint: question.input.hintParam,
+            values: data.answers[question.answerKey],
+            items: question.items
+          }) }}
+        {% elif question.type == "text" %}
+          {% if question.input.isPageHeading %}
+            {% set label = {
+              html: headingHtml,
+              isPageHeading: true,
+              classes: "nhsuk-label--l"
+            } %}
+          {% else %}
+            {% set label = {
+              text: question.input.label,
+              isPageHeading: false,
+              classes: "nhsuk-label--m"
+            } %}
+          {% endif %}
+
+          {{ input({
+            id: question.input.id,
+            name: question.input.name,
+            label: label,
+            hint: question.input.hintParam,
+            prefix: question.input.prefix,
+            suffix: question.input.suffix,
+            inputmode: question.input.inputmode,
+            value: data.answers[question.answerKey],
+            classes: question.input.classes,
+            errorMessage: {
+              text: errors[0].text
+            } if errors | length
+          }) }}
+        {% endif %}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}
