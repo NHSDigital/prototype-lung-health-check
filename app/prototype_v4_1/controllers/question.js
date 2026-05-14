@@ -6,6 +6,7 @@ const {
   shishaSmokingSettings,
   tobaccoTypes: smokingTypes
 } = require('../lib/questions')
+const { validateQuestion } = require('../lib/validate-question')
 
 const version = 'v4_1'
 
@@ -15,6 +16,13 @@ const view = (template) => {
 
 const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
   const question = getQuestion(id)
+  const errorMap = errors.reduce((map, error) => {
+    if (error.href) {
+      map[error.href.replace('#', '')] = error
+    }
+
+    return map
+  }, {})
 
   res.render(view('questions/_question'), {
     question: {
@@ -29,6 +37,7 @@ const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
         ...overrides.input
       }
     },
+    errorMap,
     errors,
     actions
   })
@@ -1060,7 +1069,7 @@ exports.smoker_get = (req, res) => {
 
 exports.smoker_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = []
+  const errors = validateQuestion(answers, 'smoker')
 
   if (errors.length) {
     renderQuestion(res, 'smoker', {
@@ -1087,15 +1096,8 @@ exports.dateOfBirth_get = (req, res) => {
 
 exports.dateOfBirth_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = []
+  const errors = validateQuestion(answers, 'date-of-birth')
   const dateOfBirth = getDateOfBirth(answers)
-
-  if (!dateOfBirth) {
-    errors.push({
-      text: 'Enter a real date of birth',
-      href: '#dateOfBirth-day'
-    })
-  }
 
   if (errors.length) {
     renderQuestion(res, 'date-of-birth', {
@@ -1181,7 +1183,7 @@ exports.heightMetric_get = (req, res) => {
 
 exports.heightMetric_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = []
+  const errors = validateQuestion(answers, 'height-metric')
 
   if (errors.length) {
     renderQuestion(res, 'height-metric', {
@@ -1619,7 +1621,7 @@ exports.periodsStoppedSmoking_get = (req, res) => {
 exports.periodsStoppedSmoking_post = (req, res) => {
   const answers = req.session.data.answers || {}
   const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
-  const errors = []
+  const errors = validateQuestion(answers, 'periods-stopped-smoking')
 
   if (errors.length) {
     renderQuestion(res, 'periods-stopped-smoking', {

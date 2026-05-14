@@ -69,7 +69,10 @@
                 prefix: item.conditionalInput.prefix,
                 inputmode: item.conditionalInput.inputmode,
                 value: data.answers[item.conditionalInput.answerKey],
-                classes: item.conditionalInput.classes
+                classes: item.conditionalInput.classes,
+                errorMessage: {
+                  text: errorMap[item.conditionalInput.id].text
+                } if errorMap[item.conditionalInput.id]
               }) }}
             {% endset %}
             {% set _ = componentItems.push({
@@ -94,6 +97,9 @@
               legend: legend
             },
             hint: question.input.hintParam,
+            errorMessage: {
+              text: errorMap[question.input.name].text
+            } if errorMap[question.input.name],
             value: question.value if question.value is defined else data.answers[question.answerKey],
             items: componentItems
           }) }}
@@ -104,6 +110,9 @@
               legend: legend
             },
             hint: question.input.hintParam,
+            errorMessage: {
+              text: errorMap[question.input.name].text
+            } if errorMap[question.input.name],
             values: question.values if question.values is defined else data.answers[question.answerKey],
             items: componentItems
           }) }}
@@ -141,8 +150,8 @@
             value: inputValue,
             classes: question.input.classes,
             errorMessage: {
-              text: errors[0].text
-            } if errors | length
+              text: errorMap[question.input.id].text
+            } if errorMap[question.input.id]
           }) }}
         {% elif question.type == "date" %}
           {{ dateInput({

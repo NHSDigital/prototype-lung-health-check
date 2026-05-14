@@ -213,6 +213,12 @@ questions:
     summary:
       label: Have you ever smoked tobacco?
       hiddenText: whether you have ever smoked tobacco
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever smoked tobacco
+        href: "#answers[smoker]"
 
   - id: gender
     type: single
@@ -538,6 +544,22 @@ questions:
         value: no
     summary:
       label: Stopped smoking for periods of 1 year or longer
+    validation:
+      required: true
+      conditional:
+        yes:
+          required: true
+          answerKey: yearsStoppedSmoking
+          href: "#years-stopped-smoking"
+    errors:
+      required:
+        text: Select whether you have ever stopped smoking for periods of 1 year or longer
+        href: "#answers[periodsStoppedSmoking]"
+      conditional:
+        yes:
+          required:
+            text: Enter the total number of years you stopped smoking
+            href: "#years-stopped-smoking"
 
   - id: date-of-birth
     type: date
@@ -564,6 +586,16 @@ questions:
           classes: nhsuk-input--width-4
     summary:
       label: Date of birth
+    validation:
+      required: true
+      type: date
+    errors:
+      required:
+        text: Enter your date of birth
+        href: "#dateOfBirth-day"
+      invalid:
+        text: Enter a real date of birth
+        href: "#dateOfBirth-day"
 
   - id: height-metric
     type: text
@@ -586,6 +618,16 @@ questions:
       text: Switch to feet and inches
     summary:
       label: Height
+    validation:
+      required: true
+      type: number
+    errors:
+      required:
+        text: Enter your height in centimetres
+        href: "#height-metric"
+      invalid:
+        text: Enter your height in centimetres using numbers
+        href: "#height-metric"
 
   - id: height-imperial
     type: input_group
