@@ -1,0 +1,354 @@
+---
+questions:
+  - id: phone-questionnaire
+    type: single
+    answerKey: phoneQuestionnaire
+    heading:
+      title: Confirm if you have completed a lung cancer risk questionnaire by phone
+    description: |
+      If you have already completed a questionnaire about your lung health or lung cancer risk by phone you do not need to test the online service. This is because the online service asks the same questions.
+
+      The questionnaire would have asked you questions about:
+
+      - your height and weight
+      - your ethnicity
+      - your education
+      - if you have ever had a cancer diagnosis
+      - if your parents, siblings, or children have ever had a lung cancer diagnosis
+      - your smoking habits
+    input:
+      label: Have you previously completed a lung cancer risk questionnaire by phone?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+
+  - id: smoker
+    type: single
+    answerKey: smoker
+    heading:
+      title: Tobacco smoking
+    description: |
+      We will ask you questions about your smoking habits. This includes different types of tobacco smoking such as:
+
+      - cigarettes from a packet
+      - rolling tobacco, or roll ups
+      - a pipe
+      - cigars
+      - cigarillos
+      - shisha
+
+      It does not currently include vaping or e-cigarettes.
+    input:
+      label: Have you ever smoked tobacco?
+      hint: This includes social smoking
+    options:
+      - label: Yes, I currently smoke
+        value: yes_current
+      - label: Yes, I used to smoke
+        value: yes_previous
+      - label: Yes, but I have smoked fewer than 100 cigarettes in my lifetime
+        value: yes_fewer_than_100
+      - label: No, I have never smoked
+        value: no
+    summary:
+      label: Have you ever smoked tobacco?
+      hiddenText: whether you have ever smoked tobacco
+
+  - id: gender
+    type: single
+    answerKey: gender
+    heading:
+      title: Your gender identity
+    description: |
+      The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
+
+      In the future we plan to use information about someone's gender identity to help us plan their care in the NHS lung cancer screening programme.
+    input:
+      label: Which of these best describes you?
+    options:
+      - label: Female
+        value: female
+      - label: Male
+        value: male
+      - label: Non-binary
+        value: non_binary
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Gender identity
+
+  - id: sex
+    type: single
+    answerKey: sex
+    heading:
+      title: Your sex at birth
+    description: |
+      Your sex may impact your chances of developing lung cancer.
+    input:
+      label: What was your sex at birth?
+    options:
+      - label: Female
+        value: female
+      - label: Male
+        value: male
+    summary:
+      label: Sex at birth
+
+  - id: education
+    type: single
+    answerKey: education
+    heading:
+      title: Your education
+    description: |
+      We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
+
+      If your qualification is not shown choose the closest level.
+    input:
+      label: What is the highest level of education have you completed?
+    options:
+      - label: I finished school before the age of 15
+        value: before_15
+      - label: GCSEs
+        hint: Previously O-levels
+        value: gcse
+      - label: A-levels
+        hint: Previously Higher School Certificate (HSC)
+        value: a_level
+      - label: Further education
+        hint: For example, apprenticeships or Higher National Certificates (HNC)
+        value: further_education
+      - label: Undergraduate degree
+        hint: A university degree, also known as a bachelor's degree
+        value: undergraduate_degree
+      - label: Postgraduate degree
+        hint: For example, a Masters or PhD
+        value: postgraduate_degree
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Education
+
+  - id: respiratory-conditions
+    type: multiple
+    answerKey: respiratoryConditions
+    heading:
+      title: Have you ever been diagnosed with any of the following respiratory conditions?
+    input:
+      hint: Select all that apply
+    options:
+      - label: Bronchitis
+        hint: An inflammation of the airways in the lungs that is usually caused by an infection
+        value: bronchitis
+        exclusiveGroup: conditions-list
+      - label: Chronic obstructive pulmonary disease (COPD)
+        hint: A group of lung conditions that cause breathing difficulties
+        value: chronic_obstructive_pulmonary_disease
+        exclusiveGroup: conditions-list
+      - label: Emphysema
+        hint: Damage to the air sacs in the lungs
+        value: emphysema
+        exclusiveGroup: conditions-list
+      - label: Pneumonia
+        hint: An infection of the lungs, usually diagnosed by a chest x-ray
+        value: pneumonia
+        exclusiveGroup: conditions-list
+      - label: Tuberculosis (TB)
+        hint: An infection that usually affects the lungs, but can affect any part of the body
+        value: tuberculosis
+        exclusiveGroup: conditions-list
+      - divider: or
+      - label: No, I have not had any of these respiratory conditions
+        value: no
+        exclusive: true
+        exclusiveGroup: conditions-list
+    summary:
+      label: Respiratory conditions
+
+  - id: face-to-face-appointment
+    type: single
+    answerKey: faceToFaceAppointment
+    heading:
+      title: Check if you need a face-to-face appointment
+    description: |
+      This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
+
+      You need to do your questionnaire in person, not online, if you:
+
+      - have a condition that affects your height
+      - have had a limb amputation, or were born with a limb difference
+      - have been diagnosed with an eating disorder, or think you may have one
+      - are pregnant
+    input:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
+    options:
+      - label: Yes, one or more of these things apply to me, and I need a face-to-face appointment
+        value: yes
+      - label: No, I can continue online
+        value: no
+    summary:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
+
+  - id: asbestos-at-work
+    type: single
+    answerKey: asbestosAtWork
+    heading:
+      title: Tell us if you might have been exposed to asbestos at work
+    description: |
+      You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+
+      You could be exposed to asbestos today if your job involves working in certain roles in old buildings.
+
+      Examples include:
+
+      - heating and ventilation engineers
+      - demolition workers
+      - plumbers
+      - construction workers
+      - electricians
+
+      ## If you did not work with asbestos but think you might have been exposed
+
+      You might know there was asbestos in buildings you have spent time in, or products you have used. But if the asbestos was not damaged, the risk to your health is very low.
+
+      If you lived with someone who worked with asbestos you may have been exposed to asbestos yourself. For example, if you washed the clothes they worked in. The question on the next page will ask if you lived with someone who might have been exposed to asbestos at work.
+    details:
+      summary: What is asbestos?
+      text: |
+        Asbestos was used in a number of building materials and products. For example:
+
+        - boilers and pipes
+        - car brakes
+        - cement for roofing sheets
+        - floor tiles
+        - insulating board to protect buildings and ships against fire
+
+        If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.
+    input:
+      label: Have you ever worked in a job where you might have been exposed to asbestos?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Worked in a job where you might have been exposed to asbestos
+
+  - id: asbestos-at-home
+    type: single
+    answerKey: asbestosAtHome
+    heading:
+      title: Tell us if you ever lived with anyone who worked with asbestos
+    description: |
+      If you lived with someone who worked with asbestos you may have been exposed to asbestos. For example, if you washed the clothes they worked in.
+
+      Someone might have worked with asbestos if they worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+    details:
+      summary: What is asbestos?
+      text: |
+        Asbestos was used in a number of building materials and products. For example:
+
+        - boilers and pipes
+        - car brakes
+        - cement for roofing sheets
+        - floor tiles
+        - insulating board to protect buildings and ships against fire
+
+        If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.
+    input:
+      label: Have you ever lived with anyone who worked with asbestos?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Lived with anyone who worked with asbestos
+
+  - id: cancer-diagnosis
+    type: single
+    answerKey: cancerDiagnosis
+    heading:
+      title: Tell us if you have ever been diagnosed with cancer
+    description: |
+      If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.
+    input:
+      label: Have you ever been diagnosed with cancer?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Ever been diagnosed with cancer
+
+  - id: cancer-diagnosis-relatives
+    type: single
+    answerKey: cancerDiagnosisRelatives
+    heading:
+      title: Tell us if your parents, siblings or children have ever been diagnosed with lung cancer
+    description: |
+      If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
+
+      This question is about lung cancer rather than any other type of cancer. It does not include your grandparents or grandchildren.
+    input:
+      label: Have any of your parents, siblings or children ever been diagnosed with lung cancer?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+      - label: I do not know
+        value: do_not_know
+    summary:
+      label: Parents, siblings or children diagnosed with lung cancer
+
+  - id: cancer-diagnosis-relatives-age
+    type: single
+    answerKey: cancerDiagnosisRelativesAge
+    heading:
+      title: If your relatives were under 60 when they were diagnosed
+    description: |
+      We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.
+
+      If you do not know or cannot remember, select 'I do not know'.
+    input:
+      label: Were any of your relatives younger than 60 years old when they were diagnosed with lung cancer?
+    options:
+      - label: Yes, they were younger than 60
+        value: yes
+      - label: No, they were 60 or older
+        value: no
+      - label: I do not know
+        value: do_not_know
+    summary:
+      label: Relatives younger than 60 when diagnosed with lung cancer
+
+  - id: age-started-smoking
+    type: text
+    answerKey: ageStartedSmoking
+    heading:
+      title: How old were you when you started smoking?
+    input:
+      hint: Give an estimate if you are not sure
+      prefix: Age
+      inputmode: numeric
+      classes: nhsuk-input--width-2
+    summary:
+      label: Age you started smoking
+
+  - id: age-stopped-smoking
+    type: text
+    answerKey: ageStoppedSmoking
+    heading:
+      title: How old were you when you stopped smoking?
+    input:
+      hint: Give an estimate if you are not sure
+      prefix: Age
+      inputmode: numeric
+      classes: nhsuk-input--width-2
+    summary:
+      label: Age you stopped smoking
