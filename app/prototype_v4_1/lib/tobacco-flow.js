@@ -5,7 +5,7 @@ const {
   shishaSmokingSettings,
   tobaccoTypes: smokingTypes
 } = require('./questions')
-const { renderQuestion, version, view } = require('./question-renderer')
+const { renderQuestion, version } = require('./question-renderer')
 const { validateQuestion } = require('./validate-question')
 
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
@@ -859,48 +859,17 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
   const smokingType = getSmokingTypeHeadings(step.type, isPast)
   const smokingChange = smokingChangeTypes[step.change]
   const smokingChangeLabels = getSmokingChangeLabels(step.type, answer, isPast)
-  const genericQuestionPages = [
-    'smoking-status',
-    'smoking-setting',
-    'smoking-frequency',
-    'smoking-quantity',
-    'smoking-change',
-    'smoking-frequency-change',
-    'smoking-quantity-change',
-    'smoking-years-change'
-  ]
-
-  if (genericQuestionPages.includes(page)) {
-    renderQuestion(res, page, getSmokingTypeActions(step, steps), errors, getSmokingContentQuestionOverrides({
-      page,
-      step,
-      answer,
-      settingAnswer,
-      changeAnswer,
-      smokingType,
-      smokingChange,
-      smokingChangeLabels,
-      isPastSmokingType: isPast
-    }))
-    return
-  }
-
-  res.render(view(`questions/${page}`), {
-    type: step.type,
-    change: step.change,
-    setting: step.setting,
+  renderQuestion(res, page, getSmokingTypeActions(step, steps), errors, getSmokingContentQuestionOverrides({
+    page,
+    step,
+    answer,
+    changeAnswer,
+    settingAnswer,
     smokingType,
     smokingChange,
     smokingChangeLabels,
-    smokingSetting: shishaSmokingSettings[step.setting],
-    changeAnswer,
-    settingAnswer,
-    isPastSmokingType: isPast,
-    questionHeading: getSmokingStepHeading(page, step.type, step.setting, isPast, step.setting ? settingAnswer : answer),
-    changeHeading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
-    errors,
-    actions: getSmokingTypeActions(step, steps)
-  })
+    isPastSmokingType: isPast
+  }))
 }
 
 /**
