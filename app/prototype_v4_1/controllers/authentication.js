@@ -31,7 +31,6 @@ exports.signIn_post = (req, res) => {
 }
 
 exports.securityCode_get = (req, res) => {
-
   res.render(view('authentication/security-code'), {
     actions: {
       back: `/prototype_${version}/sign-in`,
@@ -57,7 +56,6 @@ exports.securityCode_post = (req, res) => {
 }
 
 exports.signInAgreement_get = (req, res) => {
-
   res.render(view('authentication/sign-in-agreement'), {
     actions: {
       back: `/prototype_${version}/security-code`,
@@ -85,7 +83,6 @@ exports.signInAgreement_post = (req, res) => {
 }
 
 exports.signInAgreementDeclined_get = (req, res) => {
-
   res.render(view('authentication/sign-in-agreement-declined'), {
     actions: {
       back: `/prototype_${version}`

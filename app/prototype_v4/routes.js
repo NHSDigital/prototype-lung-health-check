@@ -92,7 +92,6 @@ router.get(`/prototype_${version}/not-eligible-for-scan`, questionController.not
 
 router.get(`/prototype_${version}/book-appointment`, questionController.bookAppointment_get)
 
-
 /// About you -------------------------------------------------------------- ///
 
 router.get(`/prototype_${version}/height-metric`, questionController.heightMetric_get)
