@@ -317,13 +317,6 @@ const formatQuantity = (value, singular, plural) => {
   return `${value} ${Number(value) === 1 ? singular : plural}`
 }
 
-const frequencyPeriods = {
-  daily: 'a day',
-  weekly: 'a week',
-  monthly: 'a month',
-  yearly: 'a year'
-}
-
 const escapeHtml = (value) => {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -365,9 +358,30 @@ const getSmokingComparisonQuantity = (type, answer) => {
   return getSmokingQuantity(type, answer)
 }
 
+const smokingFrequencyPeriods = {
+  daily: 'a day',
+  weekly: 'a week',
+  monthly: 'a month',
+  yearly: 'a year'
+}
+
+const getSmokingFrequencyPeriod = (frequency) => {
+  return smokingFrequencyPeriods[frequency] || ''
+}
+
+const applySmokingFrequencyPeriod = (heading = '', frequency) => {
+  const period = getSmokingFrequencyPeriod(frequency)
+
+  if (!period) {
+    return heading
+  }
+
+  return heading.replace(/in a normal (day|week|month|year)/, `in a normal ${period.replace(/^a /, '')}`)
+}
+
 const getSmokingCurrentAmount = (type, answer = {}) => {
   const quantity = getSmokingComparisonQuantity(type, answer.smokingQuantity)
-  const period = frequencyPeriods[answer.smokingFrequency]
+  const period = getSmokingFrequencyPeriod(answer.smokingFrequency)
 
   if (!quantity) {
     return ''
@@ -426,8 +440,9 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
   }
 }
 
-const getSmokingStepHeading = (page, type, setting, isPast = false) => {
+const getSmokingStepHeading = (page, type, setting, isPast = false, answer = {}) => {
   const smokingType = smokingTypes[type]
+  const frequency = answer.smokingFrequency
 
   if (!smokingType) {
     return ''
@@ -438,11 +453,11 @@ const getSmokingStepHeading = (page, type, setting, isPast = false) => {
     const settingHeadings = smokingType.settingHeadings?.[setting]?.[tense]
 
     if (settingHeadings) {
-      return settingHeadings[page.replace('smoking-', '')] || ''
+      return applySmokingFrequencyPeriod(settingHeadings[page.replace('smoking-', '')] || '', frequency)
     }
   }
 
-  return getSmokingTypeHeadings(type, isPast)[`${page.replace('smoking-', '')}Heading`] || ''
+  return applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, isPast)[`${page.replace('smoking-', '')}Heading`] || '', frequency)
 }
 
 const getSmokingChangeAnswer = (answer = {}, change) => {
@@ -481,14 +496,19 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
 
   if (page === 'smoking-frequency-change' || page === 'smoking-quantity-change') {
     const headingType = page === 'smoking-frequency-change' ? 'frequencyHeading' : 'quantityHeading'
-    const baseHeading = getSmokingTypeHeadings(type, true)[headingType]
+    const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true)[headingType], answer.smokingFrequency)
 
     return baseHeading ? `${baseHeading.replace('?', '')} ${comparisonText}?` : ''
   }
 
   if (page === 'smoking-years-change') {
-    const quantity = getSmokingQuantity(type, changeAnswer.quantity) || `[${smokingType.quantityUnit}]`
-    return `How many years did you smoke ${quantity} a day?`
+    const quantity = getSmokingQuantity(type, changeAnswer.quantity)
+
+    if (!quantity) {
+      return getQuestion('smoking-years-change').heading.title
+    }
+
+    return `How many years did you smoke ${[quantity, getSmokingFrequencyPeriod(answer.smokingFrequency)].filter(Boolean).join(' ')}?`
   }
 
   return ''
@@ -526,12 +546,12 @@ const getCheckYourAnswers = (answers = {}) => {
 
       return [
         makeSummaryRow({
-          key: getSmokingStepHeading('smoking-frequency', type, setting, isPast),
+          key: getSmokingStepHeading('smoking-frequency', type, setting, isPast, settingAnswer),
           value: formatValue(settingAnswer.smokingFrequency, valueLabels.smokingFrequency),
           href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type, setting })
         }),
         makeSummaryRow({
-          key: getSmokingStepHeading('smoking-quantity', type, setting, isPast),
+          key: getSmokingStepHeading('smoking-quantity', type, setting, isPast, settingAnswer),
           value: getSmokingQuantity(type, settingAnswer.smokingQuantity),
           href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type, setting })
         })
@@ -570,12 +590,12 @@ const getCheckYourAnswers = (answers = {}) => {
         href: getSmokingTypeStepUrl({ page: 'smoking-setting', type })
       }),
       type !== 'shisha' && makeSummaryRow({
-        key: smokingType.frequencyHeading,
+        key: getSmokingStepHeading('smoking-frequency', type, undefined, isPast, answer),
         value: formatValue(answer.smokingFrequency, valueLabels.smokingFrequency),
         href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type })
       }),
       type !== 'shisha' && makeSummaryRow({
-        key: smokingType.quantityHeading,
+        key: getSmokingStepHeading('smoking-quantity', type, undefined, isPast, answer),
         value: getSmokingQuantity(type, answer.smokingQuantity),
         href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type })
       }),
@@ -763,6 +783,15 @@ const lowerFirst = (value = '') => {
   return value ? `${value.charAt(0).toLowerCase()}${value.slice(1)}` : ''
 }
 
+const getAnswerPhraseFromHeading = (heading = '') => {
+  return lowerFirst(removeQuestionMark(heading))
+    .replace(/^how often did you smoke /, 'how often you smoked ')
+    .replace(/^how often do you smoke /, 'how often you smoke ')
+    .replace(/^(how (?:much|many) .+?) did you smoke /, '$1 you smoked ')
+    .replace(/^(how (?:much|many) .+?) do you currently smoke /, '$1 you currently smoke ')
+    .replace(/^(how (?:much|many) .+?) do you smoke /, '$1 you smoke ')
+}
+
 const getSelectWhetherText = (heading = '') => {
   const text = removeQuestionMark(heading)
   const hasChangedMatch = heading.match(/^Has (.+) changed over time\?$/)
@@ -788,19 +817,26 @@ const getSelectWhetherText = (heading = '') => {
 const getContextualRequiredErrorText = (question, overrides) => {
   const heading = overrides.heading?.title || question.heading?.title || ''
   const questionType = overrides.type || question.type
-  const headingText = removeQuestionMark(heading)
 
   if (heading.startsWith('How often')) {
-    return `Select ${lowerFirst(headingText)
-      .replace(/^how often did you smoke /, 'how often you smoked ')
-      .replace(/^how often do you smoke /, 'how often you smoke ')}`
+    return `Select ${getAnswerPhraseFromHeading(heading)}`
   }
 
   if (heading.startsWith('How much') || heading.startsWith('How many')) {
-    return `${questionType === 'single' ? 'Select' : 'Enter'} ${lowerFirst(headingText)}`
+    return `${questionType === 'single' ? 'Select' : 'Enter'} ${getAnswerPhraseFromHeading(heading)}`
   }
 
   return getSelectWhetherText(heading)
+}
+
+const getContextualInvalidErrorText = (question, overrides) => {
+  const heading = overrides.heading?.title || question.heading?.title || ''
+
+  if (heading.startsWith('How much') || heading.startsWith('How many')) {
+    return `Enter ${getAnswerPhraseFromHeading(heading)} using numbers`
+  }
+
+  return undefined
 }
 
 const getSmokingContentQuestionOverrides = ({
@@ -845,7 +881,7 @@ const getSmokingContentQuestionOverrides = ({
 
     return {
       heading: {
-        title: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType),
+        title: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType, isSettingSpecific ? settingAnswer : answer),
         caption: smokingType.caption
       },
       input: {
@@ -867,7 +903,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       type: isRollingTobacco ? 'single' : 'text',
       heading: {
-        title: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType),
+        title: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType, isSettingSpecific ? settingAnswer : answer),
         caption: smokingType.caption
       },
       input: {
@@ -1038,7 +1074,7 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
     changeAnswer,
     settingAnswer,
     isPastSmokingType: isPast,
-    questionHeading: getSmokingStepHeading(page, step.type, step.setting, isPast),
+    questionHeading: getSmokingStepHeading(page, step.type, step.setting, isPast, step.setting ? settingAnswer : answer),
     changeHeading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
     errors,
     actions: getSmokingTypeActions(step, steps)
@@ -1075,6 +1111,15 @@ const validateSmokingTypeQuestion = (req, page, step) => {
       ...question.errors?.required,
       ...overrides.errors?.required,
       text: getContextualRequiredErrorText(question, overrides),
+      href: `#${errorHref}`
+    }
+  }
+
+  if (questionType === 'text' && question.errors?.invalid) {
+    errors.invalid = {
+      ...question.errors.invalid,
+      ...overrides.errors?.invalid,
+      text: getContextualInvalidErrorText(question, overrides) || question.errors.invalid.text,
       href: `#${errorHref}`
     }
   }
