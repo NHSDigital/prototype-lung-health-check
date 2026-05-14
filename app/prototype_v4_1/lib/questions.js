@@ -45,18 +45,24 @@ const normaliseQuestion = (question) => {
   }
 }
 
-const loadQuestions = () => {
+const loadData = () => {
   const file = fs.readFileSync(questionsPath, 'utf8')
   const data = yaml.load(file) || {}
   const questions = (data.questions || []).map(normaliseQuestion)
 
-  return questions.reduce((index, question) => {
-    index[question.id] = question
-    return index
-  }, {})
+  return {
+    questions: questions.reduce((index, question) => {
+      index[question.id] = question
+      return index
+    }, {}),
+    tobaccoTypes: data.tobaccoTypes || {},
+    smokingChangeTypes: data.smokingChangeTypes || {},
+    shishaSmokingSettings: data.shishaSmokingSettings || {}
+  }
 }
 
-const questions = loadQuestions()
+const data = loadData()
+const questions = data.questions
 
 const getQuestion = (id) => {
   const question = questions[id]
@@ -82,5 +88,8 @@ const getQuestionValueLabels = (id) => {
 
 module.exports = {
   getQuestion,
-  getQuestionValueLabels
+  getQuestionValueLabels,
+  smokingChangeTypes: data.smokingChangeTypes,
+  shishaSmokingSettings: data.shishaSmokingSettings,
+  tobaccoTypes: data.tobaccoTypes
 }

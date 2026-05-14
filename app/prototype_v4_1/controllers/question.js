@@ -1,5 +1,11 @@
 const { nhsukDate } = require('../../filters/dates')
-const { getQuestion, getQuestionValueLabels } = require('../lib/questions')
+const {
+  getQuestion,
+  getQuestionValueLabels,
+  smokingChangeTypes,
+  shishaSmokingSettings,
+  tobaccoTypes: smokingTypes
+} = require('../lib/questions')
 
 const version = 'v4_1'
 
@@ -94,110 +100,7 @@ const isEligibleForScanAge = (dateOfBirth) => {
   return age >= 55 && age <= 74
 }
 
-const smokingTypes = {
-  cigarettes: {
-    caption: 'Cigarette smoking',
-    statusHeading: 'Do you currently smoke cigarettes?',
-    frequencyHeading: 'How often do you smoke cigarettes?',
-    quantityHeading: 'How many cigarettes do you currently smoke in a normal day?',
-    changeHeading: 'Has the number of cigarettes you normally smoke changed over time?',
-    quantityUnit: 'cigarettes',
-    singularSuffix: 'cigarette',
-    suffix: 'cigarettes'
-  },
-  rolling_tobacco: {
-    caption: 'Rolling tobacco smoking',
-    statusHeading: 'Do you currently smoke rolling tobacco or roll-ups?',
-    frequencyHeading: 'How often do you smoke rolling tobacco or roll-ups?',
-    quantityHeading: 'How much rolling tobacco do you currently smoke in a normal week?',
-    changeHeading: 'Has the amount of rolling tobacco you normally smoke changed over time?',
-    quantityUnit: 'rolling tobacco'
-  },
-  pipes: {
-    caption: 'Pipe smoking',
-    statusHeading: 'Do you currently smoke a pipe?',
-    frequencyHeading: 'How often do you smoke a pipe?',
-    quantityHeading: 'How many full pipe loads do you currently smoke in a normal day?',
-    changeHeading: 'Has the number of full pipe loads you normally smoke changed over time?',
-    quantityUnit: 'full pipe loads',
-    singularSuffix: 'full pipe load',
-    suffix: 'full pipe loads'
-  },
-  small_cigars: {
-    caption: 'Small cigar smoking',
-    statusHeading: 'Do you currently smoke small cigars?',
-    frequencyHeading: 'How often do you smoke small cigars?',
-    quantityHeading: 'How many small cigars do you currently smoke in a normal day?',
-    changeHeading: 'Has the number of small cigars you normally smoke changed over time?',
-    quantityUnit: 'small cigars',
-    singularSuffix: 'small cigar',
-    suffix: 'small cigars'
-  },
-  medium_cigars: {
-    caption: 'Medium cigar smoking',
-    statusHeading: 'Do you currently smoke medium cigars?',
-    frequencyHeading: 'How often do you smoke medium cigars?',
-    quantityHeading: 'How many medium cigars do you currently smoke in a normal day?',
-    changeHeading: 'Has the number of medium cigars you normally smoke changed over time?',
-    quantityUnit: 'medium cigars',
-    singularSuffix: 'medium cigar',
-    suffix: 'medium cigars'
-  },
-  large_cigars: {
-    caption: 'Large cigar smoking',
-    statusHeading: 'Do you currently smoke large cigars?',
-    frequencyHeading: 'How often do you smoke large cigars?',
-    quantityHeading: 'How many large cigars do you currently smoke in a normal day?',
-    changeHeading: 'Has the number of large cigars you normally smoke changed over time?',
-    quantityUnit: 'large cigars',
-    singularSuffix: 'large cigar',
-    suffix: 'large cigars'
-  },
-  cigarillos: {
-    caption: 'Cigarillo smoking',
-    statusHeading: 'Do you currently smoke cigarillos?',
-    frequencyHeading: 'How often do you smoke cigarillos?',
-    quantityHeading: 'How many cigarillos do you currently smoke in a normal day?',
-    changeHeading: 'Has the number of cigarillos you normally smoke changed over time?',
-    quantityUnit: 'cigarillos',
-    singularSuffix: 'cigarillo',
-    suffix: 'cigarillos'
-  },
-  shisha: {
-    caption: 'Shisha smoking',
-    statusHeading: 'Do you currently smoke shisha?',
-    settingHeading: 'Do you usually smoke shisha in a group or on your own?',
-    frequencyHeading: 'How often do you smoke shisha?',
-    quantityHeading: 'How many hours do you currently smoke shisha in a normal day?',
-    quantityUnit: 'hours',
-    singularSuffix: 'hour',
-    suffix: 'hours'
-  }
-}
-
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
-
-const smokingChangeTypes = {
-  greater: {
-    answerKey: 'smokingChangeIncrease',
-    label: 'more'
-  },
-  fewer: {
-    answerKey: 'smokingChangeDecrease',
-    label: 'fewer'
-  }
-}
-
-const shishaSmokingSettings = {
-  group: {
-    label: 'In a group',
-    headingText: 'in a group'
-  },
-  individual: {
-    label: 'By myself',
-    headingText: 'by yourself'
-  }
-}
 
 const getSelectedSmokingTypes = (answers = {}) => {
   const selectedTypes = Array.isArray(answers.smokingType)
@@ -494,27 +397,6 @@ const getShishaSettingAnswer = (answer = {}, setting) => {
   return setting ? answer[setting] || {} : {}
 }
 
-const getPastSmokingHeading = (heading = '') => {
-  return heading
-    .replace('How often do you smoke', 'How often did you smoke')
-    .replace('How many cigarettes do you currently smoke', 'How many cigarettes did you smoke')
-    .replace('How much rolling tobacco do you currently smoke', 'How much rolling tobacco did you smoke')
-    .replace('How many full pipe loads do you currently smoke', 'How many full pipe loads did you smoke')
-    .replace('How many small cigars do you currently smoke', 'How many small cigars did you smoke')
-    .replace('How many medium cigars do you currently smoke', 'How many medium cigars did you smoke')
-    .replace('How many large cigars do you currently smoke', 'How many large cigars did you smoke')
-    .replace('How many cigarillos do you currently smoke', 'How many cigarillos did you smoke')
-    .replace('How many hours do you currently smoke', 'How many hours did you smoke')
-    .replace('Do you usually smoke', 'Did you usually smoke')
-    .replace('Has the number of cigarettes you normally smoke changed over time?', 'Did the number of cigarettes you normally smoked change over time?')
-    .replace('Has the amount of rolling tobacco you normally smoke changed over time?', 'Did the amount of rolling tobacco you normally smoked change over time?')
-    .replace('Has the number of full pipe loads you normally smoke changed over time?', 'Did the number of full pipe loads you normally smoked change over time?')
-    .replace('Has the number of small cigars you normally smoke changed over time?', 'Did the number of small cigars you normally smoked change over time?')
-    .replace('Has the number of medium cigars you normally smoke changed over time?', 'Did the number of medium cigars you normally smoked change over time?')
-    .replace('Has the number of large cigars you normally smoke changed over time?', 'Did the number of large cigars you normally smoked change over time?')
-    .replace('Has the number of cigarillos you normally smoke changed over time?', 'Did the number of cigarillos you normally smoked change over time?')
-}
-
 const getSmokingTypeHeadings = (type, isPast = false) => {
   const smokingType = smokingTypes[type]
 
@@ -522,34 +404,32 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
     return {}
   }
 
-  if (!isPast) {
-    return smokingType
-  }
+  const currentHeadings = smokingType.headings?.current || {}
+  const tenseHeadings = smokingType.headings?.[isPast ? 'past' : 'current'] || currentHeadings
 
   return {
     ...smokingType,
-    frequencyHeading: getPastSmokingHeading(smokingType.frequencyHeading),
-    quantityHeading: getPastSmokingHeading(smokingType.quantityHeading),
-    changeHeading: getPastSmokingHeading(smokingType.changeHeading),
-    settingHeading: getPastSmokingHeading(smokingType.settingHeading)
+    statusHeading: currentHeadings.status,
+    frequencyHeading: tenseHeadings.frequency,
+    quantityHeading: tenseHeadings.quantity,
+    changeHeading: tenseHeadings.change,
+    settingHeading: tenseHeadings.setting
   }
 }
 
 const getSmokingStepHeading = (page, type, setting, isPast = false) => {
   const smokingType = smokingTypes[type]
-  const shishaSetting = shishaSmokingSettings[setting]
 
   if (!smokingType) {
     return ''
   }
 
-  if (type === 'shisha' && shishaSetting) {
-    if (page === 'smoking-frequency') {
-      return `How often ${isPast ? 'did' : 'do'} you smoke shisha ${shishaSetting.headingText}?`
-    }
+  if (type === 'shisha' && setting) {
+    const tense = isPast ? 'past' : 'current'
+    const settingHeadings = smokingType.settingHeadings?.[setting]?.[tense]
 
-    if (page === 'smoking-quantity') {
-      return `How many hours ${isPast ? 'did' : 'do'} you ${isPast ? '' : 'currently '}smoke shisha ${shishaSetting.headingText} in a normal day?`
+    if (settingHeadings) {
+      return settingHeadings[page.replace('smoking-', '')] || ''
     }
   }
 
@@ -590,12 +470,11 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
 
   const comparisonText = getSmokingChangeComparisonText(type, change, answer)
 
-  if (page === 'smoking-frequency-change') {
-    return `${smokingType.frequencyHeading.replace('How often do you smoke', 'How often did you smoke').replace('?', '')} ${comparisonText}?`
-  }
+  if (page === 'smoking-frequency-change' || page === 'smoking-quantity-change') {
+    const headingType = page === 'smoking-frequency-change' ? 'frequencyHeading' : 'quantityHeading'
+    const baseHeading = getSmokingTypeHeadings(type, true)[headingType]
 
-  if (page === 'smoking-quantity-change') {
-    return `${smokingType.quantityHeading.replace('do you', 'did you').replace('currently ', '').replace('?', '')} ${comparisonText}?`
+    return baseHeading ? `${baseHeading.replace('?', '')} ${comparisonText}?` : ''
   }
 
   if (page === 'smoking-years-change') {
