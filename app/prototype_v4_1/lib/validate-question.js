@@ -46,10 +46,14 @@ const isRealDate = (value = {}) => {
     date.getDate() === day
 }
 
-const makeError = (error) => {
+const getDefaultErrorHref = (question) => {
+  return `#${question.input?.id || question.id}`
+}
+
+const makeError = (error, defaultHref) => {
   return {
     text: error.text,
-    href: error.href
+    href: error.href || defaultHref
   }
 }
 
@@ -70,12 +74,12 @@ const validateConditional = (answers, question, errors) => {
         href: rule.href
       }
 
-      errors.push(makeError(error))
+      errors.push(makeError(error, rule.href))
       return
     }
 
     if (rule.type === 'number') {
-      validateNumber(conditionalValue, rule, question.errors, errors)
+      validateNumber(conditionalValue, rule, question.errors, errors, rule.href)
     }
   })
 }
@@ -103,20 +107,20 @@ const mergeQuestion = (question, overrides = {}) => {
   }
 }
 
-const validateNumber = (value, validation, errorsConfig, errors) => {
+const validateNumber = (value, validation, errorsConfig, errors, defaultHref) => {
   const number = Number(value)
 
   if (Number.isNaN(number)) {
-    errors.push(makeError(errorsConfig.invalid))
+    errors.push(makeError(errorsConfig.invalid, defaultHref))
     return
   }
 
   if (validation.min !== undefined && number < validation.min) {
-    errors.push(makeError(errorsConfig.min))
+    errors.push(makeError(errorsConfig.min, defaultHref))
   }
 
   if (validation.max !== undefined && number > validation.max) {
-    errors.push(makeError(errorsConfig.max))
+    errors.push(makeError(errorsConfig.max, defaultHref))
   }
 }
 
@@ -127,14 +131,15 @@ const validateInputGroup = (answers, question) => {
   ;(question.validation?.items || []).forEach((itemValidation) => {
     const value = groupValue[itemValidation.answerKey]
     const itemErrors = question.errors?.items?.[itemValidation.answerKey] || {}
+    const defaultHref = `#${itemValidation.id || itemValidation.answerKey}`
 
     if (itemValidation.required && isBlank(value)) {
-      errors.push(makeError(itemErrors.required))
+      errors.push(makeError(itemErrors.required, defaultHref))
       return
     }
 
     if (itemValidation.type === 'number' && !isBlank(value)) {
-      validateNumber(value, itemValidation, itemErrors, errors)
+      validateNumber(value, itemValidation, itemErrors, errors, defaultHref)
     }
   })
 
@@ -145,6 +150,7 @@ const validateQuestion = (answers = {}, id, overrides = {}) => {
   const question = mergeQuestion(getQuestion(id), overrides)
   const validation = question.validation || {}
   const errors = []
+  const defaultHref = getDefaultErrorHref(question)
 
   if (!validation.required && !validation.type && !validation.conditional && !validation.items) {
     return errors
@@ -159,12 +165,12 @@ const validateQuestion = (answers = {}, id, overrides = {}) => {
     const hasAnyDatePart = [value.day, value.month, value.year].some((item) => !isBlank(item))
 
     if (validation.required && !hasAnyDatePart) {
-      errors.push(makeError(question.errors.required))
+      errors.push(makeError(question.errors.required, defaultHref))
       return errors
     }
 
     if (hasAnyDatePart && !isRealDate(value)) {
-      errors.push(makeError(question.errors.invalid))
+      errors.push(makeError(question.errors.invalid, defaultHref))
     }
 
     return errors
@@ -173,12 +179,12 @@ const validateQuestion = (answers = {}, id, overrides = {}) => {
   const value = getAnswerValue(answers, question)
 
   if (validation.required && isBlank(value)) {
-    errors.push(makeError(question.errors.required))
+    errors.push(makeError(question.errors.required, defaultHref))
     return errors
   }
 
   if (validation.type === 'number' && !isBlank(value)) {
-    validateNumber(value, validation, question.errors, errors)
+    validateNumber(value, validation, question.errors, errors, defaultHref)
   }
 
   validateConditional(answers, question, errors)

@@ -1102,9 +1102,7 @@ const validateSmokingTypeQuestion = (req, page, step) => {
   })
   const questionType = overrides.type || getQuestion(page).type
   const question = getQuestion(page)
-  const errorHref = ['single', 'multiple'].includes(questionType)
-    ? overrides.input.name
-    : overrides.input.id
+  const errorHref = overrides.input.id || question.input.id
   const errors = {
     ...overrides.errors,
     required: {

@@ -93,26 +93,28 @@
         {% if question.type == "single" %}
           {{ radios({
             name: question.input.name,
+            idPrefix: question.input.id,
             fieldset: {
               legend: legend
             },
             hint: question.input.hintParam,
             errorMessage: {
-              text: errorMap[question.input.name].text
-            } if errorMap[question.input.name],
+              text: errorMap[question.input.id].text
+            } if errorMap[question.input.id],
             value: question.value if question.value is defined else data.answers[question.answerKey],
             items: componentItems
           }) }}
         {% elif question.type == "multiple" %}
           {{ checkboxes({
             name: question.input.name,
+            idPrefix: question.input.id,
             fieldset: {
               legend: legend
             },
             hint: question.input.hintParam,
             errorMessage: {
-              text: errorMap[question.input.name].text
-            } if errorMap[question.input.name],
+              text: errorMap[question.input.id].text
+            } if errorMap[question.input.id],
             values: question.values if question.values is defined else data.answers[question.answerKey],
             items: componentItems
           }) }}
