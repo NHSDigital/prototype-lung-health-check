@@ -277,6 +277,38 @@ questions:
       required:
         text: Select your sex at birth
 
+  - id: ethnicity
+    type: single
+    answerKey: ethnicity
+    heading:
+      title: Your ethnic background
+      caption: About you
+    description: |
+      We ask this question because your ethnicity may impact your chances of developing lung cancer.
+    input:
+      label: What is your ethnic background?
+    options:
+      - label: Asian or Asian British
+        value: asian_or_asian_british
+      - label: Black, African, Caribbean or Black British
+        value: black_african_caribbean_or_black british
+      - label: Mixed or multiple ethnic groups
+        value: mixed_or_multiple_ethnic_groups
+      - label: White
+        value: white
+      - label: Other ethnic group
+        value: other_ethnic_group
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Ethnic background
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select your ethnic background
+
   - id: education
     type: single
     answerKey: education

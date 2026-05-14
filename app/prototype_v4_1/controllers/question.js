@@ -252,14 +252,7 @@ const valueLabels = {
   cancerDiagnosisRelatives: getQuestionValueLabels('cancer-diagnosis-relatives'),
   cancerDiagnosisRelativesAge: getQuestionValueLabels('cancer-diagnosis-relatives-age'),
   education: getQuestionValueLabels('education'),
-  ethnicity: {
-    asian_or_asian_british: 'Asian or Asian British',
-    'black_african_caribbean_or_black british': 'Black, African, Caribbean or Black British',
-    mixed_or_multiple_ethnic_groups: 'Mixed or multiple ethnic groups',
-    white: 'White',
-    other_ethnic_group: 'Other ethnic group',
-    prefer_not_to_say: 'I prefer not to say'
-  },
+  ethnicity: getQuestionValueLabels('ethnicity'),
   faceToFaceAppointment: getQuestionValueLabels('face-to-face-appointment'),
   gender: getQuestionValueLabels('gender'),
   periodsStoppedSmoking: {
@@ -1467,27 +1460,23 @@ exports.sex_post = (req, res) => {
 }
 
 exports.ethnicity_get = (req, res) => {
-  res.render(view('questions/ethnicity'), {
-    actions: {
-      next: `/prototype_${version}/ethnicity`,
-      back: `/prototype_${version}/gender`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'ethnicity', {
+    next: `/prototype_${version}/ethnicity`,
+    back: `/prototype_${version}/sex`,
+    cancel: `/prototype_${version}/`
   })
 }
 
 exports.ethnicity_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'ethnicity')
 
   if (errors.length) {
-    res.render(view('questions/ethnicity'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/ehtnicity`,
-        back: `/prototype_${version}/gender`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'ethnicity', {
+      next: `/prototype_${version}/ethnicity`,
+      back: `/prototype_${version}/sex`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/education`)
   }
