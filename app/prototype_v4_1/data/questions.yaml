@@ -231,6 +231,7 @@ questions:
     answerKey: gender
     heading:
       title: Your gender identity
+      caption: About you
     description: |
       The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
 
@@ -261,6 +262,7 @@ questions:
     answerKey: sex
     heading:
       title: Your sex at birth
+      caption: About you
     description: |
       Your sex may impact your chances of developing lung cancer.
     input:
@@ -284,6 +286,7 @@ questions:
     answerKey: education
     heading:
       title: Your education
+      caption: About you
     description: |
       We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
 
@@ -325,6 +328,7 @@ questions:
     answerKey: respiratoryConditions
     heading:
       title: Have you ever been diagnosed with any of the following respiratory conditions?
+      caption: Your health
     input:
       hint: Select all that apply
     options:
@@ -397,6 +401,7 @@ questions:
     answerKey: asbestosAtWork
     heading:
       title: Tell us if you might have been exposed to asbestos at work
+      caption: Your health
     description: |
       You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
 
@@ -448,6 +453,7 @@ questions:
     answerKey: asbestosAtHome
     heading:
       title: Tell us if you ever lived with anyone who worked with asbestos
+      caption: Your health
     description: |
       If you lived with someone who worked with asbestos you may have been exposed to asbestos. For example, if you washed the clothes they worked in.
 
@@ -485,6 +491,7 @@ questions:
     answerKey: cancerDiagnosis
     heading:
       title: Tell us if you have ever been diagnosed with cancer
+      caption: Your health
     description: |
       If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.
     input:
@@ -508,6 +515,7 @@ questions:
     answerKey: cancerDiagnosisRelatives
     heading:
       title: Tell us if your parents, siblings or children have ever been diagnosed with lung cancer
+      caption: Your family history
     description: |
       If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
 
@@ -535,6 +543,7 @@ questions:
     answerKey: cancerDiagnosisRelativesAge
     heading:
       title: If your relatives were under 60 when they were diagnosed
+      caption: Your family history
     description: |
       We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.
 
@@ -562,6 +571,7 @@ questions:
     answerKey: ageStartedSmoking
     heading:
       title: How old were you when you started smoking?
+      caption: Your smoking habits
     input:
       hint: Give an estimate if you are not sure
       prefix: Age
@@ -593,6 +603,7 @@ questions:
     answerKey: ageStoppedSmoking
     heading:
       title: How old were you when you stopped smoking?
+      caption: Your smoking habits
     input:
       hint: Give an estimate if you are not sure
       prefix: Age
@@ -624,6 +635,7 @@ questions:
     answerKey: periodsStoppedSmoking
     heading:
       title: Periods when you stopped smoking
+      caption: Your smoking habits
     description: |
       There may have been periods when you stopped or quit smoking.
 
@@ -716,6 +728,7 @@ questions:
     answerKey: height
     heading:
       title: Your height
+      caption: About you
     description: |
       An accurate measurement is important.
 
@@ -756,6 +769,7 @@ questions:
     answerKey: height
     heading:
       title: Your height
+      caption: About you
     description: |
       An accurate measurement is important.
 
@@ -828,6 +842,7 @@ questions:
     answerKey: weight
     heading:
       title: Your weight
+      caption: About you
     description: |
       An accurate measurement is important.
 
@@ -868,6 +883,7 @@ questions:
     answerKey: weight
     heading:
       title: Your weight
+      caption: About you
     description: |
       An accurate measurement is important.
 
@@ -940,6 +956,7 @@ questions:
     answerKey: smokingType
     heading:
       title: The type of tobacco you smoke or used to smoke
+      caption: Your smoking habits
     description: |
       Smoking affects your health in different ways depending on what you smoke.
 
