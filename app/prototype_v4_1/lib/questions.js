@@ -20,7 +20,8 @@ const toComponentItem = (option) => {
     hint: option.hint ? { text: option.hint } : undefined,
     value: option.value,
     exclusive: option.exclusive,
-    exclusiveGroup: option.exclusiveGroup
+    exclusiveGroup: option.exclusiveGroup,
+    conditionalInput: option.conditionalInput
   }
 }
 

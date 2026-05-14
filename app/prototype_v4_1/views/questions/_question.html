@@ -50,6 +50,43 @@
           } %}
         {% endif %}
 
+        {% set componentItems = [] %}
+        {% for item in question.items %}
+          {% if item.conditionalInput %}
+            {% set conditionalHtml %}
+              {{ input({
+                id: item.conditionalInput.id,
+                name: item.conditionalInput.name,
+                label: {
+                  text: item.conditionalInput.label,
+                  isPageHeading: false,
+                  classes: "nhsuk-label--s"
+                },
+                hint: {
+                  text: item.conditionalInput.hint
+                } if item.conditionalInput.hint,
+                suffix: item.conditionalInput.suffix,
+                prefix: item.conditionalInput.prefix,
+                inputmode: item.conditionalInput.inputmode,
+                value: data.answers[item.conditionalInput.answerKey],
+                classes: item.conditionalInput.classes
+              }) }}
+            {% endset %}
+            {% set _ = componentItems.push({
+              text: item.text,
+              hint: item.hint,
+              value: item.value,
+              exclusive: item.exclusive,
+              exclusiveGroup: item.exclusiveGroup,
+              conditional: {
+                html: conditionalHtml
+              }
+            }) %}
+          {% else %}
+            {% set _ = componentItems.push(item) %}
+          {% endif %}
+        {% endfor %}
+
         {% if question.type == "single" %}
           {{ radios({
             name: question.input.name,
@@ -58,7 +95,7 @@
             },
             hint: question.input.hintParam,
             value: data.answers[question.answerKey],
-            items: question.items
+            items: componentItems
           }) }}
         {% elif question.type == "multiple" %}
           {{ checkboxes({
@@ -68,7 +105,7 @@
             },
             hint: question.input.hintParam,
             values: data.answers[question.answerKey],
-            items: question.items
+            items: componentItems
           }) }}
         {% elif question.type == "text" %}
           {% if question.input.isPageHeading %}
@@ -93,12 +130,75 @@
             prefix: question.input.prefix,
             suffix: question.input.suffix,
             inputmode: question.input.inputmode,
-            value: data.answers[question.answerKey],
+            value: data.answers[question.answerKey][question.input.valueKey] if question.input.valueKey else data.answers[question.answerKey],
             classes: question.input.classes,
             errorMessage: {
               text: errors[0].text
             } if errors | length
           }) }}
+        {% elif question.type == "date" %}
+          {{ dateInput({
+            id: question.answerKey,
+            fieldset: {
+              legend: legend
+            },
+            hint: question.input.hintParam,
+            errorMessage: {
+              text: errors[0].text
+            } if errors | length,
+            items: [
+              {
+                id: question.input.items[0].id,
+                name: question.input.items[0].name,
+                label: question.input.items[0].label,
+                value: data.answers[question.answerKey][question.input.items[0].answerKey],
+                classes: question.input.items[0].classes
+              },
+              {
+                id: question.input.items[1].id,
+                name: question.input.items[1].name,
+                label: question.input.items[1].label,
+                value: data.answers[question.answerKey][question.input.items[1].answerKey],
+                classes: question.input.items[1].classes
+              },
+              {
+                id: question.input.items[2].id,
+                name: question.input.items[2].name,
+                label: question.input.items[2].label,
+                value: data.answers[question.answerKey][question.input.items[2].answerKey],
+                classes: question.input.items[2].classes
+              }
+            ]
+          }) }}
+        {% elif question.type == "input_group" %}
+          {% call fieldset({
+            legend: legend
+          }) %}
+            <div class="nhsuk-grid-row">
+              {% for item in question.input.items %}
+                <div class="nhsuk-grid-column-one-quarter">
+                  {{ input({
+                    id: item.id,
+                    name: item.name,
+                    label: {
+                      text: item.label
+                    },
+                    suffix: item.suffix,
+                    prefix: item.prefix,
+                    inputmode: item.inputmode,
+                    value: data.answers[question.answerKey][question.input.valueKey][item.answerKey],
+                    classes: item.classes
+                  }) }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endcall %}
+        {% endif %}
+
+        {% if question.switchUnits %}
+          <p class="nhsuk-body">
+            <a href="{{ actions.switchUnits }}" class="nhsuk-link">{{ question.switchUnits.text }}</a>
+          </p>
         {% endif %}
 
         {{ button({

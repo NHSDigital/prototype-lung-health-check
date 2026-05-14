@@ -1021,12 +1021,10 @@ exports.smoker_post = (req, res) => {
 }
 
 exports.dateOfBirth_get = (req, res) => {
-  res.render(view('questions/date-of-birth'), {
-    actions: {
-      next: `/prototype_${version}/date-of-birth`,
-      back: `/prototype_${version}/smoker`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'date-of-birth', {
+    next: `/prototype_${version}/date-of-birth`,
+    back: `/prototype_${version}/smoker`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1043,14 +1041,11 @@ exports.dateOfBirth_post = (req, res) => {
   }
 
   if (errors.length) {
-    res.render(view('questions/date-of-birth'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/date-of-birth`,
-        back: `/prototype_${version}/smoker`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'date-of-birth', {
+      next: `/prototype_${version}/date-of-birth`,
+      back: `/prototype_${version}/smoker`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     if (!isEligibleForScanAge(dateOfBirth)) {
       res.redirect(`/prototype_${version}/not-eligible-for-scan`)
@@ -1119,13 +1114,11 @@ exports.bookAppointment_get = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.heightMetric_get = (req, res) => {
-  res.render(view('questions/height-metric'), {
-    actions: {
-      next: `/prototype_${version}/height-metric`,
-      switchUnits: `/prototype_${version}/height-imperial`,
-      back: `/prototype_${version}/face-to-face-appointment`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'height-metric', {
+    next: `/prototype_${version}/height-metric`,
+    switchUnits: `/prototype_${version}/height-imperial`,
+    back: `/prototype_${version}/face-to-face-appointment`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1134,15 +1127,12 @@ exports.heightMetric_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/height-metric'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/height-metric`,
-        switchUnits: `/prototype_${version}/height-imperial`,
-        back: `/prototype_${version}/face-to-face-appointment`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'height-metric', {
+      next: `/prototype_${version}/height-metric`,
+      switchUnits: `/prototype_${version}/height-imperial`,
+      back: `/prototype_${version}/face-to-face-appointment`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     delete answers.height?.imperial
     res.redirect(getWeightNext(req, 'metric'))
@@ -1150,13 +1140,11 @@ exports.heightMetric_post = (req, res) => {
 }
 
 exports.heightImperial_get = (req, res) => {
-  res.render(view('questions/height-imperial'), {
-    actions: {
-      next: `/prototype_${version}/height-imperial`,
-      switchUnits: `/prototype_${version}/height-metric`,
-      back: `/prototype_${version}/face-to-face-appointment`,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'height-imperial', {
+    next: `/prototype_${version}/height-imperial`,
+    switchUnits: `/prototype_${version}/height-metric`,
+    back: `/prototype_${version}/face-to-face-appointment`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1165,15 +1153,12 @@ exports.heightImperial_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/height-imperial'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/height-imperial`,
-        switchUnits: `/prototype_${version}/height-metric`,
-        back: `/prototype_${version}/face-to-face-appointment`,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'height-imperial', {
+      next: `/prototype_${version}/height-imperial`,
+      switchUnits: `/prototype_${version}/height-metric`,
+      back: `/prototype_${version}/face-to-face-appointment`,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     delete answers.height?.metric
     res.redirect(getWeightNext(req, 'imperial'))
@@ -1183,13 +1168,11 @@ exports.heightImperial_post = (req, res) => {
 exports.weightMetric_get = (req, res) => {
   const back = getHeightBack(req)
 
-  res.render(view('questions/weight-metric'), {
-    actions: {
-      next: `/prototype_${version}/weight-metric`,
-      switchUnits: `/prototype_${version}/weight-imperial`,
-      back,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'weight-metric', {
+    next: `/prototype_${version}/weight-metric`,
+    switchUnits: `/prototype_${version}/weight-imperial`,
+    back,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1199,15 +1182,12 @@ exports.weightMetric_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/weight-metric'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/weight-metric`,
-        switchUnits: `/prototype_${version}/weight-imperial`,
-        back,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'weight-metric', {
+      next: `/prototype_${version}/weight-metric`,
+      switchUnits: `/prototype_${version}/weight-imperial`,
+      back,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     delete answers.weight?.imperial
     res.redirect(`/prototype_${version}/gender`)
@@ -1217,13 +1197,11 @@ exports.weightMetric_post = (req, res) => {
 exports.weightImperial_get = (req, res) => {
   const back = getHeightBack(req)
 
-  res.render(view('questions/weight-imperial'), {
-    actions: {
-      next: `/prototype_${version}/weight-imperial`,
-      switchUnits: `/prototype_${version}/weight-metric`,
-      back,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'weight-imperial', {
+    next: `/prototype_${version}/weight-imperial`,
+    switchUnits: `/prototype_${version}/weight-metric`,
+    back,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -1233,15 +1211,12 @@ exports.weightImperial_post = (req, res) => {
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/weight-imperial'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/weight-imperial`,
-        switchUnits: `/prototype_${version}/weight-metric`,
-        back,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'weight-imperial', {
+      next: `/prototype_${version}/weight-imperial`,
+      switchUnits: `/prototype_${version}/weight-metric`,
+      back,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     delete answers.weight?.metric
     res.redirect(`/prototype_${version}/gender`)
@@ -1574,32 +1549,27 @@ exports.ageStoppedSmoking_post = (req, res) => {
 }
 
 exports.periodsStoppedSmoking_get = (req, res) => {
-  const { answers } = req.session.data
+  const answers = req.session.data.answers || {}
   const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
 
-  res.render(view('questions/periods-stopped-smoking'), {
-    actions: {
-      next: `/prototype_${version}/periods-stopped-smoking`,
-      back,
-      cancel: `/prototype_${version}/`
-    }
+  renderQuestion(res, 'periods-stopped-smoking', {
+    next: `/prototype_${version}/periods-stopped-smoking`,
+    back,
+    cancel: `/prototype_${version}/`
   })
 }
 
 exports.periodsStoppedSmoking_post = (req, res) => {
-  const { answers } = req.session.data
+  const answers = req.session.data.answers || {}
   const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
   const errors = []
 
   if (errors.length) {
-    res.render(view('questions/periods-stopped-smoking'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/periods-stopped-smoking`,
-        back,
-        cancel: `/prototype_${version}/`
-      }
-    })
+    renderQuestion(res, 'periods-stopped-smoking', {
+      next: `/prototype_${version}/periods-stopped-smoking`,
+      back,
+      cancel: `/prototype_${version}/`
+    }, errors)
   } else {
     if (answers.periodsStoppedSmoking === 'no') {
       delete answers.yearsStoppedSmoking

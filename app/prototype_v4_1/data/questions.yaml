@@ -352,3 +352,165 @@ questions:
       classes: nhsuk-input--width-2
     summary:
       label: Age you stopped smoking
+
+  - id: periods-stopped-smoking
+    type: single
+    answerKey: periodsStoppedSmoking
+    heading:
+      title: Periods when you stopped smoking
+    description: |
+      There may have been periods when you stopped or quit smoking.
+
+      If you stopped smoking for periods of 1 year or longer, tell us the total number of years you stopped smoking.
+    input:
+      label: Have you ever stopped smoking for periods of 1 year or longer?
+    options:
+      - label: Yes
+        value: yes
+        conditionalInput:
+          id: years-stopped-smoking
+          name: answers[yearsStoppedSmoking]
+          answerKey: yearsStoppedSmoking
+          label: Enter the total number of years you stopped smoking
+          hint: Give an estimate if you are not sure
+          suffix: Years
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+      - label: No
+        value: no
+    summary:
+      label: Stopped smoking for periods of 1 year or longer
+
+  - id: date-of-birth
+    type: date
+    answerKey: dateOfBirth
+    heading:
+      title: What is your date of birth?
+    input:
+      hint: For example, 15 3 1964
+      items:
+        - id: dateOfBirth-day
+          name: answers[dateOfBirth][day]
+          label: Day
+          answerKey: day
+          classes: nhsuk-input--width-2
+        - id: dateOfBirth-month
+          name: answers[dateOfBirth][month]
+          label: Month
+          answerKey: month
+          classes: nhsuk-input--width-2
+        - id: dateOfBirth-year
+          name: answers[dateOfBirth][year]
+          label: Year
+          answerKey: year
+          classes: nhsuk-input--width-4
+    summary:
+      label: Date of birth
+
+  - id: height-metric
+    type: text
+    answerKey: height
+    heading:
+      title: Your height
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+    input:
+      id: height-metric
+      name: answers[height][metric]
+      valueKey: metric
+      label: What is your height in centimetres?
+      suffix: cm
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to feet and inches
+    summary:
+      label: Height
+
+  - id: height-imperial
+    type: input_group
+    answerKey: height
+    heading:
+      title: Your height
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+    input:
+      label: What is your height in feet and inches?
+      valueKey: imperial
+      items:
+        - id: height-imperial-feet
+          name: answers[height][imperial][feet]
+          label: Feet
+          answerKey: feet
+          suffix: ft
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+        - id: height-imperial-inches
+          name: answers[height][imperial][inches]
+          label: Inches
+          answerKey: inches
+          suffix: in
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to centimetres
+    summary:
+      label: Height
+
+  - id: weight-metric
+    type: text
+    answerKey: weight
+    heading:
+      title: Your weight
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+    input:
+      id: weight-metric
+      name: answers[weight][metric]
+      valueKey: metric
+      label: What is your weight in kilograms?
+      suffix: kg
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to stones and pounds
+    summary:
+      label: Weight
+
+  - id: weight-imperial
+    type: input_group
+    answerKey: weight
+    heading:
+      title: Your weight
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+    input:
+      label: What is your weight in stones and pounds?
+      valueKey: imperial
+      items:
+        - id: weight-imperial-stones
+          name: answers[weight][imperial][stones]
+          label: Stones
+          answerKey: stones
+          suffix: st
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+        - id: weight-imperial-pounds
+          name: answers[weight][imperial][pounds]
+          label: Pounds
+          answerKey: pounds
+          suffix: lb
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to kilograms
+    summary:
+      label: Weight
