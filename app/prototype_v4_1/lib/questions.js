@@ -3,6 +3,12 @@ const path = require('path')
 const yaml = require('js-yaml')
 
 const questionsPath = path.join(__dirname, '../data/questions.yaml')
+const tobaccoPath = path.join(__dirname, '../data/tobacco.yaml')
+
+const loadYaml = (filePath) => {
+  const file = fs.readFileSync(filePath, 'utf8')
+  return yaml.load(file) || {}
+}
 
 const toAnswerName = (id) => {
   return id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
@@ -46,18 +52,18 @@ const normaliseQuestion = (question) => {
 }
 
 const loadData = () => {
-  const file = fs.readFileSync(questionsPath, 'utf8')
-  const data = yaml.load(file) || {}
-  const questions = (data.questions || []).map(normaliseQuestion)
+  const questionsData = loadYaml(questionsPath)
+  const tobaccoData = loadYaml(tobaccoPath)
+  const questions = (questionsData.questions || []).map(normaliseQuestion)
 
   return {
     questions: questions.reduce((index, question) => {
       index[question.id] = question
       return index
     }, {}),
-    tobaccoTypes: data.tobaccoTypes || {},
-    smokingChangeTypes: data.smokingChangeTypes || {},
-    shishaSmokingSettings: data.shishaSmokingSettings || {}
+    tobaccoTypes: tobaccoData.tobaccoTypes || {},
+    smokingChangeTypes: tobaccoData.smokingChangeTypes || {},
+    shishaSmokingSettings: tobaccoData.shishaSmokingSettings || {}
   }
 }
 
