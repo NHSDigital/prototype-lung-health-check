@@ -10,10 +10,49 @@ const { validateQuestion } = require('../lib/validate-question')
 
 const version = 'v4_1'
 
+/**
+ * @typedef {Object} ActionLinks
+ * @property {string} next - Form post URL.
+ * @property {string} [back] - Back link URL.
+ * @property {string} [cancel] - Cancel link URL.
+ * @property {string} [switchUnits] - Optional unit-switch URL.
+ * @property {string} [onward] - Redirect URL after a successful post.
+ */
+
+/**
+ * @typedef {Object} SmokingTypeStep
+ * @property {string} page - Route/page id for the step.
+ * @property {string} type - Tobacco type key, for example cigarettes.
+ * @property {string} [setting] - Shisha setting key.
+ * @property {string} [change] - Smoking change key.
+ */
+
+/**
+ * @typedef {Object} SummaryRow
+ * @property {Object} key - NHS summary-list key config.
+ * @property {Object} [value] - NHS summary-list value config.
+ * @property {Object} actions - NHS summary-list actions config.
+ */
+
+/**
+ * Build a prototype v4_1 view path.
+ *
+ * @param {string} template - Template path below the prototype views folder.
+ * @returns {string} Nunjucks template path.
+ */
 const view = (template) => {
   return `prototype_${version}/views/${template}`
 }
 
+/**
+ * Render a YAML-backed question using optional runtime overrides.
+ *
+ * @param {Object} res - Express response object.
+ * @param {string} id - Question id from questions.yaml.
+ * @param {ActionLinks} actions - URLs used by the generic question template.
+ * @param {Object[]} [errors] - Validation errors for the question.
+ * @param {Object} [overrides] - Runtime overrides for dynamic question content.
+ */
 const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
   const question = getQuestion(id)
   const errorMap = errors.reduce((map, error) => {
@@ -43,18 +82,37 @@ const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
   })
 }
 
+/**
+ * Resolve the back link for weight pages based on the height unit answered.
+ *
+ * @param {Object} req - Express request object.
+ * @returns {string} Back link URL.
+ */
 const getHeightBack = (req) => {
   const { answers } = req.session.data
 
   return answers?.height?.imperial ? `/prototype_${version}/height-imperial` : `/prototype_${version}/height-metric`
 }
 
+/**
+ * Resolve the back link after weight pages based on the weight unit answered.
+ *
+ * @param {Object} req - Express request object.
+ * @returns {string} Back link URL.
+ */
 const getWeightBack = (req) => {
   const { answers } = req.session.data
 
   return answers?.weight?.imperial ? `/prototype_${version}/weight-imperial` : `/prototype_${version}/weight-metric`
 }
 
+/**
+ * Resolve the next weight page after height, preserving an existing unit choice.
+ *
+ * @param {Object} req - Express request object.
+ * @param {string} defaultUnit - Unit to use when no weight unit has been chosen.
+ * @returns {string} Next weight page URL.
+ */
 const getWeightNext = (req, defaultUnit) => {
   const { answers } = req.session.data
 
@@ -69,6 +127,12 @@ const getWeightNext = (req, defaultUnit) => {
   return `/prototype_${version}/weight-${defaultUnit}`
 }
 
+/**
+ * Convert date-of-birth answer parts into a Date object.
+ *
+ * @param {Object} answers - Session answers object.
+ * @returns {Date|boolean} Date of birth, or false when the parts are invalid.
+ */
 const getDateOfBirth = (answers) => {
   const day = Number(answers?.dateOfBirth?.day)
   const month = Number(answers?.dateOfBirth?.month)
@@ -91,6 +155,12 @@ const getDateOfBirth = (answers) => {
   return date
 }
 
+/**
+ * Calculate an age in years from a Date.
+ *
+ * @param {Date} dateOfBirth - Date of birth.
+ * @returns {number} Age in years.
+ */
 const getAge = (dateOfBirth) => {
   const today = new Date()
   let age = today.getFullYear() - dateOfBirth.getFullYear()
@@ -103,6 +173,12 @@ const getAge = (dateOfBirth) => {
   return age
 }
 
+/**
+ * Check whether a person is in the scan-eligible age range.
+ *
+ * @param {Date} dateOfBirth - Date of birth.
+ * @returns {boolean} True when age is between 55 and 74 inclusive.
+ */
 const isEligibleForScanAge = (dateOfBirth) => {
   const age = getAge(dateOfBirth)
 
@@ -111,6 +187,12 @@ const isEligibleForScanAge = (dateOfBirth) => {
 
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
 
+/**
+ * Get selected tobacco types in tobacco.yaml order.
+ *
+ * @param {Object} answers - Session answers object.
+ * @returns {string[]} Selected tobacco type keys.
+ */
 const getSelectedSmokingTypes = (answers = {}) => {
   const selectedTypes = Array.isArray(answers.smokingType)
     ? answers.smokingType
@@ -119,6 +201,11 @@ const getSelectedSmokingTypes = (answers = {}) => {
   return Object.keys(smokingTypes).filter((type) => selectedTypes.includes(type))
 }
 
+/**
+ * Remove nested answers for tobacco types the user has unselected.
+ *
+ * @param {Object} answers - Session answers object, mutated in place.
+ */
 const deleteUnselectedSmokingTypeAnswers = (answers = {}) => {
   const selectedTypes = getSelectedSmokingTypes(answers)
 
@@ -129,6 +216,12 @@ const deleteUnselectedSmokingTypeAnswers = (answers = {}) => {
   })
 }
 
+/**
+ * Get selected smoking change options in tobacco.yaml order.
+ *
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {string[]} Selected smoking change keys.
+ */
 const getSelectedSmokingChanges = (answer = {}) => {
   const selectedChanges = Array.isArray(answer.smokingChange)
     ? answer.smokingChange
@@ -137,6 +230,11 @@ const getSelectedSmokingChanges = (answer = {}) => {
   return Object.keys(smokingChangeTypes).filter((change) => selectedChanges.includes(change))
 }
 
+/**
+ * Remove nested changed-smoking answers for unselected change options.
+ *
+ * @param {Object} answer - Answer object for one tobacco type, mutated in place.
+ */
 const deleteUnselectedSmokingChangeAnswers = (answer = {}) => {
   const selectedChanges = getSelectedSmokingChanges(answer)
 
@@ -147,6 +245,12 @@ const deleteUnselectedSmokingChangeAnswers = (answer = {}) => {
   })
 }
 
+/**
+ * Get selected shisha settings in tobacco.yaml order.
+ *
+ * @param {Object} answer - Shisha answer object.
+ * @returns {string[]} Selected shisha setting keys.
+ */
 const getSelectedShishaSettings = (answer = {}) => {
   const selectedSettings = Array.isArray(answer.smokingSetting)
     ? answer.smokingSetting
@@ -155,6 +259,11 @@ const getSelectedShishaSettings = (answer = {}) => {
   return Object.keys(shishaSmokingSettings).filter((setting) => selectedSettings.includes(setting))
 }
 
+/**
+ * Remove nested shisha answers for unselected settings.
+ *
+ * @param {Object} answer - Shisha answer object, mutated in place.
+ */
 const deleteUnselectedShishaSettingAnswers = (answer = {}) => {
   const selectedSettings = getSelectedShishaSettings(answer)
 
@@ -165,6 +274,12 @@ const deleteUnselectedShishaSettingAnswers = (answer = {}) => {
   })
 }
 
+/**
+ * Build the tobacco sub-flow steps from selected tobacco answers.
+ *
+ * @param {Object} answers - Session answers object.
+ * @returns {SmokingTypeStep[]} Ordered tobacco sub-flow steps.
+ */
 const getSmokingTypeSteps = (answers = {}) => {
   const includeSmokingStatus = answers.smoker !== 'yes_previous'
 
@@ -197,6 +312,12 @@ const getSmokingTypeSteps = (answers = {}) => {
   })
 }
 
+/**
+ * Build a URL for a tobacco sub-flow step.
+ *
+ * @param {SmokingTypeStep} step - Tobacco sub-flow step.
+ * @returns {string} Step URL including query parameters.
+ */
 const getSmokingTypeStepUrl = (step) => {
   const searchParams = new URLSearchParams({ type: step.type })
 
@@ -211,6 +332,12 @@ const getSmokingTypeStepUrl = (step) => {
   return `/prototype_${version}/${step.page}?${searchParams}`
 }
 
+/**
+ * Format a date of birth for check-your-answers.
+ *
+ * @param {Object} dateOfBirth - Date parts keyed by day, month and year.
+ * @returns {string} Formatted date, or an empty string when incomplete.
+ */
 const formatDateOfBirth = (dateOfBirth = {}) => {
   if (!dateOfBirth.day || !dateOfBirth.month || !dateOfBirth.year) {
     return ''
@@ -221,6 +348,12 @@ const formatDateOfBirth = (dateOfBirth = {}) => {
   )
 }
 
+/**
+ * Format a height answer for check-your-answers.
+ *
+ * @param {Object} height - Height answer object.
+ * @returns {string} Formatted height.
+ */
 const formatHeight = (height = {}) => {
   if (height.metric) {
     return `${height.metric} cm`
@@ -233,6 +366,12 @@ const formatHeight = (height = {}) => {
   return ''
 }
 
+/**
+ * Format a weight answer for check-your-answers.
+ *
+ * @param {Object} weight - Weight answer object.
+ * @returns {string} Formatted weight.
+ */
 const formatWeight = (weight = {}) => {
   if (weight.metric) {
     return `${weight.metric} kg`
@@ -270,6 +409,13 @@ const valueLabels = {
   smokingType: getQuestionValueLabels('smoking-type')
 }
 
+/**
+ * Format one or more stored values using display labels.
+ *
+ * @param {string|string[]} value - Submitted value or values.
+ * @param {Object.<string, string>} labels - Value-to-label map.
+ * @returns {string} Comma-separated display labels.
+ */
 const formatValue = (value, labels) => {
   if (!value) {
     return ''
@@ -280,6 +426,17 @@ const formatValue = (value, labels) => {
   return values.map((item) => labels?.[item] || item).join(', ')
 }
 
+/**
+ * Build an NHS summary-list row.
+ *
+ * @param {Object} row - Row config.
+ * @param {string} row.key - Question text.
+ * @param {string} [row.value] - Plain text answer value.
+ * @param {string} [row.html] - HTML answer value.
+ * @param {string} row.href - Change link URL.
+ * @param {string} [row.visuallyHiddenText] - Custom visually hidden action text.
+ * @returns {SummaryRow|boolean} Summary row, or false when there is no value.
+ */
 const makeSummaryRow = ({ key, value, html, href, visuallyHiddenText }) => {
   if (!value && !html) {
     return false
@@ -304,12 +461,32 @@ const makeSummaryRow = ({ key, value, html, href, visuallyHiddenText }) => {
   }
 }
 
+/**
+ * Remove empty rows from a summary-list row collection.
+ *
+ * @param {Array<SummaryRow|boolean>} rows - Summary rows.
+ * @returns {SummaryRow[]} Visible rows.
+ */
 const makeSummaryRows = (rows) => rows.filter(Boolean)
 
+/**
+ * Format a numeric quantity with singular or plural unit text.
+ *
+ * @param {string|number} value - Numeric value.
+ * @param {string} singular - Singular unit.
+ * @param {string} plural - Plural unit.
+ * @returns {string} Formatted quantity.
+ */
 const formatQuantity = (value, singular, plural) => {
   return `${value} ${Number(value) === 1 ? singular : plural}`
 }
 
+/**
+ * Escape HTML before manually building a summary-list HTML value.
+ *
+ * @param {*} value - Value to escape.
+ * @returns {string} Escaped HTML string.
+ */
 const escapeHtml = (value) => {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -319,6 +496,13 @@ const escapeHtml = (value) => {
     .replace(/'/g, '&#39;')
 }
 
+/**
+ * Format a tobacco quantity answer with the correct unit label.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} answer - Submitted quantity answer.
+ * @returns {string} Display quantity.
+ */
 const getSmokingQuantity = (type, answer) => {
   if (!answer) {
     return ''
@@ -334,6 +518,12 @@ const getSmokingQuantity = (type, answer) => {
     : answer
 }
 
+/**
+ * Format rolling tobacco boundary values for "more/fewer than" comparisons.
+ *
+ * @param {string} answer - Submitted rolling tobacco quantity.
+ * @returns {string} Quantity text for comparison labels.
+ */
 const getRollingTobaccoComparisonQuantity = (answer) => {
   const comparisonQuantities = {
     less_than_10: '10g',
@@ -343,6 +533,13 @@ const getRollingTobaccoComparisonQuantity = (answer) => {
   return comparisonQuantities[answer] || getSmokingQuantity('rolling_tobacco', answer)
 }
 
+/**
+ * Format a tobacco quantity for changed-smoking comparison text.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} answer - Submitted quantity answer.
+ * @returns {string} Quantity text for comparison labels.
+ */
 const getSmokingComparisonQuantity = (type, answer) => {
   if (type === 'rolling_tobacco') {
     return getRollingTobaccoComparisonQuantity(answer)
@@ -358,10 +555,23 @@ const smokingFrequencyPeriods = {
   yearly: 'a year'
 }
 
+/**
+ * Convert a smoking frequency value into a period phrase.
+ *
+ * @param {string} frequency - Frequency value.
+ * @returns {string} Period phrase, for example `a day`.
+ */
 const getSmokingFrequencyPeriod = (frequency) => {
   return smokingFrequencyPeriods[frequency] || ''
 }
 
+/**
+ * Replace the default "normal day/week/month/year" phrase in a heading.
+ *
+ * @param {string} heading - Heading text from YAML.
+ * @param {string} frequency - Selected smoking frequency.
+ * @returns {string} Heading with the selected frequency period.
+ */
 const applySmokingFrequencyPeriod = (heading = '', frequency) => {
   const period = getSmokingFrequencyPeriod(frequency)
 
@@ -372,6 +582,13 @@ const applySmokingFrequencyPeriod = (heading = '', frequency) => {
   return heading.replace(/in a normal (day|week|month|year)/, `in a normal ${period.replace(/^a /, '')}`)
 }
 
+/**
+ * Build the current amount phrase used in changed-smoking labels.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {string} Amount phrase, for example `10 cigarettes a day`.
+ */
 const getSmokingCurrentAmount = (type, answer = {}) => {
   const quantity = getSmokingComparisonQuantity(type, answer.smokingQuantity)
   const period = getSmokingFrequencyPeriod(answer.smokingFrequency)
@@ -383,10 +600,25 @@ const getSmokingCurrentAmount = (type, answer = {}) => {
   return [quantity, period].filter(Boolean).join(' ')
 }
 
+/**
+ * Decide whether a tobacco type should use past-tense content.
+ *
+ * @param {Object} answers - Session answers object.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {boolean} True when past-tense headings should be used.
+ */
 const isPastSmokingType = (answers = {}, answer = {}) => {
   return answers.smoker === 'yes_previous' || answer.smokingStatus === 'no'
 }
 
+/**
+ * Build contextual labels for the smoking-change checkbox options.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {boolean} isPast - Whether past-tense labels should be used.
+ * @returns {Object.<string, string>} Value-to-label map.
+ */
 const getSmokingChangeLabels = (type, answer = {}, isPast = false) => {
   const amount = getSmokingCurrentAmount(type, answer)
   const fewerLabel = type === 'rolling_tobacco' ? 'less' : 'fewer'
@@ -409,10 +641,24 @@ const getSmokingChangeLabels = (type, answer = {}, isPast = false) => {
   }
 }
 
+/**
+ * Get the nested answer object for a shisha setting.
+ *
+ * @param {Object} answer - Shisha answer object.
+ * @param {string} setting - Shisha setting key.
+ * @returns {Object} Setting-specific answer object.
+ */
 const getShishaSettingAnswer = (answer = {}, setting) => {
   return setting ? answer[setting] || {} : {}
 }
 
+/**
+ * Get tobacco type content with the right tense-specific heading aliases.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {boolean} isPast - Whether past-tense headings should be used.
+ * @returns {Object} Tobacco type content.
+ */
 const getSmokingTypeHeadings = (type, isPast = false) => {
   const smokingType = smokingTypes[type]
 
@@ -433,6 +679,16 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
   }
 }
 
+/**
+ * Get the heading for a tobacco sub-flow step.
+ *
+ * @param {string} page - Step page id.
+ * @param {string} type - Tobacco type key.
+ * @param {string} setting - Optional shisha setting key.
+ * @param {boolean} isPast - Whether past-tense headings should be used.
+ * @param {Object} answer - Answer object used for frequency-specific periods.
+ * @returns {string} Step heading.
+ */
 const getSmokingStepHeading = (page, type, setting, isPast = false, answer = {}) => {
   const smokingType = smokingTypes[type]
   const frequency = answer.smokingFrequency
@@ -453,12 +709,27 @@ const getSmokingStepHeading = (page, type, setting, isPast = false, answer = {})
   return applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, isPast)[`${page.replace('smoking-', '')}Heading`] || '', frequency)
 }
 
+/**
+ * Get the nested answer object for a changed-smoking option.
+ *
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {string} change - Smoking change key.
+ * @returns {Object} Change-specific answer object.
+ */
 const getSmokingChangeAnswer = (answer = {}, change) => {
   const answerKey = smokingChangeTypes[change]?.answerKey
 
   return answerKey ? answer[answerKey] || {} : {}
 }
 
+/**
+ * Build contextual comparison text for changed-smoking questions.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} change - Smoking change key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {string} Comparison text.
+ */
 const getSmokingChangeComparisonText = (type, change, answer = {}) => {
   const smokingChange = smokingChangeTypes[change]
   const amount = getSmokingCurrentAmount(type, answer)
@@ -477,6 +748,16 @@ const getSmokingChangeComparisonText = (type, change, answer = {}) => {
   return `when you smoked ${changeLabel} than ${amount}`
 }
 
+/**
+ * Build the heading for changed-smoking frequency, quantity and years pages.
+ *
+ * @param {string} page - Changed-smoking page id.
+ * @param {string} type - Tobacco type key.
+ * @param {string} change - Smoking change key.
+ * @param {Object} changeAnswer - Change-specific answer object.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {string} Contextual page heading.
+ */
 const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer = {}) => {
   const smokingType = smokingTypes[type]
   const smokingChange = smokingChangeTypes[change]
@@ -507,6 +788,13 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
   return ''
 }
 
+/**
+ * Format a multi-value answer as either text or bullet-list HTML.
+ *
+ * @param {string|string[]} value - Submitted value or values.
+ * @param {Object.<string, string>} labels - Value-to-label map.
+ * @returns {Object} Summary-list value config.
+ */
 const formatListValue = (value, labels) => {
   if (!value) {
     return {}
@@ -526,6 +814,12 @@ const formatListValue = (value, labels) => {
   }
 }
 
+/**
+ * Build all check-your-answers summary-list sections.
+ *
+ * @param {Object} answers - Session answers object.
+ * @returns {Object} Summary-list rows grouped by section.
+ */
 const getCheckYourAnswers = (answers = {}) => {
   const selectedSmokingTypes = getSelectedSmokingTypes(answers)
   const isFormerSmoker = answers.smoker === 'yes_previous'
@@ -723,6 +1017,13 @@ const getCheckYourAnswers = (answers = {}) => {
   }
 }
 
+/**
+ * Resolve the active tobacco step from the current request query.
+ *
+ * @param {Object} req - Express request object.
+ * @param {string} page - Current tobacco page id.
+ * @returns {{step: SmokingTypeStep|undefined, steps: SmokingTypeStep[]}} Active step and all steps.
+ */
 const getSmokingTypeStep = (req, page) => {
   const { answers } = req.session.data
   const steps = getSmokingTypeSteps(answers)
@@ -736,6 +1037,14 @@ const getSmokingTypeStep = (req, page) => {
   return { step, steps }
 }
 
+/**
+ * Skip smoking-status for former smokers by falling back to their first type step.
+ *
+ * @param {Object} req - Express request object.
+ * @param {string} page - Current tobacco page id.
+ * @param {SmokingTypeStep[]} steps - Ordered tobacco steps.
+ * @returns {SmokingTypeStep|boolean} Fallback step, or false when not applicable.
+ */
 const getFormerSmokerFallbackStep = (req, page, steps) => {
   if (page !== 'smoking-status' || req.session.data.answers?.smoker !== 'yes_previous') {
     return false
@@ -744,6 +1053,12 @@ const getFormerSmokerFallbackStep = (req, page, steps) => {
   return steps.find((step) => step.type === req.query?.type) || steps[0]
 }
 
+/**
+ * Get smoking-type page variants based on the smoker answer.
+ *
+ * @param {Object} answers - Session answers object.
+ * @returns {Object} Runtime question overrides.
+ */
 const getSmokingTypeQuestionOverrides = (answers = {}) => {
   const question = getQuestion('smoking-type')
 
@@ -754,6 +1069,14 @@ const getSmokingTypeQuestionOverrides = (answers = {}) => {
   return {}
 }
 
+/**
+ * Clone a question's component items with contextual labels or hints.
+ *
+ * @param {string} id - Question id.
+ * @param {Object.<string, string>} labels - Value-to-label overrides.
+ * @param {Object.<string, string>} hintOverrides - Value-to-hint overrides.
+ * @returns {Object[]} NHS component items.
+ */
 const getQuestionItemsWithLabels = (id, labels = {}, hintOverrides = {}) => {
   return getQuestion(id).items.map((item) => {
     if (!item.value) {
@@ -776,6 +1099,12 @@ const lowerFirst = (value = '') => {
   return value ? `${value.charAt(0).toLowerCase()}${value.slice(1)}` : ''
 }
 
+/**
+ * Convert a question heading into an error-message answer phrase.
+ *
+ * @param {string} heading - Question heading.
+ * @returns {string} Error-message phrase.
+ */
 const getAnswerPhraseFromHeading = (heading = '') => {
   return lowerFirst(removeQuestionMark(heading))
     .replace(/^how often did you smoke /, 'how often you smoked ')
@@ -785,6 +1114,12 @@ const getAnswerPhraseFromHeading = (heading = '') => {
     .replace(/^(how (?:much|many) .+?) do you smoke /, '$1 you smoke ')
 }
 
+/**
+ * Convert a yes/no style heading into a "Select whether..." error.
+ *
+ * @param {string} heading - Question heading.
+ * @returns {string} Required error text.
+ */
 const getSelectWhetherText = (heading = '') => {
   const text = removeQuestionMark(heading)
   const hasChangedMatch = heading.match(/^Has (.+) changed over time\?$/)
@@ -807,6 +1142,13 @@ const getSelectWhetherText = (heading = '') => {
     .replace(/^were any /, 'any ')}`
 }
 
+/**
+ * Build contextual required error text from the current heading.
+ *
+ * @param {Object} question - Base question config.
+ * @param {Object} overrides - Runtime question overrides.
+ * @returns {string} Required error text.
+ */
 const getContextualRequiredErrorText = (question, overrides) => {
   const heading = overrides.heading?.title || question.heading?.title || ''
   const questionType = overrides.type || question.type
@@ -822,6 +1164,13 @@ const getContextualRequiredErrorText = (question, overrides) => {
   return getSelectWhetherText(heading)
 }
 
+/**
+ * Build contextual invalid-number error text from the current heading.
+ *
+ * @param {Object} question - Base question config.
+ * @param {Object} overrides - Runtime question overrides.
+ * @returns {string|undefined} Invalid error text when applicable.
+ */
 const getContextualInvalidErrorText = (question, overrides) => {
   const heading = overrides.heading?.title || question.heading?.title || ''
 
@@ -832,6 +1181,21 @@ const getContextualInvalidErrorText = (question, overrides) => {
   return undefined
 }
 
+/**
+ * Build runtime question overrides for the tobacco sub-flow.
+ *
+ * @param {Object} params - Tobacco override inputs.
+ * @param {string} params.page - Current tobacco page id.
+ * @param {SmokingTypeStep} params.step - Current tobacco step.
+ * @param {Object} params.answer - Answer object for one tobacco type.
+ * @param {Object} params.settingAnswer - Shisha setting answer object.
+ * @param {Object} params.changeAnswer - Changed-smoking answer object.
+ * @param {Object} params.smokingType - Tobacco type content.
+ * @param {Object} params.smokingChange - Smoking change content.
+ * @param {Object} params.smokingChangeLabels - Contextual smoking change labels.
+ * @param {boolean} params.isPastSmokingType - Whether past-tense content is active.
+ * @returns {Object} Runtime question overrides.
+ */
 const getSmokingContentQuestionOverrides = ({
   page,
   step,
@@ -995,6 +1359,13 @@ const getSmokingContentQuestionOverrides = ({
   return {}
 }
 
+/**
+ * Build action URLs for a tobacco sub-flow step.
+ *
+ * @param {SmokingTypeStep} step - Current tobacco step.
+ * @param {SmokingTypeStep[]} steps - Ordered tobacco steps.
+ * @returns {ActionLinks} Action URLs.
+ */
 const getSmokingTypeActions = (step, steps) => {
   const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change && item.setting === step.setting)
   const previousStep = steps[index - 1]
@@ -1008,6 +1379,14 @@ const getSmokingTypeActions = (step, steps) => {
   }
 }
 
+/**
+ * Render a tobacco sub-flow page, resolving the active step and context.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {string} page - Current tobacco page id.
+ * @param {Object[]} [errors] - Validation errors.
+ */
 const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
   const { step, steps } = getSmokingTypeStep(req, page)
 
@@ -1074,6 +1453,14 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
   })
 }
 
+/**
+ * Validate a tobacco sub-flow page with contextual headings and errors.
+ *
+ * @param {Object} req - Express request object.
+ * @param {string} page - Current tobacco page id.
+ * @param {SmokingTypeStep} step - Current tobacco step.
+ * @returns {Object[]} Validation errors.
+ */
 const validateSmokingTypeQuestion = (req, page, step) => {
   const answer = req.session.data.answers[step.type] || {}
   const isPast = isPastSmokingType(req.session.data.answers, answer)

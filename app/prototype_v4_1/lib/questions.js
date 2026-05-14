@@ -5,15 +5,55 @@ const yaml = require('js-yaml')
 const questionsPath = path.join(__dirname, '../data/questions.yaml')
 const tobaccoPath = path.join(__dirname, '../data/tobacco.yaml')
 
+/**
+ * @typedef {Object} QuestionOption
+ * @property {string} [label] - Option label shown to the user.
+ * @property {string} [hint] - Optional hint text shown under the label.
+ * @property {string} [value] - Submitted option value.
+ * @property {string} [divider] - Divider text, for example "or".
+ * @property {boolean} [exclusive] - Whether the option clears other checkboxes.
+ * @property {string} [exclusiveGroup] - Checkbox exclusive group name.
+ * @property {Object} [conditionalInput] - Conditional reveal input config.
+ */
+
+/**
+ * @typedef {Object} Question
+ * @property {string} id - Stable question id used by routes and content lookup.
+ * @property {string} type - Renderer type, for example single, multiple, text, date or input_group.
+ * @property {string} answerKey - Key used in `req.session.data.answers`.
+ * @property {Object} heading - Heading content.
+ * @property {Object} input - Normalised input config for NHS components.
+ * @property {QuestionOption[]} [options] - Raw YAML options.
+ * @property {Object[]} items - Options converted to NHS component items.
+ */
+
+/**
+ * Load and parse a YAML file.
+ *
+ * @param {string} filePath - Absolute path to the YAML file.
+ * @returns {Object} Parsed YAML object, or an empty object for blank files.
+ */
 const loadYaml = (filePath) => {
   const file = fs.readFileSync(filePath, 'utf8')
   return yaml.load(file) || {}
 }
 
+/**
+ * Convert a kebab-case question id into the default camelCase answer key.
+ *
+ * @param {string} id - Question id, for example `date-of-birth`.
+ * @returns {string} Answer key, for example `dateOfBirth`.
+ */
 const toAnswerName = (id) => {
   return id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
 }
 
+/**
+ * Convert a YAML option into the shape expected by NHS radios/checkboxes.
+ *
+ * @param {QuestionOption} option - YAML option definition.
+ * @returns {Object} NHS component item.
+ */
 const toComponentItem = (option) => {
   if (option.divider) {
     return {
@@ -31,6 +71,12 @@ const toComponentItem = (option) => {
   }
 }
 
+/**
+ * Add derived fields used by the generic question renderer.
+ *
+ * @param {Question} question - Raw question loaded from YAML.
+ * @returns {Question} Normalised question.
+ */
 const normaliseQuestion = (question) => {
   const answerKey = question.answerKey || toAnswerName(question.id)
   const input = question.input || {}
@@ -51,6 +97,11 @@ const normaliseQuestion = (question) => {
   }
 }
 
+/**
+ * Load all question and tobacco content files.
+ *
+ * @returns {Object} Indexed questions and tobacco content config.
+ */
 const loadData = () => {
   const questionsData = loadYaml(questionsPath)
   const tobaccoData = loadYaml(tobaccoPath)
@@ -70,6 +121,13 @@ const loadData = () => {
 const data = loadData()
 const questions = data.questions
 
+/**
+ * Get a normalised question by id.
+ *
+ * @param {string} id - Question id.
+ * @returns {Question} Normalised question.
+ * @throws {Error} When the question id is not defined in questions.yaml.
+ */
 const getQuestion = (id) => {
   const question = questions[id]
 
@@ -80,6 +138,12 @@ const getQuestion = (id) => {
   return question
 }
 
+/**
+ * Build a value-to-label lookup from a question's options.
+ *
+ * @param {string} id - Question id.
+ * @returns {Object.<string, string>} Map of submitted values to display labels.
+ */
 const getQuestionValueLabels = (id) => {
   const question = getQuestion(id)
 
