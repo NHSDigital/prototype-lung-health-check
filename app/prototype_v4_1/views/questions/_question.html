@@ -204,7 +204,10 @@
                     prefix: item.prefix,
                     inputmode: item.inputmode,
                     value: data.answers[question.answerKey][question.input.valueKey][item.answerKey],
-                    classes: item.classes
+                    classes: item.classes,
+                    errorMessage: {
+                      text: errorMap[item.id].text
+                    } if errorMap[item.id]
                   }) }}
                 </div>
               {% endfor %}

@@ -839,6 +839,9 @@ const getSmokingContentQuestionOverrides = ({
         },
         suffix: isRollingTobacco ? undefined : smokingType.suffix
       },
+      validation: isRollingTobacco
+        ? { required: true, type: null }
+        : undefined,
       value: isSettingSpecific ? settingAnswer.smokingQuantity : answer.smokingQuantity
     }
   }
@@ -893,6 +896,9 @@ const getSmokingContentQuestionOverrides = ({
         },
         suffix: isRollingTobacco ? undefined : smokingType.suffix
       },
+      validation: isRollingTobacco
+        ? { required: true, type: null }
+        : undefined,
       value: changeAnswer.quantity
     }
   }
@@ -993,6 +999,44 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
   })
 }
 
+const validateSmokingTypeQuestion = (req, page, step) => {
+  const answer = req.session.data.answers[step.type] || {}
+  const isPast = isPastSmokingType(req.session.data.answers, answer)
+  const changeAnswer = getSmokingChangeAnswer(answer, step.change)
+  const settingAnswer = getShishaSettingAnswer(answer, step.setting)
+  const smokingType = getSmokingTypeHeadings(step.type, isPast)
+  const smokingChange = smokingChangeTypes[step.change]
+  const smokingChangeLabels = getSmokingChangeLabels(step.type, answer, isPast)
+  const overrides = getSmokingContentQuestionOverrides({
+    page,
+    step,
+    answer,
+    settingAnswer,
+    changeAnswer,
+    smokingType,
+    smokingChange,
+    smokingChangeLabels,
+    isPastSmokingType: isPast
+  })
+  const questionType = overrides.type || getQuestion(page).type
+  const errorHref = ['single', 'multiple'].includes(questionType)
+    ? overrides.input.name
+    : overrides.input.id
+  const errors = {
+    ...overrides.errors,
+    required: {
+      ...getQuestion(page).errors?.required,
+      ...overrides.errors?.required,
+      href: `#${errorHref}`
+    }
+  }
+
+  return validateQuestion(req.session.data.answers, page, {
+    ...overrides,
+    errors
+  })
+}
+
 /// ------------------------------------------------------------------------ ///
 ///
 /// ------------------------------------------------------------------------ ///
@@ -1031,7 +1075,7 @@ exports.phoneQuestionnaire_get = (req, res) => {
 
 exports.phoneQuestionnaire_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = []
+  const errors = validateQuestion(answers, 'phone-questionnaire')
 
   if (errors.length) {
     renderQuestion(res, 'phone-questionnaire', {
@@ -1124,7 +1168,7 @@ exports.faceToFaceAppointment_get = (req, res) => {
 
 exports.faceToFaceAppointment_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = []
+  const errors = validateQuestion(answers, 'face-to-face-appointment')
 
   if (errors.length) {
     renderQuestion(res, 'face-to-face-appointment', {
@@ -1209,7 +1253,7 @@ exports.heightImperial_get = (req, res) => {
 
 exports.heightImperial_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = []
+  const errors = validateQuestion(answers, 'height-imperial')
 
   if (errors.length) {
     renderQuestion(res, 'height-imperial', {
@@ -1238,7 +1282,7 @@ exports.weightMetric_get = (req, res) => {
 exports.weightMetric_post = (req, res) => {
   const { answers } = req.session.data
   const back = getHeightBack(req)
-  const errors = []
+  const errors = validateQuestion(answers, 'weight-metric')
 
   if (errors.length) {
     renderQuestion(res, 'weight-metric', {
@@ -1267,7 +1311,7 @@ exports.weightImperial_get = (req, res) => {
 exports.weightImperial_post = (req, res) => {
   const { answers } = req.session.data
   const back = getHeightBack(req)
-  const errors = []
+  const errors = validateQuestion(answers, 'weight-imperial')
 
   if (errors.length) {
     renderQuestion(res, 'weight-imperial', {
@@ -1293,8 +1337,9 @@ exports.gender_get = (req, res) => {
 }
 
 exports.gender_post = (req, res) => {
+  const { answers } = req.session.data
   const back = getWeightBack(req)
-  const errors = []
+  const errors = validateQuestion(answers, 'gender')
 
   if (errors.length) {
     renderQuestion(res, 'gender', {
@@ -1316,7 +1361,8 @@ exports.sex_get = (req, res) => {
 }
 
 exports.sex_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'sex')
 
   if (errors.length) {
     renderQuestion(res, 'sex', {
@@ -1365,7 +1411,8 @@ exports.education_get = (req, res) => {
 }
 
 exports.education_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'education')
 
   if (errors.length) {
     renderQuestion(res, 'education', {
@@ -1391,7 +1438,8 @@ exports.respiratoryConditions_get = (req, res) => {
 }
 
 exports.respiratoryConditions_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'respiratory-conditions')
 
   if (errors.length) {
     renderQuestion(res, 'respiratory-conditions', {
@@ -1413,7 +1461,8 @@ exports.asbestosAtWork_get = (req, res) => {
 }
 
 exports.asbestosAtWork_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'asbestos-at-work')
 
   if (errors.length) {
     renderQuestion(res, 'asbestos-at-work', {
@@ -1435,7 +1484,8 @@ exports.asbestosAtHome_get = (req, res) => {
 }
 
 exports.asbestosAtHome_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'asbestos-at-home')
 
   if (errors.length) {
     renderQuestion(res, 'asbestos-at-home', {
@@ -1457,7 +1507,8 @@ exports.cancerDiagnosis_get = (req, res) => {
 }
 
 exports.cancerDiagnosis_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'cancer-diagnosis')
 
   if (errors.length) {
     renderQuestion(res, 'cancer-diagnosis', {
@@ -1484,7 +1535,7 @@ exports.cancerDiagnosisRelatives_get = (req, res) => {
 
 exports.cancerDiagnosisRelatives_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = []
+  const errors = validateQuestion(answers, 'cancer-diagnosis-relatives')
 
   if (errors.length) {
     renderQuestion(res, 'cancer-diagnosis-relatives', {
@@ -1511,7 +1562,8 @@ exports.cancerDiagnosisRelativesAge_get = (req, res) => {
 }
 
 exports.cancerDiagnosisRelativesAge_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'cancer-diagnosis-relatives-age')
 
   if (errors.length) {
     renderQuestion(res, 'cancer-diagnosis-relatives-age', {
@@ -1543,7 +1595,7 @@ exports.ageStartedSmoking_post = (req, res) => {
   const { answers } = req.session.data
   const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
 
-  const errors = []
+  const errors = validateQuestion(answers, 'age-started-smoking')
 
   // TODO:
   // If not answered, throw error
@@ -1583,7 +1635,7 @@ exports.ageStoppedSmoking_get = (req, res) => {
 
 exports.ageStoppedSmoking_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = []
+  const errors = validateQuestion(answers, 'age-stopped-smoking')
 
   if (answers.smoker !== 'yes_previous') {
     delete answers.ageStoppedSmoking
@@ -1653,7 +1705,7 @@ exports.smokingType_get = (req, res) => {
 
 exports.smokingType_post = (req, res) => {
   const answers = req.session.data.answers || {}
-  const errors = []
+  const errors = validateQuestion(answers, 'smoking-type')
 
   if (errors.length) {
     renderQuestion(res, 'smoking-type', {
@@ -1697,7 +1749,7 @@ exports.smokingStatus_get = (req, res) => {
 
 exports.smokingStatus_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-status')
-  const errors = []
+  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-status', step) : []
 
   if (!step) {
     const fallbackStep = getFormerSmokerFallbackStep(req, 'smoking-status', steps)
@@ -1724,7 +1776,7 @@ exports.smokingFrequency_get = (req, res) => {
 
 exports.smokingFrequency_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-frequency')
-  const errors = []
+  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-frequency', step) : []
 
   if (!step) {
     res.redirect(`/prototype_${version}/smoking-type`)
@@ -1744,7 +1796,7 @@ exports.smokingQuantity_get = (req, res) => {
 
 exports.smokingQuantity_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-quantity')
-  const errors = []
+  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-quantity', step) : []
 
   if (!step) {
     res.redirect(`/prototype_${version}/smoking-type`)
@@ -1765,7 +1817,7 @@ exports.smokingSetting_get = (req, res) => {
 exports.smokingSetting_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-setting')
   const { answers } = req.session.data
-  const errors = []
+  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-setting', step) : []
 
   if (!step) {
     res.redirect(`/prototype_${version}/smoking-type`)
@@ -1788,7 +1840,7 @@ exports.smokingChange_get = (req, res) => {
 exports.smokingChange_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-change')
   const { answers } = req.session.data
-  const errors = []
+  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-change', step) : []
 
   if (!step) {
     res.redirect(`/prototype_${version}/smoking-type`)
@@ -1810,7 +1862,7 @@ exports.smokingFrequencyChange_get = (req, res) => {
 
 exports.smokingFrequencyChange_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-frequency-change')
-  const errors = []
+  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-frequency-change', step) : []
 
   if (!step) {
     res.redirect(`/prototype_${version}/smoking-type`)
@@ -1830,7 +1882,7 @@ exports.smokingQuantityChange_get = (req, res) => {
 
 exports.smokingQuantityChange_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-quantity-change')
-  const errors = []
+  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-quantity-change', step) : []
 
   if (!step) {
     res.redirect(`/prototype_${version}/smoking-type`)
@@ -1850,7 +1902,7 @@ exports.smokingYearsChange_get = (req, res) => {
 
 exports.smokingYearsChange_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-years-change')
-  const errors = []
+  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-years-change', step) : []
 
   if (!step) {
     res.redirect(`/prototype_${version}/smoking-type`)

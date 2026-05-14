@@ -9,6 +9,10 @@ const isBlank = (value) => {
 }
 
 const getAnswerValue = (answers = {}, question) => {
+  if (question.value !== undefined) {
+    return question.value
+  }
+
   const value = answers[question.answerKey]
 
   if (question.input?.valueKey) {
@@ -54,24 +58,96 @@ const validateConditional = (answers, question, errors) => {
       return
     }
 
-    if (isBlank(answers[rule.answerKey])) {
+    const conditionalValue = answers[rule.answerKey]
+
+    if (isBlank(conditionalValue)) {
       const error = question.errors?.conditional?.[triggerValue]?.required || {
         text: 'Enter an answer',
         href: rule.href
       }
 
       errors.push(makeError(error))
+      return
+    }
+
+    if (rule.type === 'number') {
+      validateNumber(conditionalValue, rule, question.errors, errors)
     }
   })
 }
 
-const validateQuestion = (answers = {}, id) => {
-  const question = getQuestion(id)
+const mergeQuestion = (question, overrides = {}) => {
+  return {
+    ...question,
+    ...overrides,
+    heading: {
+      ...question.heading,
+      ...overrides.heading
+    },
+    input: {
+      ...question.input,
+      ...overrides.input
+    },
+    errors: {
+      ...question.errors,
+      ...overrides.errors
+    },
+    validation: {
+      ...question.validation,
+      ...overrides.validation
+    }
+  }
+}
+
+const validateNumber = (value, validation, errorsConfig, errors) => {
+  const number = Number(value)
+
+  if (Number.isNaN(number)) {
+    errors.push(makeError(errorsConfig.invalid))
+    return
+  }
+
+  if (validation.min !== undefined && number < validation.min) {
+    errors.push(makeError(errorsConfig.min))
+  }
+
+  if (validation.max !== undefined && number > validation.max) {
+    errors.push(makeError(errorsConfig.max))
+  }
+}
+
+const validateInputGroup = (answers, question) => {
+  const errors = []
+  const groupValue = answers[question.answerKey]?.[question.input.valueKey] || {}
+
+  ;(question.validation?.items || []).forEach((itemValidation) => {
+    const value = groupValue[itemValidation.answerKey]
+    const itemErrors = question.errors?.items?.[itemValidation.answerKey] || {}
+
+    if (itemValidation.required && isBlank(value)) {
+      errors.push(makeError(itemErrors.required))
+      return
+    }
+
+    if (itemValidation.type === 'number' && !isBlank(value)) {
+      validateNumber(value, itemValidation, itemErrors, errors)
+    }
+  })
+
+  return errors
+}
+
+const validateQuestion = (answers = {}, id, overrides = {}) => {
+  const question = mergeQuestion(getQuestion(id), overrides)
   const validation = question.validation || {}
   const errors = []
 
-  if (!validation.required && !validation.type && !validation.conditional) {
+  if (!validation.required && !validation.type && !validation.conditional && !validation.items) {
     return errors
+  }
+
+  if (question.type === 'input_group') {
+    return validateInputGroup(answers, question)
   }
 
   if (validation.type === 'date') {
@@ -97,8 +173,8 @@ const validateQuestion = (answers = {}, id) => {
     return errors
   }
 
-  if (validation.type === 'number' && !isBlank(value) && Number.isNaN(Number(value))) {
-    errors.push(makeError(question.errors.invalid))
+  if (validation.type === 'number' && !isBlank(value)) {
+    validateNumber(value, validation, question.errors, errors)
   }
 
   validateConditional(answers, question, errors)

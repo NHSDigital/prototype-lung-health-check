@@ -181,6 +181,12 @@ questions:
         value: yes
       - label: No
         value: no
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have previously completed a lung cancer risk questionnaire by phone
+        href: "#answers[phoneQuestionnaire]"
 
   - id: smoker
     type: single
@@ -243,6 +249,12 @@ questions:
         value: prefer_not_to_say
     summary:
       label: Gender identity
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select which option best describes you
+        href: "#answers[gender]"
 
   - id: sex
     type: single
@@ -260,6 +272,12 @@ questions:
         value: male
     summary:
       label: Sex at birth
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select your sex at birth
+        href: "#answers[sex]"
 
   - id: education
     type: single
@@ -295,6 +313,12 @@ questions:
         value: prefer_not_to_say
     summary:
       label: Education
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select the highest level of education you have completed
+        href: "#answers[education]"
 
   - id: respiratory-conditions
     type: multiple
@@ -331,6 +355,12 @@ questions:
         exclusiveGroup: conditions-list
     summary:
       label: Respiratory conditions
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select if you have ever been diagnosed with any respiratory conditions
+        href: "#answers[respiratoryConditions]"
 
   - id: face-to-face-appointment
     type: single
@@ -355,6 +385,12 @@ questions:
         value: no
     summary:
       label: Do you need to leave the online service and ask for a face-to-face appointment?
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you need to leave the online service and ask for a face-to-face appointment
+        href: "#answers[faceToFaceAppointment]"
 
   - id: asbestos-at-work
     type: single
@@ -400,6 +436,12 @@ questions:
         value: no
     summary:
       label: Worked in a job where you might have been exposed to asbestos
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever worked in a job where you might have been exposed to asbestos
+        href: "#answers[asbestosAtWork]"
 
   - id: asbestos-at-home
     type: single
@@ -431,6 +473,12 @@ questions:
         value: no
     summary:
       label: Lived with anyone who worked with asbestos
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever lived with anyone who worked with asbestos
+        href: "#answers[asbestosAtHome]"
 
   - id: cancer-diagnosis
     type: single
@@ -448,6 +496,12 @@ questions:
         value: no
     summary:
       label: Ever been diagnosed with cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever been diagnosed with cancer
+        href: "#answers[cancerDiagnosis]"
 
   - id: cancer-diagnosis-relatives
     type: single
@@ -469,6 +523,12 @@ questions:
         value: do_not_know
     summary:
       label: Parents, siblings or children diagnosed with lung cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether any of your parents, siblings or children have ever been diagnosed with lung cancer
+        href: "#answers[cancerDiagnosisRelatives]"
 
   - id: cancer-diagnosis-relatives-age
     type: single
@@ -490,6 +550,12 @@ questions:
         value: do_not_know
     summary:
       label: Relatives younger than 60 when diagnosed with lung cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether any of your relatives were younger than 60 when they were diagnosed with lung cancer
+        href: "#answers[cancerDiagnosisRelativesAge]"
 
   - id: age-started-smoking
     type: text
@@ -503,6 +569,24 @@ questions:
       classes: nhsuk-input--width-2
     summary:
       label: Age you started smoking
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 120
+    errors:
+      required:
+        text: Enter the age you started smoking
+        href: "#age-started-smoking"
+      invalid:
+        text: Enter the age you started smoking using numbers
+        href: "#age-started-smoking"
+      min:
+        text: Age you started smoking must be 1 or older
+        href: "#age-started-smoking"
+      max:
+        text: Age you started smoking must be 120 or younger
+        href: "#age-started-smoking"
 
   - id: age-stopped-smoking
     type: text
@@ -516,6 +600,24 @@ questions:
       classes: nhsuk-input--width-2
     summary:
       label: Age you stopped smoking
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 120
+    errors:
+      required:
+        text: Enter the age you stopped smoking
+        href: "#age-stopped-smoking"
+      invalid:
+        text: Enter the age you stopped smoking using numbers
+        href: "#age-stopped-smoking"
+      min:
+        text: Age you stopped smoking must be 1 or older
+        href: "#age-stopped-smoking"
+      max:
+        text: Age you stopped smoking must be 120 or younger
+        href: "#age-stopped-smoking"
 
   - id: periods-stopped-smoking
     type: single
@@ -549,6 +651,9 @@ questions:
       conditional:
         yes:
           required: true
+          type: number
+          min: 1
+          max: 80
           answerKey: yearsStoppedSmoking
           href: "#years-stopped-smoking"
     errors:
@@ -560,6 +665,15 @@ questions:
           required:
             text: Enter the total number of years you stopped smoking
             href: "#years-stopped-smoking"
+      invalid:
+        text: Total number of years you stopped smoking must be a number
+        href: "#years-stopped-smoking"
+      min:
+        text: Total number of years you stopped smoking must be 1 or more
+        href: "#years-stopped-smoking"
+      max:
+        text: Total number of years you stopped smoking must be 80 or fewer
+        href: "#years-stopped-smoking"
 
   - id: date-of-birth
     type: date
@@ -621,12 +735,20 @@ questions:
     validation:
       required: true
       type: number
+      min: 100
+      max: 250
     errors:
       required:
         text: Enter your height in centimetres
         href: "#height-metric"
       invalid:
         text: Enter your height in centimetres using numbers
+        href: "#height-metric"
+      min:
+        text: Height in centimetres must be 100 or more
+        href: "#height-metric"
+      max:
+        text: Height in centimetres must be 250 or fewer
         href: "#height-metric"
 
   - id: height-imperial
@@ -660,6 +782,46 @@ questions:
       text: Switch to centimetres
     summary:
       label: Height
+    validation:
+      items:
+        - answerKey: feet
+          required: true
+          type: number
+          min: 3
+          max: 8
+        - answerKey: inches
+          required: true
+          type: number
+          min: 0
+          max: 11
+    errors:
+      items:
+        feet:
+          required:
+            text: Enter your height in feet
+            href: "#height-imperial-feet"
+          invalid:
+            text: Enter your height in feet using numbers
+            href: "#height-imperial-feet"
+          min:
+            text: Height in feet must be 3 or more
+            href: "#height-imperial-feet"
+          max:
+            text: Height in feet must be 8 or fewer
+            href: "#height-imperial-feet"
+        inches:
+          required:
+            text: Enter your height in inches
+            href: "#height-imperial-inches"
+          invalid:
+            text: Enter your height in inches using numbers
+            href: "#height-imperial-inches"
+          min:
+            text: Height in inches must be 0 or more
+            href: "#height-imperial-inches"
+          max:
+            text: Height in inches must be 11 or fewer
+            href: "#height-imperial-inches"
 
   - id: weight-metric
     type: text
@@ -682,6 +844,24 @@ questions:
       text: Switch to stones and pounds
     summary:
       label: Weight
+    validation:
+      required: true
+      type: number
+      min: 30
+      max: 250
+    errors:
+      required:
+        text: Enter your weight in kilograms
+        href: "#weight-metric"
+      invalid:
+        text: Enter your weight in kilograms using numbers
+        href: "#weight-metric"
+      min:
+        text: Weight in kilograms must be 30 or more
+        href: "#weight-metric"
+      max:
+        text: Weight in kilograms must be 250 or fewer
+        href: "#weight-metric"
 
   - id: weight-imperial
     type: input_group
@@ -714,6 +894,46 @@ questions:
       text: Switch to kilograms
     summary:
       label: Weight
+    validation:
+      items:
+        - answerKey: stones
+          required: true
+          type: number
+          min: 4
+          max: 40
+        - answerKey: pounds
+          required: true
+          type: number
+          min: 0
+          max: 13
+    errors:
+      items:
+        stones:
+          required:
+            text: Enter your weight in stones
+            href: "#weight-imperial-stones"
+          invalid:
+            text: Enter your weight in stones using numbers
+            href: "#weight-imperial-stones"
+          min:
+            text: Weight in stones must be 4 or more
+            href: "#weight-imperial-stones"
+          max:
+            text: Weight in stones must be 40 or fewer
+            href: "#weight-imperial-stones"
+        pounds:
+          required:
+            text: Enter your weight in pounds
+            href: "#weight-imperial-pounds"
+          invalid:
+            text: Enter your weight in pounds using numbers
+            href: "#weight-imperial-pounds"
+          min:
+            text: Weight in pounds must be 0 or more
+            href: "#weight-imperial-pounds"
+          max:
+            text: Weight in pounds must be 13 or fewer
+            href: "#weight-imperial-pounds"
 
   - id: smoking-type
     type: multiple
@@ -771,6 +991,12 @@ questions:
           label: What have you smoked?
     summary:
       label: Types of tobacco smoked
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select the types of tobacco you have smoked
+        href: "#answers[smokingType]"
 
   - id: smoking-status
     type: single
@@ -781,6 +1007,11 @@ questions:
         value: yes
       - label: No
         value: no
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you currently smoke this type of tobacco
 
   - id: smoking-setting
     type: multiple
@@ -793,6 +1024,11 @@ questions:
         value: group
       - label: By myself
         value: individual
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you usually smoke shisha in a group or on your own
 
   - id: smoking-frequency
     type: single
@@ -810,6 +1046,11 @@ questions:
       - label: Yearly
         hint: For example, 2 to 3 times a year or fewer
         value: yearly
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select how often you smoke this type of tobacco
 
   - id: smoking-change
     type: multiple
@@ -829,6 +1070,11 @@ questions:
         value: no
         exclusive: true
         exclusiveGroup: change-list
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether the amount you normally smoke has changed over time
 
   - id: smoking-quantity
     type: text
@@ -857,6 +1103,24 @@ questions:
         type: single
         input:
           hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 200
+    errors:
+      required:
+        text: Enter how much you smoke
+        href: "#smoking-quantity"
+      invalid:
+        text: Enter how much you smoke using numbers
+        href: "#smoking-quantity"
+      min:
+        text: Amount smoked must be 1 or more
+        href: "#smoking-quantity"
+      max:
+        text: Amount smoked must be 200 or fewer
+        href: "#smoking-quantity"
 
   - id: smoking-frequency-change
     type: single
@@ -874,6 +1138,11 @@ questions:
       - label: Yearly
         hint: For example, 2 to 3 times a year or fewer
         value: yearly
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select how often you smoked this type of tobacco
 
   - id: smoking-quantity-change
     type: text
@@ -902,6 +1171,24 @@ questions:
         type: single
         input:
           hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 200
+    errors:
+      required:
+        text: Enter how much you smoked
+        href: "#smoking-quantity-change"
+      invalid:
+        text: Enter how much you smoked using numbers
+        href: "#smoking-quantity-change"
+      min:
+        text: Amount smoked must be 1 or more
+        href: "#smoking-quantity-change"
+      max:
+        text: Amount smoked must be 200 or fewer
+        href: "#smoking-quantity-change"
 
   - id: smoking-years-change
     type: text
@@ -913,3 +1200,21 @@ questions:
       suffix: years
       inputmode: numeric
       classes: nhsuk-input--width-4
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 80
+    errors:
+      required:
+        text: Enter how many years you smoked this amount
+        href: "#smoking-years-change"
+      invalid:
+        text: Enter how many years using numbers
+        href: "#smoking-years-change"
+      min:
+        text: Number of years must be 1 or more
+        href: "#smoking-years-change"
+      max:
+        text: Number of years must be 80 or fewer
+        href: "#smoking-years-change"
