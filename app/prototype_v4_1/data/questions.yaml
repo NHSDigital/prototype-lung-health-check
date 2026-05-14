@@ -224,6 +224,291 @@ questions:
       required:
         text: Select whether you have ever smoked tobacco
 
+  - id: date-of-birth
+    type: date
+    answerKey: dateOfBirth
+    heading:
+      title: What is your date of birth?
+    input:
+      hint: For example, 15 3 1964
+      items:
+        - id: dateOfBirth-day
+          name: answers[dateOfBirth][day]
+          label: Day
+          answerKey: day
+          classes: nhsuk-input--width-2
+        - id: dateOfBirth-month
+          name: answers[dateOfBirth][month]
+          label: Month
+          answerKey: month
+          classes: nhsuk-input--width-2
+        - id: dateOfBirth-year
+          name: answers[dateOfBirth][year]
+          label: Year
+          answerKey: year
+          classes: nhsuk-input--width-4
+    summary:
+      label: Date of birth
+    validation:
+      required: true
+      type: date
+    errors:
+      required:
+        text: Enter your date of birth
+        href: "#dateOfBirth-day"
+      invalid:
+        text: Enter a real date of birth
+        href: "#dateOfBirth-day"
+
+  - id: face-to-face-appointment
+    type: single
+    answerKey: faceToFaceAppointment
+    heading:
+      title: Check if you need a face-to-face appointment
+    description: |
+      This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
+
+      You need to do your questionnaire in person, not online, if you:
+
+      - have a condition that affects your height
+      - have had a limb amputation, or were born with a limb difference
+      - have been diagnosed with an eating disorder, or think you may have one
+      - are pregnant
+    input:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
+    options:
+      - label: Yes, one or more of these things apply to me, and I need a face-to-face appointment
+        value: yes
+      - label: No, I can continue online
+        value: no
+    summary:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you need to leave the online service and ask for a face-to-face appointment
+
+  - id: height-metric
+    type: text
+    answerKey: height
+    heading:
+      title: Your height
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+    input:
+      id: height-metric
+      name: answers[height][metric]
+      valueKey: metric
+      label: What is your height in centimetres?
+      suffix: cm
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to feet and inches
+    summary:
+      label: Height
+    validation:
+      required: true
+      type: number
+      min: 100
+      max: 250
+    errors:
+      required:
+        text: Enter your height in centimetres
+      invalid:
+        text: Enter your height in centimetres using numbers
+      min:
+        text: Height in centimetres must be 100 or more
+      max:
+        text: Height in centimetres must be 250 or fewer
+
+  - id: height-imperial
+    type: input_group
+    answerKey: height
+    heading:
+      title: Your height
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+    input:
+      label: What is your height in feet and inches?
+      valueKey: imperial
+      items:
+        - id: height-imperial-feet
+          name: answers[height][imperial][feet]
+          label: Feet
+          answerKey: feet
+          suffix: ft
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+        - id: height-imperial-inches
+          name: answers[height][imperial][inches]
+          label: Inches
+          answerKey: inches
+          suffix: in
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to centimetres
+    summary:
+      label: Height
+    validation:
+      items:
+        - answerKey: feet
+          required: true
+          type: number
+          min: 3
+          max: 8
+        - answerKey: inches
+          required: true
+          type: number
+          min: 0
+          max: 11
+    errors:
+      items:
+        feet:
+          required:
+            text: Enter your height in feet
+            href: "#height-imperial-feet"
+          invalid:
+            text: Enter your height in feet using numbers
+            href: "#height-imperial-feet"
+          min:
+            text: Height in feet must be 3 or more
+            href: "#height-imperial-feet"
+          max:
+            text: Height in feet must be 8 or fewer
+            href: "#height-imperial-feet"
+        inches:
+          required:
+            text: Enter your height in inches
+            href: "#height-imperial-inches"
+          invalid:
+            text: Enter your height in inches using numbers
+            href: "#height-imperial-inches"
+          min:
+            text: Height in inches must be 0 or more
+            href: "#height-imperial-inches"
+          max:
+            text: Height in inches must be 11 or fewer
+            href: "#height-imperial-inches"
+
+  - id: weight-metric
+    type: text
+    answerKey: weight
+    heading:
+      title: Your weight
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+    input:
+      id: weight-metric
+      name: answers[weight][metric]
+      valueKey: metric
+      label: What is your weight in kilograms?
+      suffix: kg
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to stones and pounds
+    summary:
+      label: Weight
+    validation:
+      required: true
+      type: number
+      min: 30
+      max: 250
+    errors:
+      required:
+        text: Enter your weight in kilograms
+      invalid:
+        text: Enter your weight in kilograms using numbers
+      min:
+        text: Weight in kilograms must be 30 or more
+      max:
+        text: Weight in kilograms must be 250 or fewer
+
+  - id: weight-imperial
+    type: input_group
+    answerKey: weight
+    heading:
+      title: Your weight
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+    input:
+      label: What is your weight in stones and pounds?
+      valueKey: imperial
+      items:
+        - id: weight-imperial-stones
+          name: answers[weight][imperial][stones]
+          label: Stones
+          answerKey: stones
+          suffix: st
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+        - id: weight-imperial-pounds
+          name: answers[weight][imperial][pounds]
+          label: Pounds
+          answerKey: pounds
+          suffix: lb
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to kilograms
+    summary:
+      label: Weight
+    validation:
+      items:
+        - answerKey: stones
+          required: true
+          type: number
+          min: 4
+          max: 40
+        - answerKey: pounds
+          required: true
+          type: number
+          min: 0
+          max: 13
+    errors:
+      items:
+        stones:
+          required:
+            text: Enter your weight in stones
+            href: "#weight-imperial-stones"
+          invalid:
+            text: Enter your weight in stones using numbers
+            href: "#weight-imperial-stones"
+          min:
+            text: Weight in stones must be 4 or more
+            href: "#weight-imperial-stones"
+          max:
+            text: Weight in stones must be 40 or fewer
+            href: "#weight-imperial-stones"
+        pounds:
+          required:
+            text: Enter your weight in pounds
+            href: "#weight-imperial-pounds"
+          invalid:
+            text: Enter your weight in pounds using numbers
+            href: "#weight-imperial-pounds"
+          min:
+            text: Weight in pounds must be 0 or more
+            href: "#weight-imperial-pounds"
+          max:
+            text: Weight in pounds must be 13 or fewer
+            href: "#weight-imperial-pounds"
+
   - id: gender
     type: single
     answerKey: gender
@@ -391,35 +676,6 @@ questions:
     errors:
       required:
         text: Select if you have ever been diagnosed with any respiratory conditions
-
-  - id: face-to-face-appointment
-    type: single
-    answerKey: faceToFaceAppointment
-    heading:
-      title: Check if you need a face-to-face appointment
-    description: |
-      This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
-
-      You need to do your questionnaire in person, not online, if you:
-
-      - have a condition that affects your height
-      - have had a limb amputation, or were born with a limb difference
-      - have been diagnosed with an eating disorder, or think you may have one
-      - are pregnant
-    input:
-      label: Do you need to leave the online service and ask for a face-to-face appointment?
-    options:
-      - label: Yes, one or more of these things apply to me, and I need a face-to-face appointment
-        value: yes
-      - label: No, I can continue online
-        value: no
-    summary:
-      label: Do you need to leave the online service and ask for a face-to-face appointment?
-    validation:
-      required: true
-    errors:
-      required:
-        text: Select whether you need to leave the online service and ask for a face-to-face appointment
 
   - id: asbestos-at-work
     type: single
@@ -698,262 +954,6 @@ questions:
         text: Total number of years you stopped smoking must be 80 or fewer
         href: "#years-stopped-smoking"
 
-  - id: date-of-birth
-    type: date
-    answerKey: dateOfBirth
-    heading:
-      title: What is your date of birth?
-    input:
-      hint: For example, 15 3 1964
-      items:
-        - id: dateOfBirth-day
-          name: answers[dateOfBirth][day]
-          label: Day
-          answerKey: day
-          classes: nhsuk-input--width-2
-        - id: dateOfBirth-month
-          name: answers[dateOfBirth][month]
-          label: Month
-          answerKey: month
-          classes: nhsuk-input--width-2
-        - id: dateOfBirth-year
-          name: answers[dateOfBirth][year]
-          label: Year
-          answerKey: year
-          classes: nhsuk-input--width-4
-    summary:
-      label: Date of birth
-    validation:
-      required: true
-      type: date
-    errors:
-      required:
-        text: Enter your date of birth
-        href: "#dateOfBirth-day"
-      invalid:
-        text: Enter a real date of birth
-        href: "#dateOfBirth-day"
-
-  - id: height-metric
-    type: text
-    answerKey: height
-    heading:
-      title: Your height
-      caption: About you
-    description: |
-      An accurate measurement is important.
-
-      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
-    input:
-      id: height-metric
-      name: answers[height][metric]
-      valueKey: metric
-      label: What is your height in centimetres?
-      suffix: cm
-      inputmode: numeric
-      classes: nhsuk-input--width-4
-    switchUnits:
-      text: Switch to feet and inches
-    summary:
-      label: Height
-    validation:
-      required: true
-      type: number
-      min: 100
-      max: 250
-    errors:
-      required:
-        text: Enter your height in centimetres
-      invalid:
-        text: Enter your height in centimetres using numbers
-      min:
-        text: Height in centimetres must be 100 or more
-      max:
-        text: Height in centimetres must be 250 or fewer
-
-  - id: height-imperial
-    type: input_group
-    answerKey: height
-    heading:
-      title: Your height
-      caption: About you
-    description: |
-      An accurate measurement is important.
-
-      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
-    input:
-      label: What is your height in feet and inches?
-      valueKey: imperial
-      items:
-        - id: height-imperial-feet
-          name: answers[height][imperial][feet]
-          label: Feet
-          answerKey: feet
-          suffix: ft
-          inputmode: numeric
-          classes: nhsuk-input--width-4
-        - id: height-imperial-inches
-          name: answers[height][imperial][inches]
-          label: Inches
-          answerKey: inches
-          suffix: in
-          inputmode: numeric
-          classes: nhsuk-input--width-4
-    switchUnits:
-      text: Switch to centimetres
-    summary:
-      label: Height
-    validation:
-      items:
-        - answerKey: feet
-          required: true
-          type: number
-          min: 3
-          max: 8
-        - answerKey: inches
-          required: true
-          type: number
-          min: 0
-          max: 11
-    errors:
-      items:
-        feet:
-          required:
-            text: Enter your height in feet
-            href: "#height-imperial-feet"
-          invalid:
-            text: Enter your height in feet using numbers
-            href: "#height-imperial-feet"
-          min:
-            text: Height in feet must be 3 or more
-            href: "#height-imperial-feet"
-          max:
-            text: Height in feet must be 8 or fewer
-            href: "#height-imperial-feet"
-        inches:
-          required:
-            text: Enter your height in inches
-            href: "#height-imperial-inches"
-          invalid:
-            text: Enter your height in inches using numbers
-            href: "#height-imperial-inches"
-          min:
-            text: Height in inches must be 0 or more
-            href: "#height-imperial-inches"
-          max:
-            text: Height in inches must be 11 or fewer
-            href: "#height-imperial-inches"
-
-  - id: weight-metric
-    type: text
-    answerKey: weight
-    heading:
-      title: Your weight
-      caption: About you
-    description: |
-      An accurate measurement is important.
-
-      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
-    input:
-      id: weight-metric
-      name: answers[weight][metric]
-      valueKey: metric
-      label: What is your weight in kilograms?
-      suffix: kg
-      inputmode: numeric
-      classes: nhsuk-input--width-4
-    switchUnits:
-      text: Switch to stones and pounds
-    summary:
-      label: Weight
-    validation:
-      required: true
-      type: number
-      min: 30
-      max: 250
-    errors:
-      required:
-        text: Enter your weight in kilograms
-      invalid:
-        text: Enter your weight in kilograms using numbers
-      min:
-        text: Weight in kilograms must be 30 or more
-      max:
-        text: Weight in kilograms must be 250 or fewer
-
-  - id: weight-imperial
-    type: input_group
-    answerKey: weight
-    heading:
-      title: Your weight
-      caption: About you
-    description: |
-      An accurate measurement is important.
-
-      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
-    input:
-      label: What is your weight in stones and pounds?
-      valueKey: imperial
-      items:
-        - id: weight-imperial-stones
-          name: answers[weight][imperial][stones]
-          label: Stones
-          answerKey: stones
-          suffix: st
-          inputmode: numeric
-          classes: nhsuk-input--width-4
-        - id: weight-imperial-pounds
-          name: answers[weight][imperial][pounds]
-          label: Pounds
-          answerKey: pounds
-          suffix: lb
-          inputmode: numeric
-          classes: nhsuk-input--width-4
-    switchUnits:
-      text: Switch to kilograms
-    summary:
-      label: Weight
-    validation:
-      items:
-        - answerKey: stones
-          required: true
-          type: number
-          min: 4
-          max: 40
-        - answerKey: pounds
-          required: true
-          type: number
-          min: 0
-          max: 13
-    errors:
-      items:
-        stones:
-          required:
-            text: Enter your weight in stones
-            href: "#weight-imperial-stones"
-          invalid:
-            text: Enter your weight in stones using numbers
-            href: "#weight-imperial-stones"
-          min:
-            text: Weight in stones must be 4 or more
-            href: "#weight-imperial-stones"
-          max:
-            text: Weight in stones must be 40 or fewer
-            href: "#weight-imperial-stones"
-        pounds:
-          required:
-            text: Enter your weight in pounds
-            href: "#weight-imperial-pounds"
-          invalid:
-            text: Enter your weight in pounds using numbers
-            href: "#weight-imperial-pounds"
-          min:
-            text: Weight in pounds must be 0 or more
-            href: "#weight-imperial-pounds"
-          max:
-            text: Weight in pounds must be 13 or fewer
-            href: "#weight-imperial-pounds"
-
   - id: smoking-type
     type: multiple
     answerKey: smokingType
@@ -1032,23 +1032,6 @@ questions:
       required:
         text: Select whether you currently smoke this type of tobacco
 
-  - id: smoking-setting
-    type: multiple
-    heading:
-      title: Do you usually smoke shisha in a group or on your own?
-    input:
-      hint: Select all that apply
-    options:
-      - label: In a group
-        value: group
-      - label: By myself
-        value: individual
-    validation:
-      required: true
-    errors:
-      required:
-        text: Select whether you usually smoke shisha in a group or on your own
-
   - id: smoking-frequency
     type: single
     heading:
@@ -1070,30 +1053,6 @@ questions:
     errors:
       required:
         text: Select how often you smoke this type of tobacco
-
-  - id: smoking-change
-    type: multiple
-    heading:
-      title: Has the amount you normally smoke changed over time?
-    input:
-      hint: Select all that apply
-    options:
-      - label: Yes, I used to smoke more
-        value: greater
-        exclusiveGroup: change-list
-      - label: Yes, I used to smoke fewer
-        value: fewer
-        exclusiveGroup: change-list
-      - divider: or
-      - label: No, it has not changed
-        value: no
-        exclusive: true
-        exclusiveGroup: change-list
-    validation:
-      required: true
-    errors:
-      required:
-        text: Select whether the amount you normally smoke has changed over time
 
   - id: smoking-quantity
     type: text
@@ -1136,6 +1095,47 @@ questions:
         text: Amount smoked must be 1 or more
       max:
         text: Amount smoked must be 200 or fewer
+
+  - id: smoking-setting
+    type: multiple
+    heading:
+      title: Do you usually smoke shisha in a group or on your own?
+    input:
+      hint: Select all that apply
+    options:
+      - label: In a group
+        value: group
+      - label: By myself
+        value: individual
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you usually smoke shisha in a group or on your own
+
+  - id: smoking-change
+    type: multiple
+    heading:
+      title: Has the amount you normally smoke changed over time?
+    input:
+      hint: Select all that apply
+    options:
+      - label: Yes, I used to smoke more
+        value: greater
+        exclusiveGroup: change-list
+      - label: Yes, I used to smoke fewer
+        value: fewer
+        exclusiveGroup: change-list
+      - divider: or
+      - label: No, it has not changed
+        value: no
+        exclusive: true
+        exclusiveGroup: change-list
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether the amount you normally smoke has changed over time
 
   - id: smoking-frequency-change
     type: single
