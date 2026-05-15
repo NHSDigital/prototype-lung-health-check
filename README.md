@@ -1,4 +1,4 @@
-# Lung Health Check Prototype
+# NHS check if you need a lung scan prototype
 
 A digital questionnaire prototype for lung health screening eligibility and risk assessment, built using the NHS prototype kit.
 
