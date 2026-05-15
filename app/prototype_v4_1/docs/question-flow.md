@@ -1,10 +1,10 @@
-# Prototype v4 question flow
+# Prototype v4.1 question flow
 
-This diagram is based on `app/prototype_v4/routes.js`, `app/prototype_v4/controllers/authentication.js`, and `app/prototype_v4/controllers/question.js`.
+This diagram is based on `app/prototype_v4_1/routes.js`, `app/prototype_v4_1/controllers/authentication.js`, and `app/prototype_v4_1/controllers/question.js`.
 
 ```mermaid
 flowchart TD
-  start["Start page<br>/prototype_v4/start-page"] --> signIn["Sign in"]
+  start["Start page<br>/prototype_v4_1/start-page"] --> signIn["Sign in"]
   signIn --> securityCode["Security code"]
   securityCode --> agreement{"Share NHS login<br>information?"}
   agreement -- Accept --> terms["Accept terms"]
@@ -115,8 +115,8 @@ flowchart TD
 
 - Height and weight unit pages can be switched manually using the unit-switch links.
 - `Age stopped smoking` is only asked when the `smoker` answer is `yes_previous`.
-- The tobacco subflow uses query strings such as `/prototype_v4/smoking-status?type=cigarettes`.
+- The tobacco subflow uses query strings such as `/prototype_v4_1/smoking-status?type=cigarettes`.
 - If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
-- Shisha asks for `Smoking setting`, then repeats frequency and quantity for each selected setting. The shisha setting-specific pages include the setting in the query string, for example `/prototype_v4/smoking-frequency?type=shisha&setting=group`.
+- Shisha asks for `Smoking setting`, then repeats frequency and quantity for each selected setting. The shisha setting-specific pages include the setting in the query string, for example `/prototype_v4_1/smoking-frequency?type=shisha&setting=group`.
 - If both `increased` and `decreased` are selected for a tobacco type, the flow asks the three "increased" change questions first, then the three "decreased" change questions.
 - `Check your answers` links back to the last tobacco step that applies to the current set of answers.
