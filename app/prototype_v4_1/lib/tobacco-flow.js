@@ -7,7 +7,7 @@ const {
   tobaccoTypes: smokingTypes
 } = require('./questions')
 const { renderQuestion, version } = require('./question-renderer')
-const { validateQuestion } = require('./validate-question')
+const { validateQuestion } = require('./question-validator')
 
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
 

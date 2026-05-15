@@ -16,7 +16,7 @@ const {
   validateSmokingTypeQuestion
 } = require('../lib/tobacco-flow')
 const { getHeightBack, getWeightBack, getWeightNext } = require('../lib/unit-navigation')
-const { validateQuestion } = require('../lib/validate-question')
+const { validateQuestion } = require('../lib/question-validator')
 
 /// ------------------------------------------------------------------------ ///
 ///
