@@ -206,7 +206,7 @@ const validateNumber = (value, validation, errorsConfig, errors, defaultHref) =>
  * Validate grouped inputs, such as imperial height or weight fields.
  *
  * @param {Object} answers - Session answers object.
- * @param {Object} question - Normalised input_group question config.
+ * @param {Object} question - Normalised text_group question config.
  * @returns {ValidationError[]} Validation errors.
  */
 const validateInputGroup = (answers, question) => {
@@ -249,7 +249,7 @@ const validateQuestion = (answers = {}, id, overrides = {}) => {
     return errors
   }
 
-  if (question.type === 'input_group') {
+  if (question.type === 'text_group') {
     return validateInputGroup(answers, question)
   }
 

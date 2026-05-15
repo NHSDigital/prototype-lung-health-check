@@ -78,17 +78,14 @@ questions:
           name: answers[dateOfBirth][day]
           label: Day
           answerKey: day
-          classes: nhsuk-input--width-2
         - id: dateOfBirth-month
           name: answers[dateOfBirth][month]
           label: Month
           answerKey: month
-          classes: nhsuk-input--width-2
         - id: dateOfBirth-year
           name: answers[dateOfBirth][year]
           label: Year
           answerKey: year
-          classes: nhsuk-input--width-4
     summary:
       label: Date of birth
     validation:
@@ -169,7 +166,7 @@ questions:
         text: Height in centimetres must be 250 or fewer
 
   - id: height-imperial
-    type: input_group
+    type: text_group
     answerKey: height
     heading:
       title: Your height
@@ -279,7 +276,7 @@ questions:
         text: Weight in kilograms must be 250 or fewer
 
   - id: weight-imperial
-    type: input_group
+    type: text_group
     answerKey: weight
     heading:
       title: Your weight

@@ -26,7 +26,7 @@ let loadedAt = {}
 /**
  * @typedef {Object} Question
  * @property {string} id - Stable question id used by routes and content lookup.
- * @property {string} type - Renderer type, for example single, multiple, text, date or input_group.
+ * @property {string} type - Renderer type, for example single, multiple, text, date or text_group.
  * @property {string} answerKey - Key used in `req.session.data.answers`.
  * @property {Object} heading - Heading content.
  * @property {Object} input - Normalised input config for NHS components.

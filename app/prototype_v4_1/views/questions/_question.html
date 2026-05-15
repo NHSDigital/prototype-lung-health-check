@@ -171,25 +171,25 @@
                 name: question.input.items[0].name,
                 label: question.input.items[0].label,
                 value: data.answers[question.answerKey][question.input.items[0].answerKey],
-                classes: question.input.items[0].classes
+                classes: "nhsuk-input--width-2"
               },
               {
                 id: question.input.items[1].id,
                 name: question.input.items[1].name,
                 label: question.input.items[1].label,
                 value: data.answers[question.answerKey][question.input.items[1].answerKey],
-                classes: question.input.items[1].classes
+                classes: "nhsuk-input--width-2"
               },
               {
                 id: question.input.items[2].id,
                 name: question.input.items[2].name,
                 label: question.input.items[2].label,
                 value: data.answers[question.answerKey][question.input.items[2].answerKey],
-                classes: question.input.items[2].classes
+                classes: "nhsuk-input--width-4"
               }
             ]
           }) }}
-        {% elif question.type == "input_group" %}
+        {% elif question.type == "text_group" %}
           {% call fieldset({
             legend: legend
           }) %}
