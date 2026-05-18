@@ -1,5 +1,23 @@
 ---
 questions:
+  - id: accept-terms
+    type: multiple
+    answerKey: acceptTerms
+    heading:
+      title: Terms of use
+    description: |
+      To continue, confirm that you have read and agree to the [NHS Check if you need a lung scan terms of use](/prototype_v4_1/terms-of-use).
+    input:
+      label: Confirm you agree to the terms of use
+    options:
+      - label: I agree
+        value: yes
+    validation:
+      required: true
+    errors:
+      required:
+        text: Confirm that you have read and agree to the terms of use
+
   - id: phone-questionnaire
     type: single
     answerKey: phoneQuestionnaire

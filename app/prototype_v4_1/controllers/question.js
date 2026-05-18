@@ -23,25 +23,23 @@ const { validateQuestion } = require('../lib/question-validator')
 /// ------------------------------------------------------------------------ ///
 
 exports.acceptTerms_get = (req, res) => {
-  res.render(view('questions/accept-terms'), {
-    actions: {
-      next: `/prototype_${version}/accept-terms`,
-      cancel: `/prototype_${version}`
-    }
+  renderQuestion(res, 'accept-terms', {
+    next: `/prototype_${version}/accept-terms`,
+    back: `/prototype_${version}/sign-in-agreement`,
+    cancel: `/prototype_${version}`
   })
 }
 
 exports.acceptTerms_post = (req, res) => {
-  const errors = []
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'accept-terms')
 
   if (errors.length) {
-    res.render(view('questions/accept-terms'), {
-      errors,
-      actions: {
-        next: `/prototype_${version}/accept-terms`,
-        cancel: `/prototype_${version}`
-      }
-    })
+    renderQuestion(res, 'accept-terms', {
+      next: `/prototype_${version}/accept-terms`,
+      back: `/prototype_${version}/sign-in-agreement`,
+      cancel: `/prototype_${version}`
+    }, errors)
   } else {
     res.redirect(`/prototype_${version}/phone-questionnaire`)
   }
