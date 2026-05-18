@@ -835,6 +835,7 @@ questions:
         value: cigarillos
         exclusiveGroup: types-list
       - label: Shisha
+        hint: Also known as hookah and water pipes
         value: shisha
         exclusiveGroup: types-list
       - divider: or
@@ -902,24 +903,41 @@ questions:
       hint: Give an estimate if you are not sure
       inputmode: numeric
       classes: nhsuk-input--width-4
-    options:
-      - label: Less than 10g
-        value: less_than_10
-      - label: 10g to 30g
-        value: 10_to_30
-      - label: 31g to 50g
-        value: 31_to_50
-      - label: 51g to 75g
-        value: 51_to_75
-      - label: 76g to 100g
-        value: 76_to_100
-      - label: More than 100g
-        value: more_than_100
     variants:
       rolling_tobacco:
         type: single
         input:
           hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+        options:
+          - label: Less than 10g
+            value: less_than_10
+          - label: 10g to 30g
+            value: 10_to_30
+          - label: 31g to 50g
+            value: 31_to_50
+          - label: 51g to 75g
+            value: 51_to_75
+          - label: 76g to 100g
+            value: 76_to_100
+          - label: More than 100g
+            value: more_than_100
+        validation:
+          required: true
+      shisha:
+        type: single
+        input:
+          hint:
+        options:
+          - label: Up to 30 minutes
+            value: up_to_30_minutes
+          - label: 30 minutes to 1 hour
+            value: 30_minutes_to_1_hour
+          - label: 1 to 2 hours
+            value: 1_to_2_hours
+          - label: More than 2 hours
+            value: more_than_2_hours
+        validation:
+          required: true
     validation:
       required: true
       type: number
@@ -1007,24 +1025,27 @@ questions:
       hint: Give an estimate if you are not sure
       inputmode: numeric
       classes: nhsuk-input--width-4
-    options:
-      - label: Less than 10g
-        value: less_than_10
-      - label: 10g to 30g
-        value: 10_to_30
-      - label: 31g to 50g
-        value: 31_to_50
-      - label: 51g to 75g
-        value: 51_to_75
-      - label: 76g to 100g
-        value: 76_to_100
-      - label: More than 100g
-        value: more_than_100
     variants:
       rolling_tobacco:
         type: single
         input:
           hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+        options:
+          - label: Less than 10g
+            value: less_than_10
+          - label: 10g to 30g
+            value: 10_to_30
+          - label: 31g to 50g
+            value: 31_to_50
+          - label: 51g to 75g
+            value: 51_to_75
+          - label: 76g to 100g
+            value: 76_to_100
+          - label: More than 100g
+            value: more_than_100
+        validation:
+          required: true
+          type:
     validation:
       required: true
       type: number

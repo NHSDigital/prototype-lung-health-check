@@ -120,26 +120,26 @@ tobaccoTypes:
         status: Do you currently smoke shisha?
         setting: Do you usually smoke shisha in a group or on your own?
         frequency: How often do you smoke shisha?
-        quantity: How many hours do you currently smoke shisha in a normal day?
+        quantity: How long do you currently smoke shisha in a normal day?
       past:
         setting: Did you usually smoke shisha in a group or on your own?
         frequency: How often did you smoke shisha?
-        quantity: How many hours did you smoke shisha in a normal day?
+        quantity: How long did you smoke shisha in a normal day?
     settingHeadings:
       group:
         current:
           frequency: How often do you smoke shisha in a group?
-          quantity: How many hours do you currently smoke shisha in a group in a normal day?
+          quantity: How long do you currently smoke shisha in a group in a normal day?
         past:
           frequency: How often did you smoke shisha in a group?
-          quantity: How many hours did you smoke shisha in a group in a normal day?
+          quantity: How long did you smoke shisha in a group in a normal day?
       individual:
         current:
           frequency: How often do you smoke shisha by yourself?
-          quantity: How many hours do you currently smoke shisha by yourself in a normal day?
+          quantity: How long do you currently smoke shisha by yourself in a normal day?
         past:
           frequency: How often did you smoke shisha by yourself?
-          quantity: How many hours did you smoke shisha by yourself in a normal day?
+          quantity: How long did you smoke shisha by yourself in a normal day?
 
 smokingChangeTypes:
   greater:

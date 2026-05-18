@@ -15,7 +15,6 @@ const getValueLabels = () => {
   return {
     smokingChange: getQuestionValueLabels('smoking-change'),
     smokingFrequency: getQuestionValueLabels('smoking-frequency'),
-    smokingQuantityRollingTobacco: getQuestionValueLabels('smoking-quantity'),
     smokingSetting: getQuestionValueLabels('smoking-setting'),
     smokingStatus: getQuestionValueLabels('smoking-status'),
     smokingType: getQuestionValueLabels('smoking-type')
@@ -40,6 +39,60 @@ const getValueLabels = () => {
  */
 const formatQuantity = (value, singular, plural) => {
   return `${value} ${Number(value) === 1 ? singular : plural}`
+}
+
+/**
+ * Convert a YAML option into the shape expected by NHS radios/checkboxes.
+ *
+ * @param {Object} option - YAML option definition.
+ * @returns {Object} NHS component item.
+ */
+const toComponentItem = (option) => {
+  if (option.divider) {
+    return {
+      divider: option.divider
+    }
+  }
+
+  return {
+    text: option.label,
+    hint: option.hint ? { text: option.hint } : undefined,
+    value: option.value,
+    exclusive: option.exclusive,
+    exclusiveGroup: option.exclusiveGroup,
+    conditionalInput: option.conditionalInput
+  }
+}
+
+/**
+ * Get a question variant for a tobacco type.
+ *
+ * @param {string} id - Question id.
+ * @param {string} type - Tobacco type key.
+ * @returns {Object} Variant config.
+ */
+const getQuestionVariant = (id, type) => {
+  return getQuestion(id).variants?.[type] || {}
+}
+
+/**
+ * Build value-to-label mappings for variant quantity options.
+ *
+ * @param {string} id - Quantity question id.
+ * @param {string} type - Tobacco type key.
+ * @returns {Object.<string, string>} Map of submitted values to labels.
+ */
+const getQuestionVariantValueLabels = (id, type) => {
+  const question = getQuestion(id)
+  const variant = getQuestionVariant(id, type)
+
+  return (variant.options || question.options || []).reduce((labels, option) => {
+    if (option.value && option.label) {
+      labels[option.value] = option.label
+    }
+
+    return labels
+  }, {})
 }
 
 /**
@@ -207,8 +260,10 @@ const getSmokingQuantity = (type, answer) => {
     return ''
   }
 
-  if (type === 'rolling_tobacco') {
-    return getValueLabels().smokingQuantityRollingTobacco[answer] || answer
+  const optionLabel = getQuestionVariantValueLabels('smoking-quantity', type)[answer]
+
+  if (optionLabel) {
+    return optionLabel
   }
 
   const smokingType = smokingTypes[type]
@@ -569,6 +624,47 @@ const getQuestionItemsWithLabels = (id, labels = {}, hintOverrides = {}) => {
   })
 }
 
+/**
+ * Build runtime overrides for a quantity question.
+ *
+ * @param {Object} params - Quantity override inputs.
+ * @returns {Object} Runtime question overrides.
+ */
+const getSmokingQuantityQuestionOverrides = ({
+  page,
+  step,
+  heading,
+  caption,
+  name,
+  value,
+  smokingType
+}) => {
+  const question = getQuestion(page)
+  const variant = getQuestionVariant(page, step.type)
+  const variantInput = variant.input || {}
+  const hasHintOverride = Object.prototype.hasOwnProperty.call(variantInput, 'hint')
+  const hint = hasHintOverride ? variantInput.hint : question.input.hint
+  const questionType = variant.type || question.type
+
+  return {
+    type: questionType,
+    heading: {
+      title: heading,
+      caption
+    },
+    input: {
+      id: question.input.id,
+      name,
+      hint,
+      hintParam: hint ? { text: hint } : undefined,
+      suffix: questionType === 'text' ? smokingType.suffix : undefined
+    },
+    validation: variant.validation,
+    items: variant.options ? variant.options.map(toComponentItem) : question.items,
+    value
+  }
+}
+
 const removeQuestionMark = (value = '') => value.replace(/\?$/, '')
 
 const lowerFirst = (value = '') => {
@@ -585,9 +681,12 @@ const getAnswerPhraseFromHeading = (heading = '') => {
   return lowerFirst(removeQuestionMark(heading))
     .replace(/^how often did you smoke /, 'how often you smoked ')
     .replace(/^how often do you smoke /, 'how often you smoke ')
-    .replace(/^(how (?:much|many) .+?) did you smoke /, '$1 you smoked ')
-    .replace(/^(how (?:much|many) .+?) do you currently smoke /, '$1 you currently smoke ')
-    .replace(/^(how (?:much|many) .+?) do you smoke /, '$1 you smoke ')
+    .replace(/^how long did you smoke /, 'how long you smoked ')
+    .replace(/^how long do you currently smoke /, 'how long you currently smoke ')
+    .replace(/^how long do you smoke /, 'how long you smoke ')
+    .replace(/^(how (?:much|many|long) .+?) did you smoke /, '$1 you smoked ')
+    .replace(/^(how (?:much|many|long) .+?) do you currently smoke /, '$1 you currently smoke ')
+    .replace(/^(how (?:much|many|long) .+?) do you smoke /, '$1 you smoke ')
 }
 
 /**
@@ -633,7 +732,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
     return `Select ${getAnswerPhraseFromHeading(heading)}`
   }
 
-  if (heading.startsWith('How much') || heading.startsWith('How many')) {
+  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
     return `${questionType === 'single' ? 'Select' : 'Enter'} ${getAnswerPhraseFromHeading(heading)}`
   }
 
@@ -650,7 +749,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
 const getContextualInvalidErrorText = (question, overrides) => {
   const heading = overrides.heading?.title || question.heading?.title || ''
 
-  if (heading.startsWith('How much') || heading.startsWith('How many')) {
+  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
     return `Enter ${getAnswerPhraseFromHeading(heading)} using numbers`
   }
 
@@ -722,34 +821,18 @@ const getSmokingContentQuestionOverrides = ({
 
   if (page === 'smoking-quantity') {
     const isSettingSpecific = Boolean(step.setting)
-    const isRollingTobacco = step.type === 'rolling_tobacco'
 
-    return {
-      type: isRollingTobacco ? 'single' : 'text',
-      heading: {
-        title: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType, isSettingSpecific ? settingAnswer : answer),
-        caption: smokingType.caption
-      },
-      input: {
-        id: 'smoking-quantity',
-        name: isSettingSpecific
-          ? `answers[${step.type}][${step.setting}][smokingQuantity]`
-          : `answers[${step.type}][smokingQuantity]`,
-        hint: isRollingTobacco
-          ? 'A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g'
-          : 'Give an estimate if you are not sure',
-        hintParam: {
-          text: isRollingTobacco
-            ? 'A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g'
-            : 'Give an estimate if you are not sure'
-        },
-        suffix: isRollingTobacco ? undefined : smokingType.suffix
-      },
-      validation: isRollingTobacco
-        ? { required: true, type: null }
-        : undefined,
-      value: isSettingSpecific ? settingAnswer.smokingQuantity : answer.smokingQuantity
-    }
+    return getSmokingQuantityQuestionOverrides({
+      page,
+      step,
+      heading: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType, isSettingSpecific ? settingAnswer : answer),
+      caption: smokingType.caption,
+      name: isSettingSpecific
+        ? `answers[${step.type}][${step.setting}][smokingQuantity]`
+        : `answers[${step.type}][smokingQuantity]`,
+      value: isSettingSpecific ? settingAnswer.smokingQuantity : answer.smokingQuantity,
+      smokingType
+    })
   }
 
   if (page === 'smoking-change') {
@@ -781,32 +864,15 @@ const getSmokingContentQuestionOverrides = ({
   }
 
   if (page === 'smoking-quantity-change') {
-    const isRollingTobacco = step.type === 'rolling_tobacco'
-
-    return {
-      type: isRollingTobacco ? 'single' : 'text',
-      heading: {
-        title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
-        caption: smokingType.caption
-      },
-      input: {
-        id: 'smoking-quantity-change',
-        name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
-        hint: isRollingTobacco
-          ? 'A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g'
-          : 'Give an estimate if you are not sure',
-        hintParam: {
-          text: isRollingTobacco
-            ? 'A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g'
-            : 'Give an estimate if you are not sure'
-        },
-        suffix: isRollingTobacco ? undefined : smokingType.suffix
-      },
-      validation: isRollingTobacco
-        ? { required: true, type: null }
-        : undefined,
-      value: changeAnswer.quantity
-    }
+    return getSmokingQuantityQuestionOverrides({
+      page,
+      step,
+      heading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
+      caption: smokingType.caption,
+      name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
+      value: changeAnswer.quantity,
+      smokingType
+    })
   }
 
   if (page === 'smoking-years-change') {
