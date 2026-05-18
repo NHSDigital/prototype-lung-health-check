@@ -48,6 +48,7 @@ exports.acceptTerms_post = (req, res) => {
 exports.phoneQuestionnaire_get = (req, res) => {
   renderQuestion(res, 'phone-questionnaire', {
     next: `/prototype_${version}/phone-questionnaire`,
+    back: `/prototype_${version}/accept-terms`,
     cancel: `/prototype_${version}/`
   })
 }
@@ -59,6 +60,7 @@ exports.phoneQuestionnaire_post = (req, res) => {
   if (errors.length) {
     renderQuestion(res, 'phone-questionnaire', {
       next: `/prototype_${version}/phone-questionnaire`,
+      back: `/prototype_${version}/accept-terms`,
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
