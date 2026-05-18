@@ -276,7 +276,7 @@ const validateQuestion = (answers = {}, id, overrides = {}) => {
     return errors
   }
 
-  if (validation.type === 'number' && !isBlank(value)) {
+  if (question.type === 'text' && validation.type === 'number' && !isBlank(value)) {
     validateNumber(value, validation, question.errors, errors, defaultHref)
   }
 
