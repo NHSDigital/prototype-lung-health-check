@@ -847,6 +847,12 @@ questions:
       previous:
         heading:
           title: The type of tobacco you have smoked
+        description: |
+          Smoking affects your health in different ways depending on what you smoked.
+
+          We need to know what you used to smoke frequently. For example, if you smoked a pipe on a weekly basis for a year or longer.
+
+          You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
         input:
           label: What have you smoked?
     summary:
