@@ -93,6 +93,24 @@ const formatWeight = (weight = {}) => {
 }
 
 /**
+ * Format a smoking quantity, including conditional reveal "another amount" answers.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {Object} answer - Answer object containing quantity fields.
+ * @param {string} quantityKey - Quantity answer key.
+ * @returns {string} Formatted quantity answer.
+ */
+const formatSmokingQuantityAnswer = (type, answer = {}, quantityKey = 'smokingQuantity') => {
+  if (answer[quantityKey] === 'another_amount') {
+    return answer.smokingQuantityOther
+      ? formatQuantity(answer.smokingQuantityOther, 'hour', 'hours')
+      : ''
+  }
+
+  return getSmokingQuantity(type, answer[quantityKey])
+}
+
+/**
  * Format one or more stored values using display labels.
  *
  * @param {string|string[]} value - Submitted value or values.
@@ -226,7 +244,7 @@ const getCheckYourAnswers = (answers = {}) => {
         }),
         makeSummaryRow({
           key: getSmokingStepHeading('smoking-quantity', type, setting, isPast, settingAnswer),
-          value: getSmokingQuantity(type, settingAnswer.smokingQuantity),
+          value: formatSmokingQuantityAnswer(type, settingAnswer),
           href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type, setting })
         })
       ]
@@ -270,7 +288,7 @@ const getCheckYourAnswers = (answers = {}) => {
       }),
       type !== 'shisha' && makeSummaryRow({
         key: getSmokingStepHeading('smoking-quantity', type, undefined, isPast, answer),
-        value: getSmokingQuantity(type, answer.smokingQuantity),
+        value: formatSmokingQuantityAnswer(type, answer),
         href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type })
       }),
       type !== 'shisha' && makeSummaryRow({

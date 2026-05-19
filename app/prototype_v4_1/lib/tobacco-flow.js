@@ -481,6 +481,48 @@ const getSmokingChangeAnswer = (answer = {}, change) => {
 }
 
 /**
+ * Get the object that stores a smoking quantity answer for the current step.
+ *
+ * @param {Object} answers - Session answers object.
+ * @param {SmokingTypeStep} step - Current tobacco step.
+ * @returns {Object} Answer object containing the quantity answer.
+ */
+const getSmokingQuantityAnswer = (answers = {}, step = {}) => {
+  const answer = answers[step.type] || {}
+
+  if (step.change) {
+    return getSmokingChangeAnswer(answer, step.change)
+  }
+
+  if (step.setting) {
+    return getShishaSettingAnswer(answer, step.setting)
+  }
+
+  return answer
+}
+
+/**
+ * Remove a stale conditional reveal quantity when "another amount" is not selected.
+ *
+ * @param {Object} answers - Session answers object, mutated in place.
+ * @param {SmokingTypeStep} step - Current tobacco step.
+ * @param {string} quantityKey - Quantity answer key.
+ */
+const deleteUnselectedSmokingQuantityOtherAnswer = (answers = {}, step, quantityKey = 'smokingQuantity') => {
+  delete answers.smokingQuantityOther
+
+  if (!step) {
+    return
+  }
+
+  const answer = getSmokingQuantityAnswer(answers, step)
+
+  if (answer[quantityKey] !== 'another_amount') {
+    delete answer.smokingQuantityOther
+  }
+}
+
+/**
  * Build contextual comparison text for changed-smoking questions.
  *
  * @param {string} type - Tobacco type key.
@@ -637,6 +679,7 @@ const getSmokingQuantityQuestionOverrides = ({
   caption,
   name,
   value,
+  conditionalValue,
   smokingType
 }) => {
   const question = getQuestion(page)
@@ -645,6 +688,29 @@ const getSmokingQuantityQuestionOverrides = ({
   const hasHintOverride = Object.prototype.hasOwnProperty.call(variantInput, 'hint')
   const hint = hasHintOverride ? variantInput.hint : question.input.hint
   const questionType = variant.type || question.type
+  const conditionalHref = '#smoking-quantity-other'
+  const items = variant.options
+    ? variant.options.map((option) => {
+      const item = toComponentItem(option)
+
+      if (!item.conditionalInput) {
+        return item
+      }
+
+      const conditionalName = step.setting
+        ? `answers[${step.type}][${step.setting}][${item.conditionalInput.answerKey}]`
+        : `answers[${step.type}][${item.conditionalInput.answerKey}]`
+
+      return {
+        ...item,
+        conditionalInput: {
+          ...item.conditionalInput,
+          name: conditionalName,
+          value: conditionalValue
+        }
+      }
+    })
+    : question.items
 
   return {
     type: questionType,
@@ -659,8 +725,43 @@ const getSmokingQuantityQuestionOverrides = ({
       hintParam: hint ? { text: hint } : undefined,
       suffix: questionType === 'text' ? smokingType.suffix : undefined
     },
-    validation: variant.validation,
-    items: variant.options ? variant.options.map(toComponentItem) : question.items,
+    validation: {
+      ...variant.validation,
+      conditional: {
+        another_amount: {
+          required: true,
+          type: 'number',
+          min: 0.5,
+          max: 24,
+          answerKey: 'smokingQuantityOther',
+          value: conditionalValue,
+          href: conditionalHref
+        }
+      }
+    },
+    errors: {
+      conditional: {
+        another_amount: {
+          required: {
+            text: 'Enter the number of hours',
+            href: conditionalHref
+          }
+        }
+      },
+      invalid: {
+        text: 'Number of hours must be a number',
+        href: conditionalHref
+      },
+      min: {
+        text: 'Number of hours must be 0.5 or more',
+        href: conditionalHref
+      },
+      max: {
+        text: 'Number of hours must be 24 or fewer',
+        href: conditionalHref
+      }
+    },
+    items,
     value
   }
 }
@@ -831,6 +932,7 @@ const getSmokingContentQuestionOverrides = ({
         ? `answers[${step.type}][${step.setting}][smokingQuantity]`
         : `answers[${step.type}][smokingQuantity]`,
       value: isSettingSpecific ? settingAnswer.smokingQuantity : answer.smokingQuantity,
+      conditionalValue: isSettingSpecific ? settingAnswer.smokingQuantityOther : answer.smokingQuantityOther,
       smokingType
     })
   }
@@ -871,6 +973,7 @@ const getSmokingContentQuestionOverrides = ({
       caption: smokingType.caption,
       name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
       value: changeAnswer.quantity,
+      conditionalValue: changeAnswer.smokingQuantityOther,
       smokingType
     })
   }
@@ -1012,6 +1115,7 @@ const validateSmokingTypeQuestion = (req, page, step) => {
 
 module.exports = {
   deleteUnselectedShishaSettingAnswers,
+  deleteUnselectedSmokingQuantityOtherAnswer,
   deleteUnselectedSmokingChangeAnswers,
   deleteUnselectedSmokingTypeAnswers,
   formatQuantity,

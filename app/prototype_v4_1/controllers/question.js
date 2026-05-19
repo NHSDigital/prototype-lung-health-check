@@ -3,6 +3,7 @@ const { renderQuestion, version, view } = require('../lib/question-renderer')
 const { getCheckYourAnswers } = require('../lib/summary')
 const {
   deleteUnselectedShishaSettingAnswers,
+  deleteUnselectedSmokingQuantityOtherAnswer,
   deleteUnselectedSmokingChangeAnswers,
   deleteUnselectedSmokingTypeAnswers,
   getFormerSmokerFallbackStep,
@@ -773,6 +774,7 @@ exports.smokingQuantity_get = (req, res) => {
 
 exports.smokingQuantity_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-quantity')
+  deleteUnselectedSmokingQuantityOtherAnswer(req.session.data.answers, step)
   const errors = step ? validateSmokingTypeQuestion(req, 'smoking-quantity', step) : []
 
   if (!step) {
@@ -859,6 +861,7 @@ exports.smokingQuantityChange_get = (req, res) => {
 
 exports.smokingQuantityChange_post = (req, res) => {
   const { step, steps } = getSmokingTypeStep(req, 'smoking-quantity-change')
+  deleteUnselectedSmokingQuantityOtherAnswer(req.session.data.answers, step, 'quantity')
   const errors = step ? validateSmokingTypeQuestion(req, 'smoking-quantity-change', step) : []
 
   if (!step) {

@@ -960,6 +960,18 @@ questions:
             value: 1_to_2_hours
           - label: More than 2 hours
             value: more_than_2_hours
+          - divider: or
+          - label: Another amount
+            value: another_amount
+            conditionalInput:
+              id: smoking-quantity-other
+              name: answers[smokingQuantityOther]
+              answerKey: smokingQuantityOther
+              label: Enter the number of hours
+              hint: Give an estimate if you are not sure
+              suffix: hours
+              inputmode: numeric
+              classes: nhsuk-input--width-4
         validation:
           required: true
     validation:
