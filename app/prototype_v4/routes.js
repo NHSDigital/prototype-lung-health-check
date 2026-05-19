@@ -206,6 +206,8 @@ router.get(`/prototype_${version}/privacy-policy`, contentController.privacy)
 
 router.get(`/prototype_${version}/terms-of-use`, contentController.terms)
 
+router.get(`/prototype_${version}/paused`, contentController.paused)
+
 /// ------------------------------------------------------------------------ ///
 /// Error pages
 /// ------------------------------------------------------------------------ ///
