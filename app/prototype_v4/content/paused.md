@@ -2,7 +2,7 @@
 title: Sorry, the service is unavailable
 ---
 
-You will be able to use the service from 3pm on Tuesday, 5 May 2026.
+You will be able to use the service from Tuesday, 5 May 2026.
 
 If you reached this page after submitting information then it has not been saved. You will need to enter it again when the service is available.
 
