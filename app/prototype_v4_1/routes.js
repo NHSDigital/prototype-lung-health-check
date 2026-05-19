@@ -4,6 +4,7 @@ const path = require('path')
 const router = express.Router()
 
 const version = 'v4_1'
+const prototypePath = `/prototype_${version}`
 const viewsDirectory = path.join(__dirname, 'views')
 
 const view = (template) => {
@@ -19,96 +20,6 @@ const hasView = (template) => {
   return templatePath.startsWith(viewsDirectory) && fs.existsSync(templatePath)
 }
 
-const defaultAnswers = {
-  acceptTerms: ['yes'],
-  phoneQuestionnaire: 'no',
-  smoker: 'yes_current',
-  dateOfBirth: {
-    day: '15',
-    month: '3',
-    year: '1964'
-  },
-  faceToFaceAppointment: 'no',
-  height: {
-    metric: '170'
-  },
-  weight: {
-    metric: '70'
-  },
-  gender: 'female',
-  sex: 'female',
-  ethnicity: 'white',
-  education: 'further_education',
-  respiratoryConditions: ['no'],
-  asbestosAtWork: 'no',
-  asbestosAtHome: 'no',
-  cancerDiagnosis: 'no',
-  cancerDiagnosisRelatives: 'yes',
-  cancerDiagnosisRelativesAge: 'no',
-  ageStartedSmoking: '18',
-  periodsStoppedSmoking: 'no',
-  smokingType: ['cigarettes'],
-  cigarettes: {
-    smokingStatus: 'yes',
-    smokingFrequency: 'daily',
-    smokingQuantity: '10',
-    smokingChange: ['greater'],
-    smokingChangeIncrease: {
-      frequency: 'weekly',
-      quantity: '5',
-      years: '10'
-    }
-  }
-}
-
-const getDefaultAnswers = () => JSON.parse(JSON.stringify(defaultAnswers))
-
-const getDefaultAnswerProfile = (profile) => {
-  const answers = getDefaultAnswers()
-
-  if (profile === 'former') {
-    answers.smoker = 'yes_previous'
-    answers.ageStoppedSmoking = '55'
-    answers.cigarettes = {
-      smokingFrequency: 'daily',
-      smokingQuantity: '10',
-      smokingChange: ['greater'],
-      smokingChangeIncrease: {
-        frequency: 'weekly',
-        quantity: '5',
-        years: '10'
-      }
-    }
-  }
-
-  if (profile === 'shisha') {
-    answers.smokingType = ['shisha']
-    delete answers.cigarettes
-    answers.shisha = {
-      smokingStatus: 'yes',
-      smokingSetting: ['group'],
-      group: {
-        smokingFrequency: 'weekly',
-        smokingQuantity: '30_minutes_to_1_hour'
-      }
-    }
-  }
-
-  return answers
-}
-
-const getIndexRedirect = (returnUrl) => {
-  if (!returnUrl || typeof returnUrl !== 'string') {
-    return `/prototype_${version}/check-your-answers`
-  }
-
-  if (!returnUrl.startsWith(`/prototype_${version}/`) || returnUrl.includes('//')) {
-    return `/prototype_${version}/page-index`
-  }
-
-  return returnUrl
-}
-
 /// ------------------------------------------------------------------------ ///
 /// Controller modules - used for routing
 /// ------------------------------------------------------------------------ ///
@@ -116,20 +27,21 @@ const getIndexRedirect = (returnUrl) => {
 const authenticationController = require('./controllers/authentication')
 const contentController = require('./controllers/content')
 const errorController = require('./controllers/error')
+const { getDefaultAnswerProfile, getIndexRedirect } = require('./lib/page-index')
 const questionController = require('./controllers/question')
 
 /// ------------------------------------------------------------------------ ///
 /// Start page
 /// ------------------------------------------------------------------------ ///
 
-router.get(`/prototype_${version}`, (req, res) => {
-  res.redirect(`/prototype_${version}/start-page`)
+router.get(prototypePath, (req, res) => {
+  res.redirect(`${prototypePath}/start-page`)
 })
 
-router.get(`/prototype_${version}/start-page`, (req, res) => {
+router.get(`${prototypePath}/start-page`, (req, res) => {
   res.render(view('start'), {
     actions: {
-      start: `/prototype_${version}/sign-in`
+      start: `${prototypePath}/sign-in`
     }
   })
 })
@@ -316,7 +228,7 @@ router.get(`/prototype_${version}/set-default-answers`, (req, res) => {
   req.session.data = req.session.data || {}
   req.session.data.answers = getDefaultAnswerProfile(req.query.profile)
 
-  res.redirect(getIndexRedirect(req.query.returnUrl))
+  res.redirect(getIndexRedirect(req.query.returnUrl, prototypePath))
 })
 
 router.get(`/prototype_${version}/page-index`, (req, res) => {
