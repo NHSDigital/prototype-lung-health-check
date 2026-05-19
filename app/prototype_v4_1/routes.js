@@ -19,6 +19,96 @@ const hasView = (template) => {
   return templatePath.startsWith(viewsDirectory) && fs.existsSync(templatePath)
 }
 
+const defaultAnswers = {
+  acceptTerms: ['yes'],
+  phoneQuestionnaire: 'no',
+  smoker: 'yes_current',
+  dateOfBirth: {
+    day: '15',
+    month: '3',
+    year: '1964'
+  },
+  faceToFaceAppointment: 'no',
+  height: {
+    metric: '170'
+  },
+  weight: {
+    metric: '70'
+  },
+  gender: 'female',
+  sex: 'female',
+  ethnicity: 'white',
+  education: 'further_education',
+  respiratoryConditions: ['no'],
+  asbestosAtWork: 'no',
+  asbestosAtHome: 'no',
+  cancerDiagnosis: 'no',
+  cancerDiagnosisRelatives: 'yes',
+  cancerDiagnosisRelativesAge: 'no',
+  ageStartedSmoking: '18',
+  periodsStoppedSmoking: 'no',
+  smokingType: ['cigarettes'],
+  cigarettes: {
+    smokingStatus: 'yes',
+    smokingFrequency: 'daily',
+    smokingQuantity: '10',
+    smokingChange: ['greater'],
+    smokingChangeIncrease: {
+      frequency: 'weekly',
+      quantity: '5',
+      years: '10'
+    }
+  }
+}
+
+const getDefaultAnswers = () => JSON.parse(JSON.stringify(defaultAnswers))
+
+const getDefaultAnswerProfile = (profile) => {
+  const answers = getDefaultAnswers()
+
+  if (profile === 'former') {
+    answers.smoker = 'yes_previous'
+    answers.ageStoppedSmoking = '55'
+    answers.cigarettes = {
+      smokingFrequency: 'daily',
+      smokingQuantity: '10',
+      smokingChange: ['greater'],
+      smokingChangeIncrease: {
+        frequency: 'weekly',
+        quantity: '5',
+        years: '10'
+      }
+    }
+  }
+
+  if (profile === 'shisha') {
+    answers.smokingType = ['shisha']
+    delete answers.cigarettes
+    answers.shisha = {
+      smokingStatus: 'yes',
+      smokingSetting: ['group'],
+      group: {
+        smokingFrequency: 'weekly',
+        smokingQuantity: '30_minutes_to_1_hour'
+      }
+    }
+  }
+
+  return answers
+}
+
+const getIndexRedirect = (returnUrl) => {
+  if (!returnUrl || typeof returnUrl !== 'string') {
+    return `/prototype_${version}/check-your-answers`
+  }
+
+  if (!returnUrl.startsWith(`/prototype_${version}/`) || returnUrl.includes('//')) {
+    return `/prototype_${version}/page-index`
+  }
+
+  return returnUrl
+}
+
 /// ------------------------------------------------------------------------ ///
 /// Controller modules - used for routing
 /// ------------------------------------------------------------------------ ///
@@ -37,7 +127,7 @@ router.get(`/prototype_${version}`, (req, res) => {
 })
 
 router.get(`/prototype_${version}/start-page`, (req, res) => {
-  res.render(view('index'), {
+  res.render(view('start'), {
     actions: {
       start: `/prototype_${version}/sign-in`
     }
@@ -217,6 +307,33 @@ router.get(`/prototype_${version}/server-error`, errorController.unexpectedError
 
 router.get(`/prototype_${version}/503`, errorController.serviceUnavailable)
 router.get(`/prototype_${version}/service-unavailable`, errorController.serviceUnavailable)
+
+/// ------------------------------------------------------------------------ ///
+/// Page index
+/// ------------------------------------------------------------------------ ///
+
+router.get(`/prototype_${version}/set-default-answers`, (req, res) => {
+  req.session.data = req.session.data || {}
+  req.session.data.answers = getDefaultAnswerProfile(req.query.profile)
+
+  res.redirect(getIndexRedirect(req.query.returnUrl))
+})
+
+router.get(`/prototype_${version}/page-index`, (req, res) => {
+  res.render(view('index'), {
+    actions: {
+      setDefaultAnswers: `/prototype_${version}/set-default-answers`
+    }
+  })
+})
+
+router.get(`/prototype_${version}/index`, (req, res) => {
+  res.redirect(`/prototype_${version}/page-index`)
+})
+
+router.get(`/prototype_${version}/index-allpages`, (req, res) => {
+  res.redirect(`/prototype_${version}/page-index`)
+})
 
 /// ------------------------------------------------------------------------ ///
 /// Add your routes above

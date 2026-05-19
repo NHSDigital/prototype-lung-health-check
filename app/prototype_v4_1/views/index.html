@@ -1,56 +1,153 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = "Help us test a new online service" %}
+{% set title = "Page index" %}
+
+{% macro pageLink(href, text) %}
+  <div class="nhsuk-summary-list__row">
+    <dt class="nhsuk-summary-list__key">
+      <a href="{{ href }}" class="nhsuk-link">{{ text }}</a>
+    </dt>
+    <dd class="nhsuk-summary-list__value"></dd>
+  </div>
+{% endmacro %}
+
+{% macro seededPageLink(returnUrl, text) %}
+  {{ pageLink(actions.setDefaultAnswers + "?returnUrl=" + returnUrl, text) }}
+{% endmacro %}
+
+{% macro seededProfilePageLink(returnUrl, profile, text) %}
+  {{ pageLink(actions.setDefaultAnswers + "?returnUrl=" + returnUrl + "&profile=" + profile, text) }}
+{% endmacro %}
+
+{% block beforeContent %}
+  {{ backLink({
+    href: "javascript:history.back();",
+    text: "Go back"
+  }) }}
+{% endblock %}
 
 {% block content %}
+  <style>
+    .nhsuk-summary-list__row {
+      border-bottom: 1px solid #d8dde0;
+    }
+
+    .nhsuk-summary-list__key,
+    .nhsuk-summary-list__value {
+      border-bottom: 0;
+    }
+
+    .nhsuk-summary-list__key {
+      width: 100%;
+    }
+
+    .nhsuk-summary-list__value {
+      display: none;
+    }
+  </style>
+
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
+      <h1 class="nhsuk-heading-l">{{ title }}</h1>
+      <p class="nhsuk-body">Quick navigation to all pages in prototype v4.1.</p>
+      <p class="nhsuk-body">Some links set default answers before opening the page, so conditional pages and check your answers have enough data to render.</p>
+    </div>
+  </div>
 
-      {% include "prototype_v4/views/includes/page-heading.html" %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+      <h2 class="nhsuk-heading-m">Start and sign in</h2>
+      <dl class="nhsuk-summary-list">
+        {{ pageLink("/prototype_v4_1/start-page", "Help us test a new online service") }}
+        {{ pageLink("/prototype_v4_1/sign-in", "Log in to your NHS account") }}
+        {{ pageLink("/prototype_v4_1/security-code", "Enter the security code") }}
+        {{ pageLink("/prototype_v4_1/sign-in-agreement", "Agree to share NHS login information") }}
+        {{ pageLink("/prototype_v4_1/sign-in-agreement-declined", "You cannot use this service") }}
+        {{ pageLink("/prototype_v4_1/accept-terms", "Terms of use") }}
+        {{ pageLink("/prototype_v4_1/phone-questionnaire", "Confirm if you have completed a lung cancer risk questionnaire by phone") }}
+        {{ pageLink("/prototype_v4_1/phone-questionnaire-exit", "You do not need to test the online service") }}
+      </dl>
 
-      <p class="nhsuk-body">We are testing a new online questionnaire for lung cancer screening. This service will ask you some questions about your medical history and lifestyle.</p>
+      <h2 class="nhsuk-heading-m">Eligibility</h2>
+      <dl class="nhsuk-summary-list">
+        {{ pageLink("/prototype_v4_1/smoker", "Tobacco smoking") }}
+        {{ pageLink("/prototype_v4_1/date-of-birth", "What is your date of birth?") }}
+        {{ pageLink("/prototype_v4_1/face-to-face-appointment", "Check if you need a face-to-face appointment") }}
+        {{ pageLink("/prototype_v4_1/not-eligible-for-screening", "You are not eligible for lung cancer screening") }}
+        {{ pageLink("/prototype_v4_1/not-eligible-for-scan", "You are not eligible for an NHS lung scan") }}
+        {{ pageLink("/prototype_v4_1/book-appointment", "Call us to book an appointment") }}
+      </dl>
 
-      <p class="nhsuk-body">This online service cannot currently recommend if you need a lung scan. Once you have completed the online service you will need to call us to repeat the questionnaire by phone.</p>
+      <h2 class="nhsuk-heading-m">About you</h2>
+      <dl class="nhsuk-summary-list">
+        {{ pageLink("/prototype_v4_1/height-metric", "Your height - metric") }}
+        {{ pageLink("/prototype_v4_1/height-imperial", "Your height - imperial") }}
+        {{ pageLink("/prototype_v4_1/weight-metric", "Your weight - metric") }}
+        {{ pageLink("/prototype_v4_1/weight-imperial", "Your weight - imperial") }}
+        {{ pageLink("/prototype_v4_1/gender", "Your gender identity") }}
+        {{ pageLink("/prototype_v4_1/sex", "Your sex at birth") }}
+        {{ pageLink("/prototype_v4_1/ethnicity", "Your ethnic background") }}
+        {{ pageLink("/prototype_v4_1/education", "Your education") }}
+      </dl>
 
-      <p class="nhsuk-body">The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.</p>
+      <h2 class="nhsuk-heading-m">Your health</h2>
+      <dl class="nhsuk-summary-list">
+        {{ pageLink("/prototype_v4_1/respiratory-conditions", "Respiratory conditions") }}
+        {{ pageLink("/prototype_v4_1/asbestos-at-work", "Asbestos at work") }}
+        {{ pageLink("/prototype_v4_1/asbestos-at-home", "Asbestos at home") }}
+        {{ pageLink("/prototype_v4_1/cancer-diagnosis", "Cancer diagnosis") }}
+      </dl>
 
-      <p class="nhsuk-body">As a thank you for testing the online service, we will offer you a £10 voucher once you have completed both the online service and your phone appointment.</p>
+      <h2 class="nhsuk-heading-m">Family history</h2>
+      <dl class="nhsuk-summary-list">
+        {{ pageLink("/prototype_v4_1/cancer-diagnosis-relatives", "Relatives with lung cancer") }}
+        {{ seededPageLink("/prototype_v4_1/cancer-diagnosis-relatives-age", "Relatives under 60 when diagnosed") }}
+      </dl>
 
-      <h2 class="nhsuk-heading-m">The benefits of lung cancer screening</h2>
+      <h2 class="nhsuk-heading-m">Smoking habits</h2>
+      <dl class="nhsuk-summary-list">
+        {{ pageLink("/prototype_v4_1/age-started-smoking", "Age you started smoking") }}
+        {{ seededProfilePageLink("/prototype_v4_1/age-stopped-smoking", "former", "Former smoker - age you stopped smoking") }}
+        {{ pageLink("/prototype_v4_1/periods-stopped-smoking", "Periods when you stopped smoking") }}
+        {{ pageLink("/prototype_v4_1/smoking-type", "The type of tobacco you smoke or used to smoke") }}
+        {{ pageLink("/prototype_v4_1/smoking-type-exit", "You cannot test the online service") }}
+      </dl>
 
-      <p class="nhsuk-body">Your risk of lung cancer increases as you get older. Screening aims to find lung cancer early, sometimes before you have symptoms. Early diagnosis can make lung cancer more treatable and make treatment more successful.</p>
+      <h2 class="nhsuk-heading-m">Tobacco questions</h2>
+      <dl class="nhsuk-summary-list">
+        {{ seededPageLink("/prototype_v4_1/smoking-status?type=cigarettes", "Cigarettes - currently smoke") }}
+        {{ seededPageLink("/prototype_v4_1/smoking-frequency?type=cigarettes", "Cigarettes - frequency") }}
+        {{ seededPageLink("/prototype_v4_1/smoking-quantity?type=cigarettes", "Cigarettes - quantity") }}
+        {{ seededPageLink("/prototype_v4_1/smoking-change?type=cigarettes", "Cigarettes - has quantity changed") }}
+        {{ seededPageLink("/prototype_v4_1/smoking-frequency-change?type=cigarettes%26change=greater", "Cigarettes - more frequency") }}
+        {{ seededPageLink("/prototype_v4_1/smoking-quantity-change?type=cigarettes%26change=greater", "Cigarettes - more quantity") }}
+        {{ seededPageLink("/prototype_v4_1/smoking-years-change?type=cigarettes%26change=greater", "Cigarettes - more duration") }}
+        {{ seededProfilePageLink("/prototype_v4_1/smoking-setting?type=shisha", "shisha", "Shisha - smoking setting") }}
+        {{ seededProfilePageLink("/prototype_v4_1/smoking-frequency?type=shisha%26setting=group", "shisha", "Shisha in a group - frequency") }}
+        {{ seededProfilePageLink("/prototype_v4_1/smoking-quantity?type=shisha%26setting=group", "shisha", "Shisha in a group - quantity") }}
+      </dl>
 
-      <p class="nhsuk-body">You are eligible for lung cancer screening if you are:</p>
+      <h2 class="nhsuk-heading-m">Check and confirmation</h2>
+      <dl class="nhsuk-summary-list">
+        {{ seededPageLink("/prototype_v4_1/check-your-answers", "Check your answers - with default answers") }}
+        {{ pageLink("/prototype_v4_1/confirmation", "Confirmation") }}
+      </dl>
 
-      <ul class="nhsuk-list nhsuk-list--bullet">
-        <li>aged between 55 and 74</li>
-        <li>registered with a GP surgery</li>
-        <li>someone who smokes or used to smoke</li>
-      </ul>
+      <h2 class="nhsuk-heading-m">Static pages</h2>
+      <dl class="nhsuk-summary-list">
+        {{ pageLink("/prototype_v4_1/accessibility-statement", "Accessibility statement") }}
+        {{ pageLink("/prototype_v4_1/contact-us", "Contact us") }}
+        {{ pageLink("/prototype_v4_1/cookies", "Cookies") }}
+        {{ pageLink("/prototype_v4_1/privacy-policy", "Privacy policy") }}
+        {{ pageLink("/prototype_v4_1/terms-of-use", "Terms of use") }}
+      </dl>
 
-      <h2 class="nhsuk-heading-m">What to expect in the online service</h2>
-
-      <p class="nhsuk-body">We will ask you questions about:</p>
-
-      <ul class="nhsuk-list nhsuk-list--bullet">
-        <li>your height and weight</li>
-        <li>your ethnicity</li>
-        <li>your education</li>
-        <li>if you have ever had a cancer diagnosis</li>
-        <li>if your parents, siblings, or children have ever had a lung cancer diagnosis</li>
-        <li>your smoking habits</li>
-      </ul>
-
-      {{ button({
-        text: "Continue",
-        href: actions.start,
-        classes: "nhsuk-button--login"
-      }) }}
-
-      <h2 class="nhsuk-heading-m">If you do not want to test the online service</h2>
-
-      <p class="nhsuk-body">You should call us on <a href="tel:{{ serviceTelephone | replace(' ','') }}" class="nhsuk-link">{{ serviceTelephone }}</a> to complete the questionnaire by phone.</p>
-
+      <h2 class="nhsuk-heading-m">Error pages</h2>
+      <dl class="nhsuk-summary-list">
+        {{ pageLink("/prototype_v4_1/404", "Page not found") }}
+        {{ pageLink("/prototype_v4_1/500", "Unexpected error") }}
+        {{ pageLink("/prototype_v4_1/503", "Service unavailable") }}
+      </dl>
     </div>
   </div>
 {% endblock %}
