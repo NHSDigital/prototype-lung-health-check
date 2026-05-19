@@ -1,0 +1,238 @@
+{% extends "prototype_v4_1/views/layouts/main.html" %}
+
+{% set title = question.heading.title %}
+{% set caption = question.heading.caption %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include "prototype_v4_1/views/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% if not question.input.isPageHeading %}
+        {% include "prototype_v4_1/views/includes/page-heading.html" %}
+      {% endif %}
+
+      {% if question.description %}
+        {{ question.description | markdownToHtml | safe }}
+      {% endif %}
+
+      {% if question.details %}
+        {{ details({
+          summaryText: question.details.summary,
+          html: question.details.text | markdownToHtml | safe
+        }) }}
+      {% endif %}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {% if question.input.isPageHeading %}
+          {% set headingHtml %}
+            {% include "prototype_v4_1/views/includes/page-heading-legend.html" %}
+          {% endset %}
+          {% set legend = {
+            html: headingHtml,
+            isPageHeading: true,
+            classes: "nhsuk-fieldset__legend--l"
+          } %}
+        {% else %}
+          {% set legend = {
+            text: question.input.label,
+            isPageHeading: false,
+            classes: "nhsuk-fieldset__legend--m"
+          } %}
+        {% endif %}
+
+        {% set componentItems = [] %}
+        {% for item in question.items %}
+          {% if item.conditionalInput %}
+            {% set conditionalHtml %}
+              {{ input({
+                id: item.conditionalInput.id,
+                name: item.conditionalInput.name,
+                label: {
+                  text: item.conditionalInput.label,
+                  isPageHeading: false,
+                  classes: "nhsuk-label--s"
+                },
+                hint: {
+                  text: item.conditionalInput.hint
+                } if item.conditionalInput.hint,
+                suffix: item.conditionalInput.suffix,
+                prefix: item.conditionalInput.prefix,
+                inputmode: item.conditionalInput.inputmode,
+                value: data.answers[item.conditionalInput.answerKey],
+                classes: item.conditionalInput.classes,
+                errorMessage: {
+                  text: errorMap[item.conditionalInput.id].text
+                } if errorMap[item.conditionalInput.id]
+              }) }}
+            {% endset %}
+            {% set _ = componentItems.push({
+              text: item.text,
+              hint: item.hint,
+              value: item.value,
+              exclusive: item.exclusive,
+              exclusiveGroup: item.exclusiveGroup,
+              conditional: {
+                html: conditionalHtml
+              }
+            }) %}
+          {% else %}
+            {% set _ = componentItems.push(item) %}
+          {% endif %}
+        {% endfor %}
+
+        {% if question.type == "single" %}
+          {{ radios({
+            name: question.input.name,
+            idPrefix: question.input.id,
+            fieldset: {
+              legend: legend
+            },
+            hint: question.input.hintParam,
+            errorMessage: {
+              text: errorMap[question.input.id].text
+            } if errorMap[question.input.id],
+            value: question.value if question.value is defined else data.answers[question.answerKey],
+            items: componentItems
+          }) }}
+        {% elif question.type == "multiple" %}
+          {{ checkboxes({
+            name: question.input.name,
+            idPrefix: question.input.id,
+            fieldset: {
+              legend: legend
+            },
+            hint: question.input.hintParam,
+            errorMessage: {
+              text: errorMap[question.input.id].text
+            } if errorMap[question.input.id],
+            values: question.values if question.values is defined else data.answers[question.answerKey],
+            items: componentItems
+          }) }}
+        {% elif question.type == "text" %}
+          {% if question.input.isPageHeading %}
+            {% set label = {
+              html: headingHtml,
+              isPageHeading: true,
+              classes: "nhsuk-label--l"
+            } %}
+          {% else %}
+            {% set label = {
+              text: question.input.label,
+              isPageHeading: false,
+              classes: "nhsuk-label--m"
+            } %}
+          {% endif %}
+
+          {% if question.value is defined %}
+            {% set inputValue = question.value %}
+          {% elif question.input.valueKey %}
+            {% set inputValue = data.answers[question.answerKey][question.input.valueKey] %}
+          {% else %}
+            {% set inputValue = data.answers[question.answerKey] %}
+          {% endif %}
+
+          {{ input({
+            id: question.input.id,
+            name: question.input.name,
+            label: label,
+            hint: question.input.hintParam,
+            prefix: question.input.prefix,
+            suffix: question.input.suffix,
+            inputmode: question.input.inputmode,
+            value: inputValue,
+            classes: question.input.classes,
+            errorMessage: {
+              text: errorMap[question.input.id].text
+            } if errorMap[question.input.id]
+          }) }}
+        {% elif question.type == "date" %}
+          {{ dateInput({
+            id: question.answerKey,
+            fieldset: {
+              legend: legend
+            },
+            hint: question.input.hintParam,
+            errorMessage: {
+              text: errors[0].text
+            } if errors | length,
+            items: [
+              {
+                id: question.input.items[0].id,
+                name: question.input.items[0].name,
+                label: question.input.items[0].label,
+                value: data.answers[question.answerKey][question.input.items[0].answerKey],
+                classes: "nhsuk-input--width-2"
+              },
+              {
+                id: question.input.items[1].id,
+                name: question.input.items[1].name,
+                label: question.input.items[1].label,
+                value: data.answers[question.answerKey][question.input.items[1].answerKey],
+                classes: "nhsuk-input--width-2"
+              },
+              {
+                id: question.input.items[2].id,
+                name: question.input.items[2].name,
+                label: question.input.items[2].label,
+                value: data.answers[question.answerKey][question.input.items[2].answerKey],
+                classes: "nhsuk-input--width-4"
+              }
+            ]
+          }) }}
+        {% elif question.type == "text_group" %}
+          {% call fieldset({
+            legend: legend
+          }) %}
+            <div class="nhsuk-grid-row">
+              {% for item in question.input.items %}
+                <div class="nhsuk-grid-column-one-quarter">
+                  {{ input({
+                    id: item.id,
+                    name: item.name,
+                    label: {
+                      text: item.label
+                    },
+                    suffix: item.suffix,
+                    prefix: item.prefix,
+                    inputmode: item.inputmode,
+                    value: data.answers[question.answerKey][question.input.valueKey][item.answerKey],
+                    classes: item.classes,
+                    errorMessage: {
+                      text: errorMap[item.id].text
+                    } if errorMap[item.id]
+                  }) }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endcall %}
+        {% endif %}
+
+        {% if question.switchUnits %}
+          <p class="nhsuk-body">
+            <a href="{{ actions.switchUnits }}" class="nhsuk-link">{{ question.switchUnits.text }}</a>
+          </p>
+        {% endif %}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

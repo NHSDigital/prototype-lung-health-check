@@ -971,7 +971,6 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.acceptTerms_get = (req, res) => {
-
   res.render(view('questions/accept-terms'), {
     actions: {
       next: `/prototype_${version}/accept-terms`,
@@ -997,7 +996,6 @@ exports.acceptTerms_post = (req, res) => {
 }
 
 exports.phoneQuestionnaire_get = (req, res) => {
-
   res.render(view('questions/phone-questionnaire'), {
     actions: {
       next: `/prototype_${version}/phone-questionnaire`,
@@ -1028,7 +1026,6 @@ exports.phoneQuestionnaire_post = (req, res) => {
 }
 
 exports.phoneQuestionnaireExit_get = (req, res) => {
-
   res.render(view('questions/phone-questionnaire-exit'), {
     actions: {
       back: `/prototype_${version}/phone-questionnaire`
@@ -1041,7 +1038,6 @@ exports.phoneQuestionnaireExit_get = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.smoker_get = (req, res) => {
-
   res.render(view('questions/smoker'), {
     actions: {
       next: `/prototype_${version}/smoker`,
@@ -1065,7 +1061,7 @@ exports.smoker_post = (req, res) => {
       }
     })
   } else {
-    if (['no','yes_fewer_than_100'].includes(answers.smoker)) {
+    if (['no', 'yes_fewer_than_100'].includes(answers.smoker)) {
       res.redirect(`/prototype_${version}/not-eligible-for-screening`)
     } else {
       res.redirect(`/prototype_${version}/date-of-birth`)
@@ -1074,7 +1070,6 @@ exports.smoker_post = (req, res) => {
 }
 
 exports.dateOfBirth_get = (req, res) => {
-
   res.render(view('questions/date-of-birth'), {
     actions: {
       next: `/prototype_${version}/date-of-birth`,
@@ -1115,7 +1110,6 @@ exports.dateOfBirth_post = (req, res) => {
 }
 
 exports.faceToFaceAppointment_get = (req, res) => {
-
   res.render(view('questions/face-to-face-appointment'), {
     actions: {
       next: `/prototype_${version}/face-to-face-appointment`,
@@ -1366,7 +1360,6 @@ exports.sex_post = (req, res) => {
 }
 
 exports.ethnicity_get = (req, res) => {
-
   res.render(view('questions/ethnicity'), {
     actions: {
       next: `/prototype_${version}/ethnicity`,
@@ -1394,7 +1387,6 @@ exports.ethnicity_post = (req, res) => {
 }
 
 exports.education_get = (req, res) => {
-
   res.render(view('questions/education'), {
     actions: {
       next: `/prototype_${version}/education`,
@@ -1426,7 +1418,6 @@ exports.education_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.respiratoryConditions_get = (req, res) => {
-
   res.render(view('questions/respiratory-conditions'), {
     actions: {
       next: `/prototype_${version}/respiratory-conditions`,
@@ -1454,7 +1445,6 @@ exports.respiratoryConditions_post = (req, res) => {
 }
 
 exports.asbestosAtWork_get = (req, res) => {
-
   res.render(view('questions/asbestos-at-work'), {
     actions: {
       next: `/prototype_${version}/asbestos-at-work`,
@@ -1482,7 +1472,6 @@ exports.asbestosAtWork_post = (req, res) => {
 }
 
 exports.asbestosAtHome_get = (req, res) => {
-
   res.render(view('questions/asbestos-at-home'), {
     actions: {
       next: `/prototype_${version}/asbestos-at-home`,
@@ -1510,7 +1499,6 @@ exports.asbestosAtHome_post = (req, res) => {
 }
 
 exports.cancerDiagnosis_get = (req, res) => {
-
   res.render(view('questions/cancer-diagnosis'), {
     actions: {
       next: `/prototype_${version}/cancer-diagnosis`,
@@ -1542,7 +1530,6 @@ exports.cancerDiagnosis_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.cancerDiagnosisRelatives_get = (req, res) => {
-
   res.render(view('questions/cancer-diagnosis-relatives'), {
     actions: {
       next: `/prototype_${version}/cancer-diagnosis-relatives`,
@@ -1576,7 +1563,6 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
 }
 
 exports.cancerDiagnosisRelativesAge_get = (req, res) => {
-
   res.render(view('questions/cancer-diagnosis-relatives-age'), {
     actions: {
       next: `/prototype_${version}/cancer-diagnosis-relatives-age`,

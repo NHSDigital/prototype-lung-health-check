@@ -1,0 +1,28 @@
+{% extends "prototype_v4/views/layouts/main.html" %}
+
+{% set title = "You are not eligible for lung cancer screening" %}
+
+{% set bodyTextMarkdown %}
+You told us you have never smoked the types of tobacco listed. This means you are not eligible for NHS lung cancer screening.
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include "prototype_v4/views/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      {% include "prototype_v4/views/includes/speak-to-a-gp.html" %}
+
+    </div>
+  </div>
+{% endblock %}

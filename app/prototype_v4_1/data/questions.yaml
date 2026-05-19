@@ -1,0 +1,1111 @@
+---
+questions:
+  - id: accept-terms
+    type: multiple
+    answerKey: acceptTerms
+    heading:
+      title: Terms of use
+    description: |
+      To continue, confirm that you have read and agree to the [NHS Check if you need a lung scan terms of use](/prototype_v4_1/terms-of-use).
+    input:
+      label: Confirm you agree to the terms of use
+    options:
+      - label: I agree
+        value: yes
+    validation:
+      required: true
+    errors:
+      required:
+        text: Confirm that you have read and agree to the terms of use
+
+  - id: phone-questionnaire
+    type: single
+    answerKey: phoneQuestionnaire
+    heading:
+      title: Confirm if you have completed a lung cancer risk questionnaire by phone
+    description: |
+      If you have already completed a questionnaire about your lung health or lung cancer risk by phone you do not need to test the online service. This is because the online service asks the same questions.
+
+      The questionnaire would have asked you questions about:
+
+      - your height and weight
+      - your ethnicity
+      - your education
+      - if you have ever had a cancer diagnosis
+      - if your parents, siblings, or children have ever had a lung cancer diagnosis
+      - your smoking habits
+    input:
+      label: Have you previously completed a lung cancer risk questionnaire by phone?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have previously completed a lung cancer risk questionnaire by phone
+
+  - id: smoker
+    type: single
+    answerKey: smoker
+    heading:
+      title: Tobacco smoking
+    description: |
+      We will ask you questions about your smoking habits. This includes different types of tobacco smoking such as:
+
+      - cigarettes from a packet
+      - rolling tobacco, or roll ups
+      - a pipe
+      - cigars
+      - cigarillos
+      - shisha
+
+      It does not currently include vaping or e-cigarettes.
+    input:
+      label: Have you ever smoked tobacco?
+      hint: This includes social smoking
+    options:
+      - label: Yes, I currently smoke
+        value: yes_current
+      - label: Yes, I used to smoke
+        value: yes_previous
+      - label: Yes, but I have smoked fewer than 100 cigarettes in my lifetime
+        value: yes_fewer_than_100
+      - label: No, I have never smoked
+        value: no
+    summary:
+      label: Have you ever smoked tobacco?
+      hiddenText: whether you have ever smoked tobacco
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever smoked tobacco
+
+  - id: date-of-birth
+    type: date
+    answerKey: dateOfBirth
+    heading:
+      title: What is your date of birth?
+    input:
+      hint: For example, 15 3 1964
+      items:
+        - id: dateOfBirth-day
+          name: answers[dateOfBirth][day]
+          label: Day
+          answerKey: day
+        - id: dateOfBirth-month
+          name: answers[dateOfBirth][month]
+          label: Month
+          answerKey: month
+        - id: dateOfBirth-year
+          name: answers[dateOfBirth][year]
+          label: Year
+          answerKey: year
+    summary:
+      label: Date of birth
+    validation:
+      required: true
+      type: date
+    errors:
+      required:
+        text: Enter your date of birth
+        href: "#dateOfBirth-day"
+      invalid:
+        text: Enter a real date of birth
+        href: "#dateOfBirth-day"
+
+  - id: face-to-face-appointment
+    type: single
+    answerKey: faceToFaceAppointment
+    heading:
+      title: Check if you need a face-to-face appointment
+    description: |
+      This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
+
+      You need to do your questionnaire in person, not online, if you:
+
+      - have a condition that affects your height
+      - have had a limb amputation, or were born with a limb difference
+      - have been diagnosed with an eating disorder, or think you may have one
+      - are pregnant
+    input:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
+    options:
+      - label: Yes, one or more of these things apply to me, and I need a face-to-face appointment
+        value: yes
+      - label: No, I can continue online
+        value: no
+    summary:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you need to leave the online service and ask for a face-to-face appointment
+
+  - id: height-metric
+    type: text
+    answerKey: height
+    heading:
+      title: Your height
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+    input:
+      id: height-metric
+      name: answers[height][metric]
+      valueKey: metric
+      label: What is your height in centimetres?
+      suffix: cm
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to feet and inches
+    summary:
+      label: Height
+    validation:
+      required: true
+      type: number
+      min: 100
+      max: 250
+    errors:
+      required:
+        text: Enter your height in centimetres
+      invalid:
+        text: Enter your height in centimetres using numbers
+      min:
+        text: Height in centimetres must be 100 or more
+      max:
+        text: Height in centimetres must be 250 or fewer
+
+  - id: height-imperial
+    type: text_group
+    answerKey: height
+    heading:
+      title: Your height
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+    input:
+      label: What is your height in feet and inches?
+      valueKey: imperial
+      items:
+        - id: height-imperial-feet
+          name: answers[height][imperial][feet]
+          label: Feet
+          answerKey: feet
+          suffix: ft
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+        - id: height-imperial-inches
+          name: answers[height][imperial][inches]
+          label: Inches
+          answerKey: inches
+          suffix: in
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to centimetres
+    summary:
+      label: Height
+    validation:
+      items:
+        - answerKey: feet
+          required: true
+          type: number
+          min: 3
+          max: 8
+        - answerKey: inches
+          required: true
+          type: number
+          min: 0
+          max: 11
+    errors:
+      items:
+        feet:
+          required:
+            text: Enter your height in feet
+            href: "#height-imperial-feet"
+          invalid:
+            text: Enter your height in feet using numbers
+            href: "#height-imperial-feet"
+          min:
+            text: Height in feet must be 3 or more
+            href: "#height-imperial-feet"
+          max:
+            text: Height in feet must be 8 or fewer
+            href: "#height-imperial-feet"
+        inches:
+          required:
+            text: Enter your height in inches
+            href: "#height-imperial-inches"
+          invalid:
+            text: Enter your height in inches using numbers
+            href: "#height-imperial-inches"
+          min:
+            text: Height in inches must be 0 or more
+            href: "#height-imperial-inches"
+          max:
+            text: Height in inches must be 11 or fewer
+            href: "#height-imperial-inches"
+
+  - id: weight-metric
+    type: text
+    answerKey: weight
+    heading:
+      title: Your weight
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+    input:
+      id: weight-metric
+      name: answers[weight][metric]
+      valueKey: metric
+      label: What is your weight in kilograms?
+      suffix: kg
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to stones and pounds
+    summary:
+      label: Weight
+    validation:
+      required: true
+      type: number
+      min: 30
+      max: 250
+    errors:
+      required:
+        text: Enter your weight in kilograms
+      invalid:
+        text: Enter your weight in kilograms using numbers
+      min:
+        text: Weight in kilograms must be 30 or more
+      max:
+        text: Weight in kilograms must be 250 or fewer
+
+  - id: weight-imperial
+    type: text_group
+    answerKey: weight
+    heading:
+      title: Your weight
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+    input:
+      label: What is your weight in stones and pounds?
+      valueKey: imperial
+      items:
+        - id: weight-imperial-stones
+          name: answers[weight][imperial][stones]
+          label: Stones
+          answerKey: stones
+          suffix: st
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+        - id: weight-imperial-pounds
+          name: answers[weight][imperial][pounds]
+          label: Pounds
+          answerKey: pounds
+          suffix: lb
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to kilograms
+    summary:
+      label: Weight
+    validation:
+      items:
+        - answerKey: stones
+          required: true
+          type: number
+          min: 4
+          max: 40
+        - answerKey: pounds
+          required: true
+          type: number
+          min: 0
+          max: 13
+    errors:
+      items:
+        stones:
+          required:
+            text: Enter your weight in stones
+            href: "#weight-imperial-stones"
+          invalid:
+            text: Enter your weight in stones using numbers
+            href: "#weight-imperial-stones"
+          min:
+            text: Weight in stones must be 4 or more
+            href: "#weight-imperial-stones"
+          max:
+            text: Weight in stones must be 40 or fewer
+            href: "#weight-imperial-stones"
+        pounds:
+          required:
+            text: Enter your weight in pounds
+            href: "#weight-imperial-pounds"
+          invalid:
+            text: Enter your weight in pounds using numbers
+            href: "#weight-imperial-pounds"
+          min:
+            text: Weight in pounds must be 0 or more
+            href: "#weight-imperial-pounds"
+          max:
+            text: Weight in pounds must be 13 or fewer
+            href: "#weight-imperial-pounds"
+
+  - id: gender
+    type: single
+    answerKey: gender
+    heading:
+      title: Your gender identity
+      caption: About you
+    description: |
+      The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
+
+      In the future we plan to use information about someone's gender identity to help us plan their care in the NHS lung cancer screening programme.
+    input:
+      label: Which of these best describes you?
+    options:
+      - label: Female
+        value: female
+      - label: Male
+        value: male
+      - label: Non-binary
+        value: non_binary
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Gender identity
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select which option best describes you
+
+  - id: sex
+    type: single
+    answerKey: sex
+    heading:
+      title: Your sex at birth
+      caption: About you
+    description: |
+      Your sex may impact your chances of developing lung cancer.
+    input:
+      label: What was your sex at birth?
+    options:
+      - label: Female
+        value: female
+      - label: Male
+        value: male
+    summary:
+      label: Sex at birth
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select your sex at birth
+
+  - id: ethnicity
+    type: single
+    answerKey: ethnicity
+    heading:
+      title: Your ethnic background
+      caption: About you
+    description: |
+      We ask this question because your ethnicity may impact your chances of developing lung cancer.
+    input:
+      label: What is your ethnic background?
+    options:
+      - label: Asian or Asian British
+        value: asian_or_asian_british
+      - label: Black, African, Caribbean or Black British
+        value: black_african_caribbean_or_black_british
+      - label: Mixed or multiple ethnic groups
+        value: mixed_or_multiple_ethnic_groups
+      - label: White
+        value: white
+      - label: Other ethnic group
+        value: other_ethnic_group
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Ethnic background
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select your ethnic background
+
+  - id: education
+    type: single
+    answerKey: education
+    heading:
+      title: Your education
+      caption: About you
+    description: |
+      We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
+
+      If your qualification is not shown choose the closest level.
+    input:
+      label: What is the highest level of education have you completed?
+    options:
+      - label: I finished school before the age of 15
+        value: before_15
+      - label: GCSEs
+        hint: Previously O-levels
+        value: gcse
+      - label: A-levels
+        hint: Previously Higher School Certificate (HSC)
+        value: a_level
+      - label: Further education
+        hint: For example, apprenticeships or Higher National Certificates (HNC)
+        value: further_education
+      - label: Undergraduate degree
+        hint: A university degree, also known as a bachelor’s degree
+        value: undergraduate_degree
+      - label: Postgraduate degree
+        hint: For example, a Masters or PhD
+        value: postgraduate_degree
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Education
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select the highest level of education you have completed
+
+  - id: respiratory-conditions
+    type: multiple
+    answerKey: respiratoryConditions
+    heading:
+      title: Have you ever been diagnosed with any of the following respiratory conditions?
+      caption: Your health
+    input:
+      hint: Select all that apply
+    options:
+      - label: Bronchitis
+        hint: An inflammation of the airways in the lungs that is usually caused by an infection
+        value: bronchitis
+        exclusiveGroup: conditions-list
+      - label: Chronic obstructive pulmonary disease (COPD)
+        hint: A group of lung conditions that cause breathing difficulties
+        value: chronic_obstructive_pulmonary_disease
+        exclusiveGroup: conditions-list
+      - label: Emphysema
+        hint: Damage to the air sacs in the lungs
+        value: emphysema
+        exclusiveGroup: conditions-list
+      - label: Pneumonia
+        hint: An infection of the lungs, usually diagnosed by a chest x-ray
+        value: pneumonia
+        exclusiveGroup: conditions-list
+      - label: Tuberculosis (TB)
+        hint: An infection that usually affects the lungs, but can affect any part of the body
+        value: tuberculosis
+        exclusiveGroup: conditions-list
+      - divider: or
+      - label: No, I have not had any of these respiratory conditions
+        value: no
+        exclusive: true
+        exclusiveGroup: conditions-list
+    summary:
+      label: Respiratory conditions
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select if you have ever been diagnosed with any respiratory conditions
+
+  - id: asbestos-at-work
+    type: single
+    answerKey: asbestosAtWork
+    heading:
+      title: Tell us if you might have been exposed to asbestos at work
+      caption: Your health
+    description: |
+      You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+
+      You could be exposed to asbestos today if your job involves working in certain roles in old buildings.
+
+      Examples include:
+
+      - heating and ventilation engineers
+      - demolition workers
+      - plumbers
+      - construction workers
+      - electricians
+
+      ## If you did not work with asbestos but think you might have been exposed
+
+      You might know there was asbestos in buildings you have spent time in, or products you have used. But if the asbestos was not damaged, the risk to your health is very low.
+
+      If you lived with someone who worked with asbestos you may have been exposed to asbestos yourself. For example, if you washed the clothes they worked in. The question on the next page will ask if you lived with someone who might have been exposed to asbestos at work.
+    details:
+      summary: What is asbestos?
+      text: |
+        Asbestos was used in a number of building materials and products. For example:
+
+        - boilers and pipes
+        - car brakes
+        - cement for roofing sheets
+        - floor tiles
+        - insulating board to protect buildings and ships against fire
+
+        If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.
+    input:
+      label: Have you ever worked in a job where you might have been exposed to asbestos?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Worked in a job where you might have been exposed to asbestos
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever worked in a job where you might have been exposed to asbestos
+
+  - id: asbestos-at-home
+    type: single
+    answerKey: asbestosAtHome
+    heading:
+      title: Tell us if you ever lived with anyone who worked with asbestos
+      caption: Your health
+    description: |
+      If you lived with someone who worked with asbestos you may have been exposed to asbestos. For example, if you washed the clothes they worked in.
+
+      Someone might have worked with asbestos if they worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+    details:
+      summary: What is asbestos?
+      text: |
+        Asbestos was used in a number of building materials and products. For example:
+
+        - boilers and pipes
+        - car brakes
+        - cement for roofing sheets
+        - floor tiles
+        - insulating board to protect buildings and ships against fire
+
+        If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.
+    input:
+      label: Have you ever lived with anyone who worked with asbestos?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Lived with anyone who worked with asbestos
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever lived with anyone who worked with asbestos
+
+  - id: cancer-diagnosis
+    type: single
+    answerKey: cancerDiagnosis
+    heading:
+      title: Tell us if you have ever been diagnosed with cancer
+      caption: Your health
+    description: |
+      If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.
+    input:
+      label: Have you ever been diagnosed with cancer?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Ever been diagnosed with cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever been diagnosed with cancer
+
+  - id: cancer-diagnosis-relatives
+    type: single
+    answerKey: cancerDiagnosisRelatives
+    heading:
+      title: Tell us if your parents, siblings or children have ever been diagnosed with lung cancer
+      caption: Your family history
+    description: |
+      If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
+
+      This question is about lung cancer rather than any other type of cancer. It does not include your grandparents or grandchildren.
+    input:
+      label: Have any of your parents, siblings or children ever been diagnosed with lung cancer?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+      - label: I do not know
+        value: do_not_know
+    summary:
+      label: Parents, siblings or children diagnosed with lung cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether any of your parents, siblings or children have ever been diagnosed with lung cancer
+
+  - id: cancer-diagnosis-relatives-age
+    type: single
+    answerKey: cancerDiagnosisRelativesAge
+    heading:
+      title: If your relatives were under 60 when they were diagnosed
+      caption: Your family history
+    description: |
+      We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.
+
+      If you do not know or cannot remember, select 'I do not know'.
+    input:
+      label: Were any of your relatives younger than 60 years old when they were diagnosed with lung cancer?
+    options:
+      - label: Yes, they were younger than 60
+        value: yes
+      - label: No, they were 60 or older
+        value: no
+      - label: I do not know
+        value: do_not_know
+    summary:
+      label: Relatives younger than 60 when diagnosed with lung cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether any of your relatives were younger than 60 when they were diagnosed with lung cancer
+
+  - id: age-started-smoking
+    type: text
+    answerKey: ageStartedSmoking
+    heading:
+      title: How old were you when you started smoking?
+      caption: Your smoking habits
+    input:
+      hint: Give an estimate if you are not sure
+      prefix: Age
+      inputmode: numeric
+      classes: nhsuk-input--width-2
+    summary:
+      label: Age you started smoking
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 120
+    errors:
+      required:
+        text: Enter the age you started smoking
+      invalid:
+        text: Enter the age you started smoking using numbers
+      min:
+        text: Age you started smoking must be 1 or older
+      max:
+        text: Age you started smoking must be 120 or younger
+
+  - id: age-stopped-smoking
+    type: text
+    answerKey: ageStoppedSmoking
+    heading:
+      title: How old were you when you stopped smoking?
+      caption: Your smoking habits
+    input:
+      hint: Give an estimate if you are not sure
+      prefix: Age
+      inputmode: numeric
+      classes: nhsuk-input--width-2
+    summary:
+      label: Age you stopped smoking
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 120
+    errors:
+      required:
+        text: Enter the age you stopped smoking
+      invalid:
+        text: Enter the age you stopped smoking using numbers
+      min:
+        text: Age you stopped smoking must be 1 or older
+      max:
+        text: Age you stopped smoking must be 120 or younger
+
+  - id: periods-stopped-smoking
+    type: single
+    answerKey: periodsStoppedSmoking
+    heading:
+      title: Periods when you stopped smoking
+      caption: Your smoking habits
+    description: |
+      There may have been periods when you stopped or quit smoking.
+
+      If you stopped smoking for periods of 1 year or longer, tell us the total number of years you stopped smoking.
+    input:
+      label: Have you ever stopped smoking for periods of 1 year or longer?
+    options:
+      - label: Yes
+        value: yes
+        conditionalInput:
+          id: years-stopped-smoking
+          name: answers[yearsStoppedSmoking]
+          answerKey: yearsStoppedSmoking
+          label: Enter the total number of years you stopped smoking
+          hint: Give an estimate if you are not sure
+          suffix: Years
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+      - label: No
+        value: no
+    summary:
+      label: Stopped smoking for periods of 1 year or longer
+    validation:
+      required: true
+      conditional:
+        yes:
+          required: true
+          type: number
+          min: 1
+          max: 80
+          answerKey: yearsStoppedSmoking
+          href: "#years-stopped-smoking"
+    errors:
+      required:
+        text: Select whether you have ever stopped smoking for periods of 1 year or longer
+      conditional:
+        yes:
+          required:
+            text: Enter the total number of years you stopped smoking
+            href: "#years-stopped-smoking"
+      invalid:
+        text: Total number of years you stopped smoking must be a number
+        href: "#years-stopped-smoking"
+      min:
+        text: Total number of years you stopped smoking must be 1 or more
+        href: "#years-stopped-smoking"
+      max:
+        text: Total number of years you stopped smoking must be 80 or fewer
+        href: "#years-stopped-smoking"
+
+  - id: smoking-type
+    type: multiple
+    answerKey: smokingType
+    heading:
+      title: The type of tobacco you smoke or used to smoke
+      caption: Your smoking habits
+    description: |
+      Smoking affects your health in different ways depending on what you smoke.
+
+      We need to know what you smoke, or used to smoke, frequently. For example, if you have smoked a pipe on a weekly basis for a year or longer.
+
+      You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+    input:
+      label: What do you or have you smoked?
+      hint: Select all that apply
+    options:
+      - label: Cigarettes
+        value: cigarettes
+        exclusiveGroup: types-list
+      - label: Rolling tobacco, or roll-ups
+        value: rolling_tobacco
+        exclusiveGroup: types-list
+      - label: Pipes
+        value: pipes
+        exclusiveGroup: types-list
+      - label: Small cigars
+        hint: Petit Corona or Short Panetela, usually 4 to 5 inches long
+        value: small_cigars
+        exclusiveGroup: types-list
+      - label: Medium cigars
+        hint: Robusto or Corona, usually 5 to 6 inches long
+        value: medium_cigars
+        exclusiveGroup: types-list
+      - label: Large cigars
+        hint: Churchill or Double Corona, usually 7 to 8 inches long
+        value: large_cigars
+        exclusiveGroup: types-list
+      - label: Cigarillos
+        hint: Cafe Creme or Signature cigars, roughly the size of a cigarette
+        value: cigarillos
+        exclusiveGroup: types-list
+      - label: Shisha
+        hint: Also known as hookah and water pipes
+        value: shisha
+        exclusiveGroup: types-list
+      - divider: or
+      - label: I have not smoked any of these types of tobacco
+        value: none
+        exclusive: true
+        exclusiveGroup: types-list
+    variants:
+      previous:
+        heading:
+          title: The type of tobacco you have smoked
+        description: |
+          Smoking affects your health in different ways depending on what you smoked.
+
+          We need to know what you used to smoke frequently. For example, if you smoked a pipe on a weekly basis for a year or longer.
+
+          You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+        input:
+          label: What have you smoked?
+    summary:
+      label: Types of tobacco smoked
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select the types of tobacco you have smoked
+
+  - id: smoking-status
+    type: single
+    heading:
+      title: Do you currently smoke?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you currently smoke this type of tobacco
+
+  - id: smoking-frequency
+    type: single
+    heading:
+      title: How often do you smoke?
+    options:
+      - label: Daily
+        value: daily
+      - label: Weekly
+        hint: For example, on the weekend
+        value: weekly
+      - label: Monthly
+        hint: Select this option if you smoke at least once a month
+        value: monthly
+      - label: Yearly
+        hint: For example, 2 to 3 times a year or fewer
+        value: yearly
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select how often you smoke this type of tobacco
+
+  - id: smoking-quantity
+    type: text
+    heading:
+      title: How much do you smoke?
+    input:
+      id: smoking-quantity
+      hint: Give an estimate if you are not sure
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    variants:
+      rolling_tobacco:
+        type: single
+        input:
+          hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+        options:
+          - label: Less than 10g
+            value: less_than_10
+          - label: 10g to 30g
+            value: 10_to_30
+          - label: 31g to 50g
+            value: 31_to_50
+          - label: 51g to 75g
+            value: 51_to_75
+          - label: 76g to 100g
+            value: 76_to_100
+          - label: More than 100g
+            value: more_than_100
+        validation:
+          required: true
+      shisha:
+        type: single
+        input:
+          hint:
+        options:
+          - label: Up to 30 minutes
+            value: up_to_30_minutes
+          - label: 30 minutes to 1 hour
+            value: 30_minutes_to_1_hour
+          - label: 1 to 2 hours
+            value: 1_to_2_hours
+          - label: More than 2 hours
+            value: more_than_2_hours
+        validation:
+          required: true
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 200
+    errors:
+      required:
+        text: Enter how much you smoke
+      invalid:
+        text: Enter how much you smoke using numbers
+      min:
+        text: Amount smoked must be 1 or more
+      max:
+        text: Amount smoked must be 200 or fewer
+
+  - id: smoking-setting
+    type: multiple
+    heading:
+      title: Do you usually smoke shisha in a group or on your own?
+    input:
+      hint: Select all that apply
+    options:
+      - label: In a group
+        value: group
+      - label: By myself
+        value: individual
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you usually smoke shisha in a group or on your own
+
+  - id: smoking-change
+    type: multiple
+    heading:
+      title: Has the amount you normally smoke changed over time?
+    input:
+      hint: Select all that apply
+    options:
+      - label: Yes, I used to smoke more
+        value: greater
+        exclusiveGroup: change-list
+      - label: Yes, I used to smoke fewer
+        value: fewer
+        exclusiveGroup: change-list
+      - divider: or
+      - label: No, it has not changed
+        value: no
+        exclusive: true
+        exclusiveGroup: change-list
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether the amount you normally smoke has changed over time
+
+  - id: smoking-frequency-change
+    type: single
+    heading:
+      title: How often did you smoke?
+    options:
+      - label: Daily
+        value: daily
+      - label: Weekly
+        hint: For example, on the weekend
+        value: weekly
+      - label: Monthly
+        hint: Select this option if you smoked at least once a month
+        value: monthly
+      - label: Yearly
+        hint: For example, 2 to 3 times a year or fewer
+        value: yearly
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select how often you smoked this type of tobacco
+
+  - id: smoking-quantity-change
+    type: text
+    heading:
+      title: How much did you smoke?
+    input:
+      id: smoking-quantity-change
+      hint: Give an estimate if you are not sure
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    variants:
+      rolling_tobacco:
+        type: single
+        input:
+          hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+        options:
+          - label: Less than 10g
+            value: less_than_10
+          - label: 10g to 30g
+            value: 10_to_30
+          - label: 31g to 50g
+            value: 31_to_50
+          - label: 51g to 75g
+            value: 51_to_75
+          - label: 76g to 100g
+            value: 76_to_100
+          - label: More than 100g
+            value: more_than_100
+        validation:
+          required: true
+          type:
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 200
+    errors:
+      required:
+        text: Enter how much you smoked
+      invalid:
+        text: Enter how much you smoked using numbers
+      min:
+        text: Amount smoked must be 1 or more
+      max:
+        text: Amount smoked must be 200 or fewer
+
+  - id: smoking-years-change
+    type: text
+    heading:
+      title: How many years did you smoke this amount?
+    input:
+      id: smoking-years-change
+      hint: Give a rough estimate
+      suffix: years
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 80
+    errors:
+      required:
+        text: Enter how many years you smoked this amount
+      invalid:
+        text: Enter how many years using numbers
+      min:
+        text: Number of years must be 1 or more
+      max:
+        text: Number of years must be 80 or fewer
