@@ -1,153 +1,126 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
 {% set title = "Page index" %}
+{% set prototypePath = "/prototype_v4_1" %}
 
 {% macro pageLink(href, text) %}
-  <div class="nhsuk-summary-list__row">
-    <dt class="nhsuk-summary-list__key">
-      <a href="{{ href }}" class="nhsuk-link">{{ text }}</a>
-    </dt>
-    <dd class="nhsuk-summary-list__value"></dd>
-  </div>
+  <li>
+    <a href="{{ prototypePath + href }}" class="nhsuk-link">{{ text }}</a>
+  </li>
 {% endmacro %}
 
 {% macro seededPageLink(returnUrl, text) %}
-  {{ pageLink(actions.setDefaultAnswers + "?returnUrl=" + returnUrl, text) }}
+  <li>
+    <a href="{{ actions.setDefaultAnswers + "?returnUrl=" + prototypePath + returnUrl }}" class="nhsuk-link">{{ text }}</a>
+  </li>
 {% endmacro %}
 
 {% macro seededProfilePageLink(returnUrl, profile, text) %}
-  {{ pageLink(actions.setDefaultAnswers + "?returnUrl=" + returnUrl + "&profile=" + profile, text) }}
+  <li>
+    <a href="{{ actions.setDefaultAnswers + "?returnUrl=" + prototypePath + returnUrl + "&profile=" + profile }}" class="nhsuk-link">{{ text }}</a>
+  </li>
 {% endmacro %}
 
-{% block beforeContent %}
-  {{ backLink({
-    href: "javascript:history.back();",
-    text: "Go back"
-  }) }}
-{% endblock %}
-
 {% block content %}
-  <style>
-    .nhsuk-summary-list__row {
-      border-bottom: 1px solid #d8dde0;
-    }
-
-    .nhsuk-summary-list__key,
-    .nhsuk-summary-list__value {
-      border-bottom: 0;
-    }
-
-    .nhsuk-summary-list__key {
-      width: 100%;
-    }
-
-    .nhsuk-summary-list__value {
-      display: none;
-    }
-  </style>
-
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
       <h1 class="nhsuk-heading-l">{{ title }}</h1>
       <p class="nhsuk-body">Quick navigation to all pages in prototype v4.1.</p>
       <p class="nhsuk-body">Some links set default answers before opening the page, so conditional pages and check your answers have enough data to render.</p>
-    </div>
-  </div>
 
-  <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-full">
       <h2 class="nhsuk-heading-m">Start and sign in</h2>
-      <dl class="nhsuk-summary-list">
-        {{ pageLink("/prototype_v4_1/start-page", "Help us test a new online service") }}
-        {{ pageLink("/prototype_v4_1/sign-in", "Log in to your NHS account") }}
-        {{ pageLink("/prototype_v4_1/security-code", "Enter the security code") }}
-        {{ pageLink("/prototype_v4_1/sign-in-agreement", "Agree to share NHS login information") }}
-        {{ pageLink("/prototype_v4_1/sign-in-agreement-declined", "You cannot use this service") }}
-        {{ pageLink("/prototype_v4_1/accept-terms", "Terms of use") }}
-        {{ pageLink("/prototype_v4_1/phone-questionnaire", "Confirm if you have completed a lung cancer risk questionnaire by phone") }}
-        {{ pageLink("/prototype_v4_1/phone-questionnaire-exit", "You do not need to test the online service") }}
-      </dl>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/start-page", "Help us test a new online service") }}
+        {{ pageLink("/sign-in", "Log in to your NHS account") }}
+        {{ pageLink("/security-code", "Enter the security code") }}
+        {{ pageLink("/sign-in-agreement", "Agree to share NHS login information") }}
+        {{ pageLink("/sign-in-agreement-declined", "You cannot use this service") }}
+        {{ pageLink("/accept-terms", "Terms of use") }}
+        {{ pageLink("/phone-questionnaire", "Confirm if you have completed a lung cancer risk questionnaire by phone") }}
+        {{ pageLink("/phone-questionnaire-exit", "You do not need to test the online service") }}
+      </ul>
 
       <h2 class="nhsuk-heading-m">Eligibility</h2>
-      <dl class="nhsuk-summary-list">
-        {{ pageLink("/prototype_v4_1/smoker", "Tobacco smoking") }}
-        {{ pageLink("/prototype_v4_1/date-of-birth", "What is your date of birth?") }}
-        {{ pageLink("/prototype_v4_1/face-to-face-appointment", "Check if you need a face-to-face appointment") }}
-        {{ pageLink("/prototype_v4_1/not-eligible-for-screening", "You are not eligible for lung cancer screening") }}
-        {{ pageLink("/prototype_v4_1/not-eligible-for-scan", "You are not eligible for an NHS lung scan") }}
-        {{ pageLink("/prototype_v4_1/book-appointment", "Call us to book an appointment") }}
-      </dl>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/smoker", "Tobacco smoking") }}
+        {{ pageLink("/date-of-birth", "What is your date of birth?") }}
+        {{ pageLink("/face-to-face-appointment", "Check if you need a face-to-face appointment") }}
+        {{ pageLink("/not-eligible-for-screening", "You are not eligible for lung cancer screening") }}
+        {{ pageLink("/not-eligible-for-scan", "You are not eligible for an NHS lung scan") }}
+        {{ pageLink("/book-appointment", "Call us to book an appointment") }}
+      </ul>
 
       <h2 class="nhsuk-heading-m">About you</h2>
-      <dl class="nhsuk-summary-list">
-        {{ pageLink("/prototype_v4_1/height-metric", "Your height - metric") }}
-        {{ pageLink("/prototype_v4_1/height-imperial", "Your height - imperial") }}
-        {{ pageLink("/prototype_v4_1/weight-metric", "Your weight - metric") }}
-        {{ pageLink("/prototype_v4_1/weight-imperial", "Your weight - imperial") }}
-        {{ pageLink("/prototype_v4_1/gender", "Your gender identity") }}
-        {{ pageLink("/prototype_v4_1/sex", "Your sex at birth") }}
-        {{ pageLink("/prototype_v4_1/ethnicity", "Your ethnic background") }}
-        {{ pageLink("/prototype_v4_1/education", "Your education") }}
-      </dl>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/height-metric", "Your height - metric") }}
+        {{ pageLink("/height-imperial", "Your height - imperial") }}
+        {{ pageLink("/weight-metric", "Your weight - metric") }}
+        {{ pageLink("/weight-imperial", "Your weight - imperial") }}
+        {{ pageLink("/gender", "Your gender identity") }}
+        {{ pageLink("/sex", "Your sex at birth") }}
+        {{ pageLink("/ethnicity", "Your ethnic background") }}
+        {{ pageLink("/education", "Your education") }}
+      </ul>
 
       <h2 class="nhsuk-heading-m">Your health</h2>
-      <dl class="nhsuk-summary-list">
-        {{ pageLink("/prototype_v4_1/respiratory-conditions", "Respiratory conditions") }}
-        {{ pageLink("/prototype_v4_1/asbestos-at-work", "Asbestos at work") }}
-        {{ pageLink("/prototype_v4_1/asbestos-at-home", "Asbestos at home") }}
-        {{ pageLink("/prototype_v4_1/cancer-diagnosis", "Cancer diagnosis") }}
-      </dl>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/respiratory-conditions", "Respiratory conditions") }}
+        {{ pageLink("/asbestos-at-work", "Asbestos at work") }}
+        {{ pageLink("/asbestos-at-home", "Asbestos at home") }}
+        {{ pageLink("/cancer-diagnosis", "Cancer diagnosis") }}
+      </ul>
 
-      <h2 class="nhsuk-heading-m">Family history</h2>
-      <dl class="nhsuk-summary-list">
-        {{ pageLink("/prototype_v4_1/cancer-diagnosis-relatives", "Relatives with lung cancer") }}
-        {{ seededPageLink("/prototype_v4_1/cancer-diagnosis-relatives-age", "Relatives under 60 when diagnosed") }}
-      </dl>
+      <h2 class="nhsuk-heading-m">Your family history</h2>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/cancer-diagnosis-relatives", "Relatives with lung cancer") }}
+        {{ seededPageLink("/cancer-diagnosis-relatives-age", "Relatives under 60 when diagnosed") }}
+      </ul>
 
-      <h2 class="nhsuk-heading-m">Smoking habits</h2>
-      <dl class="nhsuk-summary-list">
-        {{ pageLink("/prototype_v4_1/age-started-smoking", "Age you started smoking") }}
-        {{ seededProfilePageLink("/prototype_v4_1/age-stopped-smoking", "former", "Former smoker - age you stopped smoking") }}
-        {{ pageLink("/prototype_v4_1/periods-stopped-smoking", "Periods when you stopped smoking") }}
-        {{ pageLink("/prototype_v4_1/smoking-type", "The type of tobacco you smoke or used to smoke") }}
-        {{ pageLink("/prototype_v4_1/smoking-type-exit", "You cannot test the online service") }}
-      </dl>
+      <h2 class="nhsuk-heading-m">Your smoking habits</h2>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/age-started-smoking", "Age you started smoking") }}
+        {{ seededProfilePageLink("/age-stopped-smoking", "former", "Former smoker - age you stopped smoking") }}
+        {{ pageLink("/periods-stopped-smoking", "Periods when you stopped smoking") }}
+        {{ pageLink("/smoking-type", "The type of tobacco you smoke or used to smoke") }}
+        {{ pageLink("/smoking-type-exit", "You cannot test the online service") }}
+      </ul>
 
-      <h2 class="nhsuk-heading-m">Tobacco questions</h2>
-      <dl class="nhsuk-summary-list">
-        {{ seededPageLink("/prototype_v4_1/smoking-status?type=cigarettes", "Cigarettes - currently smoke") }}
-        {{ seededPageLink("/prototype_v4_1/smoking-frequency?type=cigarettes", "Cigarettes - frequency") }}
-        {{ seededPageLink("/prototype_v4_1/smoking-quantity?type=cigarettes", "Cigarettes - quantity") }}
-        {{ seededPageLink("/prototype_v4_1/smoking-change?type=cigarettes", "Cigarettes - has quantity changed") }}
-        {{ seededPageLink("/prototype_v4_1/smoking-frequency-change?type=cigarettes%26change=greater", "Cigarettes - more frequency") }}
-        {{ seededPageLink("/prototype_v4_1/smoking-quantity-change?type=cigarettes%26change=greater", "Cigarettes - more quantity") }}
-        {{ seededPageLink("/prototype_v4_1/smoking-years-change?type=cigarettes%26change=greater", "Cigarettes - more duration") }}
-        {{ seededProfilePageLink("/prototype_v4_1/smoking-setting?type=shisha", "shisha", "Shisha - smoking setting") }}
-        {{ seededProfilePageLink("/prototype_v4_1/smoking-frequency?type=shisha%26setting=group", "shisha", "Shisha in a group - frequency") }}
-        {{ seededProfilePageLink("/prototype_v4_1/smoking-quantity?type=shisha%26setting=group", "shisha", "Shisha in a group - quantity") }}
-      </dl>
+      <h2 class="nhsuk-heading-m">Tobacco smoking</h2>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ seededPageLink("/smoking-status?type=cigarettes", "Cigarettes - currently smoke") }}
+        {{ seededPageLink("/smoking-frequency?type=cigarettes", "Cigarettes - frequency") }}
+        {{ seededPageLink("/smoking-quantity?type=cigarettes", "Cigarettes - quantity") }}
+        {{ seededPageLink("/smoking-change?type=cigarettes", "Cigarettes - has quantity changed") }}
+        {{ seededPageLink("/smoking-frequency-change?type=cigarettes%26change=greater", "Cigarettes - more frequency") }}
+        {{ seededPageLink("/smoking-quantity-change?type=cigarettes%26change=greater", "Cigarettes - more quantity") }}
+        {{ seededPageLink("/smoking-years-change?type=cigarettes%26change=greater", "Cigarettes - more duration") }}
+        {{ seededProfilePageLink("/smoking-setting?type=shisha", "shisha", "Shisha - smoking setting") }}
+        {{ seededProfilePageLink("/smoking-frequency?type=shisha%26setting=group", "shisha", "Shisha in a group - frequency") }}
+        {{ seededProfilePageLink("/smoking-quantity?type=shisha%26setting=group", "shisha", "Shisha in a group - quantity") }}
+      </ul>
 
       <h2 class="nhsuk-heading-m">Check and confirmation</h2>
-      <dl class="nhsuk-summary-list">
-        {{ seededPageLink("/prototype_v4_1/check-your-answers", "Check your answers - with default answers") }}
-        {{ pageLink("/prototype_v4_1/confirmation", "Confirmation") }}
-      </dl>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ seededPageLink("/check-your-answers", "Check your answers - with default answers") }}
+        {{ pageLink("/confirmation", "Confirmation") }}
+        {{ pageLink("/confirmation?risk=high", "Confirmation - High risk") }}
+      </ul>
 
       <h2 class="nhsuk-heading-m">Static pages</h2>
-      <dl class="nhsuk-summary-list">
-        {{ pageLink("/prototype_v4_1/accessibility-statement", "Accessibility statement") }}
-        {{ pageLink("/prototype_v4_1/contact-us", "Contact us") }}
-        {{ pageLink("/prototype_v4_1/cookies", "Cookies") }}
-        {{ pageLink("/prototype_v4_1/privacy-policy", "Privacy policy") }}
-        {{ pageLink("/prototype_v4_1/terms-of-use", "Terms of use") }}
-      </dl>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/accessibility-statement", "Accessibility statement") }}
+        {{ pageLink("/contact-us", "Contact us") }}
+        {{ pageLink("/cookies", "Cookies") }}
+        {{ pageLink("/privacy-policy", "Privacy policy") }}
+        {{ pageLink("/terms-of-use", "Terms of use") }}
+      </ul>
 
       <h2 class="nhsuk-heading-m">Error pages</h2>
-      <dl class="nhsuk-summary-list">
-        {{ pageLink("/prototype_v4_1/404", "Page not found") }}
-        {{ pageLink("/prototype_v4_1/500", "Unexpected error") }}
-        {{ pageLink("/prototype_v4_1/503", "Service unavailable") }}
-      </dl>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/404", "Page not found") }}
+        {{ pageLink("/500", "Unexpected error") }}
+        {{ pageLink("/503", "Service unavailable") }}
+      </ul>
     </div>
   </div>
 {% endblock %}
