@@ -1,4 +1,4 @@
-{% extends "prototype_v4_1/views/layouts/main.html" %}
+{% extends prototype.viewPath + "/layouts/main.html" %}
 
 {% set title = "Help us test a new online service" %}
 
@@ -6,7 +6,7 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      {% include "prototype_v4/views/includes/page-heading.html" %}
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
 
       <p class="nhsuk-body">We are testing a new online questionnaire for lung cancer screening. This service will ask you some questions about your medical history and lifestyle.</p>
 

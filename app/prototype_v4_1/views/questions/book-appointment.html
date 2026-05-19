@@ -1,4 +1,4 @@
-{% extends "prototype_v4_1/views/layouts/main.html" %}
+{% extends prototype.viewPath + "/layouts/main.html" %}
 
 {% set title = "Call us to book an appointment" %}
 
@@ -23,11 +23,11 @@ Saturdays 8am to 1pm
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      {% include "prototype_v4/views/includes/page-heading.html" %}
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
 
       {{ bodyTextMarkdown | markdownToHtml | safe }}
 
-      {% include "prototype_v4/views/includes/speak-to-a-gp.html" %}
+      {% include prototype.viewPath + "/includes/speak-to-a-gp.html" %}
 
     </div>
   </div>

@@ -1,4 +1,4 @@
-{% extends "prototype_v4_1/views/layouts/main.html" %}
+{% extends prototype.viewPath + "/layouts/main.html" %}
 
 {% set title = "Agree to share your NHS login information" %}
 
@@ -22,7 +22,7 @@ If you do not agree to share this information you will not be able to use NHS lo
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      {% include "prototype_v4/views/includes/page-heading.html" %}
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
 
       <form action="{{ actions.accept }}" method="post" accept-charset="utf-8" novalidate>
 

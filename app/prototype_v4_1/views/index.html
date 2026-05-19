@@ -1,7 +1,7 @@
-{% extends "prototype_v4_1/views/layouts/main.html" %}
+{% extends prototype.viewPath + "/layouts/main.html" %}
 
 {% set title = "Page index" %}
-{% set prototypePath = "/prototype_v4_1" %}
+{% set prototypePath = prototype.path %}
 
 {% macro pageLink(href, text) %}
   <li>

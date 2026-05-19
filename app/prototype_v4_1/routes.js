@@ -2,14 +2,10 @@ const express = require('express')
 const fs = require('fs')
 const path = require('path')
 const router = express.Router()
+const settings = require('./lib/settings')
 
-const version = 'v4_1'
-const prototypePath = `/prototype_${version}`
+const { path: prototypePath, version, view } = settings
 const viewsDirectory = path.join(__dirname, 'views')
-
-const view = (template) => {
-  return `prototype_${version}/views/${template}`
-}
 
 const hasView = (template) => {
   if (!template || template.includes('..')) {
@@ -29,6 +25,11 @@ const contentController = require('./controllers/content')
 const errorController = require('./controllers/error')
 const { getDefaultAnswerProfile, getIndexRedirect } = require('./lib/page-index')
 const questionController = require('./controllers/question')
+
+router.use((req, res, next) => {
+  res.locals.prototype = settings.locals
+  next()
+})
 
 /// ------------------------------------------------------------------------ ///
 /// Start page
