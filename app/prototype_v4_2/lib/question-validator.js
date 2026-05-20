@@ -300,6 +300,18 @@ const validateQuestion = (answers = {}, id, overrides = {}) => {
   return errors
 }
 
+/**
+ * Validate several questions using the same rules as individual pages.
+ *
+ * @param {Object} answers - Session answers object.
+ * @param {string[]} ids - Question ids to validate.
+ * @returns {ValidationError[]} Validation errors for all questions.
+ */
+const validateQuestions = (answers = {}, ids = []) => {
+  return ids.flatMap((id) => validateQuestion(answers, id))
+}
+
 module.exports = {
-  validateQuestion
+  validateQuestion,
+  validateQuestions
 }

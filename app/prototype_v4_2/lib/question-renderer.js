@@ -1,4 +1,5 @@
 const { getQuestion } = require('./questions')
+const { getQuestionPage } = require('./question-pages')
 const settings = require('./settings')
 
 const { version, view } = settings
@@ -13,29 +14,68 @@ const { version, view } = settings
  * @param {Object} [overrides] - Runtime overrides for dynamic question content.
  */
 const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
-  const question = getQuestion(id)
-  const errorMap = errors.reduce((map, error) => {
+  const page = getQuestionPage(id)
+  const question = page.questions[0] || getQuestion(id)
+  const label = overrides.label || question.label
+  const heading = {
+    ...page.heading,
+    ...overrides.heading
+  }
+  const input = {
+    ...question.input,
+    ...overrides.input
+  }
+
+  if (overrides.label) {
+    if (!heading.title) {
+      heading.title = overrides.label
+    }
+
+    input.label = overrides.label
+
+    if (input.isPageHeading) {
+      input.label = overrides.label
+    }
+  }
+
+  res.render(view('questions/_question'), {
+    question: {
+      ...question,
+      ...overrides,
+      label,
+      heading,
+      description: overrides.description !== undefined ? overrides.description : page.description,
+      details: overrides.details !== undefined ? overrides.details : page.details,
+      input
+    },
+    errorMap: getErrorMap(errors),
+    errors,
+    actions
+  })
+}
+
+const getErrorMap = (errors = []) => {
+  return errors.reduce((map, error) => {
     if (error.href) {
       map[error.href.replace('#', '')] = error
     }
 
     return map
   }, {})
+}
 
-  res.render(view('questions/_question'), {
-    question: {
-      ...question,
-      ...overrides,
-      heading: {
-        ...question.heading,
-        ...overrides.heading
-      },
-      input: {
-        ...question.input,
-        ...overrides.input
-      }
-    },
-    errorMap,
+/**
+ * Render a YAML-backed page containing one or more questions.
+ *
+ * @param {Object} res - Express response object.
+ * @param {string} id - Page id from pages.yaml.
+ * @param {Object} actions - URLs used by the grouped question template.
+ * @param {Object[]} [errors] - Validation errors for all questions on the page.
+ */
+const renderQuestionPage = (res, id, actions, errors = []) => {
+  res.render(view('questions/_question-page'), {
+    page: getQuestionPage(id),
+    errorMap: getErrorMap(errors),
     errors,
     actions
   })
@@ -43,6 +83,7 @@ const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
 
 module.exports = {
   renderQuestion,
+  renderQuestionPage,
   version,
   view
 }

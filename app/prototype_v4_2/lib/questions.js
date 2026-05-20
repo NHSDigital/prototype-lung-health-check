@@ -28,7 +28,6 @@ let loadedAt = {}
  * @property {string} id - Stable question id used by routes and content lookup.
  * @property {string} type - Renderer type, for example single, multiple, text, date or text_group.
  * @property {string} answerKey - Key used in `req.session.data.answers`.
- * @property {Object} heading - Heading content.
  * @property {Object} input - Normalised input config for NHS components.
  * @property {QuestionOption[]} [options] - Raw YAML options.
  * @property {Object[]} items - Options converted to NHS component items.
@@ -113,7 +112,6 @@ const toComponentItem = (option) => {
 const normaliseQuestion = (question) => {
   const answerKey = question.answerKey || toAnswerName(question.id)
   const input = question.input || {}
-  const label = input.label || question.heading?.title
 
   return {
     ...question,
@@ -121,7 +119,7 @@ const normaliseQuestion = (question) => {
     input: {
       ...input,
       id: input.id || question.id,
-      label,
+      label: input.label,
       name: input.name || `answers[${answerKey}]`,
       hintParam: input.hint ? { text: input.hint } : undefined,
       isPageHeading: !input.label

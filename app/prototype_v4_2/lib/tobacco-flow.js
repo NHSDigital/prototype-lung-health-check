@@ -6,6 +6,7 @@ const {
   shishaSmokingSettings,
   tobaccoTypes: smokingTypes
 } = require('./questions')
+const { getQuestionPage } = require('./question-pages')
 const { renderQuestion, version } = require('./question-renderer')
 const { validateQuestion } = require('./question-validator')
 
@@ -581,7 +582,7 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
     const quantity = getSmokingQuantity(type, changeAnswer.quantity)
 
     if (!quantity) {
-      return getQuestion('smoking-years-change').heading.title
+      return getQuestionPage('smoking-years-change').heading.title
     }
 
     return `How many years did you smoke ${[quantity, getSmokingFrequencyPeriod(answer.smokingFrequency)].filter(Boolean).join(' ')}?`
@@ -634,9 +635,17 @@ const getFormerSmokerFallbackStep = (req, page, steps) => {
  */
 const getSmokingTypeQuestionOverrides = (answers = {}) => {
   const question = getQuestion('smoking-type')
+  const page = getQuestionPage('smoking-type')
 
   if (answers.smoker === 'yes_previous') {
-    return question.variants.previous
+    return {
+      ...question.variants.previous,
+      ...page.variants?.previous,
+      input: {
+        ...question.variants.previous?.input,
+        ...page.variants?.previous?.input
+      }
+    }
   }
 
   return {}

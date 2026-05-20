@@ -1,5 +1,6 @@
 const { getDateOfBirth, isEligibleForScanAge } = require('../lib/eligibility')
-const { renderQuestion, version, view } = require('../lib/question-renderer')
+const { getQuestionPage } = require('../lib/question-pages')
+const { renderQuestion, renderQuestionPage, version, view } = require('../lib/question-renderer')
 const { getCheckYourAnswers } = require('../lib/summary')
 const {
   deleteUnselectedShishaSettingAnswers,
@@ -17,7 +18,11 @@ const {
   validateSmokingTypeQuestion
 } = require('../lib/tobacco-flow')
 const { getHeightBack, getWeightBack, getWeightNext } = require('../lib/unit-navigation')
-const { validateQuestion } = require('../lib/question-validator')
+const { validateQuestion, validateQuestions } = require('../lib/question-validator')
+
+const getQuestionPageIds = (id) => {
+  return getQuestionPage(id).questions.map((question) => question.id)
+}
 
 /// ------------------------------------------------------------------------ ///
 ///
@@ -275,7 +280,7 @@ exports.weightMetric_post = (req, res) => {
     }, errors)
   } else {
     delete answers.weight?.imperial
-    res.redirect(`/prototype_${version}/gender`)
+    res.redirect(`/prototype_${version}/about-you`)
   }
 }
 
@@ -304,7 +309,33 @@ exports.weightImperial_post = (req, res) => {
     }, errors)
   } else {
     delete answers.weight?.metric
-    res.redirect(`/prototype_${version}/gender`)
+    res.redirect(`/prototype_${version}/about-you`)
+  }
+}
+
+exports.aboutYou_get = (req, res) => {
+  const back = getWeightBack(req)
+
+  renderQuestionPage(res, 'about-you', {
+    next: `/prototype_${version}/about-you`,
+    back,
+    cancel: `/prototype_${version}/`
+  })
+}
+
+exports.aboutYou_post = (req, res) => {
+  const { answers } = req.session.data
+  const back = getWeightBack(req)
+  const errors = validateQuestions(answers, getQuestionPageIds('about-you'))
+
+  if (errors.length) {
+    renderQuestionPage(res, 'about-you', {
+      next: `/prototype_${version}/about-you`,
+      back,
+      cancel: `/prototype_${version}/`
+    }, errors)
+  } else {
+    res.redirect(`/prototype_${version}/respiratory-conditions`)
   }
 }
 
@@ -410,7 +441,7 @@ exports.education_post = (req, res) => {
 exports.respiratoryConditions_get = (req, res) => {
   renderQuestion(res, 'respiratory-conditions', {
     next: `/prototype_${version}/respiratory-conditions`,
-    back: `/prototype_${version}/education`,
+    back: `/prototype_${version}/about-you`,
     cancel: `/prototype_${version}/`
   })
 }
@@ -422,7 +453,7 @@ exports.respiratoryConditions_post = (req, res) => {
   if (errors.length) {
     renderQuestion(res, 'respiratory-conditions', {
       next: `/prototype_${version}/respiratory-conditions`,
-      back: `/prototype_${version}/education`,
+      back: `/prototype_${version}/about-you`,
       cancel: `/prototype_${version}/`
     }, errors)
   } else {

@@ -30,13 +30,10 @@ flowchart TD
 
   weight{"Weight"} -- Metric --> weightMetric["Weight - metric"]
   weight -- Imperial --> weightImperial["Weight - imperial"]
-  weightMetric --> gender["Gender"]
-  weightImperial --> gender
+  weightMetric --> aboutYou["About you<br>Gender, sex, ethnicity and education"]
+  weightImperial --> aboutYou
 
-  gender --> sex["Sex"]
-  sex --> ethnicity["Ethnicity"]
-  ethnicity --> education["Education"]
-  education --> respiratory["Respiratory conditions"]
+  aboutYou --> respiratory["Respiratory conditions"]
   respiratory --> asbestosWork["Asbestos at work"]
   asbestosWork --> asbestosHome["Asbestos at home"]
   asbestosHome --> cancerDiagnosis["Cancer diagnosis"]

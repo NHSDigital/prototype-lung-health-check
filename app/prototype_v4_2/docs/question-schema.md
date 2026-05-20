@@ -1,25 +1,21 @@
 # Question schema
 
-Question content for prototype v4.1 lives in `app/prototype_v4_2/data/questions.yaml`.
+Question form-control content for prototype v4.2 lives in `app/prototype_v4_2/data/questions.yaml`.
 
-The file should only contain standard question content under the top-level `questions` key. Tobacco-specific content, such as tobacco type names and current or past tense headings, lives in `app/prototype_v4_2/data/tobacco.yaml`.
+The file should only contain reusable question controls under the top-level `questions` key. Tobacco-specific content, such as tobacco type names and current or past tense headings, lives in `app/prototype_v4_2/data/tobacco.yaml`.
+
+Question page composition and page-level content lives in `app/prototype_v4_2/data/pages.yaml`. Every question page should have an entry in this file, even when the page contains one question.
 
 ## Basic structure
 
-Each item in `questions` represents one reusable question.
+Each item in `questions` represents one reusable question control.
 
 ```yaml
 questions:
   - id: education
     type: single
     answerKey: education
-    heading:
-      title: Your education
-      caption: About you
-    description: |
-      We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
-    input:
-      label: What is the highest level of education have you completed?
+    label: What is the highest level of education have you completed?
     options:
       - label: GCSEs
         hint: Previously O-levels
@@ -36,6 +32,49 @@ questions:
         text: Select the highest level of education you have completed
 ```
 
+The matching page content lives in `pages.yaml`:
+
+```yaml
+pages:
+  - id: education
+    heading:
+      title: Your education
+      caption: About you
+    description: |
+      We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
+    questions:
+      - education
+```
+
+## Combining questions on one page
+
+Define each individual form control in `questions.yaml`, then compose one or more controls into a page in `pages.yaml`.
+
+```yaml
+pages:
+  - id: about-you
+    heading:
+      title: About you
+    description: The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
+    questions:
+      - gender
+      - sex
+      - ethnicity
+      - education
+```
+
+Grouped pages use the same question definitions, answer keys and validation rules as single-question pages. This means check-your-answers and later flow logic can keep reading answers from the same session keys, regardless of whether the answers came from one page or several pages.
+
+When `pages.yaml` defines a page `heading`, the heading is rendered as the page H1 and question labels are rendered as normal labels or legends with `isPageHeading: false`. This applies to one-question and grouped pages.
+
+To add another page:
+
+1. Add the page to `pages.yaml`.
+2. Add GET and POST routes in `routes.js`.
+3. Use `renderQuestion(res, questionId, actions)` for one-question pages.
+4. Use `renderQuestionPage(res, pageId, actions)` for grouped pages.
+5. Validate grouped pages with `validateQuestions(answers, questionIds)`.
+
 ## Common fields
 
 | Field | Required | Description |
@@ -43,10 +82,7 @@ questions:
 | `id` | Yes | Stable question ID used by the controller, renderer and default input ID. Use kebab case. |
 | `type` | Yes | Question type rendered by `_question.html`. |
 | `answerKey` | No | Key used in `req.session.data.answers`. If omitted, the question ID is converted to camel case. |
-| `heading.title` | Yes | Page heading or fieldset legend. |
-| `heading.caption` | No | Caption shown above the heading. |
-| `description` | No | Markdown content shown between the heading and input label. |
-| `details` | No | NHS details component content. |
+| `label` | Yes | Question label shown above the input, unless the page has no heading and the label is promoted to the page heading. |
 | `input` | Usually | Input, radios or checkboxes configuration. |
 | `options` | For choice questions | Options for radios or checkboxes. |
 | `summary` | No | Check your answers label and hidden text. |
@@ -55,37 +91,43 @@ questions:
 | `variants` | No | Alternative content used by controller or flow overrides. |
 | `switchUnits` | No | Link text for height and weight unit switching. |
 
-## Heading and input labels
+## Page Headings
 
-If `input.label` is not set, the renderer uses `heading.title` as the input label and sets `isPageHeading` to `true`.
+Put page headings, captions, descriptions and details in `pages.yaml`.
 
-Use this when the visible question text should be the page heading and the input label, for example:
-
-```yaml
-- id: age-started-smoking
-  type: text
-  heading:
-    title: How old were you when you started smoking?
-    caption: Your smoking habits
-  input:
-    hint: Give an estimate if you are not sure
-```
-
-Use `input.label` when the page needs separate introductory heading content and a specific fieldset or input label:
+For example, a one-question page with separate page content:
 
 ```yaml
-- id: smoker
-  type: single
-  heading:
-    title: Tobacco smoking
-  input:
-    label: Have you ever smoked tobacco?
-    hint: This includes social smoking
+pages:
+  - id: phone-questionnaire
+    heading:
+      title: Confirm if you have completed a lung cancer risk questionnaire by phone
+    description: |
+      If you have already completed a questionnaire about your lung health or lung cancer risk by phone you do not need to test the online service.
+    questions:
+      - phone-questionnaire
 ```
+
+The question label stays in `questions.yaml`:
+
+```yaml
+questions:
+  - id: phone-questionnaire
+    type: single
+    answerKey: phoneQuestionnaire
+    label: Have you previously completed a lung cancer risk questionnaire by phone?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+```
+
+If a page has no `heading`, the renderer falls back to the first question label as the page heading and sets `isPageHeading: true`.
 
 ## Descriptions and details
 
-`description` supports Markdown and is rendered between the page heading and the input label.
+Page `description` supports Markdown and is rendered between the page heading and the input.
 
 Use `details` for expandable supporting content:
 
@@ -106,10 +148,8 @@ Renders NHS radios.
 - id: smoker
   type: single
   answerKey: smoker
-  heading:
-    title: Tobacco smoking
+  label: Have you ever smoked tobacco?
   input:
-    label: Have you ever smoked tobacco?
     hint: This includes social smoking
   options:
     - label: Yes, I currently smoke
@@ -131,9 +171,7 @@ Renders NHS checkboxes.
 - id: respiratory-conditions
   type: multiple
   answerKey: respiratoryConditions
-  heading:
-    title: Have you ever been diagnosed with any of the following respiratory conditions?
-    caption: Your health
+  label: Have you ever been diagnosed with any of the following respiratory conditions?
   input:
     hint: Select all that apply
   options:
@@ -157,14 +195,11 @@ Renders a single NHS input.
 - id: height-metric
   type: text
   answerKey: height
-  heading:
-    title: Your height
-    caption: About you
+  label: What is your height in centimetres?
   input:
     id: height-metric
     name: answers[height][metric]
     valueKey: metric
-    label: What is your height in centimetres?
     suffix: cm
     inputmode: numeric
     classes: nhsuk-input--width-4
@@ -180,11 +215,8 @@ Renders a group of related text inputs in one fieldset, for example feet and inc
 - id: height-imperial
   type: text_group
   answerKey: height
-  heading:
-    title: Your height
-    caption: About you
+  label: What is your height in feet and inches?
   input:
-    label: What is your height in feet and inches?
     valueKey: imperial
     items:
       - id: height-imperial-feet
@@ -209,8 +241,7 @@ Renders an NHS date input.
 - id: date-of-birth
   type: date
   answerKey: dateOfBirth
-  heading:
-    title: What is your date of birth?
+  label: What is your date of birth?
   input:
     hint: For example, 15 3 1964
     items:
@@ -356,13 +387,11 @@ Use `variants` when the same question needs alternative content that is selected
 ```yaml
 variants:
   previous:
-    heading:
-      title: The type of tobacco you have smoked
     input:
       label: What have you smoked?
 ```
 
-Keep variants small. If a question becomes difficult to understand because it has too many variants, consider using separate question IDs instead.
+Keep variants small. Put variant page headings and descriptions in `pages.yaml`.
 
 ## Hot reload
 
