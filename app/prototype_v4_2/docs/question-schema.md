@@ -15,7 +15,8 @@ questions:
   - id: education
     type: single
     answerKey: education
-    label: What is the highest level of education have you completed?
+    input:
+      label: What is the highest level of education have you completed?
     options:
       - label: GCSEs
         hint: Previously O-levels
@@ -82,8 +83,8 @@ To add another page:
 | `id` | Yes | Stable question ID used by the controller, renderer and default input ID. Use kebab case. |
 | `type` | Yes | Question type rendered by `_question.html`. |
 | `answerKey` | No | Key used in `req.session.data.answers`. If omitted, the question ID is converted to camel case. |
-| `label` | Yes | Question label shown above the input, unless the page has no heading and the label is promoted to the page heading. |
 | `input` | Usually | Input, radios or checkboxes configuration. |
+| `input.label` | Yes | Question label shown above the input, unless the page has no heading and the label is promoted to the page heading. |
 | `options` | For choice questions | Options for radios or checkboxes. |
 | `summary` | No | Check your answers label and hidden text. |
 | `validation` | No | Validation rules for the question. |
@@ -115,7 +116,8 @@ questions:
   - id: phone-questionnaire
     type: single
     answerKey: phoneQuestionnaire
-    label: Have you previously completed a lung cancer risk questionnaire by phone?
+    input:
+      label: Have you previously completed a lung cancer risk questionnaire by phone?
     options:
       - label: Yes
         value: yes
@@ -148,8 +150,8 @@ Renders NHS radios.
 - id: smoker
   type: single
   answerKey: smoker
-  label: Have you ever smoked tobacco?
   input:
+    label: Have you ever smoked tobacco?
     hint: This includes social smoking
   options:
     - label: Yes, I currently smoke
@@ -171,8 +173,8 @@ Renders NHS checkboxes.
 - id: respiratory-conditions
   type: multiple
   answerKey: respiratoryConditions
-  label: Have you ever been diagnosed with any of the following respiratory conditions?
   input:
+    label: Have you ever been diagnosed with any of the following respiratory conditions?
     hint: Select all that apply
   options:
     - label: Bronchitis
@@ -195,8 +197,8 @@ Renders a single NHS input.
 - id: height-metric
   type: text
   answerKey: height
-  label: What is your height in centimetres?
   input:
+    label: What is your height in centimetres?
     id: height-metric
     name: answers[height][metric]
     valueKey: metric
@@ -215,8 +217,8 @@ Renders a group of related text inputs in one fieldset, for example feet and inc
 - id: height-imperial
   type: text_group
   answerKey: height
-  label: What is your height in feet and inches?
   input:
+    label: What is your height in feet and inches?
     valueKey: imperial
     items:
       - id: height-imperial-feet
@@ -241,8 +243,8 @@ Renders an NHS date input.
 - id: date-of-birth
   type: date
   answerKey: dateOfBirth
-  label: What is your date of birth?
   input:
+    label: What is your date of birth?
     hint: For example, 15 3 1964
     items:
       - id: dateOfBirth-day

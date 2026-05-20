@@ -3,6 +3,8 @@ questions:
   - id: accept-terms
     type: multiple
     answerKey: acceptTerms
+    input:
+      label: Confirm you agree to the terms of use
     options:
       - label: I agree
         value: yes
@@ -11,7 +13,6 @@ questions:
     errors:
       required:
         text: Confirm that you have read and agree to the terms of use
-    label: Confirm you agree to the terms of use
   - id: phone-questionnaire
     type: single
     answerKey: phoneQuestionnaire
@@ -25,11 +26,13 @@ questions:
     errors:
       required:
         text: Select whether you have previously completed a lung cancer risk questionnaire by phone
-    label: Have you previously completed a lung cancer risk questionnaire by phone?
+    input:
+      label: Have you previously completed a lung cancer risk questionnaire by phone?
   - id: smoker
     type: single
     answerKey: smoker
     input:
+      label: Have you ever smoked tobacco?
       hint: This includes social smoking
     options:
       - label: Yes, I currently smoke
@@ -48,11 +51,11 @@ questions:
     errors:
       required:
         text: Select whether you have ever smoked tobacco
-    label: Have you ever smoked tobacco?
   - id: date-of-birth
     type: date
     answerKey: dateOfBirth
     input:
+      label: What is your date of birth?
       hint: For example, 15 3 1964
       items:
         - id: dateOfBirth-day
@@ -79,10 +82,11 @@ questions:
       invalid:
         text: Enter a real date of birth
         href: "#dateOfBirth-day"
-    label: What is your date of birth?
   - id: face-to-face-appointment
     type: single
     answerKey: faceToFaceAppointment
+    input:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
     options:
       - label: Yes, one or more of these things apply to me, and I need a face-to-face appointment
         value: yes
@@ -95,13 +99,13 @@ questions:
     errors:
       required:
         text: Select whether you need to leave the online service and ask for a face-to-face appointment
-    label: Do you need to leave the online service and ask for a face-to-face appointment?
   - id: height-metric
     type: text
     answerKey: height
     input:
       id: height-metric
       name: answers[height][metric]
+      label: What is your height in centimetres?
       valueKey: metric
       suffix: cm
       inputmode: numeric
@@ -124,12 +128,12 @@ questions:
         text: Height in centimetres must be 100 or more
       max:
         text: Height in centimetres must be 250 or fewer
-    label: What is your height in centimetres?
   - id: height-imperial
     type: text_group
     answerKey: height
     input:
       valueKey: imperial
+      label: What is your height in feet and inches?
       items:
         - id: height-imperial-feet
           name: answers[height][imperial][feet]
@@ -189,7 +193,6 @@ questions:
           max:
             text: Height in inches must be 11 or fewer
             href: "#height-imperial-inches"
-    label: What is your height in feet and inches?
   - id: weight-metric
     type: text
     answerKey: weight
@@ -197,6 +200,7 @@ questions:
       id: weight-metric
       name: answers[weight][metric]
       valueKey: metric
+      label: What is your weight in kilograms?
       suffix: kg
       inputmode: numeric
       classes: nhsuk-input--width-4
@@ -218,7 +222,6 @@ questions:
         text: Weight in kilograms must be 30 or more
       max:
         text: Weight in kilograms must be 250 or fewer
-    label: What is your weight in kilograms?
   - id: weight-imperial
     type: text_group
     answerKey: weight
@@ -239,6 +242,7 @@ questions:
           suffix: lb
           inputmode: numeric
           classes: nhsuk-input--width-4
+      label: What is your weight in stones and pounds?
     switchUnits:
       text: Switch to kilograms
     summary:
@@ -283,10 +287,11 @@ questions:
           max:
             text: Weight in pounds must be 13 or fewer
             href: "#weight-imperial-pounds"
-    label: What is your weight in stones and pounds?
   - id: gender
     type: single
     answerKey: gender
+    input:
+      label: Which of these best describes your gender identity?
     options:
       - label: Female
         value: female
@@ -303,8 +308,7 @@ questions:
       required: true
     errors:
       required:
-        text: Select which option best describes you
-    label: Which of these best describes your gender identity?
+        text: Select which option best describes your gender identity
   - id: sex
     type: single
     answerKey: sex
@@ -320,10 +324,13 @@ questions:
     errors:
       required:
         text: Select your sex at birth
-    label: What was your sex at birth?
+    input:
+      label: What was your sex at birth?
   - id: ethnicity
     type: single
     answerKey: ethnicity
+    input:
+      label: What is your ethnic background?
     options:
       - label: Asian or Asian British
         value: asian_or_asian_british
@@ -345,10 +352,11 @@ questions:
     errors:
       required:
         text: Select your ethnic background
-    label: What is your ethnic background?
   - id: education
     type: single
     answerKey: education
+    input:
+      label: What is the highest level of education have you completed?
     options:
       - label: I finished school before the age of 15
         value: before_15
@@ -377,12 +385,12 @@ questions:
     errors:
       required:
         text: Select the highest level of education you have completed
-    label: What is the highest level of education have you completed?
   - id: respiratory-conditions
     type: multiple
     answerKey: respiratoryConditions
     input:
       hint: Select all that apply
+      label: Have you ever been diagnosed with any of the following respiratory conditions?
     options:
       - label: Bronchitis
         hint: An inflammation of the airways in the lungs that is usually caused by an infection
@@ -416,7 +424,6 @@ questions:
     errors:
       required:
         text: Select if you have ever been diagnosed with any respiratory conditions
-    label: Have you ever been diagnosed with any of the following respiratory conditions?
     caption: Your health
   - id: asbestos-at-work
     type: single
@@ -433,7 +440,8 @@ questions:
     errors:
       required:
         text: Select whether you have ever worked in a job where you might have been exposed to asbestos
-    label: Have you ever worked in a job where you might have been exposed to asbestos?
+    input:
+      label: Have you ever worked in a job where you might have been exposed to asbestos?
   - id: asbestos-at-home
     type: single
     answerKey: asbestosAtHome
@@ -449,10 +457,13 @@ questions:
     errors:
       required:
         text: Select whether you have ever lived with anyone who worked with asbestos
-    label: Have you ever lived with anyone who worked with asbestos?
+    input:
+      label: Have you ever lived with anyone who worked with asbestos?
   - id: cancer-diagnosis
     type: single
     answerKey: cancerDiagnosis
+    input:
+      label: Have you ever been diagnosed with cancer?
     options:
       - label: Yes
         value: yes
@@ -465,10 +476,11 @@ questions:
     errors:
       required:
         text: Select whether you have ever been diagnosed with cancer
-    label: Have you ever been diagnosed with cancer?
   - id: cancer-diagnosis-relatives
     type: single
     answerKey: cancerDiagnosisRelatives
+    input:
+      label: Have any of your parents, siblings or children ever been diagnosed with lung cancer?
     options:
       - label: Yes
         value: yes
@@ -483,10 +495,11 @@ questions:
     errors:
       required:
         text: Select whether any of your parents, siblings or children have ever been diagnosed with lung cancer
-    label: Have any of your parents, siblings or children ever been diagnosed with lung cancer?
   - id: cancer-diagnosis-relatives-age
     type: single
     answerKey: cancerDiagnosisRelativesAge
+    input:
+      label: Were any of your relatives younger than 60 years old when they were diagnosed with lung cancer?
     options:
       - label: Yes, they were younger than 60
         value: yes
@@ -501,11 +514,11 @@ questions:
     errors:
       required:
         text: Select whether any of your relatives were younger than 60 when they were diagnosed with lung cancer
-    label: Were any of your relatives younger than 60 years old when they were diagnosed with lung cancer?
   - id: age-started-smoking
     type: text
     answerKey: ageStartedSmoking
     input:
+      label: How old were you when you started smoking?
       hint: Give an estimate if you are not sure
       prefix: Age
       inputmode: numeric
@@ -526,12 +539,12 @@ questions:
         text: Age you started smoking must be 1 or older
       max:
         text: Age you started smoking must be 120 or younger
-    label: How old were you when you started smoking?
     caption: Your smoking habits
   - id: age-stopped-smoking
     type: text
     answerKey: ageStoppedSmoking
     input:
+      label: How old were you when you stopped smoking?
       hint: Give an estimate if you are not sure
       prefix: Age
       inputmode: numeric
@@ -552,7 +565,6 @@ questions:
         text: Age you stopped smoking must be 1 or older
       max:
         text: Age you stopped smoking must be 120 or younger
-    label: How old were you when you stopped smoking?
     caption: Your smoking habits
   - id: periods-stopped-smoking
     type: single
@@ -566,7 +578,7 @@ questions:
           answerKey: yearsStoppedSmoking
           label: Enter the total number of years you stopped smoking
           hint: Give an estimate if you are not sure
-          suffix: Years
+          suffix: years
           inputmode: numeric
           classes: nhsuk-input--width-4
       - label: No
@@ -600,11 +612,13 @@ questions:
       max:
         text: Total number of years you stopped smoking must be 80 or fewer
         href: "#years-stopped-smoking"
-    label: Have you ever stopped smoking for periods of 1 year or longer?
+    input:
+      label: Have you ever stopped smoking for periods of 1 year or longer?
   - id: smoking-type
     type: multiple
     answerKey: smokingType
     input:
+      label: What do you or have you smoked?
       hint: Select all that apply
     options:
       - label: Cigarettes
@@ -643,7 +657,8 @@ questions:
         exclusiveGroup: types-list
     variants:
       previous:
-        label: What have you smoked?
+        input:
+          label: What have you smoked?
     summary:
       label: Types of tobacco smoked
     validation:
@@ -651,9 +666,10 @@ questions:
     errors:
       required:
         text: Select the types of tobacco you have smoked
-    label: What do you or have you smoked?
   - id: smoking-status
     type: single
+    input:
+      label: Do you currently smoke?
     options:
       - label: Yes
         value: yes
@@ -664,9 +680,10 @@ questions:
     errors:
       required:
         text: Select whether you currently smoke this type of tobacco
-    label: Do you currently smoke?
   - id: smoking-frequency
     type: single
+    input:
+      label: How often do you smoke?
     options:
       - label: Daily
         value: daily
@@ -684,11 +701,11 @@ questions:
     errors:
       required:
         text: Select how often you smoke this type of tobacco
-    label: How often do you smoke?
   - id: smoking-quantity
     type: text
     input:
       id: smoking-quantity
+      label: How much do you smoke?
       hint: Give an estimate if you are not sure
       inputmode: numeric
       classes: nhsuk-input--width-4
@@ -753,10 +770,10 @@ questions:
         text: Amount smoked must be 1 or more
       max:
         text: Amount smoked must be 200 or fewer
-    label: How much do you smoke?
   - id: smoking-setting
     type: multiple
     input:
+      label: Do you usually smoke shisha in a group or on your own?
       hint: Select all that apply
     options:
       - label: In a group
@@ -768,10 +785,10 @@ questions:
     errors:
       required:
         text: Select whether you usually smoke shisha in a group or on your own
-    label: Do you usually smoke shisha in a group or on your own?
   - id: smoking-change
     type: multiple
     input:
+      label: Has the amount you normally smoke changed over time?
       hint: Select all that apply
     options:
       - label: Yes, I used to smoke more
@@ -790,9 +807,10 @@ questions:
     errors:
       required:
         text: Select whether the amount you normally smoke has changed over time
-    label: Has the amount you normally smoke changed over time?
   - id: smoking-frequency-change
     type: single
+    input:
+      label: How often did you smoke?
     options:
       - label: Daily
         value: daily
@@ -810,11 +828,11 @@ questions:
     errors:
       required:
         text: Select how often you smoked this type of tobacco
-    label: How often did you smoke?
   - id: smoking-quantity-change
     type: text
     input:
       id: smoking-quantity-change
+      label: How much did you smoke?
       hint: Give an estimate if you are not sure
       inputmode: numeric
       classes: nhsuk-input--width-4
@@ -853,11 +871,11 @@ questions:
         text: Amount smoked must be 1 or more
       max:
         text: Amount smoked must be 200 or fewer
-    label: How much did you smoke?
   - id: smoking-years-change
     type: text
     input:
       id: smoking-years-change
+      label: How many years did you smoke this amount?
       hint: Give a rough estimate
       suffix: years
       inputmode: numeric
@@ -876,4 +894,3 @@ questions:
         text: Number of years must be 1 or more
       max:
         text: Number of years must be 80 or fewer
-    label: How many years did you smoke this amount?

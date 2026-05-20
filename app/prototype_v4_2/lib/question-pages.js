@@ -33,13 +33,12 @@ const refreshPages = (force = false) => {
 refreshPages(true)
 
 const getQuestionHeading = (question) => {
-  if (!question.label) {
+  if (!question.input?.label) {
     return undefined
   }
 
   return {
-    title: question.label,
-    caption: question.caption
+    title: question.input.label
   }
 }
 
@@ -54,9 +53,6 @@ const mergeQuestionWithPageContent = (question, pageContent = {}, options = {}) 
   if (isSingleQuestionPage && !hasPageHeading && heading?.title) {
     input.label = heading.title
     input.isPageHeading = true
-  } else if (question.label && !input.label) {
-    input.label = question.label
-    input.isPageHeading = false
   } else if (heading?.title && !input.label) {
     input.label = heading.title
     input.isPageHeading = false

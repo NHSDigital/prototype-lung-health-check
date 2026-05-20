@@ -16,7 +16,6 @@ const { version, view } = settings
 const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
   const page = getQuestionPage(id)
   const question = page.questions[0] || getQuestion(id)
-  const label = overrides.label || question.label
   const heading = {
     ...page.heading,
     ...overrides.heading
@@ -26,15 +25,13 @@ const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
     ...overrides.input
   }
 
-  if (overrides.label) {
+  if (overrides.input?.label) {
     if (!heading.title) {
-      heading.title = overrides.label
+      heading.title = overrides.input.label
     }
 
-    input.label = overrides.label
-
     if (input.isPageHeading) {
-      input.label = overrides.label
+      input.label = overrides.input.label
     }
   }
 
@@ -42,7 +39,6 @@ const renderQuestion = (res, id, actions, errors = [], overrides = {}) => {
     question: {
       ...question,
       ...overrides,
-      label,
       heading,
       description: overrides.description !== undefined ? overrides.description : page.description,
       details: overrides.details !== undefined ? overrides.details : page.details,
