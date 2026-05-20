@@ -1,0 +1,42 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = "Agree to share your NHS login information" %}
+
+{% set bodyTextMarkdown %}
+To continue, you need to agree to share your NHS login information with **NHS {{ serviceName | lower }}**.
+
+**NHS {{ serviceName | lower }}** will use your:
+
+- first names
+- last name
+- date of birth
+- email address
+- NHS number
+
+Read the terms of use and privacy policy for **NHS {{ serviceName | lower }}** to check how your information will be used.
+
+If you do not agree to share this information you will not be able to use NHS login with **NHS {{ serviceName | lower }}**.
+{% endset %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+      <form action="{{ actions.accept }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+        {{ button({
+          text: "I agree"
+        }) }}
+
+        <p class="nhsuk-body">
+          <a href="{{ actions.decline }}" class="nhsuk-link">I do not agree to share this information</a>
+        </p>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
