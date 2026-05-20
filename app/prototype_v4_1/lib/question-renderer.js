@@ -1,16 +1,7 @@
 const { getQuestion } = require('./questions')
+const settings = require('./settings')
 
-const version = 'v4_1'
-
-/**
- * Build a prototype v4_1 view path.
- *
- * @param {string} template - Template path below the prototype views folder.
- * @returns {string} Nunjucks template path.
- */
-const view = (template) => {
-  return `prototype_${version}/views/${template}`
-}
+const { version, view } = settings
 
 /**
  * Render a YAML-backed question using optional runtime overrides.

@@ -1,8 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const matter = require('gray-matter')
-
-const version = 'v4_1'
+const { view } = require('../lib/settings')
 
 const contentDirectory = path.join(__dirname, '..', 'content')
 
@@ -60,7 +59,7 @@ const renderContent = (fileName) => (req, res, next) => {
       return next(error)
     }
 
-    res.render(`prototype_${version}/views/content/show`, {
+    res.render(view('content/show'), {
       content: renderedMarkdown,
       contentData
     })

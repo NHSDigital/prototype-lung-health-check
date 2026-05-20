@@ -6,7 +6,7 @@ questions:
     heading:
       title: Terms of use
     description: |
-      To continue, confirm that you have read and agree to the [NHS Check if you need a lung scan terms of use](/prototype_v4_1/terms-of-use).
+      To continue, confirm that you have read and agree to the [NHS Check if you need a lung scan terms of use](terms-of-use).
     input:
       label: Confirm you agree to the terms of use
     options:
