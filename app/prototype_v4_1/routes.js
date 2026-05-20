@@ -2,13 +2,10 @@ const express = require('express')
 const fs = require('fs')
 const path = require('path')
 const router = express.Router()
+const settings = require('./lib/settings')
 
-const version = 'v4_1'
+const { path: prototypePath, version, view } = settings
 const viewsDirectory = path.join(__dirname, 'views')
-
-const view = (template) => {
-  return `prototype_${version}/views/${template}`
-}
 
 const hasView = (template) => {
   if (!template || template.includes('..')) {
@@ -26,20 +23,26 @@ const hasView = (template) => {
 const authenticationController = require('./controllers/authentication')
 const contentController = require('./controllers/content')
 const errorController = require('./controllers/error')
+const { getDefaultAnswerProfile, getIndexRedirect } = require('./lib/page-index')
 const questionController = require('./controllers/question')
+
+router.use((req, res, next) => {
+  res.locals.prototype = settings.locals
+  next()
+})
 
 /// ------------------------------------------------------------------------ ///
 /// Start page
 /// ------------------------------------------------------------------------ ///
 
-router.get(`/prototype_${version}`, (req, res) => {
-  res.redirect(`/prototype_${version}/start-page`)
+router.get(prototypePath, (req, res) => {
+  res.redirect(`${prototypePath}/start-page`)
 })
 
-router.get(`/prototype_${version}/start-page`, (req, res) => {
-  res.render(view('index'), {
+router.get(`${prototypePath}/start-page`, (req, res) => {
+  res.render(view('start'), {
     actions: {
-      start: `/prototype_${version}/sign-in`
+      start: `${prototypePath}/sign-in`
     }
   })
 })
@@ -217,6 +220,33 @@ router.get(`/prototype_${version}/server-error`, errorController.unexpectedError
 
 router.get(`/prototype_${version}/503`, errorController.serviceUnavailable)
 router.get(`/prototype_${version}/service-unavailable`, errorController.serviceUnavailable)
+
+/// ------------------------------------------------------------------------ ///
+/// Page index
+/// ------------------------------------------------------------------------ ///
+
+router.get(`/prototype_${version}/set-default-answers`, (req, res) => {
+  req.session.data = req.session.data || {}
+  req.session.data.answers = getDefaultAnswerProfile(req.query.profile)
+
+  res.redirect(getIndexRedirect(req.query.returnUrl, prototypePath))
+})
+
+router.get(`/prototype_${version}/page-index`, (req, res) => {
+  res.render(view('index'), {
+    actions: {
+      setDefaultAnswers: `/prototype_${version}/set-default-answers`
+    }
+  })
+})
+
+router.get(`/prototype_${version}/index`, (req, res) => {
+  res.redirect(`/prototype_${version}/page-index`)
+})
+
+router.get(`/prototype_${version}/index-allpages`, (req, res) => {
+  res.redirect(`/prototype_${version}/page-index`)
+})
 
 /// ------------------------------------------------------------------------ ///
 /// Add your routes above

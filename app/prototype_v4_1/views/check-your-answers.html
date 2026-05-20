@@ -1,4 +1,4 @@
-{% extends "prototype_v4/views/layouts/main.html" %}
+{% extends prototype.viewPath + "/layouts/main.html" %}
 
 {% set title = "Check your answers" %}
 
@@ -10,12 +10,12 @@
 {% endblock %}
 
 {% block content %}
-  {% include "prototype_v4/views/includes/error-summary.html" %}
+  {% include prototype.viewPath + "/includes/error-summary.html" %}
 
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      {% include "prototype_v4/views/includes/page-heading.html" %}
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
 
       <p class="nhsuk-body">
         Check the information you have given us. If any of the details are wrong, you can change them.

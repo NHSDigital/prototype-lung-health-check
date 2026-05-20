@@ -37,7 +37,7 @@
       },
       {
         text: "Log out",
-        href: "/prototype_v4/"
+        href: prototype.path + "/"
       }
     ]
   } if data['logged-in']
@@ -68,45 +68,45 @@
   meta: {
     items: [
       {
-        href: "/prototype_v4/accessibility-statement",
+        href: prototype.path + "/accessibility-statement",
         text: "Accessibility statement"
       },
       {
-        href: "/prototype_v4/contact-us",
+        href: prototype.path + "/contact-us",
         text: "Contact us"
       },
       {
-        href: "/prototype_v4/cookies",
+        href: prototype.path + "/cookies",
         text: "Cookies"
       },
       {
-        href: "/prototype_v4/privacy-policy",
+        href: prototype.path + "/privacy-policy",
         text: "Privacy policy"
       },
       {
-        href: "/prototype_v4/terms-of-use",
+        href: prototype.path + "/terms-of-use",
         text: "Terms of use"
       }
     ]
   }
 }) if not hideFooterLinks }}
 
-{# <div class="nhsuk-footer__testing-links">
+<div class="nhsuk-footer__testing-links">
   <div class="nhsuk-width-container">
     <h3 class="nhsuk-heading-m nhsuk-u-margin-top-5">For testing</h3>
     <ul class="nhsuk-footer__list nhsuk-u-margin-bottom-5 nhsuk-u-padding-bottom-5">
       <li class="nhsuk-footer__list-item">
-        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v4/index-allpages">Pages index</a>
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="{{ prototype.path }}/page-index">Page index</a>
+      </li>
+      {# <li class="nhsuk-footer__list-item">
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="{{ prototype.path }}/skip-to-tobacco">Skip to tobacco - current smoker (testing)</a>
       </li>
       <li class="nhsuk-footer__list-item">
-        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v4/skip-to-tobacco">Skip to tobacco - current smoker (testing)</a>
-      </li>
-      <li class="nhsuk-footer__list-item">
-        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="/prototype_v4/skip-to-tobacco-former">Skip to tobacco - former smoker (testing)</a>
-      </li>
+        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="{{ prototype.path }}/skip-to-tobacco-former">Skip to tobacco - former smoker (testing)</a>
+      </li> #}
     </ul>
   </div>
-</div> #}
+</div>
 {% endblock %}
 
 {% block bodyEnd %}

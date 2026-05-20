@@ -1,4 +1,4 @@
-{% extends "prototype_v4/views/layouts/main.html" %}
+{% extends prototype.viewPath + "/layouts/main.html" %}
 
 {% set title = "Thank you for testing the online service" %}
 
@@ -66,23 +66,23 @@ Call {{ serviceTelephone | telephoneLink }} to book an appointment.
 
       {% endif %}
 
-      {% include "prototype_v4/views/includes/speak-to-a-gp.html" %}
+      {% include prototype.viewPath + "/includes/speak-to-a-gp.html" %}
 
-      {% include "prototype_v4/views/includes/find-your-local-stop-smoking-service.html" %}
+      {% include prototype.viewPath + "/includes/find-your-local-stop-smoking-service.html" %}
 
-      {% include "prototype_v4/views/includes/benefits-of-stopping-smoking.html" %}
+      {% include prototype.viewPath + "/includes/benefits-of-stopping-smoking.html" %}
 
-      {% include "prototype_v4/views/includes/help-stop-smoking.html" %}
+      {% include prototype.viewPath + "/includes/help-stop-smoking.html" %}
 
       {% if query.risk and query.risk == "high" %}
-        {% include "prototype_v4/views/includes/vaping-to-quit-smoking.html" %}
+        {% include prototype.viewPath + "/includes/vaping-to-quit-smoking.html" %}
       {% endif %}
 
-      {% include "prototype_v4/views/includes/smoking-anxiety-and-mood.html" %}
+      {% include prototype.viewPath + "/includes/smoking-anxiety-and-mood.html" %}
 
-      {% include "prototype_v4/views/includes/help-and-support.html" %}
+      {% include prototype.viewPath + "/includes/help-and-support.html" %}
 
-      {% include "prototype_v4/views/includes/give-feedback.html" %}
+      {% include prototype.viewPath + "/includes/give-feedback.html" %}
 
     </div>
   </div>

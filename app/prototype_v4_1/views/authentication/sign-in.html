@@ -1,14 +1,14 @@
-{% extends "prototype_v4/views/layouts/main.html" %}
+{% extends prototype.viewPath + "/layouts/main.html" %}
 
 {% set title = "Log in to your NHS account" %}
 
 {% block content %}
-  {% include "prototype_v4/views/includes/error-summary.html" %}
+  {% include prototype.viewPath + "/includes/error-summary.html" %}
 
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      {% include "prototype_v4/views/includes/page-heading.html" %}
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
 
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
