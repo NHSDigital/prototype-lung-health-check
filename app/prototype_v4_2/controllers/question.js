@@ -339,100 +339,100 @@ exports.aboutYou_post = (req, res) => {
   }
 }
 
-exports.gender_get = (req, res) => {
-  const back = getWeightBack(req)
+// exports.gender_get = (req, res) => {
+//   const back = getWeightBack(req)
 
-  renderQuestion(res, 'gender', {
-    next: `/prototype_${version}/gender`,
-    back,
-    cancel: `/prototype_${version}/`
-  })
-}
+//   renderQuestion(res, 'gender', {
+//     next: `/prototype_${version}/gender`,
+//     back,
+//     cancel: `/prototype_${version}/`
+//   })
+// }
 
-exports.gender_post = (req, res) => {
-  const { answers } = req.session.data
-  const back = getWeightBack(req)
-  const errors = validateQuestion(answers, 'gender')
+// exports.gender_post = (req, res) => {
+//   const { answers } = req.session.data
+//   const back = getWeightBack(req)
+//   const errors = validateQuestion(answers, 'gender')
 
-  if (errors.length) {
-    renderQuestion(res, 'gender', {
-      next: `/prototype_${version}/gender`,
-      back,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    res.redirect(`/prototype_${version}/sex`)
-  }
-}
+//   if (errors.length) {
+//     renderQuestion(res, 'gender', {
+//       next: `/prototype_${version}/gender`,
+//       back,
+//       cancel: `/prototype_${version}/`
+//     }, errors)
+//   } else {
+//     res.redirect(`/prototype_${version}/sex`)
+//   }
+// }
 
-exports.sex_get = (req, res) => {
-  renderQuestion(res, 'sex', {
-    next: `/prototype_${version}/sex`,
-    back: `/prototype_${version}/gender`,
-    cancel: `/prototype_${version}/`
-  })
-}
+// exports.sex_get = (req, res) => {
+//   renderQuestion(res, 'sex', {
+//     next: `/prototype_${version}/sex`,
+//     back: `/prototype_${version}/gender`,
+//     cancel: `/prototype_${version}/`
+//   })
+// }
 
-exports.sex_post = (req, res) => {
-  const { answers } = req.session.data
-  const errors = validateQuestion(answers, 'sex')
+// exports.sex_post = (req, res) => {
+//   const { answers } = req.session.data
+//   const errors = validateQuestion(answers, 'sex')
 
-  if (errors.length) {
-    renderQuestion(res, 'sex', {
-      next: `/prototype_${version}/sex`,
-      back: `/prototype_${version}/gender`,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    res.redirect(`/prototype_${version}/ethnicity`)
-  }
-}
+//   if (errors.length) {
+//     renderQuestion(res, 'sex', {
+//       next: `/prototype_${version}/sex`,
+//       back: `/prototype_${version}/gender`,
+//       cancel: `/prototype_${version}/`
+//     }, errors)
+//   } else {
+//     res.redirect(`/prototype_${version}/ethnicity`)
+//   }
+// }
 
-exports.ethnicity_get = (req, res) => {
-  renderQuestion(res, 'ethnicity', {
-    next: `/prototype_${version}/ethnicity`,
-    back: `/prototype_${version}/sex`,
-    cancel: `/prototype_${version}/`
-  })
-}
+// exports.ethnicity_get = (req, res) => {
+//   renderQuestion(res, 'ethnicity', {
+//     next: `/prototype_${version}/ethnicity`,
+//     back: `/prototype_${version}/sex`,
+//     cancel: `/prototype_${version}/`
+//   })
+// }
 
-exports.ethnicity_post = (req, res) => {
-  const { answers } = req.session.data
-  const errors = validateQuestion(answers, 'ethnicity')
+// exports.ethnicity_post = (req, res) => {
+//   const { answers } = req.session.data
+//   const errors = validateQuestion(answers, 'ethnicity')
 
-  if (errors.length) {
-    renderQuestion(res, 'ethnicity', {
-      next: `/prototype_${version}/ethnicity`,
-      back: `/prototype_${version}/sex`,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    res.redirect(`/prototype_${version}/education`)
-  }
-}
+//   if (errors.length) {
+//     renderQuestion(res, 'ethnicity', {
+//       next: `/prototype_${version}/ethnicity`,
+//       back: `/prototype_${version}/sex`,
+//       cancel: `/prototype_${version}/`
+//     }, errors)
+//   } else {
+//     res.redirect(`/prototype_${version}/education`)
+//   }
+// }
 
-exports.education_get = (req, res) => {
-  renderQuestion(res, 'education', {
-    next: `/prototype_${version}/education`,
-    back: `/prototype_${version}/ethnicity`,
-    cancel: `/prototype_${version}/`
-  })
-}
+// exports.education_get = (req, res) => {
+//   renderQuestion(res, 'education', {
+//     next: `/prototype_${version}/education`,
+//     back: `/prototype_${version}/ethnicity`,
+//     cancel: `/prototype_${version}/`
+//   })
+// }
 
-exports.education_post = (req, res) => {
-  const { answers } = req.session.data
-  const errors = validateQuestion(answers, 'education')
+// exports.education_post = (req, res) => {
+//   const { answers } = req.session.data
+//   const errors = validateQuestion(answers, 'education')
 
-  if (errors.length) {
-    renderQuestion(res, 'education', {
-      next: `/prototype_${version}/education`,
-      back: `/prototype_${version}/ethnicity`,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    res.redirect(`/prototype_${version}/respiratory-conditions`)
-  }
-}
+//   if (errors.length) {
+//     renderQuestion(res, 'education', {
+//       next: `/prototype_${version}/education`,
+//       back: `/prototype_${version}/ethnicity`,
+//       cancel: `/prototype_${version}/`
+//     }, errors)
+//   } else {
+//     res.redirect(`/prototype_${version}/respiratory-conditions`)
+//   }
+// }
 
 /// ------------------------------------------------------------------------ ///
 /// Your health
@@ -458,6 +458,29 @@ exports.respiratoryConditions_post = (req, res) => {
     }, errors)
   } else {
     res.redirect(`/prototype_${version}/asbestos-at-work`)
+  }
+}
+
+exports.asbestos_get = (req, res) => {
+  renderQuestionPage(res, 'asbestos', {
+    next: `/prototype_${version}/asbestos`,
+    back: `/prototype_${version}/respiratory-conditions`,
+    cancel: `/prototype_${version}/`
+  })
+}
+
+exports.asbestos_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = validateQuestions(answers, getQuestionPageIds('asbestos'))
+
+  if (errors.length) {
+    renderQuestionPage(res, 'asbestos', {
+      next: `/prototype_${version}/asbestos`,
+      back: `/prototype_${version}/respiratory-conditions`,
+      cancel: `/prototype_${version}/`
+    }, errors)
+  } else {
+    res.redirect(`/prototype_${version}/cancer-diagnosis`)
   }
 }
 
@@ -510,7 +533,7 @@ exports.asbestosAtHome_post = (req, res) => {
 exports.cancerDiagnosis_get = (req, res) => {
   renderQuestion(res, 'cancer-diagnosis', {
     next: `/prototype_${version}/cancer-diagnosis`,
-    back: `/prototype_${version}/asbestos-at-work`,
+    back: `/prototype_${version}/asbestos`,
     cancel: `/prototype_${version}/`
   })
 }
@@ -522,7 +545,7 @@ exports.cancerDiagnosis_post = (req, res) => {
   if (errors.length) {
     renderQuestion(res, 'cancer-diagnosis', {
       next: `/prototype_${version}/cancer-diagnosis`,
-      back: `/prototype_${version}/asbestos-at-work`,
+      back: `/prototype_${version}/asbestos`,
       cancel: `/prototype_${version}/`
     }, errors)
   } else {

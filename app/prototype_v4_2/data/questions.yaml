@@ -389,8 +389,8 @@ questions:
     type: multiple
     answerKey: respiratoryConditions
     input:
-      hint: Select all that apply
       label: Have you ever been diagnosed with any of the following respiratory conditions?
+      hint: Select all that apply
     options:
       - label: Bronchitis
         hint: An inflammation of the airways in the lungs that is usually caused by an infection
@@ -428,6 +428,8 @@ questions:
   - id: asbestos-at-work
     type: single
     answerKey: asbestosAtWork
+    input:
+      label: Have you ever worked in a job where you might have been exposed to asbestos?
     options:
       - label: Yes
         value: yes
@@ -440,11 +442,11 @@ questions:
     errors:
       required:
         text: Select whether you have ever worked in a job where you might have been exposed to asbestos
-    input:
-      label: Have you ever worked in a job where you might have been exposed to asbestos?
   - id: asbestos-at-home
     type: single
     answerKey: asbestosAtHome
+    input:
+      label: Have you ever lived with anyone who worked with asbestos?
     options:
       - label: Yes
         value: yes
@@ -457,8 +459,6 @@ questions:
     errors:
       required:
         text: Select whether you have ever lived with anyone who worked with asbestos
-    input:
-      label: Have you ever lived with anyone who worked with asbestos?
   - id: cancer-diagnosis
     type: single
     answerKey: cancerDiagnosis

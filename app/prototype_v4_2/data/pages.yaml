@@ -144,6 +144,13 @@ pages:
   - id: respiratory-conditions
     questions:
       - respiratory-conditions
+  - id: asbestos
+    questions:
+      - asbestos-at-work
+      - asbestos-at-home
+    heading:
+      title: Exposure to asbestos
+      caption: Your health
   - id: asbestos-at-work
     questions:
       - asbestos-at-work

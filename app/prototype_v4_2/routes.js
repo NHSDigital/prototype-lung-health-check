@@ -112,28 +112,31 @@ router.post(`/prototype_${version}/weight-imperial`, questionController.weightIm
 router.get(`/prototype_${version}/about-you`, questionController.aboutYou_get)
 router.post(`/prototype_${version}/about-you`, questionController.aboutYou_post)
 
-router.get(`/prototype_${version}/sex`, questionController.sex_get)
-router.post(`/prototype_${version}/sex`, questionController.sex_post)
+// router.get(`/prototype_${version}/sex`, questionController.sex_get)
+// router.post(`/prototype_${version}/sex`, questionController.sex_post)
 
-router.get(`/prototype_${version}/gender`, questionController.gender_get)
-router.post(`/prototype_${version}/gender`, questionController.gender_post)
+// router.get(`/prototype_${version}/gender`, questionController.gender_get)
+// router.post(`/prototype_${version}/gender`, questionController.gender_post)
 
-router.get(`/prototype_${version}/ethnicity`, questionController.ethnicity_get)
-router.post(`/prototype_${version}/ethnicity`, questionController.ethnicity_post)
+// router.get(`/prototype_${version}/ethnicity`, questionController.ethnicity_get)
+// router.post(`/prototype_${version}/ethnicity`, questionController.ethnicity_post)
 
-router.get(`/prototype_${version}/education`, questionController.education_get)
-router.post(`/prototype_${version}/education`, questionController.education_post)
+// router.get(`/prototype_${version}/education`, questionController.education_get)
+// router.post(`/prototype_${version}/education`, questionController.education_post)
 
 /// Your health ------------------------------------------------------------ ///
 
 router.get(`/prototype_${version}/respiratory-conditions`, questionController.respiratoryConditions_get)
 router.post(`/prototype_${version}/respiratory-conditions`, questionController.respiratoryConditions_post)
 
-router.get(`/prototype_${version}/asbestos-at-work`, questionController.asbestosAtWork_get)
-router.post(`/prototype_${version}/asbestos-at-work`, questionController.asbestosAtWork_post)
+router.get(`/prototype_${version}/asbestos`, questionController.asbestos_get)
+router.post(`/prototype_${version}/asbestos`, questionController.asbestos_post)
 
-router.get(`/prototype_${version}/asbestos-at-home`, questionController.asbestosAtHome_get)
-router.post(`/prototype_${version}/asbestos-at-home`, questionController.asbestosAtHome_post)
+// router.get(`/prototype_${version}/asbestos-at-work`, questionController.asbestosAtWork_get)
+// router.post(`/prototype_${version}/asbestos-at-work`, questionController.asbestosAtWork_post)
+
+// router.get(`/prototype_${version}/asbestos-at-home`, questionController.asbestosAtHome_get)
+// router.post(`/prototype_${version}/asbestos-at-home`, questionController.asbestosAtHome_post)
 
 router.get(`/prototype_${version}/cancer-diagnosis`, questionController.cancerDiagnosis_get)
 router.post(`/prototype_${version}/cancer-diagnosis`, questionController.cancerDiagnosis_post)
