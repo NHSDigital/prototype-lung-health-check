@@ -44,7 +44,7 @@
 }) }}
 
 <!-- Phase banner (inside header block) -->
-{% if not hidePhaseBanner %}
+{% if not (hidePhaseBanner or contentData.hidePhaseBanner) %}
   <div class="nhsuk-phase-banner">
     <div class="nhsuk-width-container">
       <div class="nhsuk-phase-banner__content">
@@ -89,7 +89,7 @@
       }
     ]
   }
-}) if not hideFooterLinks }}
+}) if not (hideFooterLinks or contentData.hideFooterLinks) }}
 
 {# <div class="nhsuk-footer__testing-links">
   <div class="nhsuk-width-container">

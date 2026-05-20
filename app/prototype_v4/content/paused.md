@@ -1,5 +1,7 @@
 ---
 title: Sorry, the service is unavailable
+hidePhaseBanner: true
+hideFooterLinks: true
 ---
 
 You will be able to use the service from Tuesday, 5 May 2026.
@@ -15,5 +17,3 @@ Monday to Friday 8am to 8pm<br aria-hidden="true">
 Saturdays 8am to 1pm
 
 Once you have completed your NHS lung cancer screening by phone you cannot test the online service.
-
-{# If you have any questions, email england.digitallungcancerscreening@nhs.net. #}

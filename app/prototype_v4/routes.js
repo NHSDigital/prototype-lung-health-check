@@ -208,6 +208,8 @@ router.get(`/prototype_${version}/terms-of-use`, contentController.terms)
 
 router.get(`/prototype_${version}/paused`, contentController.paused)
 
+router.get(`/prototype_${version}/closed`, contentController.closed)
+
 /// ------------------------------------------------------------------------ ///
 /// Error pages
 /// ------------------------------------------------------------------------ ///
