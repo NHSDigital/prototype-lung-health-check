@@ -371,22 +371,22 @@ const getCheckYourAnswers = (answers = {}) => {
       makeSummaryRow({
         key: 'Age you started smoking',
         value: answers.ageStartedSmoking && `Age ${answers.ageStartedSmoking}`,
-        href: `/prototype_${version}/age-started-smoking`
+        href: `/prototype_${version}/smoking-duration`
       }),
       isFormerSmoker && makeSummaryRow({
         key: 'Age you stopped smoking',
         value: answers.ageStoppedSmoking && `Age ${answers.ageStoppedSmoking}`,
-        href: `/prototype_${version}/age-stopped-smoking`
+        href: `/prototype_${version}/smoking-duration`
       }),
       makeSummaryRow({
         key: 'Stopped smoking for periods of 1 year or longer',
         value: formatValue(answers.periodsStoppedSmoking, valueLabels.periodsStoppedSmoking),
-        href: `/prototype_${version}/periods-stopped-smoking`
+        href: `/prototype_${version}/smoking-duration`
       }),
       answers.periodsStoppedSmoking === 'yes' && makeSummaryRow({
         key: 'Total number of years you stopped smoking',
         value: answers.yearsStoppedSmoking && formatQuantity(answers.yearsStoppedSmoking, 'year', 'years'),
-        href: `/prototype_${version}/periods-stopped-smoking`
+        href: `/prototype_${version}/smoking-duration`
       }),
       makeSummaryRow({
         key: 'Types of tobacco smoked',

@@ -157,15 +157,6 @@ router.post(`/prototype_${version}/cancer-diagnosis-relatives-age`, questionCont
 router.get(`/prototype_${version}/smoking-duration`, questionController.smokingDuration_get)
 router.post(`/prototype_${version}/smoking-duration`, questionController.smokingDuration_post)
 
-router.get(`/prototype_${version}/age-started-smoking`, questionController.ageStartedSmoking_get)
-router.post(`/prototype_${version}/age-started-smoking`, questionController.ageStartedSmoking_post)
-
-router.get(`/prototype_${version}/age-stopped-smoking`, questionController.ageStoppedSmoking_get)
-router.post(`/prototype_${version}/age-stopped-smoking`, questionController.ageStoppedSmoking_post)
-
-router.get(`/prototype_${version}/periods-stopped-smoking`, questionController.periodsStoppedSmoking_get)
-router.post(`/prototype_${version}/periods-stopped-smoking`, questionController.periodsStoppedSmoking_post)
-
 /// Tobacco --------------------------------------------------------------- ///
 
 router.get(`/prototype_${version}/smoking-type`, questionController.smokingType_get)
@@ -179,26 +170,11 @@ router.get(`/prototype_${version}/smoking-type-exit`, questionController.smoking
 router.get(`/prototype_${version}/smoking-status`, questionController.smokingStatus_get)
 router.post(`/prototype_${version}/smoking-status`, questionController.smokingStatus_post)
 
-router.get(`/prototype_${version}/smoking-frequency`, questionController.smokingFrequency_get)
-router.post(`/prototype_${version}/smoking-frequency`, questionController.smokingFrequency_post)
-
-router.get(`/prototype_${version}/smoking-quantity`, questionController.smokingQuantity_get)
-router.post(`/prototype_${version}/smoking-quantity`, questionController.smokingQuantity_post)
-
 router.get(`/prototype_${version}/smoking-change`, questionController.smokingChange_get)
 router.post(`/prototype_${version}/smoking-change`, questionController.smokingChange_post)
 
 router.get(`/prototype_${version}/tobacco-smoking-change`, questionController.tobaccoSmokingChange_get)
 router.post(`/prototype_${version}/tobacco-smoking-change`, questionController.tobaccoSmokingChange_post)
-
-router.get(`/prototype_${version}/smoking-frequency-change`, questionController.smokingFrequencyChange_get)
-router.post(`/prototype_${version}/smoking-frequency-change`, questionController.smokingFrequencyChange_post)
-
-router.get(`/prototype_${version}/smoking-quantity-change`, questionController.smokingQuantityChange_get)
-router.post(`/prototype_${version}/smoking-quantity-change`, questionController.smokingQuantityChange_post)
-
-router.get(`/prototype_${version}/smoking-years-change`, questionController.smokingYearsChange_get)
-router.post(`/prototype_${version}/smoking-years-change`, questionController.smokingYearsChange_post)
 
 /// Check your answers ----------------------------------------------------- ///
 

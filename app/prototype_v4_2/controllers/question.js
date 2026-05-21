@@ -557,7 +557,7 @@ exports.asbestos_post = (req, res) => {
 //       res.redirect(`/prototype_${version}/cancer-diagnosis-relatives-age`)
 //     } else {
 //       delete answers.cancerDiagnosisRelativesAge
-//       res.redirect(`/prototype_${version}/age-started-smoking`)
+//       res.redirect(`/prototype_${version}/smoking-duration`)
 //     }
 //   }
 // }
@@ -679,115 +679,6 @@ exports.smokingDuration_post = (req, res) => {
   }
 }
 
-exports.ageStartedSmoking_get = (req, res) => {
-  const { answers } = req.session.data
-  const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
-
-  renderQuestion(res, 'age-started-smoking', {
-    next: `/prototype_${version}/age-started-smoking`,
-    back,
-    cancel: `/prototype_${version}/`
-  })
-}
-
-exports.ageStartedSmoking_post = (req, res) => {
-  const { answers } = req.session.data
-  const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
-
-  const errors = validateQuestion(answers, 'age-started-smoking')
-
-  // TODO:
-  // If not answered, throw error
-  // If the age started smoking is older than person's age
-  // based on date of birth, throw error
-
-  if (errors.length) {
-    renderQuestion(res, 'age-started-smoking', {
-      next: `/prototype_${version}/age-started-smoking`,
-      back,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    if (answers.smoker === 'yes_previous') {
-      res.redirect(`/prototype_${version}/age-stopped-smoking`)
-    } else {
-      delete answers.ageStoppedSmoking
-      res.redirect(`/prototype_${version}/periods-stopped-smoking`)
-    }
-  }
-}
-
-exports.ageStoppedSmoking_get = (req, res) => {
-  const { answers } = req.session.data
-
-  if (answers.smoker !== 'yes_previous') {
-    res.redirect(`/prototype_${version}/periods-stopped-smoking`)
-    return
-  }
-
-  renderQuestion(res, 'age-stopped-smoking', {
-    next: `/prototype_${version}/age-stopped-smoking`,
-    back: `/prototype_${version}/age-started-smoking`,
-    cancel: `/prototype_${version}/`
-  })
-}
-
-exports.ageStoppedSmoking_post = (req, res) => {
-  const { answers } = req.session.data
-  const errors = validateQuestion(answers, 'age-stopped-smoking')
-
-  if (answers.smoker !== 'yes_previous') {
-    delete answers.ageStoppedSmoking
-    res.redirect(`/prototype_${version}/periods-stopped-smoking`)
-    return
-  }
-
-  // TODO:
-  // If not answered, throw error
-  // If the age stopped smoking is older than person's age
-  // based on date of birth, throw error
-
-  if (errors.length) {
-    renderQuestion(res, 'age-stopped-smoking', {
-      next: `/prototype_${version}/age-stopped-smoking`,
-      back: `/prototype_${version}/age-started-smoking`,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    res.redirect(`/prototype_${version}/periods-stopped-smoking`)
-  }
-}
-
-exports.periodsStoppedSmoking_get = (req, res) => {
-  const answers = req.session.data.answers || {}
-  const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
-
-  renderQuestion(res, 'periods-stopped-smoking', {
-    next: `/prototype_${version}/periods-stopped-smoking`,
-    back,
-    cancel: `/prototype_${version}/`
-  })
-}
-
-exports.periodsStoppedSmoking_post = (req, res) => {
-  const answers = req.session.data.answers || {}
-  const back = answers.smoker === 'yes_previous' ? `/prototype_${version}/age-stopped-smoking` : `/prototype_${version}/age-started-smoking`
-  const errors = validateQuestion(answers, 'periods-stopped-smoking')
-
-  if (errors.length) {
-    renderQuestion(res, 'periods-stopped-smoking', {
-      next: `/prototype_${version}/periods-stopped-smoking`,
-      back,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    if (answers.periodsStoppedSmoking === 'no') {
-      delete answers.yearsStoppedSmoking
-    }
-    res.redirect(`/prototype_${version}/smoking-type`)
-  }
-}
-
 /// ------------------------------------------------------------------------ ///
 /// Tobacco
 /// ------------------------------------------------------------------------ ///
@@ -893,47 +784,6 @@ exports.smokingStatus_post = (req, res) => {
   }
 }
 
-exports.smokingFrequency_get = (req, res) => {
-  renderSmokingTypeQuestion(req, res, 'smoking-frequency')
-}
-
-exports.smokingFrequency_post = (req, res) => {
-  const { step, steps } = getSmokingTypeStep(req, 'smoking-frequency')
-  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-frequency', step) : []
-
-  if (!step) {
-    res.redirect(`/prototype_${version}/smoking-type`)
-    return
-  }
-
-  if (errors.length) {
-    renderSmokingTypeQuestion(req, res, 'smoking-frequency', errors)
-  } else {
-    res.redirect(getSmokingTypeActions(step, steps).onward)
-  }
-}
-
-exports.smokingQuantity_get = (req, res) => {
-  renderSmokingTypeQuestion(req, res, 'smoking-quantity')
-}
-
-exports.smokingQuantity_post = (req, res) => {
-  const { step, steps } = getSmokingTypeStep(req, 'smoking-quantity')
-  deleteUnselectedSmokingQuantityOtherAnswer(req.session.data.answers, step)
-  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-quantity', step) : []
-
-  if (!step) {
-    res.redirect(`/prototype_${version}/smoking-type`)
-    return
-  }
-
-  if (errors.length) {
-    renderSmokingTypeQuestion(req, res, 'smoking-quantity', errors)
-  } else {
-    res.redirect(getSmokingTypeActions(step, steps).onward)
-  }
-}
-
 exports.smokingChange_get = (req, res) => {
   renderSmokingTypeQuestion(req, res, 'smoking-change')
 }
@@ -974,67 +824,6 @@ exports.tobaccoSmokingChange_post = (req, res) => {
 
   if (errors.length) {
     renderSmokingTypePage(req, res, 'tobacco-smoking-change', errors)
-  } else {
-    res.redirect(getSmokingTypeActions(step, steps).onward)
-  }
-}
-
-exports.smokingFrequencyChange_get = (req, res) => {
-  renderSmokingTypeQuestion(req, res, 'smoking-frequency-change')
-}
-
-exports.smokingFrequencyChange_post = (req, res) => {
-  const { step, steps } = getSmokingTypeStep(req, 'smoking-frequency-change')
-  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-frequency-change', step) : []
-
-  if (!step) {
-    res.redirect(`/prototype_${version}/smoking-type`)
-    return
-  }
-
-  if (errors.length) {
-    renderSmokingTypeQuestion(req, res, 'smoking-frequency-change', errors)
-  } else {
-    res.redirect(getSmokingTypeActions(step, steps).onward)
-  }
-}
-
-exports.smokingQuantityChange_get = (req, res) => {
-  renderSmokingTypeQuestion(req, res, 'smoking-quantity-change')
-}
-
-exports.smokingQuantityChange_post = (req, res) => {
-  const { step, steps } = getSmokingTypeStep(req, 'smoking-quantity-change')
-  deleteUnselectedSmokingQuantityOtherAnswer(req.session.data.answers, step, 'quantity')
-  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-quantity-change', step) : []
-
-  if (!step) {
-    res.redirect(`/prototype_${version}/smoking-type`)
-    return
-  }
-
-  if (errors.length) {
-    renderSmokingTypeQuestion(req, res, 'smoking-quantity-change', errors)
-  } else {
-    res.redirect(getSmokingTypeActions(step, steps).onward)
-  }
-}
-
-exports.smokingYearsChange_get = (req, res) => {
-  renderSmokingTypeQuestion(req, res, 'smoking-years-change')
-}
-
-exports.smokingYearsChange_post = (req, res) => {
-  const { step, steps } = getSmokingTypeStep(req, 'smoking-years-change')
-  const errors = step ? validateSmokingTypeQuestion(req, 'smoking-years-change', step) : []
-
-  if (!step) {
-    res.redirect(`/prototype_${version}/smoking-type`)
-    return
-  }
-
-  if (errors.length) {
-    renderSmokingTypeQuestion(req, res, 'smoking-years-change', errors)
   } else {
     res.redirect(getSmokingTypeActions(step, steps).onward)
   }

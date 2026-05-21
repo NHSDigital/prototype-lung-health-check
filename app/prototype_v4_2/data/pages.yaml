@@ -242,22 +242,6 @@ pages:
       We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.
 
       If you do not know or cannot remember, select 'I do not know'.
-  - id: age-started-smoking
-    questions:
-      - age-started-smoking
-  - id: age-stopped-smoking
-    questions:
-      - age-stopped-smoking
-  - id: periods-stopped-smoking
-    questions:
-      - periods-stopped-smoking
-    heading:
-      title: Periods when you stopped smoking
-      caption: Your smoking habits
-    description: |
-      There may have been periods when you stopped or quit smoking.
-
-      If you stopped smoking for periods of 1 year or longer, tell us the total number of years you stopped smoking.
   - id: smoking-duration
     heading:
       title: Smoking duration
@@ -309,21 +293,6 @@ pages:
       - smoking-frequency-change
       - smoking-quantity-change
       - smoking-years-change
-  - id: smoking-frequency
-    questions:
-      - smoking-frequency
-  - id: smoking-quantity
-    questions:
-      - smoking-quantity
   - id: smoking-change
     questions:
       - smoking-change
-  - id: smoking-frequency-change
-    questions:
-      - smoking-frequency-change
-  - id: smoking-quantity-change
-    questions:
-      - smoking-quantity-change
-  - id: smoking-years-change
-    questions:
-      - smoking-years-change

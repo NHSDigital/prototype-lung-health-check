@@ -114,6 +114,6 @@ flowchart TD
 - `Age stopped smoking` is only asked when the `smoker` answer is `yes_previous`.
 - The tobacco subflow uses query strings such as `/prototype_v4_2/smoking-status?type=cigarettes`.
 - If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
-- Shisha asks for `Smoking setting`, then repeats frequency and quantity for each selected setting. The shisha setting-specific pages include the setting in the query string, for example `/prototype_v4_2/smoking-frequency?type=shisha&setting=group`.
+- Shisha follows the same tobacco-smoking flow as other tobacco types, but skips the smoking-change flow.
 - If both `increased` and `decreased` are selected for a tobacco type, the flow asks the three "increased" change questions first, then the three "decreased" change questions.
 - `Check your answers` links back to the last tobacco step that applies to the current set of answers.

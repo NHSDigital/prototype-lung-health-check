@@ -81,9 +81,7 @@
 
       <h2 class="nhsuk-heading-m">Your smoking habits</h2>
       <ul class="nhsuk-list nhsuk-list--spaced">
-        {{ pageLink("/age-started-smoking", "Age you started smoking") }}
-        {{ seededProfilePageLink("/age-stopped-smoking", "former", "Former smoker - age you stopped smoking") }}
-        {{ pageLink("/periods-stopped-smoking", "Periods when you stopped smoking") }}
+        {{ pageLink("/smoking-duration", "Smoking duration") }}
         {{ pageLink("/smoking-type", "The type of tobacco you smoke or used to smoke") }}
         {{ pageLink("/smoking-type-exit", "You are not eligible for lung cancer screening") }}
       </ul>
@@ -92,12 +90,8 @@
       <ul class="nhsuk-list nhsuk-list--spaced">
         {{ seededPageLink("/tobacco-smoking", "Tobacco smoking") }}
         {{ seededPageLink("/smoking-status?type=cigarettes", "Cigarettes - currently smoke") }}
-        {{ seededPageLink("/smoking-frequency?type=cigarettes", "Cigarettes - frequency") }}
-        {{ seededPageLink("/smoking-quantity?type=cigarettes", "Cigarettes - quantity") }}
         {{ seededPageLink("/smoking-change?type=cigarettes", "Cigarettes - has quantity changed") }}
-        {{ seededPageLink("/smoking-frequency-change?type=cigarettes%26change=greater", "Cigarettes - more frequency") }}
-        {{ seededPageLink("/smoking-quantity-change?type=cigarettes%26change=greater", "Cigarettes - more quantity") }}
-        {{ seededPageLink("/smoking-years-change?type=cigarettes%26change=greater", "Cigarettes - more duration") }}
+        {{ seededPageLink("/tobacco-smoking-change?type=cigarettes%26change=greater", "Cigarettes - more smoking change") }}
         {{ seededProfilePageLink("/tobacco-smoking?type=shisha", "shisha", "Shisha smoking") }}
       </ul>
 
