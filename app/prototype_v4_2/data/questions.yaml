@@ -770,21 +770,6 @@ questions:
         text: Amount smoked must be 1 or more
       max:
         text: Amount smoked must be 200 or fewer
-  - id: smoking-setting
-    type: multiple
-    input:
-      label: Do you usually smoke shisha in a group or on your own?
-      hint: Select all that apply
-    options:
-      - label: In a group
-        value: group
-      - label: By myself
-        value: individual
-    validation:
-      required: true
-    errors:
-      required:
-        text: Select whether you usually smoke shisha in a group or on your own
   - id: smoking-change
     type: multiple
     input:

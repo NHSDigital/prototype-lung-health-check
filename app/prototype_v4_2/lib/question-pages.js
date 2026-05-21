@@ -50,17 +50,37 @@ const getCondition = (questionRef) => {
   return questionRef.if || questionRef.showIf || questionRef.condition
 }
 
+const getNestedAnswerValues = (answers = {}, answerKey) => {
+  return Object.values(answers).flatMap((answer) => {
+    if (!answer || typeof answer !== 'object' || Array.isArray(answer)) {
+      return []
+    }
+
+    return answer[answerKey] === undefined ? [] : [answer[answerKey]]
+  })
+}
+
+const getAnswer = (answers = {}, answerKey) => {
+  if (answers[answerKey] !== undefined) {
+    return answers[answerKey]
+  }
+
+  const nestedValues = getNestedAnswerValues(answers, answerKey)
+
+  return nestedValues.length ? nestedValues : undefined
+}
+
 const getConditionAnswer = (condition = {}, answers = {}) => {
   if (condition.answerKey) {
-    return answers[condition.answerKey]
+    return getAnswer(answers, condition.answerKey)
   }
 
   if (condition.answer) {
-    return answers[condition.answer]
+    return getAnswer(answers, condition.answer)
   }
 
   if (condition.question) {
-    return answers[getQuestion(condition.question).answerKey]
+    return getAnswer(answers, getQuestion(condition.question).answerKey)
   }
 
   return undefined

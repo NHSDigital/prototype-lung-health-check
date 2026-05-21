@@ -300,11 +300,6 @@ pages:
     heading:
       title: Tobacco smoking
     questions:
-      - id: smoking-setting
-        if:
-          question: smoking-type
-          includes:
-            - shisha
       - smoking-frequency
       - smoking-quantity
   - id: tobacco-smoking-change
@@ -320,9 +315,6 @@ pages:
   - id: smoking-quantity
     questions:
       - smoking-quantity
-  - id: smoking-setting
-    questions:
-      - smoking-setting
   - id: smoking-change
     questions:
       - smoking-change

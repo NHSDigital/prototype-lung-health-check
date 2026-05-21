@@ -65,11 +65,8 @@ const getDefaultAnswerProfile = (profile) => {
     delete answers.cigarettes
     answers.shisha = {
       smokingStatus: 'yes',
-      smokingSetting: ['group'],
-      group: {
-        smokingFrequency: 'weekly',
-        smokingQuantity: '30_minutes_to_1_hour'
-      }
+      smokingFrequency: 'weekly',
+      smokingQuantity: '30_minutes_to_1_hour'
     }
   }
 

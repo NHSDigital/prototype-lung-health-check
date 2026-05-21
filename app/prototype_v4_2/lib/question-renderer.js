@@ -60,6 +60,36 @@ const getErrorMap = (errors = []) => {
   }, {})
 }
 
+const mergeQuestionOverrides = (question, overrides = {}) => {
+  const heading = {
+    ...question.heading,
+    ...overrides.heading
+  }
+  const input = {
+    ...question.input,
+    ...overrides.input
+  }
+
+  if (overrides.heading?.title && !overrides.input?.label) {
+    input.label = overrides.heading.title
+  }
+
+  return {
+    ...question,
+    ...overrides,
+    heading,
+    input,
+    errors: {
+      ...question.errors,
+      ...overrides.errors
+    },
+    validation: {
+      ...question.validation,
+      ...overrides.validation
+    }
+  }
+}
+
 /**
  * Render a YAML-backed page containing one or more questions.
  *
@@ -68,9 +98,20 @@ const getErrorMap = (errors = []) => {
  * @param {Object} actions - URLs used by the grouped question template.
  * @param {Object[]} [errors] - Validation errors for all questions on the page.
  */
-const renderQuestionPage = (res, id, actions, errors = [], answers = {}) => {
+const renderQuestionPage = (res, id, actions, errors = [], answers = {}, overrides = {}) => {
+  const page = getQuestionPage(id, answers)
+  const questionOverrides = overrides.questions || {}
+
   res.render(view('questions/_question-page'), {
-    page: getQuestionPage(id, answers),
+    page: {
+      ...page,
+      ...overrides,
+      heading: {
+        ...page.heading,
+        ...overrides.heading
+      },
+      questions: page.questions.map((question) => mergeQuestionOverrides(question, questionOverrides[question.id]))
+    },
     errorMap: getErrorMap(errors),
     errors,
     actions

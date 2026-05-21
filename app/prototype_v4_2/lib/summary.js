@@ -3,10 +3,8 @@ const { getQuestionValueLabels } = require('./questions')
 const { version } = require('./question-renderer')
 const {
   formatQuantity,
-  getSelectedShishaSettings,
   getSelectedSmokingChanges,
   getSelectedSmokingTypes,
-  getShishaSettingAnswer,
   getSmokingChangeAnswer,
   getSmokingChangeHeading,
   getSmokingChangeLabels,
@@ -233,22 +231,6 @@ const getCheckYourAnswers = (answers = {}) => {
     const answer = answers[type] || {}
     const isPast = isPastSmokingType(answers, answer)
     const smokingType = getSmokingTypeHeadings(type, isPast)
-    const shishaSettingRows = getSelectedShishaSettings(answer).flatMap((setting) => {
-      const settingAnswer = getShishaSettingAnswer(answer, setting)
-
-      return [
-        makeSummaryRow({
-          key: getSmokingStepHeading('smoking-frequency', type, setting, isPast, settingAnswer),
-          value: formatValue(settingAnswer.smokingFrequency, valueLabels.smokingFrequency),
-          href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type, setting })
-        }),
-        makeSummaryRow({
-          key: getSmokingStepHeading('smoking-quantity', type, setting, isPast, settingAnswer),
-          value: formatSmokingQuantityAnswer(type, settingAnswer),
-          href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type, setting })
-        })
-      ]
-    })
     const smokingChangeRows = getSelectedSmokingChanges(answer).flatMap((change) => {
       const changeAnswer = getSmokingChangeAnswer(answer, change)
 
@@ -256,17 +238,17 @@ const getCheckYourAnswers = (answers = {}) => {
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-frequency-change', type, change, changeAnswer, answer),
           value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
-          href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
+          href: getSmokingTypeStepUrl({ page: 'tobacco-smoking-change', type, change })
         }),
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-quantity-change', type, change, changeAnswer, answer),
           value: getSmokingQuantity(type, changeAnswer.quantity),
-          href: getSmokingTypeStepUrl({ page: 'smoking-quantity-change', type, change })
+          href: getSmokingTypeStepUrl({ page: 'tobacco-smoking-change', type, change })
         }),
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-years-change', type, change, changeAnswer, answer),
           value: changeAnswer.years && formatQuantity(changeAnswer.years, 'year', 'years'),
-          href: getSmokingTypeStepUrl({ page: 'smoking-years-change', type, change })
+          href: getSmokingTypeStepUrl({ page: 'tobacco-smoking-change', type, change })
         })
       ]
     })
@@ -276,27 +258,21 @@ const getCheckYourAnswers = (answers = {}) => {
         value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
         href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
       }),
-      type === 'shisha' && makeSummaryRow({
-        key: smokingType.settingHeading,
-        ...formatListValue(answer.smokingSetting, valueLabels.smokingSetting),
-        href: getSmokingTypeStepUrl({ page: 'smoking-setting', type })
-      }),
-      type !== 'shisha' && makeSummaryRow({
-        key: getSmokingStepHeading('smoking-frequency', type, undefined, isPast, answer),
+      makeSummaryRow({
+        key: getSmokingStepHeading('smoking-frequency', type, isPast, answer),
         value: formatValue(answer.smokingFrequency, valueLabels.smokingFrequency),
-        href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type })
+        href: getSmokingTypeStepUrl({ page: 'tobacco-smoking', type })
       }),
-      type !== 'shisha' && makeSummaryRow({
-        key: getSmokingStepHeading('smoking-quantity', type, undefined, isPast, answer),
+      makeSummaryRow({
+        key: getSmokingStepHeading('smoking-quantity', type, isPast, answer),
         value: formatSmokingQuantityAnswer(type, answer),
-        href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type })
+        href: getSmokingTypeStepUrl({ page: 'tobacco-smoking', type })
       }),
       type !== 'shisha' && makeSummaryRow({
         key: smokingType.changeHeading,
         ...formatListValue(answer.smokingChange, getSmokingChangeLabels(type, answer, isPast)),
         href: getSmokingTypeStepUrl({ page: 'smoking-change', type })
       }),
-      ...shishaSettingRows,
       ...smokingChangeRows
     ])
 

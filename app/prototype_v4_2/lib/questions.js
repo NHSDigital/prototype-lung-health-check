@@ -7,7 +7,6 @@ const tobaccoPath = path.join(__dirname, '../data/tobacco.yaml')
 const data = {
   questions: {},
   smokingChangeTypes: {},
-  shishaSmokingSettings: {},
   tobaccoTypes: {}
 }
 let loadedAt = {}
@@ -144,8 +143,7 @@ const loadData = () => {
       return index
     }, {}),
     tobaccoTypes: tobaccoData.tobaccoTypes || {},
-    smokingChangeTypes: tobaccoData.smokingChangeTypes || {},
-    shishaSmokingSettings: tobaccoData.shishaSmokingSettings || {}
+    smokingChangeTypes: tobaccoData.smokingChangeTypes || {}
   }
 }
 
@@ -172,7 +170,6 @@ const refreshData = (force = false) => {
   replaceObject(data.questions, freshData.questions)
   replaceObject(data.tobaccoTypes, freshData.tobaccoTypes)
   replaceObject(data.smokingChangeTypes, freshData.smokingChangeTypes)
-  replaceObject(data.shishaSmokingSettings, freshData.shishaSmokingSettings)
 
   loadedAt = mtimes
 }
@@ -223,6 +220,5 @@ module.exports = {
   getQuestionValueLabels,
   refreshData,
   smokingChangeTypes: data.smokingChangeTypes,
-  shishaSmokingSettings: data.shishaSmokingSettings,
   tobaccoTypes: data.tobaccoTypes
 }

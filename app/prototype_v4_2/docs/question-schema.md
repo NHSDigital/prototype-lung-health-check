@@ -72,17 +72,16 @@ To conditionally show a question on a grouped page, use an object instead of a s
 
 ```yaml
 pages:
-  - id: tobacco-smoking
+  - id: smoking-duration
     heading:
-      title: Tobacco smoking
+      title: Smoking duration
     questions:
-      - id: smoking-setting
+      - age-started-smoking
+      - id: age-stopped-smoking
         if:
-          question: smoking-type
-          includes:
-            - shisha
-      - smoking-frequency
-      - smoking-quantity
+          question: smoker
+          is: yes_previous
+      - periods-stopped-smoking
 ```
 
 The `question` value is a question ID from `questions.yaml`. The renderer looks up that question's `answerKey` and compares it with the saved answer. You can also use `answerKey` directly.

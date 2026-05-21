@@ -3,11 +3,10 @@ const {
   getQuestionValueLabels,
   refreshData,
   smokingChangeTypes,
-  shishaSmokingSettings,
   tobaccoTypes: smokingTypes
 } = require('./questions')
 const { getQuestionPage } = require('./question-pages')
-const { renderQuestion, version } = require('./question-renderer')
+const { renderQuestion, renderQuestionPage, version } = require('./question-renderer')
 const { validateQuestion } = require('./question-validator')
 
 const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
@@ -16,7 +15,6 @@ const getValueLabels = () => {
   return {
     smokingChange: getQuestionValueLabels('smoking-change'),
     smokingFrequency: getQuestionValueLabels('smoking-frequency'),
-    smokingSetting: getQuestionValueLabels('smoking-setting'),
     smokingStatus: getQuestionValueLabels('smoking-status'),
     smokingType: getQuestionValueLabels('smoking-type')
   }
@@ -26,7 +24,6 @@ const getValueLabels = () => {
  * @typedef {Object} SmokingTypeStep
  * @property {string} page - Route/page id for the step.
  * @property {string} type - Tobacco type key, for example cigarettes.
- * @property {string} [setting] - Shisha setting key.
  * @property {string} [change] - Smoking change key.
  */
 
@@ -159,37 +156,6 @@ const deleteUnselectedSmokingChangeAnswers = (answer = {}) => {
 }
 
 /**
- * Get selected shisha settings in tobacco.yaml order.
- *
- * @param {Object} answer - Shisha answer object.
- * @returns {string[]} Selected shisha setting keys.
- */
-const getSelectedShishaSettings = (answer = {}) => {
-  refreshData()
-
-  const selectedSettings = Array.isArray(answer.smokingSetting)
-    ? answer.smokingSetting
-    : [answer.smokingSetting].filter(Boolean)
-
-  return Object.keys(shishaSmokingSettings).filter((setting) => selectedSettings.includes(setting))
-}
-
-/**
- * Remove nested shisha answers for unselected settings.
- *
- * @param {Object} answer - Shisha answer object, mutated in place.
- */
-const deleteUnselectedShishaSettingAnswers = (answer = {}) => {
-  const selectedSettings = getSelectedShishaSettings(answer)
-
-  Object.keys(shishaSmokingSettings).forEach((setting) => {
-    if (!selectedSettings.includes(setting)) {
-      delete answer[setting]
-    }
-  })
-}
-
-/**
  * Build the tobacco sub-flow steps from selected tobacco answers.
  *
  * @param {Object} answers - Session answers object.
@@ -206,20 +172,12 @@ const getSmokingTypeSteps = (answers = {}) => {
       steps.push({ page: 'smoking-status', type })
     }
 
-    if (type === 'shisha') {
-      steps.push({ page: 'smoking-setting', type })
-      getSelectedShishaSettings(answer).forEach((setting) => {
-        steps.push({ page: 'smoking-frequency', type, setting })
-        steps.push({ page: 'smoking-quantity', type, setting })
-      })
-    } else {
-      steps.push({ page: 'smoking-frequency', type })
-      steps.push({ page: 'smoking-quantity', type })
+    steps.push({ page: 'tobacco-smoking', type })
+
+    if (type !== 'shisha') {
       steps.push({ page: 'smoking-change', type })
       getSelectedSmokingChanges(answer).forEach((change) => {
-        steps.push({ page: 'smoking-frequency-change', type, change })
-        steps.push({ page: 'smoking-quantity-change', type, change })
-        steps.push({ page: 'smoking-years-change', type, change })
+        steps.push({ page: 'tobacco-smoking-change', type, change })
       })
     }
 
@@ -238,10 +196,6 @@ const getSmokingTypeStepUrl = (step) => {
 
   if (step.change) {
     searchParams.set('change', step.change)
-  }
-
-  if (step.setting) {
-    searchParams.set('setting', step.setting)
   }
 
   return `/prototype_${version}/${step.page}?${searchParams}`
@@ -397,17 +351,6 @@ const getSmokingChangeLabels = (type, answer = {}, isPast = false) => {
 }
 
 /**
- * Get the nested answer object for a shisha setting.
- *
- * @param {Object} answer - Shisha answer object.
- * @param {string} setting - Shisha setting key.
- * @returns {Object} Setting-specific answer object.
- */
-const getShishaSettingAnswer = (answer = {}, setting) => {
-  return setting ? answer[setting] || {} : {}
-}
-
-/**
  * Get tobacco type content with the right tense-specific heading aliases.
  *
  * @param {string} type - Tobacco type key.
@@ -431,8 +374,7 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
     statusHeading: currentHeadings.status,
     frequencyHeading: tenseHeadings.frequency,
     quantityHeading: tenseHeadings.quantity,
-    changeHeading: tenseHeadings.change,
-    settingHeading: tenseHeadings.setting
+    changeHeading: tenseHeadings.change
   }
 }
 
@@ -441,27 +383,12 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
  *
  * @param {string} page - Step page id.
  * @param {string} type - Tobacco type key.
- * @param {string} setting - Optional shisha setting key.
  * @param {boolean} isPast - Whether past-tense headings should be used.
  * @param {Object} answer - Answer object used for frequency-specific periods.
  * @returns {string} Step heading.
  */
-const getSmokingStepHeading = (page, type, setting, isPast = false, answer = {}) => {
-  const smokingType = smokingTypes[type]
+const getSmokingStepHeading = (page, type, isPast = false, answer = {}) => {
   const frequency = answer.smokingFrequency
-
-  if (!smokingType) {
-    return ''
-  }
-
-  if (type === 'shisha' && setting) {
-    const tense = isPast ? 'past' : 'current'
-    const settingHeadings = smokingType.settingHeadings?.[setting]?.[tense]
-
-    if (settingHeadings) {
-      return applySmokingFrequencyPeriod(settingHeadings[page.replace('smoking-', '')] || '', frequency)
-    }
-  }
 
   return applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, isPast)[`${page.replace('smoking-', '')}Heading`] || '', frequency)
 }
@@ -493,10 +420,6 @@ const getSmokingQuantityAnswer = (answers = {}, step = {}) => {
 
   if (step.change) {
     return getSmokingChangeAnswer(answer, step.change)
-  }
-
-  if (step.setting) {
-    return getShishaSettingAnswer(answer, step.setting)
   }
 
   return answer
@@ -603,9 +526,8 @@ const getSmokingTypeStep = (req, page) => {
   const steps = getSmokingTypeSteps(answers)
   const queryType = req.query?.type
   const queryChange = req.query?.change
-  const querySetting = req.query?.setting
-  const step = steps.find((step) => step.page === page && step.type === queryType && step.change === queryChange && step.setting === querySetting) ||
-    steps.find((step) => step.page === page && step.type === queryType && !step.change && !step.setting) ||
+  const step = steps.find((step) => step.page === page && step.type === queryType && step.change === queryChange) ||
+    steps.find((step) => step.page === page && step.type === queryType && !step.change) ||
     steps.find((step) => step.page === page)
 
   return { step, steps }
@@ -706,9 +628,7 @@ const getSmokingQuantityQuestionOverrides = ({
         return item
       }
 
-      const conditionalName = step.setting
-        ? `answers[${step.type}][${step.setting}][${item.conditionalInput.answerKey}]`
-        : `answers[${step.type}][${item.conditionalInput.answerKey}]`
+      const conditionalName = `answers[${step.type}][${item.conditionalInput.answerKey}]`
 
       return {
         ...item,
@@ -876,7 +796,6 @@ const getSmokingContentQuestionOverrides = ({
   page,
   step,
   answer,
-  settingAnswer,
   changeAnswer,
   smokingType,
   smokingChange,
@@ -896,33 +815,16 @@ const getSmokingContentQuestionOverrides = ({
     }
   }
 
-  if (page === 'smoking-setting') {
-    return {
-      heading: {
-        title: smokingType.settingHeading,
-        caption: smokingType.caption
-      },
-      input: {
-        name: `answers[${step.type}][smokingSetting]`
-      },
-      values: answer.smokingSetting
-    }
-  }
-
   if (page === 'smoking-frequency') {
-    const isSettingSpecific = Boolean(step.setting)
-
     return {
       heading: {
-        title: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType, isSettingSpecific ? settingAnswer : answer),
+        title: getSmokingStepHeading(page, step.type, isPastSmokingType, answer),
         caption: smokingType.caption
       },
       input: {
-        name: isSettingSpecific
-          ? `answers[${step.type}][${step.setting}][smokingFrequency]`
-          : `answers[${step.type}][smokingFrequency]`
+        name: `answers[${step.type}][smokingFrequency]`
       },
-      value: isSettingSpecific ? settingAnswer.smokingFrequency : answer.smokingFrequency,
+      value: answer.smokingFrequency,
       items: getQuestionItemsWithLabels('smoking-frequency', {}, {
         monthly: `Select this option if you ${isPastSmokingType ? 'smoked' : 'smoke'} at least once a month`
       })
@@ -930,18 +832,14 @@ const getSmokingContentQuestionOverrides = ({
   }
 
   if (page === 'smoking-quantity') {
-    const isSettingSpecific = Boolean(step.setting)
-
     return getSmokingQuantityQuestionOverrides({
       page,
       step,
-      heading: getSmokingStepHeading(page, step.type, step.setting, isPastSmokingType, isSettingSpecific ? settingAnswer : answer),
+      heading: getSmokingStepHeading(page, step.type, isPastSmokingType, answer),
       caption: smokingType.caption,
-      name: isSettingSpecific
-        ? `answers[${step.type}][${step.setting}][smokingQuantity]`
-        : `answers[${step.type}][smokingQuantity]`,
-      value: isSettingSpecific ? settingAnswer.smokingQuantity : answer.smokingQuantity,
-      conditionalValue: isSettingSpecific ? settingAnswer.smokingQuantityOther : answer.smokingQuantityOther,
+      name: `answers[${step.type}][smokingQuantity]`,
+      value: answer.smokingQuantity,
+      conditionalValue: answer.smokingQuantityOther,
       smokingType
     })
   }
@@ -1004,6 +902,64 @@ const getSmokingContentQuestionOverrides = ({
   return {}
 }
 
+const getSmokingTypeStepContext = (req, step) => {
+  const answer = req.session.data.answers[step.type] || {}
+  const isPast = isPastSmokingType(req.session.data.answers, answer)
+  const changeAnswer = getSmokingChangeAnswer(answer, step.change)
+  const smokingType = getSmokingTypeHeadings(step.type, isPast)
+  const smokingChange = smokingChangeTypes[step.change]
+  const smokingChangeLabels = getSmokingChangeLabels(step.type, answer, isPast)
+
+  return {
+    answer,
+    changeAnswer,
+    smokingType,
+    smokingChange,
+    smokingChangeLabels,
+    isPastSmokingType: isPast
+  }
+}
+
+const getSmokingTypePageAnswers = (step) => {
+  return {
+    smokingType: [step.type]
+  }
+}
+
+const getSmokingTypePageHeading = (page, smokingType = {}) => {
+  if (page === 'tobacco-smoking-change') {
+    return {
+      title: `${smokingType.caption} change`
+    }
+  }
+
+  return {
+    title: smokingType.caption
+  }
+}
+
+const getSmokingTypePageQuestionIds = (page, step) => {
+  return getQuestionPage(page, getSmokingTypePageAnswers(step)).questions.map((question) => question.id)
+}
+
+const getSmokingContentPageOverrides = (req, page, step) => {
+  const context = getSmokingTypeStepContext(req, step)
+  const questions = getSmokingTypePageQuestionIds(page, step).reduce((overrides, questionId) => {
+    overrides[questionId] = getSmokingContentQuestionOverrides({
+      page: questionId,
+      step,
+      ...context
+    })
+
+    return overrides
+  }, {})
+
+  return {
+    heading: getSmokingTypePageHeading(page, context.smokingType),
+    questions
+  }
+}
+
 /**
  * Build action URLs for a tobacco sub-flow step.
  *
@@ -1012,7 +968,7 @@ const getSmokingContentQuestionOverrides = ({
  * @returns {Object} Action URLs.
  */
 const getSmokingTypeActions = (step, steps) => {
-  const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change && item.setting === step.setting)
+  const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change)
   const previousStep = steps[index - 1]
   const nextStep = steps[index + 1]
 
@@ -1047,24 +1003,39 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
     return
   }
 
-  const answer = req.session.data.answers[step.type] || {}
-  const isPast = isPastSmokingType(req.session.data.answers, answer)
-  const changeAnswer = getSmokingChangeAnswer(answer, step.change)
-  const settingAnswer = getShishaSettingAnswer(answer, step.setting)
-  const smokingType = getSmokingTypeHeadings(step.type, isPast)
-  const smokingChange = smokingChangeTypes[step.change]
-  const smokingChangeLabels = getSmokingChangeLabels(step.type, answer, isPast)
+  const context = getSmokingTypeStepContext(req, step)
+
   renderQuestion(res, page, getSmokingTypeActions(step, steps), errors, getSmokingContentQuestionOverrides({
     page,
     step,
-    answer,
-    changeAnswer,
-    settingAnswer,
-    smokingType,
-    smokingChange,
-    smokingChangeLabels,
-    isPastSmokingType: isPast
+    ...context
   }))
+}
+
+/**
+ * Render a grouped tobacco sub-flow page, resolving the active step and context.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {string} page - Current tobacco page id.
+ * @param {Object[]} [errors] - Validation errors.
+ */
+const renderSmokingTypePage = (req, res, page, errors = []) => {
+  const { step, steps } = getSmokingTypeStep(req, page)
+
+  if (!step) {
+    res.redirect(`/prototype_${version}/smoking-type`)
+    return
+  }
+
+  renderQuestionPage(
+    res,
+    page,
+    getSmokingTypeActions(step, steps),
+    errors,
+    getSmokingTypePageAnswers(step),
+    getSmokingContentPageOverrides(req, page, step)
+  )
 }
 
 /**
@@ -1076,23 +1047,11 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
  * @returns {Object[]} Validation errors.
  */
 const validateSmokingTypeQuestion = (req, page, step) => {
-  const answer = req.session.data.answers[step.type] || {}
-  const isPast = isPastSmokingType(req.session.data.answers, answer)
-  const changeAnswer = getSmokingChangeAnswer(answer, step.change)
-  const settingAnswer = getShishaSettingAnswer(answer, step.setting)
-  const smokingType = getSmokingTypeHeadings(step.type, isPast)
-  const smokingChange = smokingChangeTypes[step.change]
-  const smokingChangeLabels = getSmokingChangeLabels(step.type, answer, isPast)
+  const context = getSmokingTypeStepContext(req, step)
   const overrides = getSmokingContentQuestionOverrides({
     page,
     step,
-    answer,
-    settingAnswer,
-    changeAnswer,
-    smokingType,
-    smokingChange,
-    smokingChangeLabels,
-    isPastSmokingType: isPast
+    ...context
   })
   const questionType = overrides.type || getQuestion(page).type
   const question = getQuestion(page)
@@ -1122,16 +1081,25 @@ const validateSmokingTypeQuestion = (req, page, step) => {
   })
 }
 
+/**
+ * Validate a grouped tobacco sub-flow page.
+ *
+ * @param {Object} req - Express request object.
+ * @param {string} page - Current tobacco page id.
+ * @param {SmokingTypeStep} step - Current tobacco step.
+ * @returns {Object[]} Validation errors.
+ */
+const validateSmokingTypePage = (req, page, step) => {
+  return getSmokingTypePageQuestionIds(page, step).flatMap((questionId) => validateSmokingTypeQuestion(req, questionId, step))
+}
+
 module.exports = {
-  deleteUnselectedShishaSettingAnswers,
   deleteUnselectedSmokingQuantityOtherAnswer,
   deleteUnselectedSmokingChangeAnswers,
   deleteUnselectedSmokingTypeAnswers,
   formatQuantity,
-  getSelectedShishaSettings,
   getSelectedSmokingChanges,
   getSelectedSmokingTypes,
-  getShishaSettingAnswer,
   getFormerSmokerFallbackStep,
   getSmokingChangeAnswer,
   getSmokingChangeHeading,
@@ -1145,7 +1113,9 @@ module.exports = {
   getSmokingTypeSteps,
   getSmokingTypeStepUrl,
   isPastSmokingType,
+  renderSmokingTypePage,
   renderSmokingTypeQuestion,
+  validateSmokingTypePage,
   validateSmokingTypeQuestion,
   getValueLabels
 }
