@@ -132,9 +132,6 @@ router.post(`/prototype_${version}/respiratory-conditions`, questionController.r
 router.get(`/prototype_${version}/asbestos`, questionController.asbestos_get)
 router.post(`/prototype_${version}/asbestos`, questionController.asbestos_post)
 
-// router.get(`/prototype_${version}/cancer-history`, questionController.cancerHistory_get)
-// router.post(`/prototype_${version}/cancer-history`, questionController.cancerHistory_post)
-
 router.get(`/prototype_${version}/cancer-diagnosis`, questionController.cancerDiagnosis_get)
 router.post(`/prototype_${version}/cancer-diagnosis`, questionController.cancerDiagnosis_post)
 

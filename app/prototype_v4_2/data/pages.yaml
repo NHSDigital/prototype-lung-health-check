@@ -151,12 +151,6 @@ pages:
     questions:
       - asbestos-at-work
       - asbestos-at-home
-  - id: cancer-history
-    heading:
-      title: History of cancer
-    questions:
-      - cancer-diagnosis
-      - cancer-diagnosis-relatives
   - id: cancer-diagnosis
     questions:
       - cancer-diagnosis

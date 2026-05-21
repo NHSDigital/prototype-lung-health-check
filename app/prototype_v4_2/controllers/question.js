@@ -488,34 +488,6 @@ exports.asbestos_post = (req, res) => {
   }
 }
 
-// exports.cancerHistory_get = (req, res) => {
-//   renderQuestionPage(res, 'cancer-history', {
-//     next: `/prototype_${version}/cancer-history`,
-//     back: `/prototype_${version}/asbestos`,
-//     cancel: `/prototype_${version}/`
-//   })
-// }
-
-// exports.cancerHistory_post = (req, res) => {
-//   const { answers } = req.session.data
-//   const errors = validateQuestions(answers, getQuestionPageIds('cancer-history'))
-
-//   if (errors.length) {
-//     renderQuestionPage(res, 'cancer-history', {
-//       next: `/prototype_${version}/cancer-history`,
-//       back: `/prototype_${version}/asbestos`,
-//       cancel: `/prototype_${version}/`
-//     }, errors)
-//   } else {
-//     if (answers.cancerDiagnosisRelatives === 'yes') {
-//       res.redirect(`/prototype_${version}/cancer-diagnosis-relatives-age`)
-//     } else {
-//       delete answers.cancerDiagnosisRelativesAge
-//       res.redirect(`/prototype_${version}/smoking-duration`)
-//     }
-//   }
-// }
-
 exports.cancerDiagnosis_get = (req, res) => {
   renderQuestion(res, 'cancer-diagnosis', {
     next: `/prototype_${version}/cancer-diagnosis`,
