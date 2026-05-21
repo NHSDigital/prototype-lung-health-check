@@ -342,12 +342,12 @@ const getCheckYourAnswers = (answers = {}) => {
       makeSummaryRow({
         key: 'Worked in a job where you might have been exposed to asbestos',
         value: formatValue(answers.asbestosAtWork, valueLabels.asbestosAtWork),
-        href: `/prototype_${version}/asbestos-at-work`
+        href: `/prototype_${version}/asbestos`
       }),
       makeSummaryRow({
         key: 'Lived with anyone who worked with asbestos',
         value: formatValue(answers.asbestosAtHome, valueLabels.asbestosAtHome),
-        href: `/prototype_${version}/asbestos-at-home`
+        href: `/prototype_${version}/asbestos`
       }),
       makeSummaryRow({
         key: 'Ever been diagnosed with cancer',

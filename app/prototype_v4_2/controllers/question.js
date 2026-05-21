@@ -488,52 +488,6 @@ exports.asbestos_post = (req, res) => {
   }
 }
 
-// exports.asbestosAtWork_get = (req, res) => {
-//   renderQuestion(res, 'asbestos-at-work', {
-//     next: `/prototype_${version}/asbestos-at-work`,
-//     back: `/prototype_${version}/respiratory-conditions`,
-//     cancel: `/prototype_${version}/`
-//   })
-// }
-
-// exports.asbestosAtWork_post = (req, res) => {
-//   const { answers } = req.session.data
-//   const errors = validateQuestion(answers, 'asbestos-at-work')
-
-//   if (errors.length) {
-//     renderQuestion(res, 'asbestos-at-work', {
-//       next: `/prototype_${version}/asbestos-at-work`,
-//       back: `/prototype_${version}/respiratory-conditions`,
-//       cancel: `/prototype_${version}/`
-//     }, errors)
-//   } else {
-//     res.redirect(`/prototype_${version}/asbestos-at-home`)
-//   }
-// }
-
-// exports.asbestosAtHome_get = (req, res) => {
-//   renderQuestion(res, 'asbestos-at-home', {
-//     next: `/prototype_${version}/asbestos-at-home`,
-//     back: `/prototype_${version}/asbestos-at-work`,
-//     cancel: `/prototype_${version}/`
-//   })
-// }
-
-// exports.asbestosAtHome_post = (req, res) => {
-//   const { answers } = req.session.data
-//   const errors = validateQuestion(answers, 'asbestos-at-home')
-
-//   if (errors.length) {
-//     renderQuestion(res, 'asbestos-at-home', {
-//       next: `/prototype_${version}/asbestos-at-home`,
-//       back: `/prototype_${version}/asbestos-at-work`,
-//       cancel: `/prototype_${version}/`
-//     }, errors)
-//   } else {
-//     res.redirect(`/prototype_${version}/cancer-diagnosis`)
-//   }
-// }
-
 // exports.cancerHistory_get = (req, res) => {
 //   renderQuestionPage(res, 'cancer-history', {
 //     next: `/prototype_${version}/cancer-history`,

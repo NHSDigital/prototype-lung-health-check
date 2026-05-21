@@ -145,69 +145,12 @@ pages:
     questions:
       - respiratory-conditions
   - id: asbestos
-    questions:
-      - asbestos-at-work
-      - asbestos-at-home
     heading:
       title: Exposure to asbestos
-  - id: asbestos-at-work
+      caption: Your health
     questions:
       - asbestos-at-work
-    heading:
-      title: Tell us if you might have been exposed to asbestos at work
-      caption: Your health
-    description: |
-      You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
-
-      You could be exposed to asbestos today if your job involves working in certain roles in old buildings.
-
-      Examples include:
-
-      - heating and ventilation engineers
-      - demolition workers
-      - plumbers
-      - construction workers
-      - electricians
-
-      ## If you did not work with asbestos but think you might have been exposed
-
-      You might know there was asbestos in buildings you have spent time in, or products you have used. But if the asbestos was not damaged, the risk to your health is very low.
-
-      If you lived with someone who worked with asbestos you may have been exposed to asbestos yourself. For example, if you washed the clothes they worked in. The question on the next page will ask if you lived with someone who might have been exposed to asbestos at work.
-    details:
-      summary: What is asbestos?
-      text: |
-        Asbestos was used in a number of building materials and products. For example:
-
-        - boilers and pipes
-        - car brakes
-        - cement for roofing sheets
-        - floor tiles
-        - insulating board to protect buildings and ships against fire
-
-        If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.
-  - id: asbestos-at-home
-    questions:
       - asbestos-at-home
-    heading:
-      title: Tell us if you ever lived with anyone who worked with asbestos
-      caption: Your health
-    description: |
-      If you lived with someone who worked with asbestos you may have been exposed to asbestos. For example, if you washed the clothes they worked in.
-
-      Someone might have worked with asbestos if they worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
-    details:
-      summary: What is asbestos?
-      text: |
-        Asbestos was used in a number of building materials and products. For example:
-
-        - boilers and pipes
-        - car brakes
-        - cement for roofing sheets
-        - floor tiles
-        - insulating board to protect buildings and ships against fire
-
-        If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.
   - id: cancer-history
     heading:
       title: History of cancer
@@ -245,6 +188,7 @@ pages:
   - id: smoking-duration
     heading:
       title: Smoking duration
+      caption: Your smoking habits
     questions:
       - age-started-smoking
       - id: age-stopped-smoking
