@@ -142,6 +142,8 @@ pages:
 
       If your qualification is not shown choose the closest level.
   - id: respiratory-conditions
+    heading:
+      caption: Your health
     questions:
       - respiratory-conditions
   - id: asbestos

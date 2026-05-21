@@ -38,7 +38,8 @@ const getQuestionHeading = (question) => {
   }
 
   return {
-    title: question.input.label
+    title: question.input.label,
+    caption: question.input.caption
   }
 }
 
@@ -143,7 +144,12 @@ const matchesCondition = (questionRef, answers = {}) => {
 const mergeQuestionWithPageContent = (question, pageContent = {}, options = {}) => {
   const isSingleQuestionPage = options.isSingleQuestionPage === true
   const hasPageHeading = Boolean(options.pageHeading?.title)
-  const heading = pageContent.heading || getQuestionHeading(question)
+  const heading = pageContent.heading
+    ? {
+        ...getQuestionHeading(question),
+        ...pageContent.heading
+      }
+    : getQuestionHeading(question)
   const input = {
     ...question.input
   }
@@ -200,10 +206,16 @@ const getQuestionPage = (id, answers = {}) => {
     })
   })
   const firstQuestion = questions[0]
+  const heading = page.heading
+    ? {
+        ...firstQuestion?.page?.heading,
+        ...page.heading
+      }
+    : firstQuestion?.page?.heading
 
   return {
     ...page,
-    heading: page.heading || firstQuestion?.page?.heading,
+    heading,
     description: page.description !== undefined
       ? page.description
       : visiblePageQuestions.length === 1 ? firstQuestion?.page?.description : undefined,

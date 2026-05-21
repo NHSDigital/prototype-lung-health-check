@@ -162,7 +162,16 @@ questions:
         value: no
 ```
 
-If a page has no `heading`, the renderer falls back to the first question label as the page heading and sets `isPageHeading: true`.
+If a page has no `heading.title`, the renderer falls back to the first question label as the page heading and sets `isPageHeading: true`. You can still set a caption without duplicating the title:
+
+```yaml
+pages:
+  - id: respiratory-conditions
+    heading:
+      caption: Your health
+    questions:
+      - respiratory-conditions
+```
 
 ## Descriptions and details
 
