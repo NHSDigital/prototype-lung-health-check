@@ -258,6 +258,19 @@ pages:
       There may have been periods when you stopped or quit smoking.
 
       If you stopped smoking for periods of 1 year or longer, tell us the total number of years you stopped smoking.
+  - id: smoking-duration
+    heading:
+      title: Smoking duration
+    questions:
+      - age-started-smoking
+      - id: age-stopped-smoking
+        if:
+          any:
+            - question: smoker
+              is: yes_previous
+            - question: smoking-status
+              is: no
+      - periods-stopped-smoking
   - id: smoking-type
     questions:
       - smoking-type

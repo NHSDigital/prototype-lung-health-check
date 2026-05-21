@@ -78,11 +78,17 @@ const hasValue = (actual, expected) => {
   return actual === expected
 }
 
-const matchesCondition = (questionRef, answers = {}) => {
-  const condition = getCondition(questionRef)
-
+const matchesConditionRule = (condition, answers = {}) => {
   if (!condition) {
     return true
+  }
+
+  if (Array.isArray(condition.any)) {
+    return condition.any.some((rule) => matchesConditionRule(rule, answers))
+  }
+
+  if (Array.isArray(condition.all)) {
+    return condition.all.every((rule) => matchesConditionRule(rule, answers))
   }
 
   const actual = getConditionAnswer(condition, answers)
@@ -108,6 +114,10 @@ const matchesCondition = (questionRef, answers = {}) => {
   }
 
   return true
+}
+
+const matchesCondition = (questionRef, answers = {}) => {
+  return matchesConditionRule(getCondition(questionRef), answers)
 }
 
 const mergeQuestionWithPageContent = (question, pageContent = {}, options = {}) => {

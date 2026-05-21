@@ -89,6 +89,23 @@ The `question` value is a question ID from `questions.yaml`. The renderer looks 
 
 Supported condition checks are `is`, `equals`, `includes`, `excludes` and `not`. Each check can use one value or a list of values. For checkbox answers, `is`, `equals` and `includes` all match when the submitted answer array contains any of the values. Use `excludes` when the question should be shown only if none of the values are selected.
 
+Use `any` when a question should show if one or more conditions match.
+
+```yaml
+questions:
+  - age-started-smoking
+  - id: age-stopped-smoking
+    if:
+      any:
+        - question: smoker
+          is: yes_previous
+        - question: smoking-status
+          is: no
+  - periods-stopped-smoking
+```
+
+Use `all` when every condition must match.
+
 To add another page:
 
 1. Add the page to `pages.yaml`.
