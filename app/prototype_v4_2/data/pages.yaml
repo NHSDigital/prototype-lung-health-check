@@ -283,6 +283,16 @@ pages:
   - id: smoking-status
     questions:
       - smoking-status
+  - id: tobacco-smoking
+    heading:
+      title: Tobacco smoking
+    questions:
+      - id: smoking-setting
+        if:
+          question: smoking-type
+          includes: shisha
+      - smoking-frequency
+      - smoking-quantity
   - id: smoking-frequency
     questions:
       - smoking-frequency

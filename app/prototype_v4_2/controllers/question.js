@@ -20,8 +20,8 @@ const {
 const { getHeightBack, getWeightBack, getWeightNext } = require('../lib/unit-navigation')
 const { validateQuestion, validateQuestions } = require('../lib/question-validator')
 
-const getQuestionPageIds = (id) => {
-  return getQuestionPage(id).questions.map((question) => question.id)
+const getQuestionPageIds = (id, answers = {}) => {
+  return getQuestionPage(id, answers).questions.map((question) => question.id)
 }
 
 /// ------------------------------------------------------------------------ ///
@@ -315,25 +315,26 @@ exports.weightImperial_post = (req, res) => {
 
 exports.aboutYou_get = (req, res) => {
   const back = getWeightBack(req)
+  const { answers } = req.session.data
 
   renderQuestionPage(res, 'about-you', {
     next: `/prototype_${version}/about-you`,
     back,
     cancel: `/prototype_${version}/`
-  })
+  }, [], answers)
 }
 
 exports.aboutYou_post = (req, res) => {
   const { answers } = req.session.data
   const back = getWeightBack(req)
-  const errors = validateQuestions(answers, getQuestionPageIds('about-you'))
+  const errors = validateQuestions(answers, getQuestionPageIds('about-you', answers))
 
   if (errors.length) {
     renderQuestionPage(res, 'about-you', {
       next: `/prototype_${version}/about-you`,
       back,
       cancel: `/prototype_${version}/`
-    }, errors)
+    }, errors, answers)
   } else {
     res.redirect(`/prototype_${version}/respiratory-conditions`)
   }
@@ -462,23 +463,25 @@ exports.respiratoryConditions_post = (req, res) => {
 }
 
 exports.asbestos_get = (req, res) => {
+  const { answers } = req.session.data
+
   renderQuestionPage(res, 'asbestos', {
     next: `/prototype_${version}/asbestos`,
     back: `/prototype_${version}/respiratory-conditions`,
     cancel: `/prototype_${version}/`
-  })
+  }, [], answers)
 }
 
 exports.asbestos_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = validateQuestions(answers, getQuestionPageIds('asbestos'))
+  const errors = validateQuestions(answers, getQuestionPageIds('asbestos', answers))
 
   if (errors.length) {
     renderQuestionPage(res, 'asbestos', {
       next: `/prototype_${version}/asbestos`,
       back: `/prototype_${version}/respiratory-conditions`,
       cancel: `/prototype_${version}/`
-    }, errors)
+    }, errors, answers)
   } else {
     res.redirect(`/prototype_${version}/cancer-diagnosis`)
   }
@@ -793,6 +796,46 @@ exports.smokingType_post = (req, res) => {
       res.redirect(`/prototype_${version}/smoking-type`)
     }
   }
+}
+
+exports.tobaccoSmoking_get = (req, res) => {
+  // renderQuestionPage(res, 'tobacco-smoking', {
+  //   next: `/prototype_${version}/tobacco-smoking`,
+  //   back: `/prototype_${version}/smoking-type`,
+  //   cancel: `/prototype_${version}/`
+  // })
+}
+
+exports.tobaccoSmoking_post = (req, res) => {
+  // const answers = req.session.data.answers || {}
+  // const errors = validateQuestion(answers, 'smoking-type')
+
+  // if (errors.length) {
+  //   renderQuestion(res, 'smoking-type', {
+  //     next: `/prototype_${version}/smoking-type`,
+  //     back: `/prototype_${version}/periods-stopped-smoking`,
+  //     cancel: `/prototype_${version}/`
+  //   }, errors, getSmokingTypeQuestionOverrides(answers))
+  // } else {
+  //   const selectedTypes = Array.isArray(answers.smokingType)
+  //     ? answers.smokingType
+  //     : [answers.smokingType].filter(Boolean)
+  //   deleteUnselectedSmokingTypeAnswers(answers)
+  //   if (answers.smoker === 'yes_previous') {
+  //     getSelectedSmokingTypes(answers).forEach((type) => {
+  //       delete answers[type]?.smokingStatus
+  //     })
+  //   }
+  //   const steps = getSmokingTypeSteps(answers)
+
+  //   if (selectedTypes.includes('none')) {
+  //     res.redirect(`/prototype_${version}/smoking-type-exit`)
+  //   } else if (steps.length) {
+  //     res.redirect(getSmokingTypeStepUrl(steps[0]))
+  //   } else {
+  //     res.redirect(`/prototype_${version}/smoking-type`)
+  //   }
+  // }
 }
 
 exports.smokingTypeExit_get = (req, res) => {

@@ -68,13 +68,33 @@ Grouped pages use the same question definitions, answer keys and validation rule
 
 When `pages.yaml` defines a page `heading`, the heading is rendered as the page H1 and question labels are rendered as normal labels or legends with `isPageHeading: false`. This applies to one-question and grouped pages.
 
+To conditionally show a question on a grouped page, use an object instead of a string in the `questions` list.
+
+```yaml
+pages:
+  - id: tobacco-smoking
+    heading:
+      title: Tobacco smoking
+    questions:
+      - id: smoking-setting
+        if:
+          question: smoking-type
+          includes: shisha
+      - smoking-frequency
+      - smoking-quantity
+```
+
+The `question` value is a question ID from `questions.yaml`. The renderer looks up that question's `answerKey` and compares it with the saved answer. You can also use `answerKey` directly.
+
+Supported condition checks are `is`, `equals`, `includes`, `not` and `notIncludes`. For checkbox answers, `is`, `equals` and `includes` all match when the submitted answer array contains the value.
+
 To add another page:
 
 1. Add the page to `pages.yaml`.
 2. Add GET and POST routes in `routes.js`.
 3. Use `renderQuestion(res, questionId, actions)` for one-question pages.
-4. Use `renderQuestionPage(res, pageId, actions)` for grouped pages.
-5. Validate grouped pages with `validateQuestions(answers, questionIds)`.
+4. Use `renderQuestionPage(res, pageId, actions, errors, answers)` for grouped pages.
+5. Validate grouped pages with `validateQuestions(answers, getQuestionPage(pageId, answers).questions.map((question) => question.id))`.
 
 ## Common fields
 

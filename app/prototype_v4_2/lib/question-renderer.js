@@ -68,9 +68,9 @@ const getErrorMap = (errors = []) => {
  * @param {Object} actions - URLs used by the grouped question template.
  * @param {Object[]} [errors] - Validation errors for all questions on the page.
  */
-const renderQuestionPage = (res, id, actions, errors = []) => {
+const renderQuestionPage = (res, id, actions, errors = [], answers = {}) => {
   res.render(view('questions/_question-page'), {
-    page: getQuestionPage(id),
+    page: getQuestionPage(id, answers),
     errorMap: getErrorMap(errors),
     errors,
     actions

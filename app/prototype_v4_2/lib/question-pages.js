@@ -42,6 +42,74 @@ const getQuestionHeading = (question) => {
   }
 }
 
+const normaliseQuestionRef = (item) => {
+  return typeof item === 'string' ? { id: item } : item
+}
+
+const getCondition = (questionRef) => {
+  return questionRef.if || questionRef.showIf || questionRef.condition
+}
+
+const getConditionAnswer = (condition = {}, answers = {}) => {
+  if (condition.answerKey) {
+    return answers[condition.answerKey]
+  }
+
+  if (condition.answer) {
+    return answers[condition.answer]
+  }
+
+  if (condition.question) {
+    return answers[getQuestion(condition.question).answerKey]
+  }
+
+  return undefined
+}
+
+const hasValue = (actual, expected) => {
+  if (Array.isArray(expected)) {
+    return expected.some((value) => hasValue(actual, value))
+  }
+
+  if (Array.isArray(actual)) {
+    return actual.includes(expected)
+  }
+
+  return actual === expected
+}
+
+const matchesCondition = (questionRef, answers = {}) => {
+  const condition = getCondition(questionRef)
+
+  if (!condition) {
+    return true
+  }
+
+  const actual = getConditionAnswer(condition, answers)
+
+  if (condition.is !== undefined) {
+    return hasValue(actual, condition.is)
+  }
+
+  if (condition.equals !== undefined) {
+    return hasValue(actual, condition.equals)
+  }
+
+  if (condition.includes !== undefined) {
+    return hasValue(actual, condition.includes)
+  }
+
+  if (condition.not !== undefined) {
+    return !hasValue(actual, condition.not)
+  }
+
+  if (condition.notIncludes !== undefined) {
+    return !hasValue(actual, condition.notIncludes)
+  }
+
+  return true
+}
+
 const mergeQuestionWithPageContent = (question, pageContent = {}, options = {}) => {
   const isSingleQuestionPage = options.isSingleQuestionPage === true
   const hasPageHeading = Boolean(options.pageHeading?.title)
@@ -74,7 +142,7 @@ const mergeQuestionWithPageContent = (question, pageContent = {}, options = {}) 
   }
 }
 
-const getQuestionPage = (id) => {
+const getQuestionPage = (id, answers = {}) => {
   refreshPages()
 
   const page = pages[id]
@@ -84,11 +152,13 @@ const getQuestionPage = (id) => {
   }
 
   const pageQuestions = page.questions || []
-  const questions = pageQuestions.map((item) => {
-    const questionRef = typeof item === 'string' ? { id: item } : item
+  const visiblePageQuestions = pageQuestions
+    .map(normaliseQuestionRef)
+    .filter((questionRef) => matchesCondition(questionRef, answers))
+  const questions = visiblePageQuestions.map((questionRef) => {
     const question = getQuestion(questionRef.id)
-    const isSingleQuestionPage = pageQuestions.length === 1
-    const pageContent = pageQuestions.length === 1
+    const isSingleQuestionPage = visiblePageQuestions.length === 1
+    const pageContent = visiblePageQuestions.length === 1
       ? {
           ...questionRef
         }
@@ -106,10 +176,10 @@ const getQuestionPage = (id) => {
     heading: page.heading || firstQuestion?.page?.heading,
     description: page.description !== undefined
       ? page.description
-      : pageQuestions.length === 1 ? firstQuestion?.page?.description : undefined,
+      : visiblePageQuestions.length === 1 ? firstQuestion?.page?.description : undefined,
     details: page.details !== undefined
       ? page.details
-      : pageQuestions.length === 1 ? firstQuestion?.page?.details : undefined,
+      : visiblePageQuestions.length === 1 ? firstQuestion?.page?.details : undefined,
     questions
   }
 }
