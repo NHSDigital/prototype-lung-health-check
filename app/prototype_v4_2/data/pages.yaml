@@ -307,6 +307,13 @@ pages:
             - shisha
       - smoking-frequency
       - smoking-quantity
+  - id: tobacco-smoking-change
+    heading:
+      title: Tobacco smoking change
+    questions:
+      - smoking-frequency-change
+      - smoking-quantity-change
+      - smoking-years-change
   - id: smoking-frequency
     questions:
       - smoking-frequency
