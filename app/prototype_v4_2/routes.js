@@ -138,16 +138,16 @@ router.post(`/prototype_${version}/asbestos`, questionController.asbestos_post)
 // router.get(`/prototype_${version}/asbestos-at-home`, questionController.asbestosAtHome_get)
 // router.post(`/prototype_${version}/asbestos-at-home`, questionController.asbestosAtHome_post)
 
-router.get(`/prototype_${version}/cancer-history`, questionController.cancerHistory_get)
-router.post(`/prototype_${version}/cancer-history`, questionController.cancerHistory_post)
+// router.get(`/prototype_${version}/cancer-history`, questionController.cancerHistory_get)
+// router.post(`/prototype_${version}/cancer-history`, questionController.cancerHistory_post)
 
-// router.get(`/prototype_${version}/cancer-diagnosis`, questionController.cancerDiagnosis_get)
-// router.post(`/prototype_${version}/cancer-diagnosis`, questionController.cancerDiagnosis_post)
+router.get(`/prototype_${version}/cancer-diagnosis`, questionController.cancerDiagnosis_get)
+router.post(`/prototype_${version}/cancer-diagnosis`, questionController.cancerDiagnosis_post)
 
 /// Family history --------------------------------------------------------- ///
 
-// router.get(`/prototype_${version}/cancer-diagnosis-relatives`, questionController.cancerDiagnosisRelatives_get)
-// router.post(`/prototype_${version}/cancer-diagnosis-relatives`, questionController.cancerDiagnosisRelatives_post)
+router.get(`/prototype_${version}/cancer-diagnosis-relatives`, questionController.cancerDiagnosisRelatives_get)
+router.post(`/prototype_${version}/cancer-diagnosis-relatives`, questionController.cancerDiagnosisRelatives_post)
 
 router.get(`/prototype_${version}/cancer-diagnosis-relatives-age`, questionController.cancerDiagnosisRelativesAge_get)
 router.post(`/prototype_${version}/cancer-diagnosis-relatives-age`, questionController.cancerDiagnosisRelativesAge_post)
