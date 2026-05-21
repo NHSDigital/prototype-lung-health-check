@@ -150,7 +150,6 @@ pages:
       - asbestos-at-home
     heading:
       title: Exposure to asbestos
-      caption: Your health
   - id: asbestos-at-work
     questions:
       - asbestos-at-work
@@ -209,6 +208,12 @@ pages:
         - insulating board to protect buildings and ships against fire
 
         If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.
+  - id: cancer-history
+    heading:
+      title: History of cancer
+    questions:
+      - cancer-diagnosis
+      - cancer-diagnosis-relatives
   - id: cancer-diagnosis
     questions:
       - cancer-diagnosis

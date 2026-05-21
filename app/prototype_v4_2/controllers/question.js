@@ -457,7 +457,7 @@ exports.respiratoryConditions_post = (req, res) => {
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
-    res.redirect(`/prototype_${version}/asbestos-at-work`)
+    res.redirect(`/prototype_${version}/asbestos`)
   }
 }
 
@@ -480,99 +480,72 @@ exports.asbestos_post = (req, res) => {
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
-    res.redirect(`/prototype_${version}/cancer-diagnosis`)
+    res.redirect(`/prototype_${version}/cancer-history`)
   }
 }
 
-exports.asbestosAtWork_get = (req, res) => {
-  renderQuestion(res, 'asbestos-at-work', {
-    next: `/prototype_${version}/asbestos-at-work`,
-    back: `/prototype_${version}/respiratory-conditions`,
-    cancel: `/prototype_${version}/`
-  })
-}
+// exports.asbestosAtWork_get = (req, res) => {
+//   renderQuestion(res, 'asbestos-at-work', {
+//     next: `/prototype_${version}/asbestos-at-work`,
+//     back: `/prototype_${version}/respiratory-conditions`,
+//     cancel: `/prototype_${version}/`
+//   })
+// }
 
-exports.asbestosAtWork_post = (req, res) => {
-  const { answers } = req.session.data
-  const errors = validateQuestion(answers, 'asbestos-at-work')
+// exports.asbestosAtWork_post = (req, res) => {
+//   const { answers } = req.session.data
+//   const errors = validateQuestion(answers, 'asbestos-at-work')
 
-  if (errors.length) {
-    renderQuestion(res, 'asbestos-at-work', {
-      next: `/prototype_${version}/asbestos-at-work`,
-      back: `/prototype_${version}/respiratory-conditions`,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    res.redirect(`/prototype_${version}/asbestos-at-home`)
-  }
-}
+//   if (errors.length) {
+//     renderQuestion(res, 'asbestos-at-work', {
+//       next: `/prototype_${version}/asbestos-at-work`,
+//       back: `/prototype_${version}/respiratory-conditions`,
+//       cancel: `/prototype_${version}/`
+//     }, errors)
+//   } else {
+//     res.redirect(`/prototype_${version}/asbestos-at-home`)
+//   }
+// }
 
-exports.asbestosAtHome_get = (req, res) => {
-  renderQuestion(res, 'asbestos-at-home', {
-    next: `/prototype_${version}/asbestos-at-home`,
-    back: `/prototype_${version}/asbestos-at-work`,
-    cancel: `/prototype_${version}/`
-  })
-}
+// exports.asbestosAtHome_get = (req, res) => {
+//   renderQuestion(res, 'asbestos-at-home', {
+//     next: `/prototype_${version}/asbestos-at-home`,
+//     back: `/prototype_${version}/asbestos-at-work`,
+//     cancel: `/prototype_${version}/`
+//   })
+// }
 
-exports.asbestosAtHome_post = (req, res) => {
-  const { answers } = req.session.data
-  const errors = validateQuestion(answers, 'asbestos-at-home')
+// exports.asbestosAtHome_post = (req, res) => {
+//   const { answers } = req.session.data
+//   const errors = validateQuestion(answers, 'asbestos-at-home')
 
-  if (errors.length) {
-    renderQuestion(res, 'asbestos-at-home', {
-      next: `/prototype_${version}/asbestos-at-home`,
-      back: `/prototype_${version}/asbestos-at-work`,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    res.redirect(`/prototype_${version}/cancer-diagnosis`)
-  }
-}
+//   if (errors.length) {
+//     renderQuestion(res, 'asbestos-at-home', {
+//       next: `/prototype_${version}/asbestos-at-home`,
+//       back: `/prototype_${version}/asbestos-at-work`,
+//       cancel: `/prototype_${version}/`
+//     }, errors)
+//   } else {
+//     res.redirect(`/prototype_${version}/cancer-diagnosis`)
+//   }
+// }
 
-exports.cancerDiagnosis_get = (req, res) => {
-  renderQuestion(res, 'cancer-diagnosis', {
-    next: `/prototype_${version}/cancer-diagnosis`,
+exports.cancerHistory_get = (req, res) => {
+  renderQuestionPage(res, 'cancer-history', {
+    next: `/prototype_${version}/cancer-history`,
     back: `/prototype_${version}/asbestos`,
     cancel: `/prototype_${version}/`
   })
 }
 
-exports.cancerDiagnosis_post = (req, res) => {
+exports.cancerHistory_post = (req, res) => {
   const { answers } = req.session.data
-  const errors = validateQuestion(answers, 'cancer-diagnosis')
+  const errors = validateQuestions(answers, getQuestionPageIds('cancer-history'))
 
   if (errors.length) {
-    renderQuestion(res, 'cancer-diagnosis', {
-      next: `/prototype_${version}/cancer-diagnosis`,
+    renderQuestionPage(res, 'cancer-history', {
+      next: `/prototype_${version}/cancer-history`,
       back: `/prototype_${version}/asbestos`,
-      cancel: `/prototype_${version}/`
-    }, errors)
-  } else {
-    res.redirect(`/prototype_${version}/cancer-diagnosis-relatives`)
-  }
-}
-
-/// ------------------------------------------------------------------------ ///
-/// Family history
-/// ------------------------------------------------------------------------ ///
-
-exports.cancerDiagnosisRelatives_get = (req, res) => {
-  renderQuestion(res, 'cancer-diagnosis-relatives', {
-    next: `/prototype_${version}/cancer-diagnosis-relatives`,
-    back: `/prototype_${version}/cancer-diagnosis`,
-    cancel: `/prototype_${version}/`
-  })
-}
-
-exports.cancerDiagnosisRelatives_post = (req, res) => {
-  const { answers } = req.session.data
-  const errors = validateQuestion(answers, 'cancer-diagnosis-relatives')
-
-  if (errors.length) {
-    renderQuestion(res, 'cancer-diagnosis-relatives', {
-      next: `/prototype_${version}/cancer-diagnosis-relatives`,
-      back: `/prototype_${version}/cancer-diagnosis`,
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
@@ -585,10 +558,65 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
   }
 }
 
+// exports.cancerDiagnosis_get = (req, res) => {
+//   renderQuestion(res, 'cancer-diagnosis', {
+//     next: `/prototype_${version}/cancer-diagnosis`,
+//     back: `/prototype_${version}/asbestos`,
+//     cancel: `/prototype_${version}/`
+//   })
+// }
+
+// exports.cancerDiagnosis_post = (req, res) => {
+//   const { answers } = req.session.data
+//   const errors = validateQuestion(answers, 'cancer-diagnosis')
+
+//   if (errors.length) {
+//     renderQuestion(res, 'cancer-diagnosis', {
+//       next: `/prototype_${version}/cancer-diagnosis`,
+//       back: `/prototype_${version}/asbestos`,
+//       cancel: `/prototype_${version}/`
+//     }, errors)
+//   } else {
+//     res.redirect(`/prototype_${version}/cancer-diagnosis-relatives`)
+//   }
+// }
+
+/// ------------------------------------------------------------------------ ///
+/// Family history
+/// ------------------------------------------------------------------------ ///
+
+// exports.cancerDiagnosisRelatives_get = (req, res) => {
+//   renderQuestion(res, 'cancer-diagnosis-relatives', {
+//     next: `/prototype_${version}/cancer-diagnosis-relatives`,
+//     back: `/prototype_${version}/cancer-diagnosis`,
+//     cancel: `/prototype_${version}/`
+//   })
+// }
+
+// exports.cancerDiagnosisRelatives_post = (req, res) => {
+//   const { answers } = req.session.data
+//   const errors = validateQuestion(answers, 'cancer-diagnosis-relatives')
+
+//   if (errors.length) {
+//     renderQuestion(res, 'cancer-diagnosis-relatives', {
+//       next: `/prototype_${version}/cancer-diagnosis-relatives`,
+//       back: `/prototype_${version}/cancer-diagnosis`,
+//       cancel: `/prototype_${version}/`
+//     }, errors)
+//   } else {
+//     if (answers.cancerDiagnosisRelatives === 'yes') {
+//       res.redirect(`/prototype_${version}/cancer-diagnosis-relatives-age`)
+//     } else {
+//       delete answers.cancerDiagnosisRelativesAge
+//       res.redirect(`/prototype_${version}/age-started-smoking`)
+//     }
+//   }
+// }
+
 exports.cancerDiagnosisRelativesAge_get = (req, res) => {
   renderQuestion(res, 'cancer-diagnosis-relatives-age', {
     next: `/prototype_${version}/cancer-diagnosis-relatives-age`,
-    back: `/prototype_${version}/cancer-diagnosis-relatives`,
+    back: `/prototype_${version}/cancer-history`,
     cancel: `/prototype_${version}/`
   })
 }
@@ -600,7 +628,7 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
   if (errors.length) {
     renderQuestion(res, 'cancer-diagnosis-relatives-age', {
       next: `/prototype_${version}/cancer-diagnosis-relatives-age`,
-      back: `/prototype_${version}/cancer-diagnosis-relatives`,
+      back: `/prototype_${version}/cancer-history`,
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
