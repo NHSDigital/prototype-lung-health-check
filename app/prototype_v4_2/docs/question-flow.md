@@ -1,4 +1,4 @@
-# Prototype v4.1 question flow
+# Prototype v4.2 question flow
 
 This diagram is based on `app/prototype_v4_2/routes.js`, `app/prototype_v4_2/controllers/authentication.js`, and `app/prototype_v4_2/controllers/question.js`.
 
@@ -39,14 +39,10 @@ flowchart TD
   cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
 
   relatives -- Yes --> relativesAge["Relative diagnosed before 60?"]
-  relatives -- No --> ageStarted["Age started smoking"]
-  relativesAge --> ageStarted
+  relatives -- No --> smokingDuration["Smoking duration<br>Age started, age stopped if applicable,<br>periods stopped"]
+  relativesAge --> smokingDuration
 
-  ageStarted --> previousSmoker{"Used to smoke?"}
-  previousSmoker -- Yes --> ageStopped["Age stopped smoking"]
-  previousSmoker -- No, currently smokes --> stoppedSmoking["Periods stopped smoking"]
-  ageStopped --> stoppedSmoking
-  stoppedSmoking --> smokingType{"Smoking type"}
+  smokingDuration --> smokingType{"Smoking type"}
 
   smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
   smokingType -- One or more tobacco types --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
@@ -70,39 +66,24 @@ The tobacco questions repeat for each selected tobacco type, in this order:
 
 ```mermaid
 flowchart TD
-  selectedType["Next selected tobacco type"] --> isShisha{"Is the selected type<br>shisha?"}
+  selectedType["Next selected tobacco type"] --> formerSmoker{"Former smoker?"}
 
-  isShisha -- Yes --> shishaPast{"Used to smoke?"}
-  shishaPast -- No, currently smokes --> shishaStatus["Smoking status"]
-  shishaPast -- Yes --> setting["Smoking setting"]
-  shishaStatus --> setting
-  setting --> selectedSetting["Next selected shisha setting"]
-  selectedSetting --> shishaFrequency["Smoking frequency"]
-  shishaFrequency --> shishaQuantity["Smoking quantity"]
-  shishaQuantity --> moreSettings{"More selected<br>shisha settings?"}
-  moreSettings -- Yes --> selectedSetting
-  moreSettings -- No --> nextTypeOrCya
+  formerSmoker -- No, currently smokes --> status["Smoking status"]
+  formerSmoker -- Yes --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
+  status --> tobaccoSmoking
 
-  isShisha -- No --> past{"Used to smoke?"}
-  past -- No, currently smokes --> status["Smoking status"]
-  past -- Yes --> frequency["Smoking frequency"]
-  status --> frequency["Smoking frequency"]
-  frequency --> quantity["Smoking quantity"]
-  quantity --> changed{"Smoking changed<br>over time?"}
+  tobaccoSmoking --> isShisha{"Is the selected type<br>shisha?"}
+  isShisha -- Yes --> nextTypeOrCya
+  isShisha -- No --> changed{"Smoking changed<br>over time?"}
 
   changed -- No change selected --> nextTypeOrCya
-  changed -- Increased selected --> increasedFrequency["Increased: frequency before change"]
-  increasedFrequency --> increasedQuantity["Increased: quantity before change"]
-  increasedQuantity --> increasedYears["Increased: years before change"]
-  increasedYears --> decreasedSelected{"Decreased also selected?"}
+  changed -- More selected --> moreChange["Tobacco smoking change<br>More: frequency, quantity and years"]
+  moreChange --> fewerSelected{"Fewer also selected?"}
 
-  changed -- Decreased selected --> decreasedFrequency["Decreased: frequency before change"]
-  decreasedSelected -- Yes --> decreasedFrequency
-  decreasedSelected -- No --> nextTypeOrCya
-
-  decreasedFrequency --> decreasedQuantity["Decreased: quantity before change"]
-  decreasedQuantity --> decreasedYears["Decreased: years before change"]
-  decreasedYears --> nextTypeOrCya
+  changed -- Only fewer selected --> fewerChange["Tobacco smoking change<br>Fewer: frequency, quantity and years"]
+  fewerSelected -- Yes --> fewerChange
+  fewerSelected -- No --> nextTypeOrCya
+  fewerChange --> nextTypeOrCya
 
   nextTypeOrCya["Next selected tobacco type<br>or Check your answers"]
 ```
@@ -110,9 +91,12 @@ flowchart TD
 ## Notes
 
 - Height and weight unit pages can be switched manually using the unit-switch links.
-- `Age stopped smoking` is only asked when the `smoker` answer is `yes_previous`.
-- The tobacco subflow uses query strings such as `/prototype_v4_2/smoking-status?type=cigarettes`.
+- `Smoking duration` combines age started smoking, age stopped smoking and periods stopped smoking.
+- `Age stopped smoking` is shown on `Smoking duration` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
+- `Tobacco smoking` combines smoking frequency and smoking quantity.
+- `Tobacco smoking change` combines changed-smoking frequency, quantity and years.
+- The tobacco subflow uses query strings such as `/prototype_v4_2/smoking-status?type=cigarettes` and `/prototype_v4_2/tobacco-smoking-change?type=cigarettes&change=greater`.
 - If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
 - Shisha follows the same tobacco-smoking flow as other tobacco types, but skips the smoking-change flow.
-- If both `increased` and `decreased` are selected for a tobacco type, the flow asks the three "increased" change questions first, then the three "decreased" change questions.
+- If both `more` and `fewer` are selected for a tobacco type, the flow asks the `more` tobacco-smoking-change page first, then the `fewer` tobacco-smoking-change page.
 - `Check your answers` links back to the last tobacco step that applies to the current set of answers.
