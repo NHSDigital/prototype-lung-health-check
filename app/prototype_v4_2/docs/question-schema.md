@@ -79,14 +79,15 @@ pages:
       - id: smoking-setting
         if:
           question: smoking-type
-          includes: shisha
+          includes:
+            - shisha
       - smoking-frequency
       - smoking-quantity
 ```
 
 The `question` value is a question ID from `questions.yaml`. The renderer looks up that question's `answerKey` and compares it with the saved answer. You can also use `answerKey` directly.
 
-Supported condition checks are `is`, `equals`, `includes`, `not` and `notIncludes`. For checkbox answers, `is`, `equals` and `includes` all match when the submitted answer array contains the value.
+Supported condition checks are `is`, `equals`, `includes`, `excludes` and `not`. Each check can use one value or a list of values. For checkbox answers, `is`, `equals` and `includes` all match when the submitted answer array contains any of the values. Use `excludes` when the question should be shown only if none of the values are selected.
 
 To add another page:
 

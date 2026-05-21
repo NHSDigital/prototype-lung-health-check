@@ -103,8 +103,8 @@ const matchesCondition = (questionRef, answers = {}) => {
     return !hasValue(actual, condition.not)
   }
 
-  if (condition.notIncludes !== undefined) {
-    return !hasValue(actual, condition.notIncludes)
+  if (condition.excludes !== undefined) {
+    return !hasValue(actual, condition.excludes)
   }
 
   return true

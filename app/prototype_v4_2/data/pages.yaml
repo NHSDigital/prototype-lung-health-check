@@ -290,7 +290,8 @@ pages:
       - id: smoking-setting
         if:
           question: smoking-type
-          includes: shisha
+          includes:
+            - shisha
       - smoking-frequency
       - smoking-quantity
   - id: smoking-frequency
