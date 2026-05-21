@@ -34,7 +34,7 @@ flowchart TD
   weightImperial --> aboutYou
 
   aboutYou --> respiratory["Respiratory conditions"]
-  respiratory --> asbestos["Asbestos"]
+  respiratory --> asbestos["Asbestos<br>At work, at home"]
   asbestos --> cancerDiagnosis["Cancer diagnosis"]
   cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
 
