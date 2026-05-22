@@ -44,7 +44,7 @@
 }) }}
 
 <!-- Phase banner (inside header block) -->
-{% if not hidePhaseBanner %}
+{% if not (hidePhaseBanner or contentData.hidePhaseBanner) %}
   <div class="nhsuk-phase-banner">
     <div class="nhsuk-width-container">
       <div class="nhsuk-phase-banner__content">
@@ -86,27 +86,25 @@
       {
         href: prototype.path + "/terms-of-use",
         text: "Terms of use"
+      },
+      {
+        href: prototype.path + "/page-index",
+        text: "Page index"
       }
     ]
   }
-}) if not hideFooterLinks }}
+}) if not (hideFooterLinks or contentData.hideFooterLinks) }}
 
-<div class="nhsuk-footer__testing-links">
+{# <div class="nhsuk-footer__testing-links">
   <div class="nhsuk-width-container">
     <h3 class="nhsuk-heading-m nhsuk-u-margin-top-5">For testing</h3>
     <ul class="nhsuk-footer__list nhsuk-u-margin-bottom-5 nhsuk-u-padding-bottom-5">
       <li class="nhsuk-footer__list-item">
         <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="{{ prototype.path }}/page-index">Page index</a>
       </li>
-      {# <li class="nhsuk-footer__list-item">
-        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="{{ prototype.path }}/skip-to-tobacco">Skip to tobacco - current smoker (testing)</a>
-      </li>
-      <li class="nhsuk-footer__list-item">
-        <a class="nhsuk-footer__list-item-link nhsuk-u-font-weight-bold" href="{{ prototype.path }}/skip-to-tobacco-former">Skip to tobacco - former smoker (testing)</a>
-      </li> #}
     </ul>
   </div>
-</div>
+</div> #}
 {% endblock %}
 
 {% block bodyEnd %}
