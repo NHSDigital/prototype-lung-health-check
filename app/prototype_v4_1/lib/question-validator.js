@@ -56,6 +56,21 @@ const getAnswerValue = (answers = {}, question) => {
 }
 
 /**
+ * Resolve a conditional reveal value from a runtime override or answer key.
+ *
+ * @param {Object} answers - Session answers object.
+ * @param {Object} rule - Conditional validation rule.
+ * @returns {*} Submitted conditional value.
+ */
+const getConditionalValue = (answers = {}, rule = {}) => {
+  if (rule.value !== undefined) {
+    return rule.value
+  }
+
+  return answers[rule.answerKey]
+}
+
+/**
  * Resolve a date input value from the answers object.
  *
  * @param {Object} answers - Session answers object.
@@ -128,7 +143,7 @@ const validateConditional = (answers, question, errors) => {
       return
     }
 
-    const conditionalValue = answers[rule.answerKey]
+    const conditionalValue = getConditionalValue(answers, rule)
 
     if (isBlank(conditionalValue)) {
       const error = question.errors?.conditional?.[triggerValue]?.required || {

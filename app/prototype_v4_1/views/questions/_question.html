@@ -68,7 +68,7 @@
                 suffix: item.conditionalInput.suffix,
                 prefix: item.conditionalInput.prefix,
                 inputmode: item.conditionalInput.inputmode,
-                value: data.answers[item.conditionalInput.answerKey],
+                value: item.conditionalInput.value if item.conditionalInput.value is defined else data.answers[item.conditionalInput.answerKey],
                 classes: item.conditionalInput.classes,
                 errorMessage: {
                   text: errorMap[item.conditionalInput.id].text
