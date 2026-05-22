@@ -12,10 +12,14 @@ flowchart TD
 
   terms --> phoneQuestionnaire{"Completed the questionnaire<br>by phone?"}
   phoneQuestionnaire -- Yes --> phoneExit["Phone questionnaire exit<br>End"]
-  phoneQuestionnaire -- No --> smoker{"Are you a current or<br>former smoker?"}
+  phoneQuestionnaire -- No --> smokingType{"Smoking type"}
 
-  smoker -- No or fewer than 100 cigarettes in lifetime --> notEligibleScreening["Not eligible for screening<br>End"]
-  smoker -- Yes --> dob{"Date of birth<br>Age 55 to 74?"}
+  smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
+  smokingType -- One tobacco type --> smokingStatus{"Currently smoke<br>this tobacco type?"}
+  smokingType -- More than one tobacco type --> smokingStatusCurrent{"Currently smoke any<br>selected tobacco types?"}
+
+  smokingStatus --> dob{"Date of birth<br>Age 55 to 74?"}
+  smokingStatusCurrent --> dob
 
   dob -- No --> notEligibleScan["Not eligible for scan<br>End"]
   dob -- Yes --> faceToFace{"Need a face to face<br>appointment?"}
@@ -30,22 +34,8 @@ flowchart TD
 
   weight{"Weight"} -- Metric --> weightMetric["Weight - metric"]
   weight -- Imperial --> weightImperial["Weight - imperial"]
-  weightMetric --> aboutYou["About you<br>Gender, sex, ethnicity and education"]
-  weightImperial --> aboutYou
-
-  aboutYou --> respiratory["Respiratory conditions"]
-  respiratory --> asbestos["Asbestos<br>At work, at home"]
-  asbestos --> cancerDiagnosis["Cancer diagnosis"]
-  cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
-
-  relatives -- Yes --> relativesAge["Relative diagnosed before 60?"]
-  relatives -- No --> smokingDuration["Smoking duration<br>Age started, age stopped if applicable,<br>periods stopped"]
-  relativesAge --> smokingDuration
-
-  smokingDuration --> smokingType{"Smoking type"}
-
-  smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
-  smokingType -- One or more tobacco types --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
+  weightMetric --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
+  weightImperial --> tobaccoLoop
 
   tobaccoLoop --> cya["Check your answers"]
   cya --> confirmation["Confirmation<br>End"]
@@ -66,11 +56,8 @@ The tobacco questions repeat for each selected tobacco type, in this order:
 
 ```mermaid
 flowchart TD
-  selectedType["Next selected tobacco type"] --> formerSmoker{"Former smoker?"}
-
-  formerSmoker -- No, currently smokes --> status["Smoking status"]
-  formerSmoker -- Yes --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
-  status --> tobaccoSmoking
+  selectedType["Next selected tobacco type"] --> duration["Smoking duration<br>Age started, age stopped if past,<br>periods stopped"]
+  duration --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
 
   tobaccoSmoking --> isShisha{"Is the selected type<br>shisha?"}
   isShisha -- Yes --> nextTypeOrCya
@@ -91,12 +78,18 @@ flowchart TD
 ## Notes
 
 - Height and weight unit pages can be switched manually using the unit-switch links.
-- `Smoking duration` combines age started smoking, age stopped smoking and periods stopped smoking.
-- `Age stopped smoking` is shown on `Smoking duration` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
+- `Smoking type` is shown immediately after `Phone questionnaire`.
+- `Smoking status` is shown when one tobacco type is selected.
+- `Smoking status current` is shown when more than one tobacco type is selected. It asks which selected types the user currently smokes.
+- `Date of birth`, `Face to face appointment`, `Height` and `Weight` are shown after `Smoking status` or `Smoking status current`.
+- `Smoking duration` is part of the tobacco subflow and repeats for each selected tobacco type. It combines age started smoking, age stopped smoking and periods stopped smoking.
+- `Age stopped smoking` is shown on `Smoking duration` when the selected tobacco type is past tense.
 - `Tobacco smoking` combines smoking frequency and smoking quantity.
 - `Tobacco smoking change` combines changed-smoking frequency, quantity and years.
-- The tobacco subflow uses query strings such as `/prototype_v4_3/smoking-status?type=cigarettes` and `/prototype_v4_3/tobacco-smoking-change?type=cigarettes&change=greater`.
-- If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
+- The tobacco subflow uses query strings such as `/prototype_v4_3/smoking-duration?type=cigarettes` and `/prototype_v4_3/tobacco-smoking-change?type=cigarettes&change=greater`.
+- Single-type flows use present tense when `Smoking status` is `yes` and past tense when it is `no`.
+- Multi-type flows use present tense for tobacco types selected on `Smoking status current`, and past tense for selected tobacco types not selected on `Smoking status current`.
 - Shisha follows the same tobacco-smoking flow as other tobacco types, but skips the smoking-change flow.
 - If both `more` and `fewer` are selected for a tobacco type, the flow asks the `more` tobacco-smoking-change page first, then the `fewer` tobacco-smoking-change page.
 - `Check your answers` links back to the last tobacco step that applies to the current set of answers.
+- `About you`, `Your health` and `Family history` pages still exist in the prototype, but they are not part of this flow.

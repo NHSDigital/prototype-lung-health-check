@@ -24,11 +24,11 @@ const defaultAnswers = {
   cancerDiagnosis: 'no',
   cancerDiagnosisRelatives: 'yes',
   cancerDiagnosisRelativesAge: 'no',
-  ageStartedSmoking: '18',
-  periodsStoppedSmoking: 'no',
   smokingType: ['cigarettes'],
   cigarettes: {
     smokingStatus: 'yes',
+    ageStartedSmoking: '18',
+    periodsStoppedSmoking: 'no',
     smokingFrequency: 'daily',
     smokingQuantity: '10',
     smokingChange: ['greater'],
@@ -47,8 +47,11 @@ const getDefaultAnswerProfile = (profile) => {
 
   if (profile === 'former') {
     answers.smoker = 'yes_previous'
-    answers.ageStoppedSmoking = '55'
     answers.cigarettes = {
+      smokingStatus: 'no',
+      ageStartedSmoking: '18',
+      ageStoppedSmoking: '55',
+      periodsStoppedSmoking: 'no',
       smokingFrequency: 'daily',
       smokingQuantity: '10',
       smokingChange: ['greater'],
@@ -65,7 +68,33 @@ const getDefaultAnswerProfile = (profile) => {
     delete answers.cigarettes
     answers.shisha = {
       smokingStatus: 'yes',
+      ageStartedSmoking: '18',
+      periodsStoppedSmoking: 'no',
       smokingFrequency: 'weekly',
+      smokingQuantity: '30_minutes_to_1_hour'
+    }
+  }
+
+  if (profile === 'multi') {
+    answers.smokingType = ['cigarettes', 'shisha']
+    answers.smokingStatusCurrent = ['cigarettes']
+    answers.cigarettes = {
+      ageStartedSmoking: '18',
+      periodsStoppedSmoking: 'no',
+      smokingFrequency: 'daily',
+      smokingQuantity: '10',
+      smokingChange: ['greater'],
+      smokingChangeIncrease: {
+        frequency: 'weekly',
+        quantity: '5',
+        years: '10'
+      }
+    }
+    answers.shisha = {
+      ageStartedSmoking: '25',
+      ageStoppedSmoking: '50',
+      periodsStoppedSmoking: 'no',
+      smokingFrequency: 'monthly',
       smokingQuantity: '30_minutes_to_1_hour'
     }
   }

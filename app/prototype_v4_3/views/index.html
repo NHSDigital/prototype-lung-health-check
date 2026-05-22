@@ -25,7 +25,7 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
       <h1 class="nhsuk-heading-l">{{ title }}</h1>
-      <p class="nhsuk-body">Quick navigation to all pages in prototype v4.1.</p>
+      <p class="nhsuk-body">Quick navigation to all pages in prototype v4.3.</p>
       <p class="nhsuk-body">Some links set default answers before opening the page, so conditional pages and check your answers have enough data to render.</p>
 
       <h2 class="nhsuk-heading-m">Start and sign in</h2>
@@ -42,9 +42,13 @@
 
       <h2 class="nhsuk-heading-m">Eligibility</h2>
       <ul class="nhsuk-list nhsuk-list--spaced">
-        {{ pageLink("/smoker", "Tobacco smoking") }}
+        {{ pageLink("/smoking-type", "Types of tobacco smoked") }}
+        {{ seededPageLink("/smoking-status?type=cigarettes", "Cigarettes - currently smoke") }}
+        {{ seededProfilePageLink("/smoking-status-current", "multi", "Currently smoke any selected tobacco types") }}
         {{ pageLink("/date-of-birth", "What is your date of birth?") }}
         {{ pageLink("/face-to-face-appointment", "Check if you need a face-to-face appointment") }}
+        {{ pageLink("/smoker", "Tobacco smoking - old eligibility question") }}
+        {{ pageLink("/smoking-type-exit", "You are not eligible for lung cancer screening") }}
         {{ pageLink("/not-eligible-for-screening", "You are not eligible for lung cancer screening") }}
         {{ pageLink("/not-eligible-for-scan", "You are not eligible for an NHS lung scan") }}
         {{ pageLink("/book-appointment", "Call us to book an appointment") }}
@@ -78,15 +82,14 @@
 
       <h2 class="nhsuk-heading-m">Your smoking habits</h2>
       <ul class="nhsuk-list nhsuk-list--spaced">
-        {{ pageLink("/smoking-duration", "Smoking duration") }}
-        {{ pageLink("/smoking-type", "The type of tobacco you smoke or used to smoke") }}
-        {{ pageLink("/smoking-type-exit", "You are not eligible for lung cancer screening") }}
+        {{ seededPageLink("/smoking-duration?type=cigarettes", "Cigarettes - smoking duration") }}
+        {{ seededProfilePageLink("/smoking-duration?type=cigarettes", "former", "Cigarettes - smoking duration, past tense") }}
+        {{ seededProfilePageLink("/smoking-duration?type=shisha", "multi", "Shisha - smoking duration, past tense") }}
       </ul>
 
       <h3 class="nhsuk-heading-s">Tobacco smoking</h3>
       <ul class="nhsuk-list nhsuk-list--spaced">
-        {{ seededPageLink("/tobacco-smoking", "Tobacco smoking") }}
-        {{ seededPageLink("/smoking-status?type=cigarettes", "Cigarettes - currently smoke") }}
+        {{ seededPageLink("/tobacco-smoking?type=cigarettes", "Cigarettes - tobacco smoking") }}
         {{ seededPageLink("/smoking-change?type=cigarettes", "Cigarettes - has quantity changed") }}
         {{ seededPageLink("/tobacco-smoking-change?type=cigarettes%26change=greater", "Cigarettes - more smoking change") }}
         {{ seededProfilePageLink("/tobacco-smoking?type=shisha", "shisha", "Shisha smoking") }}
