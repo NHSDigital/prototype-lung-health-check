@@ -1,0 +1,45 @@
+{% set expanderHtml %}
+<p class="nhsuk-body">
+  Nearly two-thirds of people who use vapes with Stop Smoking Services quit smoking.
+</p>
+
+<p class="nhsuk-body">
+  Nicotine vapes are less harmful than cigarettes. They don't produce tar or carbon monoxide, which cause cancer, lung disease, and heart disease.
+</p>
+
+<p class="nhsuk-body">
+  Vaping mimics smoking with hand-to-mouth movement and helps manage nicotine cravings.
+</p>
+
+<p class="nhsuk-body">
+  Vaping also costs about a third as much as smoking, once you have the kit.
+</p>
+
+<p class="nhsuk-body">
+  Vaping is not risk-free. It is not recommended for non smokers or those under 18 years old.
+</p>
+
+<h3 class="nhsuk-heading-s">Useful resources</h3>
+
+<p class="nhsuk-body">The following links open in a new tab.</p>
+
+<p class="nhsuk-body">
+  Visit a vape shop or <a href="https://www.nhs.uk/better-health/quit-smoking/find-your-local-stop-smoking-service/" target="_blank" rel="noreferrer nofollow" class="nhsuk-link">local Stop Smoking Service (opens in new tab)</a> for advice
+</p>
+
+<p class="nhsuk-body">
+  Read <a href="https://www.nhs.uk/better-health/quit-smoking/vaping-to-quit-smoking/" target="_blank" class="nhsuk-link">NHS guidance on vaping to quit smoking</a>
+</p>
+
+<h3 class="nhsuk-heading-s">Want to quit vaping?</h3>
+
+<p class="nhsuk-body">
+  To quit vaping, gradually reduce nicotine strength or usage. Seek advice from a vape shop or local Stop Smoking Service.
+</p>
+{% endset %}
+
+{{ details({
+  summaryText: "Vaping to quit smoking",
+  html: expanderHtml,
+  classes: "nhsuk-expander"
+}) }}

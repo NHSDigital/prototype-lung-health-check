@@ -1,0 +1,96 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = "Log in to your NHS account" %}
+
+{% block content %}
+  {% include prototype.viewPath + "/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ input({
+          id: "email",
+          name: "authentication[email]",
+          label: {
+            text: "Email address",
+            isPageHeading: false,
+            classes: "nhsuk-label--s"
+          },
+          type: "email",
+          autocomplete: "email",
+          spellcheck: false,
+          value: data.authentication.email,
+          classes: "nhsuk-input--width-20"
+        }) }}
+
+        {{ input({
+          id: "password",
+          name: "authentication[password]",
+          label: {
+            text: "Password",
+            isPageHeading: false,
+            classes: "nhsuk-label--s"
+          },
+          type: "password",
+          autocomplete: "current-password",
+          value: data.authentication.password,
+          classes: "nhsuk-input--width-20"
+        }) }}
+
+        <p class="nhsuk-body">
+          <a class="nhsuk-link" href="#">
+            Forgotten your password?
+          </a>
+        </p>
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+        <p class="nhsuk-body">
+          <a class="nhsuk-link" href="#">
+            Log in with a passkey
+          </a>
+        </p>
+
+      </form>
+
+      <p class="nhsuk-body-l">
+        <strong>or</strong>
+      </p>
+
+      {{ button({
+        text: "Create NHS account",
+        href: "#",
+        classes: "nhsuk-button--secondary"
+      }) }}
+
+      <p class="nhsuk-body">
+        An NHS account allows you to access a range of online health services with one set of login details.
+      </p>
+
+      <p class="nhsuk-body">
+        <a href="#" class="nhsuk-link">Learn more about NHS account</a>.
+      </p>
+
+      {% set cardDescriptionHtml %}
+        <ul class="nhsuk-list">
+          <li><a href="#" class="nhsuk-link">I've lost access to my email address</a></li>
+          <li><a href="#" class="nhsuk-link">I'm not sure if I have an account</a></li>
+          <li><a href="#" class="nhsuk-link">Visit our Help centre</a></li>
+        </ul>
+      {% endset %}
+
+      {{ card({
+        heading: "Trouble with logging in?",
+        headingSize: "m",
+        descriptionHtml: cardDescriptionHtml
+      }) }}
+
+    </div>
+  </div>
+{% endblock %}
