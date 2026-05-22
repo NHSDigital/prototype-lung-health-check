@@ -9,6 +9,7 @@ router.use(require('./prototype_v3/routes'))
 router.use(require('./prototype_v4/routes'))
 router.use(require('./prototype_v4_1/routes'))
 router.use(require('./prototype_v4_2/routes'))
+router.use(require('./prototype_v4_3/routes'))
 
 // Add your routes here - above the module.exports line
 
