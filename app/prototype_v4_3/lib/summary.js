@@ -226,6 +226,10 @@ const getCheckYourAnswers = (answers = {}) => {
   const valueLabels = getValueLabels()
   const selectedSmokingTypes = getSelectedSmokingTypes(answers)
   const isFormerSmoker = answers.smoker === 'yes_previous'
+  const currentSmokingStatusLabels = {
+    ...valueLabels.smokingType,
+    no: 'I do not currently smoke any of these types of tobacco'
+  }
 
   const tobaccoRows = selectedSmokingTypes.map((type) => {
     const answer = answers[type] || {}
@@ -253,6 +257,26 @@ const getCheckYourAnswers = (answers = {}) => {
       ]
     })
     const rows = makeSummaryRows([
+      makeSummaryRow({
+        key: `Age you started smoking ${valueLabels.smokingType[type].toLowerCase()}`,
+        value: answer.ageStartedSmoking && `Age ${answer.ageStartedSmoking}`,
+        href: getSmokingTypeStepUrl({ page: 'smoking-duration', type })
+      }),
+      isPast && makeSummaryRow({
+        key: `Age you stopped smoking ${valueLabels.smokingType[type].toLowerCase()}`,
+        value: answer.ageStoppedSmoking && `Age ${answer.ageStoppedSmoking}`,
+        href: getSmokingTypeStepUrl({ page: 'smoking-duration', type })
+      }),
+      makeSummaryRow({
+        key: `${isPast ? 'Stopped' : 'Ever stopped'} smoking ${valueLabels.smokingType[type].toLowerCase()} for periods of 1 year or longer`,
+        value: formatValue(answer.periodsStoppedSmoking, valueLabels.periodsStoppedSmoking),
+        href: getSmokingTypeStepUrl({ page: 'smoking-duration', type })
+      }),
+      answer.periodsStoppedSmoking === 'yes' && makeSummaryRow({
+        key: `Total number of years you stopped smoking ${valueLabels.smokingType[type].toLowerCase()}`,
+        value: answer.yearsStoppedSmoking && formatQuantity(answer.yearsStoppedSmoking, 'year', 'years'),
+        href: getSmokingTypeStepUrl({ page: 'smoking-duration', type })
+      }),
       !isFormerSmoker && makeSummaryRow({
         key: smokingType.statusHeading,
         value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
@@ -392,6 +416,11 @@ const getCheckYourAnswers = (answers = {}) => {
         key: 'Types of tobacco smoked',
         ...formatListValue(answers.smokingType, valueLabels.smokingType),
         href: `/prototype_${version}/smoking-type`
+      }),
+      selectedSmokingTypes.length > 1 && makeSummaryRow({
+        key: 'Types of tobacco currently smoked',
+        ...formatListValue(answers.smokingStatusCurrent, currentSmokingStatusLabels),
+        href: `/prototype_${version}/smoking-status-current`
       })
     ]),
     tobaccoRows

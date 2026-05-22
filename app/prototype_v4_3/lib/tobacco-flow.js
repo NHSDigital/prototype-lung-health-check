@@ -110,6 +110,40 @@ const getSelectedSmokingTypes = (answers = {}) => {
 }
 
 /**
+ * Get selected currently smoked tobacco types in tobacco.yaml order.
+ *
+ * @param {Object} answers - Session answers object.
+ * @returns {string[]} Selected current tobacco type keys.
+ */
+const getSelectedCurrentSmokingTypes = (answers = {}) => {
+  refreshData()
+
+  const selectedTypes = Array.isArray(answers.smokingStatusCurrent)
+    ? answers.smokingStatusCurrent
+    : [answers.smokingStatusCurrent].filter(Boolean)
+
+  return Object.keys(smokingTypes).filter((type) => selectedTypes.includes(type))
+}
+
+/**
+ * Decide whether a selected tobacco type is currently smoked.
+ *
+ * @param {Object} answers - Session answers object.
+ * @param {string} type - Tobacco type key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {boolean} True when the type is currently smoked.
+ */
+const isCurrentSmokingType = (answers = {}, type, answer = {}) => {
+  const selectedTypes = getSelectedSmokingTypes(answers)
+
+  if (selectedTypes.length > 1) {
+    return getSelectedCurrentSmokingTypes(answers).includes(type)
+  }
+
+  return answer.smokingStatus === 'yes'
+}
+
+/**
  * Remove nested answers for tobacco types the user has unselected.
  *
  * @param {Object} answers - Session answers object, mutated in place.
@@ -122,6 +156,12 @@ const deleteUnselectedSmokingTypeAnswers = (answers = {}) => {
       delete answers[type]
     }
   })
+
+  if (Array.isArray(answers.smokingStatusCurrent)) {
+    answers.smokingStatusCurrent = answers.smokingStatusCurrent.filter((type) => selectedTypes.includes(type))
+  } else if (answers.smokingStatusCurrent && !selectedTypes.includes(answers.smokingStatusCurrent)) {
+    delete answers.smokingStatusCurrent
+  }
 }
 
 /**
@@ -162,16 +202,11 @@ const deleteUnselectedSmokingChangeAnswers = (answer = {}) => {
  * @returns {SmokingTypeStep[]} Ordered tobacco sub-flow steps.
  */
 const getSmokingTypeSteps = (answers = {}) => {
-  const includeSmokingStatus = answers.smoker !== 'yes_previous'
-
   return getSelectedSmokingTypes(answers).flatMap((type) => {
     const steps = []
     const answer = answers[type] || {}
 
-    if (includeSmokingStatus) {
-      steps.push({ page: 'smoking-status', type })
-    }
-
+    steps.push({ page: 'smoking-duration', type })
     steps.push({ page: 'tobacco-smoking', type })
 
     if (type !== 'shisha') {
@@ -317,7 +352,9 @@ const getSmokingCurrentAmount = (type, answer = {}) => {
  * @returns {boolean} True when past-tense headings should be used.
  */
 const isPastSmokingType = (answers = {}, answer = {}) => {
-  return answers.smoker === 'yes_previous' || answer.smokingStatus === 'no'
+  const type = Object.keys(smokingTypes).find((type) => answers[type] === answer)
+
+  return !isCurrentSmokingType(answers, type, answer)
 }
 
 /**
@@ -526,6 +563,15 @@ const getSmokingTypeStep = (req, page) => {
   const steps = getSmokingTypeSteps(answers)
   const queryType = req.query?.type
   const queryChange = req.query?.change
+  const selectedTypes = getSelectedSmokingTypes(answers)
+
+  if (page === 'smoking-status' && selectedTypes.length === 1) {
+    return {
+      step: { page, type: selectedTypes[0] },
+      steps
+    }
+  }
+
   const step = steps.find((step) => step.page === page && step.type === queryType && step.change === queryChange) ||
     steps.find((step) => step.page === page && step.type === queryType && !step.change) ||
     steps.find((step) => step.page === page)
@@ -571,6 +617,36 @@ const getSmokingTypeQuestionOverrides = (answers = {}) => {
   }
 
   return {}
+}
+
+/**
+ * Get runtime options for the multi-type current smoking status question.
+ *
+ * @param {Object} answers - Session answers object.
+ * @returns {Object} Runtime question overrides.
+ */
+const getSmokingStatusCurrentQuestionOverrides = (answers = {}) => {
+  const smokingTypeLabels = getValueLabels().smokingType
+  const items = getSelectedSmokingTypes(answers).map((type) => ({
+    text: smokingTypeLabels[type],
+    value: type,
+    exclusiveGroup: 'current-types-list'
+  })).concat([
+    {
+      divider: 'or'
+    },
+    {
+      text: 'I do not currently smoke any of these types of tobacco',
+      value: 'no',
+      exclusive: true,
+      exclusiveGroup: 'current-types-list'
+    }
+  ])
+
+  return {
+    items,
+    values: answers.smokingStatusCurrent
+  }
 }
 
 /**
@@ -709,6 +785,7 @@ const lowerFirst = (value = '') => {
  */
 const getAnswerPhraseFromHeading = (heading = '') => {
   return lowerFirst(removeQuestionMark(heading))
+    .replace(/^how old were you when you /, 'the age you ')
     .replace(/^how often did you smoke /, 'how often you smoked ')
     .replace(/^how often do you smoke /, 'how often you smoke ')
     .replace(/^how long did you smoke /, 'how long you smoked ')
@@ -762,6 +839,10 @@ const getContextualRequiredErrorText = (question, overrides) => {
     return `Select ${getAnswerPhraseFromHeading(heading)}`
   }
 
+  if (heading.startsWith('How old')) {
+    return `Enter ${getAnswerPhraseFromHeading(heading)}`
+  }
+
   if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
     return `${questionType === 'single' ? 'Select' : 'Enter'} ${getAnswerPhraseFromHeading(heading)}`
   }
@@ -779,7 +860,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
 const getContextualInvalidErrorText = (question, overrides) => {
   const heading = overrides.heading?.title || question.heading?.title || ''
 
-  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
+  if (heading.startsWith('How old') || heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
     return `Enter ${getAnswerPhraseFromHeading(heading)} using numbers`
   }
 
@@ -802,6 +883,82 @@ const getSmokingContentQuestionOverrides = ({
   smokingChangeLabels,
   isPastSmokingType
 }) => {
+  if (page === 'age-started-smoking') {
+    const label = lowerFirst(getValueLabels().smokingType[step.type])
+
+    return {
+      heading: {
+        title: `How old were you when you started smoking ${label}?`,
+        caption: smokingType.caption
+      },
+      input: {
+        name: `answers[${step.type}][ageStartedSmoking]`
+      },
+      value: answer.ageStartedSmoking
+    }
+  }
+
+  if (page === 'age-stopped-smoking') {
+    const label = lowerFirst(getValueLabels().smokingType[step.type])
+
+    return {
+      heading: {
+        title: `How old were you when you stopped smoking ${label}?`,
+        caption: smokingType.caption
+      },
+      input: {
+        name: `answers[${step.type}][ageStoppedSmoking]`
+      },
+      value: answer.ageStoppedSmoking
+    }
+  }
+
+  if (page === 'periods-stopped-smoking') {
+    const label = lowerFirst(getValueLabels().smokingType[step.type])
+    const question = getQuestion('periods-stopped-smoking')
+    const title = isPastSmokingType
+      ? `Did you ever stop smoking ${label} for periods of 1 year or longer?`
+      : `Have you ever stopped smoking ${label} for periods of 1 year or longer?`
+
+    return {
+      heading: {
+        title,
+        caption: smokingType.caption
+      },
+      input: {
+        name: `answers[${step.type}][periodsStoppedSmoking]`
+      },
+      value: answer.periodsStoppedSmoking,
+      validation: {
+        conditional: {
+          yes: {
+            required: true,
+            type: 'number',
+            min: 1,
+            max: 80,
+            answerKey: 'yearsStoppedSmoking',
+            value: answer.yearsStoppedSmoking,
+            href: '#years-stopped-smoking'
+          }
+        }
+      },
+      items: question.items.map((item) => {
+        if (!item.conditionalInput) {
+          return item
+        }
+
+        return {
+          ...item,
+          conditionalInput: {
+            ...item.conditionalInput,
+            name: `answers[${step.type}][yearsStoppedSmoking]`,
+            value: answer.yearsStoppedSmoking
+          }
+        }
+      })
+    }
+  }
+
   if (page === 'smoking-status') {
     return {
       heading: {
@@ -920,9 +1077,15 @@ const getSmokingTypeStepContext = (req, step) => {
   }
 }
 
-const getSmokingTypePageAnswers = (step) => {
+const getSmokingTypePageAnswers = (step, answers = {}) => {
+  const answer = answers[step.type] || {}
+  const isPast = isPastSmokingType(answers, answer)
+
   return {
-    smokingType: [step.type]
+    smokingType: [step.type],
+    [step.type]: {
+      smokingStatus: isPast ? 'no' : 'yes'
+    }
   }
 }
 
@@ -938,13 +1101,26 @@ const getSmokingTypePageHeading = (page, smokingType = {}) => {
   }
 }
 
-const getSmokingTypePageQuestionIds = (page, step) => {
-  return getQuestionPage(page, getSmokingTypePageAnswers(step)).questions.map((question) => question.id)
+const getSmokingTypePageQuestionIds = (page, step, answers = {}) => {
+  if (page === 'smoking-duration') {
+    const answer = step ? answers[step.type] || {} : {}
+    const questionIds = ['age-started-smoking']
+
+    if (isPastSmokingType(answers, answer)) {
+      questionIds.push('age-stopped-smoking')
+    }
+
+    questionIds.push('periods-stopped-smoking')
+
+    return questionIds
+  }
+
+  return getQuestionPage(page, getSmokingTypePageAnswers(step, answers)).questions.map((question) => question.id)
 }
 
 const getSmokingContentPageOverrides = (req, page, step) => {
   const context = getSmokingTypeStepContext(req, step)
-  const questions = getSmokingTypePageQuestionIds(page, step).reduce((overrides, questionId) => {
+  const questions = getSmokingTypePageQuestionIds(page, step, req.session.data.answers).reduce((overrides, questionId) => {
     overrides[questionId] = getSmokingContentQuestionOverrides({
       page: questionId,
       step,
@@ -967,14 +1143,26 @@ const getSmokingContentPageOverrides = (req, page, step) => {
  * @param {SmokingTypeStep[]} steps - Ordered tobacco steps.
  * @returns {Object} Action URLs.
  */
-const getSmokingTypeActions = (step, steps) => {
+const getSmokingTypeActions = (step, steps, answers = {}) => {
+  if (step.page === 'smoking-status') {
+    return {
+      next: getSmokingTypeStepUrl(step),
+      back: `/prototype_${version}/smoking-type`,
+      onward: `/prototype_${version}/date-of-birth`,
+      cancel: `/prototype_${version}/`
+    }
+  }
+
   const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change)
   const previousStep = steps[index - 1]
   const nextStep = steps[index + 1]
+  const firstStepBack = answers.weight?.imperial
+    ? `/prototype_${version}/weight-imperial`
+    : `/prototype_${version}/weight-metric`
 
   return {
     next: getSmokingTypeStepUrl(step),
-    back: previousStep ? getSmokingTypeStepUrl(previousStep) : `/prototype_${version}/smoking-type`,
+    back: previousStep ? getSmokingTypeStepUrl(previousStep) : firstStepBack,
     onward: nextStep ? getSmokingTypeStepUrl(nextStep) : nextStepAfterSmokingTypes,
     cancel: `/prototype_${version}/`
   }
@@ -1005,7 +1193,7 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
 
   const context = getSmokingTypeStepContext(req, step)
 
-  renderQuestion(res, page, getSmokingTypeActions(step, steps), errors, getSmokingContentQuestionOverrides({
+  renderQuestion(res, page, getSmokingTypeActions(step, steps, req.session.data.answers), errors, getSmokingContentQuestionOverrides({
     page,
     step,
     ...context
@@ -1031,9 +1219,9 @@ const renderSmokingTypePage = (req, res, page, errors = []) => {
   renderQuestionPage(
     res,
     page,
-    getSmokingTypeActions(step, steps),
+    getSmokingTypeActions(step, steps, req.session.data.answers),
     errors,
-    getSmokingTypePageAnswers(step),
+    getSmokingTypePageAnswers(step, req.session.data.answers),
     getSmokingContentPageOverrides(req, page, step)
   )
 }
@@ -1090,7 +1278,7 @@ const validateSmokingTypeQuestion = (req, page, step) => {
  * @returns {Object[]} Validation errors.
  */
 const validateSmokingTypePage = (req, page, step) => {
-  return getSmokingTypePageQuestionIds(page, step).flatMap((questionId) => validateSmokingTypeQuestion(req, questionId, step))
+  return getSmokingTypePageQuestionIds(page, step, req.session.data.answers).flatMap((questionId) => validateSmokingTypeQuestion(req, questionId, step))
 }
 
 module.exports = {
@@ -1109,6 +1297,8 @@ module.exports = {
   getSmokingTypeActions,
   getSmokingTypeHeadings,
   getSmokingTypeQuestionOverrides,
+  getSmokingStatusCurrentQuestionOverrides,
+  getSelectedCurrentSmokingTypes,
   getSmokingTypeStep,
   getSmokingTypeSteps,
   getSmokingTypeStepUrl,

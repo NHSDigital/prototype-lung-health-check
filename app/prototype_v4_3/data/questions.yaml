@@ -618,7 +618,7 @@ questions:
     type: multiple
     answerKey: smokingType
     input:
-      label: What do you or have you smoked?
+      label: Have you ever smoked any of the following types of tobacco?
       hint: Select all that apply
     options:
       - label: Cigarettes
@@ -666,6 +666,20 @@ questions:
     errors:
       required:
         text: Select the types of tobacco you have smoked
+  - id: smoking-status-current
+    type: multiple
+    answerKey: smokingStatusCurrent
+    input:
+      label: Do you currently smoke any of the following types of tobacco?
+      hint: Select all that apply
+    options: []
+    summary:
+      label: Types of tobacco currently smoked
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select the types of tobacco you currently smoke
   - id: smoking-status
     type: single
     input:

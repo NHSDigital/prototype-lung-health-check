@@ -220,6 +220,9 @@ pages:
   - id: smoking-status
     questions:
       - smoking-status
+  - id: smoking-status-current
+    questions:
+      - smoking-status-current
   - id: tobacco-smoking
     heading:
       title: Tobacco smoking
