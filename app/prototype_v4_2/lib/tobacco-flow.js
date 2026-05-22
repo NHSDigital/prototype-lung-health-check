@@ -505,7 +505,7 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
     const quantity = getSmokingQuantity(type, changeAnswer.quantity)
 
     if (!quantity) {
-      return getQuestionPage('smoking-years-change').heading.title
+      return getQuestion('smoking-years-change').input.label
     }
 
     return `How many years did you smoke ${[quantity, getSmokingFrequencyPeriod(answer.smokingFrequency)].filter(Boolean).join(' ')}?`
