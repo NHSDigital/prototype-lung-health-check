@@ -26,11 +26,11 @@ tobaccoTypes:
       current:
         status: Do you currently smoke cigarettes?
         frequency: How often do you smoke cigarettes?
-        quantity: How many cigarettes do you currently smoke in a normal day?
+        quantity: How many cigarettes do you currently smoke?
         change: Has the number of cigarettes you normally smoke changed over time?
       past:
         frequency: How often did you smoke cigarettes?
-        quantity: How many cigarettes did you smoke in a normal day?
+        quantity: How many cigarettes did you smoke?
         change: Did the number of cigarettes you normally smoked change over time?
 ```
 
