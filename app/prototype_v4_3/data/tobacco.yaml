@@ -56,7 +56,7 @@ tobaccoTypes:
     smokingStatus:
       yes: Yes, I currently smoke a pipe
       no: No, I quit smoking a pipe
-      less_than_lifetime_threshold: I have smoked fewer than 4 full pipe loads in my lifetime
+      less_than_lifetime_threshold: I have smoked fewer than 40 full pipe loads in my lifetime
 
   small_cigars:
     caption: Small cigar smoking
