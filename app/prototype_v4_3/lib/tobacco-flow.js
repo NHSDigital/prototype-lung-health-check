@@ -9,7 +9,7 @@ const { getQuestionPage } = require('./question-pages')
 const { renderQuestion, renderQuestionPage, version } = require('./question-renderer')
 const { validateQuestion } = require('./question-validator')
 
-const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
+const nextStepAfterSmokingTypes = `/prototype_${version}/respiratory-conditions`
 
 const getValueLabels = () => {
   return {

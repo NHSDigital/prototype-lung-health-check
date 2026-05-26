@@ -41,6 +41,13 @@ const getDateOfBirthBack = (answers = {}) => {
   return `/prototype_${version}/smoking-type`
 }
 
+const getLastSmokingTypeStepBack = (answers = {}) => {
+  const smokingSteps = getSmokingTypeSteps(answers)
+  const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
+
+  return lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : `/prototype_${version}/smoking-type`
+}
+
 /// ------------------------------------------------------------------------ ///
 ///
 /// ------------------------------------------------------------------------ ///
@@ -463,21 +470,25 @@ exports.aboutYou_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.respiratoryConditions_get = (req, res) => {
+  const answers = req.session.data.answers || {}
+  const back = getLastSmokingTypeStepBack(answers)
+
   renderQuestion(res, 'respiratory-conditions', {
     next: `/prototype_${version}/respiratory-conditions`,
-    back: `/prototype_${version}/about-you`,
+    back,
     cancel: `/prototype_${version}/`
   })
 }
 
 exports.respiratoryConditions_post = (req, res) => {
   const { answers } = req.session.data
+  const back = getLastSmokingTypeStepBack(answers)
   const errors = validateQuestion(answers, 'respiratory-conditions')
 
   if (errors.length) {
     renderQuestion(res, 'respiratory-conditions', {
       next: `/prototype_${version}/respiratory-conditions`,
-      back: `/prototype_${version}/about-you`,
+      back,
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
@@ -560,7 +571,7 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
       res.redirect(`/prototype_${version}/cancer-diagnosis-relatives-age`)
     } else {
       delete answers.cancerDiagnosisRelativesAge
-      res.redirect(`/prototype_${version}/smoking-duration`)
+      res.redirect(`/prototype_${version}/check-your-answers`)
     }
   }
 }
@@ -584,7 +595,7 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
-    res.redirect(`/prototype_${version}/smoking-duration`)
+    res.redirect(`/prototype_${version}/check-your-answers`)
   }
 }
 
@@ -818,14 +829,15 @@ exports.tobaccoSmokingChange_post = (req, res) => {
 
 exports.checkYourAnswers_get = (req, res) => {
   const { answers } = req.session.data
-  const smokingSteps = getSmokingTypeSteps(answers)
-  const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
+  const back = answers.cancerDiagnosisRelatives === 'yes'
+    ? `/prototype_${version}/cancer-diagnosis-relatives-age`
+    : `/prototype_${version}/cancer-diagnosis-relatives`
 
   res.render(view('check-your-answers'), {
     checkYourAnswers: getCheckYourAnswers(answers),
     actions: {
       next: `/prototype_${version}/check-your-answers`,
-      back: lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : `/prototype_${version}/smoking-type`,
+      back,
       cancel: `/prototype_${version}/`
     }
   })

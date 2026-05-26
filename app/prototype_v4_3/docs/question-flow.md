@@ -37,7 +37,13 @@ flowchart TD
   weightMetric --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
   weightImperial --> tobaccoLoop
 
-  tobaccoLoop --> cya["Check your answers"]
+  tobaccoLoop --> respiratoryConditions{"Respiratory conditions"}
+  respiratoryConditions --> asbestos{"Asbestos"}
+  asbestos --> cancerDiagnosis{"Cancer diagnosis"}
+  cancerDiagnosis --> cancerDiagnosisRelatives{"Relatives diagnosed<br>with lung cancer?"}
+  cancerDiagnosisRelatives -- Yes --> cancerDiagnosisRelativesAge{"Relatives diagnosed<br>under 60?"}
+  cancerDiagnosisRelatives -- No or do not know --> cya["Check your answers"]
+  cancerDiagnosisRelativesAge --> cya
   cya --> confirmation["Confirmation<br>End"]
 ```
 
@@ -60,19 +66,19 @@ flowchart TD
   duration --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
 
   tobaccoSmoking --> isShisha{"Is the selected type<br>shisha?"}
-  isShisha -- Yes --> nextTypeOrCya
+  isShisha -- Yes --> nextTypeOrHealth
   isShisha -- No --> changed{"Smoking changed<br>over time?"}
 
-  changed -- No change selected --> nextTypeOrCya
+  changed -- No change selected --> nextTypeOrHealth
   changed -- More selected --> moreChange["Tobacco smoking change<br>More: frequency, quantity and years"]
   moreChange --> fewerSelected{"Fewer also selected?"}
 
   changed -- Only fewer selected --> fewerChange["Tobacco smoking change<br>Fewer: frequency, quantity and years"]
   fewerSelected -- Yes --> fewerChange
-  fewerSelected -- No --> nextTypeOrCya
-  fewerChange --> nextTypeOrCya
+  fewerSelected -- No --> nextTypeOrHealth
+  fewerChange --> nextTypeOrHealth
 
-  nextTypeOrCya["Next selected tobacco type<br>or Check your answers"]
+  nextTypeOrHealth["Next selected tobacco type<br>or Your health"]
 ```
 
 ## Notes
@@ -91,5 +97,6 @@ flowchart TD
 - Multi-type flows use present tense for tobacco types selected on `Smoking status current`, and past tense for selected tobacco types not selected on `Smoking status current`.
 - Shisha follows the same tobacco-smoking flow as other tobacco types, but skips the smoking-change flow.
 - If both `more` and `fewer` are selected for a tobacco type, the flow asks the `more` tobacco-smoking-change page first, then the `fewer` tobacco-smoking-change page.
-- `Check your answers` links back to the last tobacco step that applies to the current set of answers.
-- `About you`, `Your health` and `Family history` pages still exist in the prototype, but they are not part of this flow.
+- The last tobacco step links onward to `Respiratory conditions`.
+- `Cancer diagnosis relatives age` is shown only when `Cancer diagnosis relatives` is `yes`.
+- `Check your answers` links back to `Cancer diagnosis relatives age` when it was shown, otherwise it links back to `Cancer diagnosis relatives`.
