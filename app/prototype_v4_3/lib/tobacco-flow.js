@@ -349,10 +349,11 @@ const getSmokingCurrentAmount = (type, answer = {}) => {
  *
  * @param {Object} answers - Session answers object.
  * @param {Object} answer - Answer object for one tobacco type.
+ * @param {string} type - Tobacco type key.
  * @returns {boolean} True when past-tense headings should be used.
  */
-const isPastSmokingType = (answers = {}, answer = {}) => {
-  const type = Object.keys(smokingTypes).find((type) => answers[type] === answer)
+const isPastSmokingType = (answers = {}, answer = {}, type) => {
+  type = type || Object.keys(smokingTypes).find((type) => answers[type] === answer)
 
   return !isCurrentSmokingType(answers, type, answer)
 }
@@ -1061,7 +1062,7 @@ const getSmokingContentQuestionOverrides = ({
 
 const getSmokingTypeStepContext = (req, step) => {
   const answer = req.session.data.answers[step.type] || {}
-  const isPast = isPastSmokingType(req.session.data.answers, answer)
+  const isPast = isPastSmokingType(req.session.data.answers, answer, step.type)
   const changeAnswer = getSmokingChangeAnswer(answer, step.change)
   const smokingType = getSmokingTypeHeadings(step.type, isPast)
   const smokingChange = smokingChangeTypes[step.change]
@@ -1079,7 +1080,7 @@ const getSmokingTypeStepContext = (req, step) => {
 
 const getSmokingTypePageAnswers = (step, answers = {}) => {
   const answer = answers[step.type] || {}
-  const isPast = isPastSmokingType(answers, answer)
+  const isPast = isPastSmokingType(answers, answer, step.type)
 
   return {
     smokingType: [step.type],
@@ -1106,7 +1107,7 @@ const getSmokingTypePageQuestionIds = (page, step, answers = {}) => {
     const answer = step ? answers[step.type] || {} : {}
     const questionIds = ['age-started-smoking']
 
-    if (isPastSmokingType(answers, answer)) {
+    if (isPastSmokingType(answers, answer, step?.type)) {
       questionIds.push('age-stopped-smoking')
     }
 

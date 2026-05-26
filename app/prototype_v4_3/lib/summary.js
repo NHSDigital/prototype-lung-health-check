@@ -233,7 +233,7 @@ const getCheckYourAnswers = (answers = {}) => {
 
   const tobaccoRows = selectedSmokingTypes.map((type) => {
     const answer = answers[type] || {}
-    const isPast = isPastSmokingType(answers, answer)
+    const isPast = isPastSmokingType(answers, answer, type)
     const smokingType = getSmokingTypeHeadings(type, isPast)
     const smokingChangeRows = getSelectedSmokingChanges(answer).flatMap((change) => {
       const changeAnswer = getSmokingChangeAnswer(answer, change)
