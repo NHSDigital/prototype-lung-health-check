@@ -30,7 +30,7 @@ tobaccoTypes:
         change: Has the number of cigarettes you normally smoke changed over time?
       past:
         frequency: How often did you smoke cigarettes?
-        quantity: How many cigarettes did you smoke?
+        quantity: How many cigarettes did you normally smoke?
         change: Did the number of cigarettes you normally smoked change over time?
     smokingStatus:
       yes: Yes, I currently smoke cigarettes
