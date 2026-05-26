@@ -577,12 +577,11 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
 
   if (page === 'smoking-quantity-change') {
     const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true).quantityHeading, answer.smokingFrequency)
+    const normalHeading = baseHeading
+      .replace(' did you smoke ', ' did you normally smoke ')
+      .replace(' did you smoke?', ' did you normally smoke?')
 
-    if (!baseHeading) {
-      return ''
-    }
-
-    return `${baseHeading.replace('?', '')} ${includeComparison ? comparisonText : 'when you smoked'}?`
+    return includeComparison && comparisonText ? `${baseHeading.replace('?', '')} ${comparisonText}?` : normalHeading
   }
 
   if (page === 'smoking-years-change') {
