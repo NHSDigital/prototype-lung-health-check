@@ -94,6 +94,25 @@ const getQuestionVariantValueLabels = (id, type) => {
 }
 
 /**
+ * Get the display label for a tobacco type.
+ *
+ * @param {string} type - Tobacco type key.
+ * @returns {string} Tobacco type label.
+ */
+const getSmokingTypeLabel = (type) => {
+  return (getValueLabels().smokingType[type] || '').replace(', or ', ' or ')
+}
+
+/**
+ * Get the caption for tobacco sub-flow pages.
+ *
+ * @returns {string} Page caption.
+ */
+const getSmokingTypePageCaption = () => {
+  return 'Your smoking habits'
+}
+
+/**
  * Get selected tobacco types in tobacco.yaml order.
  *
  * @param {Object} answers - Session answers object.
@@ -273,8 +292,9 @@ const getRollingTobaccoComparisonQuantity = (answer) => {
     less_than_10: '10g',
     more_than_100: '100g'
   }
+  const quantity = comparisonQuantities[answer] || getSmokingQuantity('rolling_tobacco', answer)
 
-  return comparisonQuantities[answer] || getSmokingQuantity('rolling_tobacco', answer)
+  return quantity ? `${quantity} of rolling tobacco` : ''
 }
 
 /**
@@ -409,6 +429,8 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
 
   return {
     ...smokingType,
+    pageHeading: getSmokingTypeLabel(type),
+    pageCaption: getSmokingTypePageCaption(type),
     statusHeading: currentHeadings.status,
     frequencyHeading: tenseHeadings.frequency,
     quantityHeading: tenseHeadings.quantity,
@@ -1034,7 +1056,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: smokingType.changeHeading,
-        caption: smokingType.caption
+        caption: smokingType.pageCaption
       },
       input: {
         name: `answers[${step.type}][smokingChange]`
@@ -1048,7 +1070,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer, false),
-        caption: smokingType.caption
+        caption: smokingType.pageCaption
       },
       input: {
         name: `answers[${step.type}][${smokingChange.answerKey}][frequency]`
@@ -1063,7 +1085,7 @@ const getSmokingContentQuestionOverrides = ({
       page,
       step,
       heading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer, false),
-      caption: smokingType.caption,
+      caption: smokingType.pageCaption,
       name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
       value: changeAnswer.quantity,
       conditionalValue: changeAnswer.smokingQuantityOther,
@@ -1075,7 +1097,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
-        caption: smokingType.caption
+        caption: smokingType.pageCaption
       },
       input: {
         id: 'smoking-years-change',
@@ -1121,12 +1143,21 @@ const getSmokingTypePageAnswers = (step, answers = {}) => {
 const getSmokingTypePageHeading = (page, smokingType = {}, step = {}, answer = {}) => {
   if (page === 'tobacco-smoking-change') {
     return {
-      title: getSmokingChangePageHeading(step.type, step.change, answer)
+      title: getSmokingChangePageHeading(step.type, step.change, answer),
+      caption: smokingType.pageCaption
+    }
+  }
+
+  if (page === 'smoking-duration' || page === 'tobacco-smoking') {
+    return {
+      title: smokingType.pageHeading,
+      caption: 'Your smoking habits'
     }
   }
 
   return {
-    title: smokingType.caption
+    title: smokingType.pageHeading,
+    caption: smokingType.pageCaption
   }
 }
 
