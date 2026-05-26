@@ -18,7 +18,8 @@ flowchart TD
   smokingType -- One tobacco type --> smokingStatus{"Currently smoke<br>this tobacco type?"}
   smokingType -- More than one tobacco type --> smokingStatusCurrent{"Currently smoke any<br>selected tobacco types?"}
 
-  smokingStatus --> dob{"Date of birth<br>Age 55 to 74?"}
+  smokingStatus -- Yes or no --> dob{"Date of birth<br>Age 55 to 74?"}
+  smokingStatus -- Smoked fewer than<br>lifetime threshold --> notEligibleScreening["Not eligible for screening<br>End"]
   smokingStatusCurrent --> dob
 
   dob -- No --> notEligibleScan["Not eligible for scan<br>End"]
@@ -86,7 +87,7 @@ flowchart TD
 - Height and weight unit pages can be switched manually using the unit-switch links.
 - `Smoking type` is shown immediately after `Phone questionnaire`.
 - `Smoking status` is shown when one tobacco type is selected.
-- On `Smoking status`, selecting the lifetime threshold option sends the user to `Not eligible for screening`.
+- On `Smoking status`, selecting the lifetime threshold option, for example that they have smoked fewer than 100 cigarettes in their lifetime, sends the user to `Not eligible for screening`.
 - `Smoking status current` is shown when more than one tobacco type is selected. It asks which selected types the user currently smokes.
 - `Date of birth`, `Face to face appointment`, `Height` and `Weight` are shown after `Smoking status` or `Smoking status current`.
 - `Smoking duration` is part of the tobacco subflow and repeats for each selected tobacco type. It combines age started smoking, age quit smoking and periods stopped smoking.
