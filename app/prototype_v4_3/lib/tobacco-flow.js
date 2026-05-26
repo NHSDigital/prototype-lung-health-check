@@ -109,7 +109,7 @@ const getSmokingTypeLabel = (type) => {
  * @returns {string} Page caption.
  */
 const getSmokingTypePageCaption = () => {
-  return 'Your smoking habits'
+  return 'Your smoking history'
 }
 
 /**
@@ -1151,7 +1151,7 @@ const getSmokingTypePageHeading = (page, smokingType = {}, step = {}, answer = {
   if (page === 'smoking-duration' || page === 'tobacco-smoking') {
     return {
       title: smokingType.pageHeading,
-      caption: 'Your smoking habits'
+      caption: 'Your smoking history'
     }
   }
 

@@ -539,7 +539,7 @@ questions:
         text: Age you started smoking must be 1 or older
       max:
         text: Age you started smoking must be 120 or younger
-    caption: Your smoking habits
+    caption: Your smoking history
   - id: age-stopped-smoking
     type: text
     answerKey: ageStoppedSmoking
@@ -565,7 +565,7 @@ questions:
         text: Age you quit smoking must be 1 or older
       max:
         text: Age you quit smoking must be 120 or younger
-    caption: Your smoking habits
+    caption: Your smoking history
   - id: periods-stopped-smoking
     type: single
     answerKey: periodsStoppedSmoking
