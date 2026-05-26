@@ -32,11 +32,17 @@ tobaccoTypes:
         frequency: How often did you smoke cigarettes?
         quantity: How many cigarettes did you smoke?
         change: Did the number of cigarettes you normally smoked change over time?
+    smokingStatus:
+      yes: Yes, I currently smoke cigarettes
+      no: No, I quit smoking cigarettes
+      less_than_lifetime_threshold: I have smoked fewer than 100 cigarettes in my lifetime
 ```
 
 The tobacco flow uses `headings.current` when someone currently smokes and `headings.past` when someone used to smoke.
 
 `caption` is shown above the tobacco question heading.
+
+`smokingStatus` overrides the generic `smoking-status` option labels for each tobacco type.
 
 `quantityUnit`, `singularSuffix` and `suffix` are used when answers are formatted in check your answers and when contextual change questions are built.
 

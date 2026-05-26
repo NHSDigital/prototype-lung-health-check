@@ -1018,7 +1018,8 @@ const getSmokingContentQuestionOverrides = ({
       input: {
         name: `answers[${step.type}][smokingStatus]`
       },
-      value: answer.smokingStatus
+      value: answer.smokingStatus,
+      items: getQuestionItemsWithLabels('smoking-status', smokingType.smokingStatus)
     }
   }
 

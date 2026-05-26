@@ -201,9 +201,17 @@ exports.faceToFaceAppointment_post = (req, res) => {
 }
 
 exports.notEligibleForScreening_get = (req, res) => {
+  const answers = req.session.data.answers || {}
+  const lowLifetimeSmokingType = getSelectedSmokingTypes(answers).find((type) => {
+    return answers[type]?.smokingStatus === 'less_than_lifetime_threshold'
+  })
+  const back = lowLifetimeSmokingType
+    ? getSmokingTypeStepUrl({ page: 'smoking-status', type: lowLifetimeSmokingType })
+    : `/prototype_${version}/smoker`
+
   res.render(view('questions/not-eligible-for-screening'), {
     actions: {
-      back: `/prototype_${version}/smoker`,
+      back,
       cancel: `/prototype_${version}/`
     }
   })
@@ -773,6 +781,8 @@ exports.smokingStatus_post = (req, res) => {
 
   if (errors.length) {
     renderSmokingTypeQuestion(req, res, 'smoking-status', errors)
+  } else if (req.session.data.answers[step.type]?.smokingStatus === 'less_than_lifetime_threshold') {
+    res.redirect(`/prototype_${version}/not-eligible-for-screening`)
   } else {
     res.redirect(getSmokingTypeActions(step, steps, req.session.data.answers).onward)
   }

@@ -15,6 +15,10 @@ tobaccoTypes:
         frequency: How often did you smoke cigarettes?
         quantity: How many cigarettes did you smoke?
         change: Did the number of cigarettes you normally smoked change over time?
+    smokingStatus:
+      yes: Yes, I currently smoke cigarettes
+      no: No, I quit smoking cigarettes
+      less_than_lifetime_threshold: I have smoked fewer than 100 cigarettes in my lifetime
 
   rolling_tobacco:
     caption: Rolling tobacco smoking
@@ -29,6 +33,10 @@ tobaccoTypes:
         frequency: How often did you smoke rolling tobacco or roll-ups?
         quantity: How much rolling tobacco did you smoke?
         change: Did the amount of rolling tobacco you normally smoked change over time?
+    smokingStatus:
+      yes: Yes, I currently smoke rolling tobacco or roll-ups
+      no: No, I quit smoking rolling tobacco or roll-ups
+      less_than_lifetime_threshold: I have smoked less than 25 grams of tobacco in my lifetime
 
   pipes:
     caption: Pipe smoking
@@ -45,6 +53,10 @@ tobaccoTypes:
         frequency: How often did you smoke a pipe?
         quantity: How many full pipe loads did you smoke?
         change: Did the number of full pipe loads you normally smoked change over time?
+    smokingStatus:
+      yes: Yes, I currently smoke a pipe
+      no: No, I quit smoking a pipe
+      less_than_lifetime_threshold: I have smoked fewer than 4 full pipe loads in my lifetime
 
   small_cigars:
     caption: Small cigar smoking
@@ -61,6 +73,10 @@ tobaccoTypes:
         frequency: How often did you smoke small cigars?
         quantity: How many small cigars did you smoke?
         change: Did the number of small cigars you normally smoked change over time?
+    smokingStatus:
+      yes: Yes, I currently smoke small cigars
+      no: No, I quit smoking small cigars
+      less_than_lifetime_threshold: I have smoked fewer than 65 small cigars in my lifetime
 
   medium_cigars:
     caption: Medium cigar smoking
@@ -77,6 +93,10 @@ tobaccoTypes:
         frequency: How often did you smoke medium cigars?
         quantity: How many medium cigars did you smoke?
         change: Did the number of medium cigars you normally smoked change over time?
+    smokingStatus:
+      yes: Yes, I currently smoke medium cigars
+      no: No, I quit smoking medium cigars
+      less_than_lifetime_threshold: I have smoked fewer than 50 medium cigars in my lifetime
 
   large_cigars:
     caption: Large cigar smoking
@@ -93,6 +113,10 @@ tobaccoTypes:
         frequency: How often did you smoke large cigars?
         quantity: How many large cigars did you smoke?
         change: Did the number of large cigars you normally smoked change over time?
+    smokingStatus:
+      yes: Yes, I currently smoke large cigars
+      no: No, I quit smoking large cigars
+      less_than_lifetime_threshold: I have smoked fewer than 25 large cigars in my lifetime
 
   cigarillos:
     caption: Cigarillo smoking
@@ -109,6 +133,10 @@ tobaccoTypes:
         frequency: How often did you smoke cigarillos?
         quantity: How many cigarillos did you smoke?
         change: Did the number of cigarillos you normally smoked change over time?
+    smokingStatus:
+      yes: Yes, I currently smoke cigarillos
+      no: No, I quit smoking cigarillos
+      less_than_lifetime_threshold: I have smoked fewer than 50 cigarillos in my lifetime
 
   shisha:
     caption: Shisha smoking
@@ -123,6 +151,10 @@ tobaccoTypes:
       past:
         frequency: How often did you smoke shisha?
         quantity: How long did you smoke shisha?
+    smokingStatus:
+      yes: Yes, I currently smoke shisha
+      no: No, I quit smoking shisha
+      less_than_lifetime_threshold: I have smoked shisha fewer than 2 times in my lifetime
 
 smokingChangeTypes:
   greater:

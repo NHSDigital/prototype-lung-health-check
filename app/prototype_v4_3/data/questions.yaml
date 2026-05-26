@@ -689,6 +689,8 @@ questions:
         value: yes
       - label: No
         value: no
+      - label: I have smoked less than the amount needed for lung cancer screening
+        value: less_than_lifetime_threshold
     validation:
       required: true
     errors:
