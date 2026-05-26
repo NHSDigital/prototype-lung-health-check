@@ -1014,7 +1014,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: smokingType.statusHeading,
-        caption: smokingType.caption
+        caption: 'Your smoking history'
       },
       input: {
         name: `answers[${step.type}][smokingStatus]`

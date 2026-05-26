@@ -221,6 +221,8 @@ pages:
     questions:
       - smoking-status
   - id: smoking-status-current
+    heading:
+      caption: Your smoking history
     questions:
       - smoking-status-current
   - id: tobacco-smoking
