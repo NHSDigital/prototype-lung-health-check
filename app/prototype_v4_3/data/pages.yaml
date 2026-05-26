@@ -1,0 +1,245 @@
+---
+pages:
+  - id: accept-terms
+    questions:
+      - accept-terms
+    heading:
+      title: Terms of use
+    description: |
+      To continue, confirm that you have read and agree to the [NHS Check if you need a lung scan terms of use](terms-of-use).
+  - id: phone-questionnaire
+    questions:
+      - phone-questionnaire
+    heading:
+      title: Confirm if you have completed a lung cancer risk questionnaire by phone
+    description: |
+      If you have already completed a questionnaire about your lung health or lung cancer risk by phone you do not need to test the online service. This is because the online service asks the same questions.
+
+      The questionnaire would have asked you questions about:
+
+      - your height and weight
+      - your ethnicity
+      - your education
+      - if you have ever had a cancer diagnosis
+      - if your parents, siblings, or children have ever had a lung cancer diagnosis
+      - Your smoking history
+  - id: smoker
+    questions:
+      - smoker
+    heading:
+      title: Tobacco smoking
+    description: |
+      We will ask you questions about Your smoking history. This includes different types of tobacco smoking such as:
+
+      - cigarettes from a packet
+      - rolling tobacco, or roll ups
+      - a pipe
+      - cigars
+      - cigarillos
+      - shisha
+
+      It does not currently include vaping or e-cigarettes.
+  - id: date-of-birth
+    questions:
+      - date-of-birth
+  - id: face-to-face-appointment
+    questions:
+      - face-to-face-appointment
+    heading:
+      title: Check if you need a face-to-face appointment
+    description: |
+      This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
+
+      You need to do your questionnaire in person, not online, if you:
+
+      - have a condition that affects your height
+      - have had a limb amputation, or were born with a limb difference
+      - have been diagnosed with an eating disorder, or think you may have one
+      - are pregnant
+  - id: height-metric
+    questions:
+      - height-metric
+    heading:
+      title: Your height
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+  - id: height-imperial
+    questions:
+      - height-imperial
+    heading:
+      title: Your height
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+  - id: weight-metric
+    questions:
+      - weight-metric
+    heading:
+      title: Your weight
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+  - id: weight-imperial
+    questions:
+      - weight-imperial
+    heading:
+      title: Your weight
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+  - id: about-you
+    heading:
+      title: About you
+    questions:
+      - gender
+      - sex
+      - ethnicity
+      - education
+    description: The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
+  - id: gender
+    questions:
+      - gender
+    heading:
+      title: Your gender identity
+      caption: About you
+    description: |
+      The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
+
+      In the future we plan to use information about someone's gender identity to help us plan their care in the NHS lung cancer screening programme.
+  - id: sex
+    questions:
+      - sex
+    heading:
+      title: Your sex at birth
+      caption: About you
+    description: |
+      Your sex may impact your chances of developing lung cancer.
+  - id: ethnicity
+    questions:
+      - ethnicity
+    heading:
+      title: Your ethnic background
+      caption: About you
+    description: |
+      We ask this question because your ethnicity may impact your chances of developing lung cancer.
+  - id: education
+    questions:
+      - education
+    heading:
+      title: Your education
+      caption: About you
+    description: |
+      We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
+
+      If your qualification is not shown choose the closest level.
+  - id: respiratory-conditions
+    heading:
+      caption: Your health
+    questions:
+      - respiratory-conditions
+  - id: asbestos
+    heading:
+      title: Exposure to asbestos
+      caption: Your health
+    questions:
+      - asbestos-at-work
+      - asbestos-at-home
+  - id: cancer-diagnosis
+    questions:
+      - cancer-diagnosis
+    heading:
+      title: Tell us if you have ever been diagnosed with cancer
+      caption: Your health
+    description: |
+      If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.
+  - id: cancer-diagnosis-relatives
+    questions:
+      - cancer-diagnosis-relatives
+    heading:
+      title: Tell us if your parents, siblings or children have ever been diagnosed with lung cancer
+      caption: Your family history
+    description: |
+      If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
+
+      This question is about lung cancer rather than any other type of cancer. It does not include your grandparents or grandchildren.
+  - id: cancer-diagnosis-relatives-age
+    questions:
+      - cancer-diagnosis-relatives-age
+    heading:
+      title: If your relatives were under 60 when they were diagnosed
+      caption: Your family history
+    description: |
+      We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.
+
+      If you do not know or cannot remember, select 'I do not know'.
+  - id: smoking-duration
+    heading:
+      title: Smoking duration
+      caption: Your smoking history
+    questions:
+      - age-started-smoking
+      - id: age-stopped-smoking
+        if:
+          any:
+            - question: smoker
+              is: yes_previous
+            - question: smoking-status
+              is: no
+      - periods-stopped-smoking
+  - id: smoking-type
+    questions:
+      - smoking-type
+    heading:
+      title: The type of tobacco you smoke or used to smoke
+      caption: Your smoking history
+    description: |
+      Smoking affects your health in different ways depending on what you smoke.
+
+      We need to know what you smoke, or used to smoke, for a period of 1 year or longer.
+
+      You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+    variants:
+      previous:
+        heading:
+          title: The type of tobacco you have smoked
+        description: |
+          Smoking affects your health in different ways depending on what you smoked.
+
+          We need to know what you used to smoke frequently. For example, if you smoked a pipe on a weekly basis for a year or longer.
+
+          You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+  - id: smoking-status
+    questions:
+      - smoking-status
+  - id: smoking-status-current
+    heading:
+      caption: Your smoking history
+    questions:
+      - smoking-status-current
+  - id: tobacco-smoking
+    heading:
+      title: Tobacco smoking
+      caption: Your smoking history
+    questions:
+      - smoking-frequency
+      - smoking-quantity
+  - id: tobacco-smoking-change
+    heading:
+      title: Tobacco smoking
+      caption: Your smoking history
+    questions:
+      - smoking-frequency-change
+      - smoking-quantity-change
+      - smoking-years-change
+  - id: smoking-change
+    questions:
+      - smoking-change

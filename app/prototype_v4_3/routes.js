@@ -161,6 +161,9 @@ router.get(`/prototype_${version}/smoking-type-exit`, questionController.smoking
 router.get(`/prototype_${version}/smoking-status`, questionController.smokingStatus_get)
 router.post(`/prototype_${version}/smoking-status`, questionController.smokingStatus_post)
 
+router.get(`/prototype_${version}/smoking-status-current`, questionController.smokingStatusCurrent_get)
+router.post(`/prototype_${version}/smoking-status-current`, questionController.smokingStatusCurrent_post)
+
 router.get(`/prototype_${version}/smoking-change`, questionController.smokingChange_get)
 router.post(`/prototype_${version}/smoking-change`, questionController.smokingChange_post)
 

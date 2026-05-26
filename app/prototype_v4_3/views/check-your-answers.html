@@ -1,0 +1,88 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = "Check your answers" %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include prototype.viewPath + "/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+      <p class="nhsuk-body">
+        Check the information you have given us. If any of the details are wrong, you can change them.
+      </p>
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {% if checkYourAnswers.eligibility.length %}
+          <h2 class="nhsuk-heading-m">Eligibility</h2>
+
+          {{ summaryList({
+            rows: checkYourAnswers.eligibility
+          }) }}
+        {% endif %}
+
+        {% if checkYourAnswers.aboutYou.length %}
+          <h2 class="nhsuk-heading-m">About you</h2>
+
+          {{ summaryList({
+            rows: checkYourAnswers.aboutYou
+          }) }}
+        {% endif %}
+
+        {% if checkYourAnswers.health.length %}
+          <h2 class="nhsuk-heading-m">Your health</h2>
+
+          {{ summaryList({
+            rows: checkYourAnswers.health
+          }) }}
+        {% endif %}
+
+        {% if checkYourAnswers.familyHistory.length %}
+          <h2 class="nhsuk-heading-m">Your family history</h2>
+
+          {{ summaryList({
+            rows: checkYourAnswers.familyHistory
+          }) }}
+        {% endif %}
+
+        {% if checkYourAnswers.smokingHabits.length or checkYourAnswers.tobaccoRows.length %}
+          <h2 class="nhsuk-heading-m">Your smoking history</h2>
+
+          {% if checkYourAnswers.smokingHabits.length %}
+            {{ summaryList({
+              rows: checkYourAnswers.smokingHabits
+            }) }}
+          {% endif %}
+
+          {% for tobacco in checkYourAnswers.tobaccoRows %}
+            <h3 class="nhsuk-heading-s">{{ tobacco.heading }}</h3>
+
+            {{ summaryList({
+              rows: tobacco.rows
+            }) }}
+          {% endfor %}
+        {% endif %}
+
+        {{ button({
+          text: "Submit"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

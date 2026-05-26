@@ -1,0 +1,44 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = page.heading.title %}
+{% set caption = page.heading.caption %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include prototype.viewPath + "/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+      {% if page.description %}
+        {{ page.description | markdownToHtml | safe }}
+      {% endif %}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {% set isGroupedPage = true %}
+        {% for question in page.questions %}
+          {% include prototype.viewPath + "/questions/_question-input.html" %}
+        {% endfor %}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}
