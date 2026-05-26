@@ -88,8 +88,8 @@ flowchart TD
 - `Smoking status` is shown when one tobacco type is selected.
 - `Smoking status current` is shown when more than one tobacco type is selected. It asks which selected types the user currently smokes.
 - `Date of birth`, `Face to face appointment`, `Height` and `Weight` are shown after `Smoking status` or `Smoking status current`.
-- `Smoking duration` is part of the tobacco subflow and repeats for each selected tobacco type. It combines age started smoking, age stopped smoking and periods stopped smoking.
-- `Age stopped smoking` is shown on `Smoking duration` when the selected tobacco type is past tense.
+- `Smoking duration` is part of the tobacco subflow and repeats for each selected tobacco type. It combines age started smoking, age quit smoking and periods stopped smoking.
+- `Age quit smoking` is shown on `Smoking duration` when the selected tobacco type is past tense.
 - `Tobacco smoking` combines smoking frequency and smoking quantity.
 - `Tobacco smoking change` combines changed-smoking frequency, quantity and years.
 - The tobacco subflow uses query strings such as `/prototype_v4_3/smoking-duration?type=cigarettes` and `/prototype_v4_3/tobacco-smoking-change?type=cigarettes&change=greater`.

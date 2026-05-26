@@ -263,7 +263,7 @@ const getCheckYourAnswers = (answers = {}) => {
         href: getSmokingTypeStepUrl({ page: 'smoking-duration', type })
       }),
       isPast && makeSummaryRow({
-        key: `Age you stopped smoking ${valueLabels.smokingType[type].toLowerCase()}`,
+        key: `Age you quit smoking ${valueLabels.smokingType[type].toLowerCase()}`,
         value: answer.ageStoppedSmoking && `Age ${answer.ageStoppedSmoking}`,
         href: getSmokingTypeStepUrl({ page: 'smoking-duration', type })
       }),
@@ -398,7 +398,7 @@ const getCheckYourAnswers = (answers = {}) => {
         href: `/prototype_${version}/smoking-duration`
       }),
       isFormerSmoker && makeSummaryRow({
-        key: 'Age you stopped smoking',
+        key: 'Age you quit smoking',
         value: answers.ageStoppedSmoking && `Age ${answers.ageStoppedSmoking}`,
         href: `/prototype_${version}/smoking-duration`
       }),

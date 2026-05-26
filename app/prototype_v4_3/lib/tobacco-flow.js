@@ -932,7 +932,7 @@ const getSmokingContentQuestionOverrides = ({
 
     return {
       heading: {
-        title: `How old were you when you stopped smoking ${label}?`,
+        title: `How old were you when you quit smoking ${label}?`,
         caption: smokingType.caption
       },
       input: {
