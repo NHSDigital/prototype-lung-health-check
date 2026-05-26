@@ -875,7 +875,7 @@ questions:
     input:
       id: smoking-years-change
       label: How many years did you smoke this amount?
-      hint: Give a rough estimate
+      hint: Give an estimate if you are not sure
       suffix: years
       inputmode: numeric
       classes: nhsuk-input--width-4
