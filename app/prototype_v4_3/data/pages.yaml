@@ -226,12 +226,14 @@ pages:
   - id: tobacco-smoking
     heading:
       title: Tobacco smoking
+      caption: Your smoking habits
     questions:
       - smoking-frequency
       - smoking-quantity
   - id: tobacco-smoking-change
     heading:
-      title: Tobacco smoking change
+      title: Tobacco smoking
+      caption: Your smoking habits
     questions:
       - smoking-frequency-change
       - smoking-quantity-change
