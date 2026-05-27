@@ -316,8 +316,7 @@ exports.weightMetric_post = (req, res) => {
     }, errors)
   } else {
     delete answers.weight?.imperial
-    const smokingSteps = getSmokingTypeSteps(answers)
-    res.redirect(smokingSteps.length ? getSmokingTypeStepUrl(smokingSteps[0]) : `/prototype_${version}/check-your-answers`)
+    res.redirect(`/prototype_${version}/about-you`)
   }
 }
 
@@ -346,8 +345,7 @@ exports.weightImperial_post = (req, res) => {
     }, errors)
   } else {
     delete answers.weight?.metric
-    const smokingSteps = getSmokingTypeSteps(answers)
-    res.redirect(smokingSteps.length ? getSmokingTypeStepUrl(smokingSteps[0]) : `/prototype_${version}/check-your-answers`)
+    res.redirect(`/prototype_${version}/about-you`)
   }
 }
 
@@ -374,7 +372,8 @@ exports.aboutYou_post = (req, res) => {
       cancel: `/prototype_${version}/`
     }, errors, answers)
   } else {
-    res.redirect(`/prototype_${version}/respiratory-conditions`)
+    const smokingSteps = getSmokingTypeSteps(answers)
+    res.redirect(smokingSteps.length ? getSmokingTypeStepUrl(smokingSteps[0]) : `/prototype_${version}/respiratory-conditions`)
   }
 }
 

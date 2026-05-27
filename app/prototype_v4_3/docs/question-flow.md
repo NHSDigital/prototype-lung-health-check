@@ -35,8 +35,9 @@ flowchart TD
 
   weight{"Weight"} -- Metric --> weightMetric["Weight - metric"]
   weight -- Imperial --> weightImperial["Weight - imperial"]
-  weightMetric --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
-  weightImperial --> tobaccoLoop
+  weightMetric --> aboutYou["About you<br>Sex, gender, ethnicity<br>and education"]
+  weightImperial --> aboutYou
+  aboutYou --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
 
   tobaccoLoop --> respiratoryConditions{"Respiratory conditions"}
   respiratoryConditions --> asbestos{"Asbestos"}
@@ -89,7 +90,8 @@ flowchart TD
 - `Smoking status` is shown when one tobacco type is selected.
 - On `Smoking status`, selecting the lifetime threshold option, for example that they have smoked fewer than 100 cigarettes in their lifetime, sends the user to `Not eligible for screening`.
 - `Smoking status current` is shown when more than one tobacco type is selected. It asks which selected types the user currently smokes.
-- `Date of birth`, `Face to face appointment`, `Height` and `Weight` are shown after `Smoking status` or `Smoking status current`.
+- `Date of birth`, `Face to face appointment`, `Height`, `Weight` and `About you` are shown after `Smoking status` or `Smoking status current`.
+- `About you` combines sex, gender, ethnicity and education questions.
 - `Smoking duration` is part of the tobacco subflow and repeats for each selected tobacco type. It combines age started smoking, age quit smoking and periods stopped smoking.
 - `Age quit smoking` is shown on `Smoking duration` when the selected tobacco type is past tense.
 - `Tobacco smoking` combines smoking frequency and smoking quantity.
