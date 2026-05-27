@@ -196,15 +196,15 @@ pages:
               is: no
       - periods-stopped-smoking
   - id: smoking-type
-    questions:
-      - smoking-type
     heading:
       title: The type of tobacco you smoke or used to smoke
       caption: Your smoking history
+    questions:
+      - smoking-type
     description: |
       Smoking affects your health in different ways depending on what you smoke.
 
-      We need to know what you smoke, or used to smoke, for a period of 1 year or longer.
+      We need to know what you smoke, or used to smoke, for a period of 1 year or longer. This does not include vaping or e-cigarettes.
 
       You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
     variants:
