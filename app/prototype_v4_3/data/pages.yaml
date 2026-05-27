@@ -40,6 +40,8 @@ pages:
 
       It does not currently include vaping or e-cigarettes.
   - id: date-of-birth
+    heading:
+      caption: Eligibilty
     questions:
       - date-of-birth
   - id: face-to-face-appointment
@@ -47,6 +49,7 @@ pages:
       - face-to-face-appointment
     heading:
       title: Check if you need a face-to-face appointment
+      caption: Eligibilty
     description: |
       This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
 
