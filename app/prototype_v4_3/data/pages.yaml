@@ -99,15 +99,6 @@ pages:
       An accurate measurement is important.
 
       If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
-  - id: about-you
-    heading:
-      title: About you
-    questions:
-      - gender
-      - sex
-      - ethnicity
-      - education
-    description: The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
   - id: gender
     questions:
       - gender

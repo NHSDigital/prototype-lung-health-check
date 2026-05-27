@@ -109,20 +109,17 @@ router.post(`/prototype_${version}/weight-metric`, questionController.weightMetr
 router.get(`/prototype_${version}/weight-imperial`, questionController.weightImperial_get)
 router.post(`/prototype_${version}/weight-imperial`, questionController.weightImperial_post)
 
-router.get(`/prototype_${version}/about-you`, questionController.aboutYou_get)
-router.post(`/prototype_${version}/about-you`, questionController.aboutYou_post)
+router.get(`/prototype_${version}/gender`, questionController.gender_get)
+router.post(`/prototype_${version}/gender`, questionController.gender_post)
 
-// router.get(`/prototype_${version}/sex`, questionController.sex_get)
-// router.post(`/prototype_${version}/sex`, questionController.sex_post)
+router.get(`/prototype_${version}/sex`, questionController.sex_get)
+router.post(`/prototype_${version}/sex`, questionController.sex_post)
 
-// router.get(`/prototype_${version}/gender`, questionController.gender_get)
-// router.post(`/prototype_${version}/gender`, questionController.gender_post)
+router.get(`/prototype_${version}/ethnicity`, questionController.ethnicity_get)
+router.post(`/prototype_${version}/ethnicity`, questionController.ethnicity_post)
 
-// router.get(`/prototype_${version}/ethnicity`, questionController.ethnicity_get)
-// router.post(`/prototype_${version}/ethnicity`, questionController.ethnicity_post)
-
-// router.get(`/prototype_${version}/education`, questionController.education_get)
-// router.post(`/prototype_${version}/education`, questionController.education_post)
+router.get(`/prototype_${version}/education`, questionController.education_get)
+router.post(`/prototype_${version}/education`, questionController.education_post)
 
 /// Your health ------------------------------------------------------------ ///
 
