@@ -339,22 +339,22 @@ const getCheckYourAnswers = (answers = {}) => {
       makeSummaryRow({
         key: 'Gender identity',
         value: formatValue(answers.gender, valueLabels.gender),
-        href: `/prototype_${version}/about-you`
+        href: `/prototype_${version}/gender`
       }),
       makeSummaryRow({
         key: 'Sex at birth',
         value: formatValue(answers.sex, valueLabels.sex),
-        href: `/prototype_${version}/about-you`
+        href: `/prototype_${version}/sex`
       }),
       makeSummaryRow({
         key: 'Ethnic background',
         value: formatValue(answers.ethnicity, valueLabels.ethnicity),
-        href: `/prototype_${version}/about-you`
+        href: `/prototype_${version}/ethnicity`
       }),
       makeSummaryRow({
         key: 'Education',
         value: formatValue(answers.education, valueLabels.education),
-        href: `/prototype_${version}/about-you`
+        href: `/prototype_${version}/education`
       })
     ]),
     health: makeSummaryRows([
