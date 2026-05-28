@@ -353,10 +353,11 @@ questions:
       required:
         text: Select your ethnic background
   - id: education
-    type: single
+    type: multiple
     answerKey: education
     input:
-      label: What is the highest level of education you have completed?
+      label: What level of education have you completed?
+      hint: Select all that apply
     options:
       - label: I finished school before the age of 15
         value: before_15
@@ -384,7 +385,7 @@ questions:
       required: true
     errors:
       required:
-        text: Select the highest level of education you have completed
+        text: Select what level of education you have completed
   - id: respiratory-conditions
     type: multiple
     answerKey: respiratoryConditions
