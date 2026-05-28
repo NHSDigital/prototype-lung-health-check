@@ -1,7 +1,7 @@
 ---
 title: Sorry, the service is unavailable
 hidePhaseBanner: true
-hideFooterLinks: true
+hideFooterLinks: false
 ---
 
 You will be able to use the service from Tuesday, 5 May 2026.
