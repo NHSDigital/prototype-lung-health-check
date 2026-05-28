@@ -1,7 +1,7 @@
 ---
 title: Sorry, the service is unavailable
 hidePhaseBanner: true
-hideFooterLinks: true
+hideFooterLinks: false
 ---
 
 The online service has closed.
