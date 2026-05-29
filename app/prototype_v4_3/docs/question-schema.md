@@ -16,7 +16,7 @@ questions:
     type: single
     answerKey: education
     input:
-      label: What is the highest level of education have you completed?
+      label: What is the highest level of education you have completed?
     options:
       - label: GCSEs
         hint: Previously O-levels

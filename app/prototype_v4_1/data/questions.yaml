@@ -462,7 +462,7 @@ questions:
 
       If your qualification is not shown choose the closest level.
     input:
-      label: What is the highest level of education have you completed?
+      label: What is the highest level of education you have completed?
     options:
       - label: I finished school before the age of 15
         value: before_15
