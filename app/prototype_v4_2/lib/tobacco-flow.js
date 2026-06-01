@@ -825,9 +825,7 @@ const getSmokingContentQuestionOverrides = ({
         name: `answers[${step.type}][smokingFrequency]`
       },
       value: answer.smokingFrequency,
-      items: getQuestionItemsWithLabels('smoking-frequency', {}, {
-        monthly: `Select this option if you ${isPastSmokingType ? 'smoked' : 'smoke'} at least once a month`
-      })
+      items: getQuestionItemsWithLabels('smoking-frequency')
     }
   }
 
