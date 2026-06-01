@@ -52,7 +52,6 @@ flowchart TD
   ageStopped --> stoppedSmoking
   stoppedSmoking --> smokingType{"Smoking type"}
 
-  smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
   smokingType -- One or more tobacco types --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
 
   tobaccoLoop --> cya["Check your answers"]
@@ -64,22 +63,26 @@ Tobacco flow
 
 ```mermaid
 flowchart TD
-  selectedType["Next selected tobacco type"] --> formerSmoker{"Former smoker?"}
-
-  formerSmoker -- No, currently smokes --> status["Smoking status"]
-  formerSmoker -- Yes --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
-  status --> tobaccoSmoking
-
-  tobaccoSmoking --> changed{"Smoking changed<br>over time?"}
+  selectedType["Next selected tobacco type"] --> past{"Used to smoke?"}
+  past -- No, currently smokes --> status["Smoking status"]
+  past -- Yes --> frequency["Smoking frequency"]
+  status --> frequency["Smoking frequency"]
+  frequency --> quantity["Smoking quantity"]
+  quantity --> changed{"Smoking changed<br>over time?"}
 
   changed -- No change selected --> nextTypeOrCya
-  changed -- More selected --> moreChange["Tobacco smoking change<br>More: frequency, quantity and years"]
-  moreChange --> fewerSelected{"Fewer also selected?"}
+  changed -- Increased selected --> increasedFrequency["Increased: frequency before change"]
+  increasedFrequency --> increasedQuantity["Increased: quantity before change"]
+  increasedQuantity --> increasedYears["Increased: years before change"]
+  increasedYears --> decreasedSelected{"Decreased also selected?"}
 
-  changed -- Only fewer selected --> fewerChange["Tobacco smoking change<br>Fewer: frequency, quantity and years"]
-  fewerSelected -- Yes --> fewerChange
-  fewerSelected -- No --> nextTypeOrCya
-  fewerChange --> nextTypeOrCya
+  changed -- Decreased selected --> decreasedFrequency["Decreased: frequency before change"]
+  decreasedSelected -- Yes --> decreasedFrequency
+  decreasedSelected -- No --> nextTypeOrCya
+
+  decreasedFrequency --> decreasedQuantity["Decreased: quantity before change"]
+  decreasedQuantity --> decreasedYears["Decreased: years before change"]
+  decreasedYears --> nextTypeOrCya
 
   nextTypeOrCya["Next selected tobacco type<br>or Check your answers"]
 ```
