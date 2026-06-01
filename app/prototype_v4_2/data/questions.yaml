@@ -539,18 +539,18 @@ questions:
         text: Age you started smoking must be 1 or older
       max:
         text: Age you started smoking must be 120 or younger
-    caption: Your smoking habits
+    caption: Your smoking history
   - id: age-stopped-smoking
     type: text
     answerKey: ageStoppedSmoking
     input:
-      label: How old were you when you stopped smoking?
+      label: How old were you when you quit smoking?
       hint: Give an estimate if you are not sure
       prefix: Age
       inputmode: numeric
       classes: nhsuk-input--width-2
     summary:
-      label: Age you stopped smoking
+      label: Age you quit smoking
     validation:
       required: true
       type: number
@@ -558,14 +558,14 @@ questions:
       max: 120
     errors:
       required:
-        text: Enter the age you stopped smoking
+        text: Enter the age you quit smoking
       invalid:
-        text: Enter the age you stopped smoking using numbers
+        text: Enter the age you quit smoking using numbers
       min:
-        text: Age you stopped smoking must be 1 or older
+        text: Age you quit smoking must be 1 or older
       max:
-        text: Age you stopped smoking must be 120 or younger
-    caption: Your smoking habits
+        text: Age you quit smoking must be 120 or younger
+    caption: Your smoking history
   - id: periods-stopped-smoking
     type: single
     answerKey: periodsStoppedSmoking
@@ -863,7 +863,7 @@ questions:
     input:
       id: smoking-years-change
       label: How many years did you smoke this amount?
-      hint: Give a rough estimate
+      hint: Give an estimate if you are not sure
       suffix: years
       inputmode: numeric
       classes: nhsuk-input--width-4

@@ -22,14 +22,14 @@ pages:
       - your education
       - if you have ever had a cancer diagnosis
       - if your parents, siblings, or children have ever had a lung cancer diagnosis
-      - your smoking habits
+      - Your smoking history
   - id: smoker
     questions:
       - smoker
     heading:
       title: Tobacco smoking
     description: |
-      We will ask you questions about your smoking habits. This includes different types of tobacco smoking such as:
+      We will ask you questions about Your smoking history. This includes different types of tobacco smoking such as:
 
       - cigarettes from a packet
       - rolling tobacco, or roll ups
@@ -40,6 +40,8 @@ pages:
 
       It does not currently include vaping or e-cigarettes.
   - id: date-of-birth
+    heading:
+      caption: Eligibilty
     questions:
       - date-of-birth
   - id: face-to-face-appointment
@@ -47,6 +49,7 @@ pages:
       - face-to-face-appointment
     heading:
       title: Check if you need a face-to-face appointment
+      caption: Eligibilty
     description: |
       This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
 
@@ -184,7 +187,7 @@ pages:
   - id: smoking-duration
     heading:
       title: Smoking duration
-      caption: Your smoking habits
+      caption: Your smoking history
     questions:
       - age-started-smoking
       - id: age-stopped-smoking
@@ -200,7 +203,7 @@ pages:
       - smoking-type
     heading:
       title: The type of tobacco you smoke or used to smoke
-      caption: Your smoking habits
+      caption: Your smoking history
     description: |
       Smoking affects your health in different ways depending on what you smoke.
 
@@ -223,12 +226,14 @@ pages:
   - id: tobacco-smoking
     heading:
       title: Tobacco smoking
+      caption: Your smoking history
     questions:
       - smoking-frequency
       - smoking-quantity
   - id: tobacco-smoking-change
     heading:
-      title: Tobacco smoking change
+      title: Tobacco smoking
+      caption: Your smoking history
     questions:
       - smoking-frequency-change
       - smoking-quantity-change
