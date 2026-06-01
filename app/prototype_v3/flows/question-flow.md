@@ -59,3 +59,27 @@ flowchart TD
 
   cya --> confirmation["Confirmation<br>End"]
 ```
+
+Tobacco flow
+
+```mermaid
+flowchart TD
+  selectedType["Next selected tobacco type"] --> formerSmoker{"Former smoker?"}
+
+  formerSmoker -- No, currently smokes --> status["Smoking status"]
+  formerSmoker -- Yes --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
+  status --> tobaccoSmoking
+
+  tobaccoSmoking --> changed{"Smoking changed<br>over time?"}
+
+  changed -- No change selected --> nextTypeOrCya
+  changed -- More selected --> moreChange["Tobacco smoking change<br>More: frequency, quantity and years"]
+  moreChange --> fewerSelected{"Fewer also selected?"}
+
+  changed -- Only fewer selected --> fewerChange["Tobacco smoking change<br>Fewer: frequency, quantity and years"]
+  fewerSelected -- Yes --> fewerChange
+  fewerSelected -- No --> nextTypeOrCya
+  fewerChange --> nextTypeOrCya
+
+  nextTypeOrCya["Next selected tobacco type<br>or Check your answers"]
+```
