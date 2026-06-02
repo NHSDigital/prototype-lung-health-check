@@ -94,6 +94,16 @@ const getQuestionVariantValueLabels = (id, type) => {
 }
 
 /**
+ * Get the display label for a tobacco type.
+ *
+ * @param {string} type - Tobacco type key.
+ * @returns {string} Tobacco type label.
+ */
+const getSmokingTypeLabel = (type) => {
+  return (getValueLabels().smokingType[type] || '').replace(', or ', ' or ')
+}
+
+/**
  * Get selected tobacco types in tobacco.yaml order.
  *
  * @param {Object} answers - Session answers object.
@@ -371,6 +381,7 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
 
   return {
     ...smokingType,
+    pageHeading: getSmokingTypeLabel(type),
     statusHeading: currentHeadings.status,
     frequencyHeading: tenseHeadings.frequency,
     quantityHeading: tenseHeadings.quantity,
@@ -806,7 +817,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: smokingType.statusHeading,
-        caption: smokingType.caption
+        caption: 'Your smoking history'
       },
       input: {
         name: `answers[${step.type}][smokingStatus]`
@@ -846,7 +857,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: smokingType.changeHeading,
-        caption: smokingType.caption
+        caption: 'Your smoking history'
       },
       input: {
         name: `answers[${step.type}][smokingChange]`
@@ -928,6 +939,12 @@ const getSmokingTypePageHeading = (page, smokingType = {}) => {
   if (page === 'tobacco-smoking-change') {
     return {
       title: `${smokingType.caption} change`
+    }
+  }
+
+  if (page === 'tobacco-smoking') {
+    return {
+      title: smokingType.pageHeading || smokingType.caption
     }
   }
 
