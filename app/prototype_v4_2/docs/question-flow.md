@@ -36,21 +36,21 @@ flowchart TD
   sex --> ethnicity["Ethnic background"]
   ethnicity --> education["Education"]
 
-  education --> respiratory["Respiratory conditions"]
-  respiratory --> asbestos["Asbestos<br>At work, at home"]
-  asbestos --> cancerDiagnosis["Cancer diagnosis"]
-  cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
-
-  relatives -- Yes --> relativesAge["Relative diagnosed before 60?"]
-  relatives -- No --> smokingDuration["Smoking duration<br>Age started, age stopped if applicable,<br>periods stopped"]
-  relativesAge --> smokingDuration
-
+  education --> smokingDuration["Smoking duration<br>Age started, age stopped if applicable,<br>periods stopped"]
   smokingDuration --> smokingType{"Smoking type"}
 
   smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
   smokingType -- One or more tobacco types --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
 
-  tobaccoLoop --> cya["Check your answers"]
+  tobaccoLoop --> respiratory["Respiratory conditions"]
+  respiratory --> asbestos["Asbestos<br>At work, at home"]
+  asbestos --> cancerDiagnosis["Cancer diagnosis"]
+  cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
+
+  relatives -- Yes --> relativesAge["Relative diagnosed before 60?"]
+  relatives -- No --> cya["Check your answers"]
+  relativesAge --> cya
+
   cya --> confirmation["Confirmation<br>End"]
 ```
 

@@ -25,7 +25,7 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
       <h1 class="nhsuk-heading-l">{{ title }}</h1>
-      <p class="nhsuk-body">Quick navigation to all pages in prototype v4.1.</p>
+      <p class="nhsuk-body">Quick navigation to all pages in prototype v4.2.</p>
       <p class="nhsuk-body">Some links set default answers before opening the page, so conditional pages and check your answers have enough data to render.</p>
 
       <h2 class="nhsuk-heading-m">Start and sign in</h2>
@@ -62,20 +62,7 @@
         {{ pageLink("/education", "Your education") }}
       </ul>
 
-      <h2 class="nhsuk-heading-m">Your health</h2>
-      <ul class="nhsuk-list nhsuk-list--spaced">
-        {{ pageLink("/respiratory-conditions", "Respiratory conditions") }}
-        {{ pageLink("/asbestos", "Asbestos") }}
-        {{ pageLink("/cancer-diagnosis", "Cancer diagnosis") }}
-      </ul>
-
-      <h2 class="nhsuk-heading-m">Your family history</h2>
-      <ul class="nhsuk-list nhsuk-list--spaced">
-        {{ pageLink("/cancer-diagnosis-relatives", "Relatives with lung cancer") }}
-        {{ seededPageLink("/cancer-diagnosis-relatives-age", "Relatives under 60 when diagnosed") }}
-      </ul>
-
-      <h2 class="nhsuk-heading-m">Your smoking habits</h2>
+      <h2 class="nhsuk-heading-m">Your smoking history</h2>
       <ul class="nhsuk-list nhsuk-list--spaced">
         {{ pageLink("/smoking-duration", "Smoking duration") }}
         {{ pageLink("/smoking-type", "The type of tobacco you smoke or used to smoke") }}
@@ -89,6 +76,19 @@
         {{ seededPageLink("/smoking-change?type=cigarettes", "Cigarettes - has quantity changed") }}
         {{ seededPageLink("/tobacco-smoking-change?type=cigarettes%26change=greater", "Cigarettes - more smoking change") }}
         {{ seededProfilePageLink("/tobacco-smoking?type=shisha", "shisha", "Shisha smoking") }}
+      </ul>
+
+      <h2 class="nhsuk-heading-m">Your health</h2>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/respiratory-conditions", "Respiratory conditions") }}
+        {{ pageLink("/asbestos", "Asbestos") }}
+        {{ pageLink("/cancer-diagnosis", "Cancer diagnosis") }}
+      </ul>
+
+      <h2 class="nhsuk-heading-m">Your family history</h2>
+      <ul class="nhsuk-list nhsuk-list--spaced">
+        {{ pageLink("/cancer-diagnosis-relatives", "Relatives with lung cancer") }}
+        {{ seededPageLink("/cancer-diagnosis-relatives-age", "Relatives under 60 when diagnosed") }}
       </ul>
 
       <h2 class="nhsuk-heading-m">Check and confirmation</h2>

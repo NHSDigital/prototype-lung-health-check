@@ -39,22 +39,6 @@
           }) }}
         {% endif %}
 
-        {% if checkYourAnswers.health.length %}
-          <h2 class="nhsuk-heading-m">Your health</h2>
-
-          {{ summaryList({
-            rows: checkYourAnswers.health
-          }) }}
-        {% endif %}
-
-        {% if checkYourAnswers.familyHistory.length %}
-          <h2 class="nhsuk-heading-m">Your family history</h2>
-
-          {{ summaryList({
-            rows: checkYourAnswers.familyHistory
-          }) }}
-        {% endif %}
-
         {% if checkYourAnswers.smokingHabits.length or checkYourAnswers.tobaccoRows.length %}
           <h2 class="nhsuk-heading-m">Your smoking history</h2>
 
@@ -71,6 +55,22 @@
               rows: tobacco.rows
             }) }}
           {% endfor %}
+        {% endif %}
+
+        {% if checkYourAnswers.health.length %}
+          <h2 class="nhsuk-heading-m">Your health</h2>
+
+          {{ summaryList({
+            rows: checkYourAnswers.health
+          }) }}
+        {% endif %}
+
+        {% if checkYourAnswers.familyHistory.length %}
+          <h2 class="nhsuk-heading-m">Your family history</h2>
+
+          {{ summaryList({
+            rows: checkYourAnswers.familyHistory
+          }) }}
         {% endif %}
 
         {{ button({

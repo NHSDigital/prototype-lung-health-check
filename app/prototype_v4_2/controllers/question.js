@@ -25,6 +25,19 @@ const getQuestionPageIds = (id, answers = {}) => {
   return getQuestionPage(id, answers).questions.map((question) => question.id)
 }
 
+const getLastSmokingTypeStepBack = (answers = {}) => {
+  const smokingSteps = getSmokingTypeSteps(answers)
+  const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
+
+  return lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : `/prototype_${version}/smoking-type`
+}
+
+const getFamilyHistoryBack = (answers = {}) => {
+  return answers.cancerDiagnosisRelatives === 'yes'
+    ? `/prototype_${version}/cancer-diagnosis-relatives-age`
+    : `/prototype_${version}/cancer-diagnosis-relatives`
+}
+
 /// ------------------------------------------------------------------------ ///
 ///
 /// ------------------------------------------------------------------------ ///
@@ -405,7 +418,7 @@ exports.education_post = (req, res) => {
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
-    res.redirect(`/prototype_${version}/respiratory-conditions`)
+    res.redirect(`/prototype_${version}/smoking-duration`)
   }
 }
 
@@ -414,21 +427,25 @@ exports.education_post = (req, res) => {
 /// ------------------------------------------------------------------------ ///
 
 exports.respiratoryConditions_get = (req, res) => {
+  const answers = req.session.data.answers || {}
+  const back = getLastSmokingTypeStepBack(answers)
+
   renderQuestion(res, 'respiratory-conditions', {
     next: `/prototype_${version}/respiratory-conditions`,
-    back: `/prototype_${version}/education`,
+    back,
     cancel: `/prototype_${version}/`
   })
 }
 
 exports.respiratoryConditions_post = (req, res) => {
   const { answers } = req.session.data
+  const back = getLastSmokingTypeStepBack(answers)
   const errors = validateQuestion(answers, 'respiratory-conditions')
 
   if (errors.length) {
     renderQuestion(res, 'respiratory-conditions', {
       next: `/prototype_${version}/respiratory-conditions`,
-      back: `/prototype_${version}/education`,
+      back,
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
@@ -511,7 +528,7 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
       res.redirect(`/prototype_${version}/cancer-diagnosis-relatives-age`)
     } else {
       delete answers.cancerDiagnosisRelativesAge
-      res.redirect(`/prototype_${version}/smoking-duration`)
+      res.redirect(`/prototype_${version}/check-your-answers`)
     }
   }
 }
@@ -535,7 +552,7 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
-    res.redirect(`/prototype_${version}/smoking-duration`)
+    res.redirect(`/prototype_${version}/check-your-answers`)
   }
 }
 
@@ -545,24 +562,22 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
 
 exports.smokingDuration_get = (req, res) => {
   const answers = req.session.data.answers || {}
-  const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
 
   renderQuestionPage(res, 'smoking-duration', {
     next: `/prototype_${version}/smoking-duration`,
-    back,
+    back: `/prototype_${version}/education`,
     cancel: `/prototype_${version}/`
   }, [], answers)
 }
 
 exports.smokingDuration_post = (req, res) => {
   const answers = req.session.data.answers || {}
-  const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
   const errors = validateQuestions(answers, getQuestionPageIds('smoking-duration', answers))
 
   if (errors.length) {
     renderQuestionPage(res, 'smoking-duration', {
       next: `/prototype_${version}/smoking-duration`,
-      back,
+      back: `/prototype_${version}/education`,
       cancel: `/prototype_${version}/`
     }, errors, answers)
   } else {
@@ -734,14 +749,13 @@ exports.tobaccoSmokingChange_post = (req, res) => {
 
 exports.checkYourAnswers_get = (req, res) => {
   const { answers } = req.session.data
-  const smokingSteps = getSmokingTypeSteps(answers)
-  const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
+  const back = getFamilyHistoryBack(answers)
 
   res.render(view('check-your-answers'), {
     checkYourAnswers: getCheckYourAnswers(answers),
     actions: {
       next: `/prototype_${version}/check-your-answers`,
-      back: lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : `/prototype_${version}/smoking-type`,
+      back,
       cancel: `/prototype_${version}/`
     }
   })

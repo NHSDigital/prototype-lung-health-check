@@ -18,12 +18,6 @@ const defaultAnswers = {
   sex: 'female',
   ethnicity: 'white',
   education: 'further_education',
-  respiratoryConditions: ['no'],
-  asbestosAtWork: 'no',
-  asbestosAtHome: 'no',
-  cancerDiagnosis: 'no',
-  cancerDiagnosisRelatives: 'yes',
-  cancerDiagnosisRelativesAge: 'no',
   ageStartedSmoking: '18',
   periodsStoppedSmoking: 'no',
   smokingType: ['cigarettes'],
@@ -37,7 +31,13 @@ const defaultAnswers = {
       quantity: '5',
       years: '10'
     }
-  }
+  },
+  respiratoryConditions: ['no'],
+  asbestosAtWork: 'no',
+  asbestosAtHome: 'no',
+  cancerDiagnosis: 'no',
+  cancerDiagnosisRelatives: 'yes',
+  cancerDiagnosisRelativesAge: 'no'
 }
 
 const cloneAnswers = () => JSON.parse(JSON.stringify(defaultAnswers))
