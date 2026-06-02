@@ -190,11 +190,11 @@ pages:
               is: no
       - periods-stopped-smoking
   - id: smoking-type
-    questions:
-      - smoking-type
     heading:
       title: The type of tobacco you smoke or used to smoke
       caption: Your smoking history
+    questions:
+      - smoking-type
     description: |
       Smoking affects your health in different ways depending on what you smoke.
 

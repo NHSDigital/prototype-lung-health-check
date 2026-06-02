@@ -618,7 +618,7 @@ questions:
     type: multiple
     answerKey: smokingType
     input:
-      label: What do you or have you smoked?
+      label: Have you ever smoked any of the following types of tobacco for a period of 1 year or longer?
       hint: Select all that apply
     options:
       - label: Cigarettes
