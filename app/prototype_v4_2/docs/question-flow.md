@@ -36,7 +36,7 @@ flowchart TD
   sex --> ethnicity["Ethnic background"]
   ethnicity --> education["Education"]
 
-  education --> smokingDuration["Smoking duration<br>Age started, age stopped if applicable,<br>periods stopped"]
+  education --> smokingDuration["When you smoked tobacco<br>Age started, age stopped if applicable,<br>periods stopped"]
   smokingDuration --> smokingType{"Smoking type"}
 
   smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
@@ -94,8 +94,8 @@ flowchart TD
 ## Notes
 
 - Height and weight unit pages can be switched manually using the unit-switch links.
-- `Smoking duration` combines age started smoking, age stopped smoking and periods stopped smoking.
-- `Age stopped smoking` is shown on `Smoking duration` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
+- `When you smoked tobacco` combines age started smoking, age stopped smoking and periods stopped smoking.
+- `Age stopped smoking` is shown on `When you smoked tobacco` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
 - `Tobacco smoking` combines smoking frequency and smoking quantity.
 - `Tobacco smoking change` combines changed-smoking frequency, quantity and years.
 - The tobacco subflow uses query strings such as `/prototype_v4_2/smoking-status?type=cigarettes` and `/prototype_v4_2/tobacco-smoking-change?type=cigarettes&change=greater`.

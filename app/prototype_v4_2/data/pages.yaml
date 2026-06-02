@@ -177,7 +177,7 @@ pages:
       If you do not know or cannot remember, select 'I do not know'.
   - id: smoking-duration
     heading:
-      title: Smoking duration
+      title: When you smoked tobacco
       caption: Your smoking history
     questions:
       - age-started-smoking
