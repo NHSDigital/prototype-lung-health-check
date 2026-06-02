@@ -53,15 +53,13 @@ Define each individual form control in `questions.yaml`, then compose one or mor
 
 ```yaml
 pages:
-  - id: about-you
+  - id: asbestos
     heading:
-      title: About you
-    description: The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
+      title: Exposure to asbestos
+      caption: Your health
     questions:
-      - gender
-      - sex
-      - ethnicity
-      - education
+      - asbestos-at-work
+      - asbestos-at-home
 ```
 
 Grouped pages use the same question definitions, answer keys and validation rules as single-question pages. This means check-your-answers and later flow logic can keep reading answers from the same session keys, regardless of whether the answers came from one page or several pages.

@@ -99,15 +99,6 @@ pages:
       An accurate measurement is important.
 
       If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
-  - id: about-you
-    heading:
-      title: About you
-    questions:
-      - gender
-      - sex
-      - ethnicity
-      - education
-    description: The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
   - id: gender
     questions:
       - gender
@@ -207,7 +198,7 @@ pages:
     description: |
       Smoking affects your health in different ways depending on what you smoke.
 
-      We need to know what you smoke, or used to smoke, frequently. For example, if you have smoked a pipe on a weekly basis for a year or longer.
+      We need to know what you smoke, or used to smoke, for a period of 1 year or longer. This does not include vaping or e-cigarettes.
 
       You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
     variants:
