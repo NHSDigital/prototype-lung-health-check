@@ -1,6 +1,6 @@
 # Prototype v3 question flow
 
-This diagram is based on `app/prototype_v4/routes.js` and `app/prototype_v4/views`.
+This diagram is based on `app/prototype_v3/routes.js` and `app/prototype_v3/views`.
 
 ```mermaid
 flowchart TD
@@ -59,7 +59,7 @@ flowchart TD
   cya --> confirmation["Confirmation<br>End"]
 ```
 
-Tobacco flow
+## Tobacco flow
 
 ```mermaid
 flowchart TD
