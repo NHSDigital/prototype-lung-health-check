@@ -144,6 +144,8 @@ pages:
     heading:
       title: Exposure to asbestos
       caption: Your health
+    description: |
+      You may have been exposed to asbestos if you worked or lived with someone in an industry such as building or construction, particularly from the 1950s to the 1990s.
     questions:
       - asbestos-at-work
       - asbestos-at-home
