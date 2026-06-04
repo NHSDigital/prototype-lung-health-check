@@ -9,7 +9,7 @@ tobaccoTypes:
       current:
         status: Do you currently smoke cigarettes?
         frequency: How often do you smoke cigarettes?
-        quantity: How many cigarettes do you currently smoke in a normal day?
+        quantity: How many cigarettes do you currently smoke?
         change: Has the number of cigarettes you normally smoke changed over time?
       past:
         frequency: How often did you smoke cigarettes?
@@ -23,7 +23,7 @@ tobaccoTypes:
       current:
         status: Do you currently smoke rolling tobacco or roll-ups?
         frequency: How often do you smoke rolling tobacco or roll-ups?
-        quantity: How much rolling tobacco do you currently smoke in a normal week?
+        quantity: How much rolling tobacco do you currently smoke?
         change: Has the amount of rolling tobacco you normally smoke changed over time?
       past:
         frequency: How often did you smoke rolling tobacco or roll-ups?
@@ -39,7 +39,7 @@ tobaccoTypes:
       current:
         status: Do you currently smoke a pipe?
         frequency: How often do you smoke a pipe?
-        quantity: How many full pipe loads do you currently smoke in a normal day?
+        quantity: How many full pipe loads do you currently smoke?
         change: Has the number of full pipe loads you normally smoke changed over time?
       past:
         frequency: How often did you smoke a pipe?
@@ -55,7 +55,7 @@ tobaccoTypes:
       current:
         status: Do you currently smoke small cigars?
         frequency: How often do you smoke small cigars?
-        quantity: How many small cigars do you currently smoke in a normal day?
+        quantity: How many small cigars do you currently smoke?
         change: Has the number of small cigars you normally smoke changed over time?
       past:
         frequency: How often did you smoke small cigars?
@@ -71,7 +71,7 @@ tobaccoTypes:
       current:
         status: Do you currently smoke medium cigars?
         frequency: How often do you smoke medium cigars?
-        quantity: How many medium cigars do you currently smoke in a normal day?
+        quantity: How many medium cigars do you currently smoke?
         change: Has the number of medium cigars you normally smoke changed over time?
       past:
         frequency: How often did you smoke medium cigars?
@@ -87,7 +87,7 @@ tobaccoTypes:
       current:
         status: Do you currently smoke large cigars?
         frequency: How often do you smoke large cigars?
-        quantity: How many large cigars do you currently smoke in a normal day?
+        quantity: How many large cigars do you currently smoke?
         change: Has the number of large cigars you normally smoke changed over time?
       past:
         frequency: How often did you smoke large cigars?
@@ -103,7 +103,7 @@ tobaccoTypes:
       current:
         status: Do you currently smoke cigarillos?
         frequency: How often do you smoke cigarillos?
-        quantity: How many cigarillos do you currently smoke in a normal day?
+        quantity: How many cigarillos do you currently smoke?
         change: Has the number of cigarillos you normally smoke changed over time?
       past:
         frequency: How often did you smoke cigarillos?
@@ -119,7 +119,7 @@ tobaccoTypes:
       current:
         status: Do you currently smoke shisha?
         frequency: How often do you smoke shisha?
-        quantity: How long do you currently smoke shisha in a normal day?
+        quantity: How long do you currently smoke shisha?
       past:
         frequency: How often did you smoke shisha?
         quantity: How long did you smoke shisha in a normal day?
