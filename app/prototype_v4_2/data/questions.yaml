@@ -685,16 +685,16 @@ questions:
     input:
       label: How often do you smoke?
     options:
-      - label: Every day
+      - label: Daily
         hint: You smoke on most days, for example, 5 or more days a week
         value: daily
-      - label: Most weeks
-        hint: You smoke at least once a week, but not on most days, for example, at weekends only
+      - label: Weekly
+        hint: You smoke at least once a week, but not on most days, for example, on weekends only
         value: weekly
-      - label: Most months
+      - label: Monthly
         hint: You smoke at least once a month, but less than once a week
         value: monthly
-      - label: Rarely
+      - label: Yearly
         hint: You smoke less than once a month, for example, a few times a year
         value: yearly
     validation:
@@ -798,16 +798,16 @@ questions:
     input:
       label: How often did you smoke?
     options:
-      - label: Every day
+      - label: Daily
         hint: You smoke on most days, for example, 5 or more days a week
         value: daily
-      - label: Most weeks
-        hint: You smoke at least once a week, but not on most days, for example, at weekends only
+      - label: Weekly
+        hint: You smoke at least once a week, but not on most days, for example, on weekends only
         value: weekly
-      - label: Most months
+      - label: Monthly
         hint: You smoke at least once a month, but less than once a week
         value: monthly
-      - label: Rarely
+      - label: Yearly
         hint: You smoke less than once a month, for example, a few times a year
         value: yearly
     validation:
