@@ -142,10 +142,13 @@ pages:
       - respiratory-conditions
   - id: asbestos
     heading:
-      title: Exposure to asbestos
+      title: If you worked with asbestos or might have been exposed at work
       caption: Your health
     description: |
-      You may have been exposed to asbestos if you worked or lived with someone in an industry such as building or construction, particularly from the 1950s to the 1990s.
+      You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+
+      You might also have been exposed if you lived with someone who worked with asbestos.
+
       <details class="nhsuk-details">
         <summary class="nhsuk-details__summary">
           <span class="nhsuk-details__summary-text">
@@ -161,7 +164,7 @@ pages:
           <li>floor tiles</li>
           <li>insulating board to protect buildings and ships against fire</li>
           </ul>
-          <p class="nhsuk-body">If you worked in an industry such as building or construction, you are more likely to have come into contact with damaged asbestos.</p>
+          <p class="nhsuk-body">If you or someone you lived with worked in an industry such as building or construction you are more likely to have come into contact with damaged asbestos materials and products.</p>
         </div>
       </details>
     questions:
