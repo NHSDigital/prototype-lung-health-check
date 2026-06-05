@@ -17,9 +17,9 @@ questions:
     type: single
     answerKey: phoneQuestionnaire
     options:
-      - label: Yes
+      - label: Yes, I have completed a lung cancer risk questionnaire
         value: yes
-      - label: No
+      - label: No, I can continue online
         value: no
     validation:
       required: true
@@ -27,7 +27,7 @@ questions:
       required:
         text: Select whether you have previously completed a lung cancer risk questionnaire by phone
     input:
-      label: Have you previously completed a lung cancer risk questionnaire by phone?
+      label: Have you previously completed a lung cancer risk questionnaire by phone in the last 12 months?
   - id: smoker
     type: single
     answerKey: smoker

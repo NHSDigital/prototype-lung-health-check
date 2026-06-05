@@ -30,24 +30,27 @@ flowchart TD
 
   weight{"Weight"} -- Metric --> weightMetric["Weight - metric"]
   weight -- Imperial --> weightImperial["Weight - imperial"]
-  weightMetric --> aboutYou["About you<br>Gender, sex, ethnicity and education"]
-  weightImperial --> aboutYou
+  weightMetric --> gender["Gender identity"]
+  weightImperial --> gender
+  gender --> sex["Sex at birth"]
+  sex --> ethnicity["Ethnic background"]
+  ethnicity --> education["Education"]
 
-  aboutYou --> respiratory["Respiratory conditions"]
-  respiratory --> asbestos["Asbestos<br>At work, at home"]
-  asbestos --> cancerDiagnosis["Cancer diagnosis"]
-  cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
-
-  relatives -- Yes --> relativesAge["Relative diagnosed before 60?"]
-  relatives -- No --> smokingDuration["Smoking duration<br>Age started, age stopped if applicable,<br>periods stopped"]
-  relativesAge --> smokingDuration
-
+  education --> smokingDuration["When you smoked tobacco<br>Age started, age stopped if applicable,<br>periods stopped"]
   smokingDuration --> smokingType{"Smoking type"}
 
   smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
   smokingType -- One or more tobacco types --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
 
-  tobaccoLoop --> cya["Check your answers"]
+  tobaccoLoop --> respiratory["Respiratory conditions"]
+  respiratory --> asbestos["Asbestos<br>At work, at home"]
+  asbestos --> cancerDiagnosis["Cancer diagnosis"]
+  cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
+
+  relatives -- Yes --> relativesAge["Relative diagnosed before 60?"]
+  relatives -- No --> cya["Check your answers"]
+  relativesAge --> cya
+
   cya --> confirmation["Confirmation<br>End"]
 ```
 
@@ -91,8 +94,8 @@ flowchart TD
 ## Notes
 
 - Height and weight unit pages can be switched manually using the unit-switch links.
-- `Smoking duration` combines age started smoking, age stopped smoking and periods stopped smoking.
-- `Age stopped smoking` is shown on `Smoking duration` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
+- `When you smoked tobacco` combines age started smoking, age stopped smoking and periods stopped smoking.
+- `Age stopped smoking` is shown on `When you smoked tobacco` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
 - `Tobacco smoking` combines smoking frequency and smoking quantity.
 - `Tobacco smoking change` combines changed-smoking frequency, quantity and years.
 - The tobacco subflow uses query strings such as `/prototype_v4_2/smoking-status?type=cigarettes` and `/prototype_v4_2/tobacco-smoking-change?type=cigarettes&change=greater`.

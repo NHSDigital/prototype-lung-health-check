@@ -142,8 +142,31 @@ pages:
       - respiratory-conditions
   - id: asbestos
     heading:
-      title: Exposure to asbestos
+      title: If you have been exposed to asbestos
       caption: Your health
+    description: |
+      You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+
+      You might also have been exposed if you lived with someone who worked with asbestos.
+
+      <details class="nhsuk-details">
+        <summary class="nhsuk-details__summary">
+          <span class="nhsuk-details__summary-text">
+            What is asbestos?
+          </span>
+        </summary>
+        <div class="nhsuk-details__text">
+          <p class="nhsuk-body">Asbestos was used in a number of building materials and products. For example:</p>
+          <ul class="nhsuk-list nhsuk-list--bullet">
+          <li>boilers and pipes</li>
+          <li>car brakes</li>
+          <li>cement for roofing sheets</li>
+          <li>floor tiles</li>
+          <li>insulating board to protect buildings and ships against fire</li>
+          </ul>
+          <p class="nhsuk-body">If you or someone you lived with worked in an industry such as building or construction you are more likely to have come into contact with damaged asbestos materials and products.</p>
+        </div>
+      </details>
     questions:
       - asbestos-at-work
       - asbestos-at-home
@@ -151,7 +174,7 @@ pages:
     questions:
       - cancer-diagnosis
     heading:
-      title: Tell us if you have ever been diagnosed with cancer
+      title: If you have ever been diagnosed with cancer
       caption: Your health
     description: |
       If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.
@@ -159,7 +182,7 @@ pages:
     questions:
       - cancer-diagnosis-relatives
     heading:
-      title: Tell us if your parents, siblings or children have ever been diagnosed with lung cancer
+      title: If your parents, siblings or children have ever been diagnosed with lung cancer
       caption: Your family history
     description: |
       If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.

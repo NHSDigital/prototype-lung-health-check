@@ -17,9 +17,9 @@ questions:
     type: single
     answerKey: phoneQuestionnaire
     options:
-      - label: Yes
+      - label: Yes, I have completed a lung cancer risk questionnaire
         value: yes
-      - label: No
+      - label: No, I can continue online
         value: no
     validation:
       required: true
@@ -27,7 +27,7 @@ questions:
       required:
         text: Select whether you have previously completed a lung cancer risk questionnaire by phone
     input:
-      label: Have you previously completed a lung cancer risk questionnaire by phone?
+      label: Have you previously completed a lung cancer risk questionnaire by phone in the last 12 months?
   - id: smoker
     type: single
     answerKey: smoker
@@ -356,7 +356,7 @@ questions:
     type: single
     answerKey: education
     input:
-      label: What is the highest level of education have you completed?
+      label: What is the highest level of education you have completed?
     options:
       - label: I finished school before the age of 15
         value: before_15
@@ -539,18 +539,18 @@ questions:
         text: Age you started smoking must be 1 or older
       max:
         text: Age you started smoking must be 120 or younger
-    caption: Your smoking habits
+    caption: Your smoking history
   - id: age-stopped-smoking
     type: text
     answerKey: ageStoppedSmoking
     input:
-      label: How old were you when you stopped smoking?
+      label: How old were you when you quit smoking?
       hint: Give an estimate if you are not sure
       prefix: Age
       inputmode: numeric
       classes: nhsuk-input--width-2
     summary:
-      label: Age you stopped smoking
+      label: Age you quit smoking
     validation:
       required: true
       type: number
@@ -558,14 +558,14 @@ questions:
       max: 120
     errors:
       required:
-        text: Enter the age you stopped smoking
+        text: Enter the age you quit smoking
       invalid:
-        text: Enter the age you stopped smoking using numbers
+        text: Enter the age you quit smoking using numbers
       min:
-        text: Age you stopped smoking must be 1 or older
+        text: Age you quit smoking must be 1 or older
       max:
-        text: Age you stopped smoking must be 120 or younger
-    caption: Your smoking habits
+        text: Age you quit smoking must be 120 or younger
+    caption: Your smoking history
   - id: periods-stopped-smoking
     type: single
     answerKey: periodsStoppedSmoking
@@ -618,7 +618,7 @@ questions:
     type: multiple
     answerKey: smokingType
     input:
-      label: What do you or have you smoked?
+      label: Have you ever smoked any of the following types of tobacco?
       hint: Select all that apply
     options:
       - label: Cigarettes
@@ -686,15 +686,16 @@ questions:
       label: How often do you smoke?
     options:
       - label: Daily
+        hint: You smoke on most days, for example, 5 or more days a week
         value: daily
       - label: Weekly
-        hint: For example, on the weekend
+        hint: You smoke at least once a week, but not on most days, for example, on weekends only
         value: weekly
       - label: Monthly
-        hint: Select this option if you smoke at least once a month
+        hint: You smoke at least once a month, but less than once a week
         value: monthly
       - label: Yearly
-        hint: For example, 2 to 3 times a year or fewer
+        hint: You smoke less than once a month, for example, a few times a year
         value: yearly
     validation:
       required: true
@@ -798,15 +799,16 @@ questions:
       label: How often did you smoke?
     options:
       - label: Daily
+        hint: You smoke on most days, for example, 5 or more days a week
         value: daily
       - label: Weekly
-        hint: For example, on the weekend
+        hint: You smoke at least once a week, but not on most days, for example, on weekends only
         value: weekly
       - label: Monthly
-        hint: Select this option if you smoked at least once a month
+        hint: You smoke at least once a month, but less than once a week
         value: monthly
       - label: Yearly
-        hint: For example, 2 to 3 times a year or fewer
+        hint: You smoke less than once a month, for example, a few times a year
         value: yearly
     validation:
       required: true
@@ -861,7 +863,7 @@ questions:
     input:
       id: smoking-years-change
       label: How many years did you smoke this amount?
-      hint: Give a rough estimate
+      hint: Give an estimate if you are not sure
       suffix: years
       inputmode: numeric
       classes: nhsuk-input--width-4

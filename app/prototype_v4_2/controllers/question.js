@@ -25,6 +25,19 @@ const getQuestionPageIds = (id, answers = {}) => {
   return getQuestionPage(id, answers).questions.map((question) => question.id)
 }
 
+const getLastSmokingTypeStepBack = (answers = {}) => {
+  const smokingSteps = getSmokingTypeSteps(answers)
+  const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
+
+  return lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : `/prototype_${version}/smoking-type`
+}
+
+const getFamilyHistoryBack = (answers = {}) => {
+  return answers.cancerDiagnosisRelatives === 'yes'
+    ? `/prototype_${version}/cancer-diagnosis-relatives-age`
+    : `/prototype_${version}/cancer-diagnosis-relatives`
+}
+
 /// ------------------------------------------------------------------------ ///
 ///
 /// ------------------------------------------------------------------------ ///
@@ -281,7 +294,7 @@ exports.weightMetric_post = (req, res) => {
     }, errors)
   } else {
     delete answers.weight?.imperial
-    res.redirect(`/prototype_${version}/about-you`)
+    res.redirect(`/prototype_${version}/gender`)
   }
 }
 
@@ -310,152 +323,129 @@ exports.weightImperial_post = (req, res) => {
     }, errors)
   } else {
     delete answers.weight?.metric
-    res.redirect(`/prototype_${version}/about-you`)
+    res.redirect(`/prototype_${version}/gender`)
   }
 }
 
-exports.aboutYou_get = (req, res) => {
+exports.gender_get = (req, res) => {
   const back = getWeightBack(req)
-  const { answers } = req.session.data
 
-  renderQuestionPage(res, 'about-you', {
-    next: `/prototype_${version}/about-you`,
+  renderQuestion(res, 'gender', {
+    next: `/prototype_${version}/gender`,
     back,
     cancel: `/prototype_${version}/`
-  }, [], answers)
+  })
 }
 
-exports.aboutYou_post = (req, res) => {
+exports.gender_post = (req, res) => {
   const { answers } = req.session.data
   const back = getWeightBack(req)
-  const errors = validateQuestions(answers, getQuestionPageIds('about-you', answers))
+  const errors = validateQuestion(answers, 'gender')
 
   if (errors.length) {
-    renderQuestionPage(res, 'about-you', {
-      next: `/prototype_${version}/about-you`,
+    renderQuestion(res, 'gender', {
+      next: `/prototype_${version}/gender`,
       back,
       cancel: `/prototype_${version}/`
-    }, errors, answers)
+    }, errors)
   } else {
-    res.redirect(`/prototype_${version}/respiratory-conditions`)
+    res.redirect(`/prototype_${version}/sex`)
   }
 }
 
-// exports.gender_get = (req, res) => {
-//   const back = getWeightBack(req)
+exports.sex_get = (req, res) => {
+  renderQuestion(res, 'sex', {
+    next: `/prototype_${version}/sex`,
+    back: `/prototype_${version}/gender`,
+    cancel: `/prototype_${version}/`
+  })
+}
 
-//   renderQuestion(res, 'gender', {
-//     next: `/prototype_${version}/gender`,
-//     back,
-//     cancel: `/prototype_${version}/`
-//   })
-// }
+exports.sex_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'sex')
 
-// exports.gender_post = (req, res) => {
-//   const { answers } = req.session.data
-//   const back = getWeightBack(req)
-//   const errors = validateQuestion(answers, 'gender')
+  if (errors.length) {
+    renderQuestion(res, 'sex', {
+      next: `/prototype_${version}/sex`,
+      back: `/prototype_${version}/gender`,
+      cancel: `/prototype_${version}/`
+    }, errors)
+  } else {
+    res.redirect(`/prototype_${version}/ethnicity`)
+  }
+}
 
-//   if (errors.length) {
-//     renderQuestion(res, 'gender', {
-//       next: `/prototype_${version}/gender`,
-//       back,
-//       cancel: `/prototype_${version}/`
-//     }, errors)
-//   } else {
-//     res.redirect(`/prototype_${version}/sex`)
-//   }
-// }
+exports.ethnicity_get = (req, res) => {
+  renderQuestion(res, 'ethnicity', {
+    next: `/prototype_${version}/ethnicity`,
+    back: `/prototype_${version}/sex`,
+    cancel: `/prototype_${version}/`
+  })
+}
 
-// exports.sex_get = (req, res) => {
-//   renderQuestion(res, 'sex', {
-//     next: `/prototype_${version}/sex`,
-//     back: `/prototype_${version}/gender`,
-//     cancel: `/prototype_${version}/`
-//   })
-// }
+exports.ethnicity_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'ethnicity')
 
-// exports.sex_post = (req, res) => {
-//   const { answers } = req.session.data
-//   const errors = validateQuestion(answers, 'sex')
+  if (errors.length) {
+    renderQuestion(res, 'ethnicity', {
+      next: `/prototype_${version}/ethnicity`,
+      back: `/prototype_${version}/sex`,
+      cancel: `/prototype_${version}/`
+    }, errors)
+  } else {
+    res.redirect(`/prototype_${version}/education`)
+  }
+}
 
-//   if (errors.length) {
-//     renderQuestion(res, 'sex', {
-//       next: `/prototype_${version}/sex`,
-//       back: `/prototype_${version}/gender`,
-//       cancel: `/prototype_${version}/`
-//     }, errors)
-//   } else {
-//     res.redirect(`/prototype_${version}/ethnicity`)
-//   }
-// }
+exports.education_get = (req, res) => {
+  renderQuestion(res, 'education', {
+    next: `/prototype_${version}/education`,
+    back: `/prototype_${version}/ethnicity`,
+    cancel: `/prototype_${version}/`
+  })
+}
 
-// exports.ethnicity_get = (req, res) => {
-//   renderQuestion(res, 'ethnicity', {
-//     next: `/prototype_${version}/ethnicity`,
-//     back: `/prototype_${version}/sex`,
-//     cancel: `/prototype_${version}/`
-//   })
-// }
+exports.education_post = (req, res) => {
+  const { answers } = req.session.data
+  const errors = validateQuestion(answers, 'education')
 
-// exports.ethnicity_post = (req, res) => {
-//   const { answers } = req.session.data
-//   const errors = validateQuestion(answers, 'ethnicity')
-
-//   if (errors.length) {
-//     renderQuestion(res, 'ethnicity', {
-//       next: `/prototype_${version}/ethnicity`,
-//       back: `/prototype_${version}/sex`,
-//       cancel: `/prototype_${version}/`
-//     }, errors)
-//   } else {
-//     res.redirect(`/prototype_${version}/education`)
-//   }
-// }
-
-// exports.education_get = (req, res) => {
-//   renderQuestion(res, 'education', {
-//     next: `/prototype_${version}/education`,
-//     back: `/prototype_${version}/ethnicity`,
-//     cancel: `/prototype_${version}/`
-//   })
-// }
-
-// exports.education_post = (req, res) => {
-//   const { answers } = req.session.data
-//   const errors = validateQuestion(answers, 'education')
-
-//   if (errors.length) {
-//     renderQuestion(res, 'education', {
-//       next: `/prototype_${version}/education`,
-//       back: `/prototype_${version}/ethnicity`,
-//       cancel: `/prototype_${version}/`
-//     }, errors)
-//   } else {
-//     res.redirect(`/prototype_${version}/respiratory-conditions`)
-//   }
-// }
+  if (errors.length) {
+    renderQuestion(res, 'education', {
+      next: `/prototype_${version}/education`,
+      back: `/prototype_${version}/ethnicity`,
+      cancel: `/prototype_${version}/`
+    }, errors)
+  } else {
+    res.redirect(`/prototype_${version}/smoking-duration`)
+  }
+}
 
 /// ------------------------------------------------------------------------ ///
 /// Your health
 /// ------------------------------------------------------------------------ ///
 
 exports.respiratoryConditions_get = (req, res) => {
+  const answers = req.session.data.answers || {}
+  const back = getLastSmokingTypeStepBack(answers)
+
   renderQuestion(res, 'respiratory-conditions', {
     next: `/prototype_${version}/respiratory-conditions`,
-    back: `/prototype_${version}/about-you`,
+    back,
     cancel: `/prototype_${version}/`
   })
 }
 
 exports.respiratoryConditions_post = (req, res) => {
   const { answers } = req.session.data
+  const back = getLastSmokingTypeStepBack(answers)
   const errors = validateQuestion(answers, 'respiratory-conditions')
 
   if (errors.length) {
     renderQuestion(res, 'respiratory-conditions', {
       next: `/prototype_${version}/respiratory-conditions`,
-      back: `/prototype_${version}/about-you`,
+      back,
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
@@ -538,7 +528,7 @@ exports.cancerDiagnosisRelatives_post = (req, res) => {
       res.redirect(`/prototype_${version}/cancer-diagnosis-relatives-age`)
     } else {
       delete answers.cancerDiagnosisRelativesAge
-      res.redirect(`/prototype_${version}/smoking-duration`)
+      res.redirect(`/prototype_${version}/check-your-answers`)
     }
   }
 }
@@ -562,7 +552,7 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
-    res.redirect(`/prototype_${version}/smoking-duration`)
+    res.redirect(`/prototype_${version}/check-your-answers`)
   }
 }
 
@@ -572,24 +562,22 @@ exports.cancerDiagnosisRelativesAge_post = (req, res) => {
 
 exports.smokingDuration_get = (req, res) => {
   const answers = req.session.data.answers || {}
-  const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
 
   renderQuestionPage(res, 'smoking-duration', {
     next: `/prototype_${version}/smoking-duration`,
-    back,
+    back: `/prototype_${version}/education`,
     cancel: `/prototype_${version}/`
   }, [], answers)
 }
 
 exports.smokingDuration_post = (req, res) => {
   const answers = req.session.data.answers || {}
-  const back = answers?.cancerDiagnosisRelativesAge ? `/prototype_${version}/cancer-diagnosis-relatives-age` : `/prototype_${version}/cancer-diagnosis-relatives`
   const errors = validateQuestions(answers, getQuestionPageIds('smoking-duration', answers))
 
   if (errors.length) {
     renderQuestionPage(res, 'smoking-duration', {
       next: `/prototype_${version}/smoking-duration`,
-      back,
+      back: `/prototype_${version}/education`,
       cancel: `/prototype_${version}/`
     }, errors, answers)
   } else {
@@ -761,14 +749,13 @@ exports.tobaccoSmokingChange_post = (req, res) => {
 
 exports.checkYourAnswers_get = (req, res) => {
   const { answers } = req.session.data
-  const smokingSteps = getSmokingTypeSteps(answers)
-  const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
+  const back = getFamilyHistoryBack(answers)
 
   res.render(view('check-your-answers'), {
     checkYourAnswers: getCheckYourAnswers(answers),
     actions: {
       next: `/prototype_${version}/check-your-answers`,
-      back: lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : `/prototype_${version}/smoking-type`,
+      back,
       cancel: `/prototype_${version}/`
     }
   })

@@ -22,14 +22,14 @@ pages:
       - your education
       - if you have ever had a cancer diagnosis
       - if your parents, siblings, or children have ever had a lung cancer diagnosis
-      - your smoking habits
+      - Your smoking history
   - id: smoker
     questions:
       - smoker
     heading:
       title: Tobacco smoking
     description: |
-      We will ask you questions about your smoking habits. This includes different types of tobacco smoking such as:
+      We will ask you questions about Your smoking history. This includes different types of tobacco smoking such as:
 
       - cigarettes from a packet
       - rolling tobacco, or roll ups
@@ -40,6 +40,8 @@ pages:
 
       It does not currently include vaping or e-cigarettes.
   - id: date-of-birth
+    heading:
+      caption: Eligibilty
     questions:
       - date-of-birth
   - id: face-to-face-appointment
@@ -47,6 +49,7 @@ pages:
       - face-to-face-appointment
     heading:
       title: Check if you need a face-to-face appointment
+      caption: Eligibilty
     description: |
       This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
 
@@ -96,15 +99,6 @@ pages:
       An accurate measurement is important.
 
       If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
-  - id: about-you
-    heading:
-      title: About you
-    questions:
-      - gender
-      - sex
-      - ethnicity
-      - education
-    description: The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
   - id: gender
     questions:
       - gender
@@ -148,8 +142,31 @@ pages:
       - respiratory-conditions
   - id: asbestos
     heading:
-      title: Exposure to asbestos
+      title: If you have been exposed to asbestos
       caption: Your health
+    description: |
+      You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+
+      You might also have been exposed if you lived with someone who worked with asbestos.
+
+      <details class="nhsuk-details">
+        <summary class="nhsuk-details__summary">
+          <span class="nhsuk-details__summary-text">
+            What is asbestos?
+          </span>
+        </summary>
+        <div class="nhsuk-details__text">
+          <p class="nhsuk-body">Asbestos was used in a number of building materials and products. For example:</p>
+          <ul class="nhsuk-list nhsuk-list--bullet">
+          <li>boilers and pipes</li>
+          <li>car brakes</li>
+          <li>cement for roofing sheets</li>
+          <li>floor tiles</li>
+          <li>insulating board to protect buildings and ships against fire</li>
+          </ul>
+          <p class="nhsuk-body">If you or someone you lived with worked in an industry such as building or construction you are more likely to have come into contact with damaged asbestos materials and products.</p>
+        </div>
+      </details>
     questions:
       - asbestos-at-work
       - asbestos-at-home
@@ -157,7 +174,7 @@ pages:
     questions:
       - cancer-diagnosis
     heading:
-      title: Tell us if you have ever been diagnosed with cancer
+      title: If you have ever been diagnosed with cancer
       caption: Your health
     description: |
       If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.
@@ -165,7 +182,7 @@ pages:
     questions:
       - cancer-diagnosis-relatives
     heading:
-      title: Tell us if your parents, siblings or children have ever been diagnosed with lung cancer
+      title: If your parents, siblings or children have ever been diagnosed with lung cancer
       caption: Your family history
     description: |
       If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
@@ -183,8 +200,8 @@ pages:
       If you do not know or cannot remember, select 'I do not know'.
   - id: smoking-duration
     heading:
-      title: Smoking duration
-      caption: Your smoking habits
+      title: When you smoked tobacco
+      caption: Your smoking history
     questions:
       - age-started-smoking
       - id: age-stopped-smoking
@@ -196,15 +213,15 @@ pages:
               is: no
       - periods-stopped-smoking
   - id: smoking-type
-    questions:
-      - smoking-type
     heading:
       title: The type of tobacco you smoke or used to smoke
-      caption: Your smoking habits
+      caption: Your smoking history
+    questions:
+      - smoking-type
     description: |
       Smoking affects your health in different ways depending on what you smoke.
 
-      We need to know what you smoke, or used to smoke, frequently. For example, if you have smoked a pipe on a weekly basis for a year or longer.
+      We need to know what you smoke, or used to smoke, for a period of 1 year or longer. This does not include vaping or e-cigarettes.
 
       You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
     variants:
@@ -223,12 +240,14 @@ pages:
   - id: tobacco-smoking
     heading:
       title: Tobacco smoking
+      caption: Your smoking history
     questions:
       - smoking-frequency
       - smoking-quantity
   - id: tobacco-smoking-change
     heading:
-      title: Tobacco smoking change
+      title: Tobacco smoking
+      caption: Your smoking history
     questions:
       - smoking-frequency-change
       - smoking-quantity-change

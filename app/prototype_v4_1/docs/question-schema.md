@@ -19,7 +19,7 @@ questions:
     description: |
       We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
     input:
-      label: What is the highest level of education have you completed?
+      label: What is the highest level of education you have completed?
     options:
       - label: GCSEs
         hint: Previously O-levels

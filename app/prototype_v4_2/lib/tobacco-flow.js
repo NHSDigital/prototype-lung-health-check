@@ -9,7 +9,7 @@ const { getQuestionPage } = require('./question-pages')
 const { renderQuestion, renderQuestionPage, version } = require('./question-renderer')
 const { validateQuestion } = require('./question-validator')
 
-const nextStepAfterSmokingTypes = `/prototype_${version}/check-your-answers`
+const nextStepAfterSmokingTypes = `/prototype_${version}/respiratory-conditions`
 
 const getValueLabels = () => {
   return {
@@ -91,6 +91,16 @@ const getQuestionVariantValueLabels = (id, type) => {
 
     return labels
   }, {})
+}
+
+/**
+ * Get the display label for a tobacco type.
+ *
+ * @param {string} type - Tobacco type key.
+ * @returns {string} Tobacco type label.
+ */
+const getSmokingTypeLabel = (type) => {
+  return (getValueLabels().smokingType[type] || '').replace(', or ', ' or ')
 }
 
 /**
@@ -371,6 +381,7 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
 
   return {
     ...smokingType,
+    pageHeading: getSmokingTypeLabel(type),
     statusHeading: currentHeadings.status,
     frequencyHeading: tenseHeadings.frequency,
     quantityHeading: tenseHeadings.quantity,
@@ -475,6 +486,20 @@ const getSmokingChangeComparisonText = (type, change, answer = {}) => {
 }
 
 /**
+ * Build the heading for a changed-smoking grouped page.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} change - Smoking change key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {string} Contextual page heading.
+ */
+const getSmokingChangePageHeading = (type, change, answer = {}) => {
+  const comparisonText = getSmokingChangeComparisonText(type, change, answer)
+
+  return comparisonText ? upperFirst(comparisonText) : ''
+}
+
+/**
  * Build the heading for changed-smoking frequency, quantity and years pages.
  *
  * @param {string} page - Changed-smoking page id.
@@ -482,9 +507,10 @@ const getSmokingChangeComparisonText = (type, change, answer = {}) => {
  * @param {string} change - Smoking change key.
  * @param {Object} changeAnswer - Change-specific answer object.
  * @param {Object} answer - Answer object for one tobacco type.
+ * @param {boolean} includeComparison - Whether to include the more/fewer comparison text.
  * @returns {string} Contextual page heading.
  */
-const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer = {}) => {
+const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer = {}, includeComparison = true) => {
   const smokingType = smokingTypes[type]
   const smokingChange = smokingChangeTypes[change]
 
@@ -494,11 +520,20 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
 
   const comparisonText = getSmokingChangeComparisonText(type, change, answer)
 
-  if (page === 'smoking-frequency-change' || page === 'smoking-quantity-change') {
-    const headingType = page === 'smoking-frequency-change' ? 'frequencyHeading' : 'quantityHeading'
-    const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true)[headingType], answer.smokingFrequency)
+  if (page === 'smoking-frequency-change') {
+    const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true).frequencyHeading, answer.smokingFrequency)
 
-    return baseHeading ? `${baseHeading.replace('?', '')} ${comparisonText}?` : ''
+    return includeComparison && comparisonText ? `${baseHeading.replace('?', '')} ${comparisonText}?` : baseHeading
+  }
+
+  if (page === 'smoking-quantity-change') {
+    const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true).quantityHeading, answer.smokingFrequency)
+    const normalHeading = baseHeading
+      .replace(' did you smoke ', ' did you normally smoke ')
+      .replace(' did you smoke?', ' did you normally smoke?')
+      .replace(/ in a normal (day|week|month|year)\?$/, '?')
+
+    return includeComparison && comparisonText ? `${baseHeading.replace('?', '')} ${comparisonText}?` : normalHeading
   }
 
   if (page === 'smoking-years-change') {
@@ -701,6 +736,10 @@ const lowerFirst = (value = '') => {
   return value ? `${value.charAt(0).toLowerCase()}${value.slice(1)}` : ''
 }
 
+const upperFirst = (value = '') => {
+  return value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : ''
+}
+
 /**
  * Convert a question heading into an error-message answer phrase.
  *
@@ -714,6 +753,7 @@ const getAnswerPhraseFromHeading = (heading = '') => {
     .replace(/^how long did you smoke /, 'how long you smoked ')
     .replace(/^how long do you currently smoke /, 'how long you currently smoke ')
     .replace(/^how long do you smoke /, 'how long you smoke ')
+    .replace(/^(how (?:much|many|long) .+?) did you normally smoke/, '$1 you normally smoked')
     .replace(/^(how (?:much|many|long) .+?) did you smoke /, '$1 you smoked ')
     .replace(/^(how (?:much|many|long) .+?) do you currently smoke /, '$1 you currently smoke ')
     .replace(/^(how (?:much|many|long) .+?) do you smoke /, '$1 you smoke ')
@@ -806,7 +846,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: smokingType.statusHeading,
-        caption: smokingType.caption
+        caption: 'Your smoking history'
       },
       input: {
         name: `answers[${step.type}][smokingStatus]`
@@ -825,9 +865,7 @@ const getSmokingContentQuestionOverrides = ({
         name: `answers[${step.type}][smokingFrequency]`
       },
       value: answer.smokingFrequency,
-      items: getQuestionItemsWithLabels('smoking-frequency', {}, {
-        monthly: `Select this option if you ${isPastSmokingType ? 'smoked' : 'smoke'} at least once a month`
-      })
+      items: getQuestionItemsWithLabels('smoking-frequency')
     }
   }
 
@@ -848,7 +886,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: smokingType.changeHeading,
-        caption: smokingType.caption
+        caption: 'Your smoking history'
       },
       input: {
         name: `answers[${step.type}][smokingChange]`
@@ -861,8 +899,8 @@ const getSmokingContentQuestionOverrides = ({
   if (page === 'smoking-frequency-change') {
     return {
       heading: {
-        title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
-        caption: smokingType.caption
+        title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer, false),
+        caption: 'Your smoking history'
       },
       input: {
         name: `answers[${step.type}][${smokingChange.answerKey}][frequency]`
@@ -876,8 +914,8 @@ const getSmokingContentQuestionOverrides = ({
     return getSmokingQuantityQuestionOverrides({
       page,
       step,
-      heading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
-      caption: smokingType.caption,
+      heading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer, false),
+      caption: 'Your smoking history',
       name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
       value: changeAnswer.quantity,
       conditionalValue: changeAnswer.smokingQuantityOther,
@@ -889,7 +927,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
-        caption: smokingType.caption
+        caption: 'Your smoking history'
       },
       input: {
         id: 'smoking-years-change',
@@ -926,10 +964,17 @@ const getSmokingTypePageAnswers = (step) => {
   }
 }
 
-const getSmokingTypePageHeading = (page, smokingType = {}) => {
+const getSmokingTypePageHeading = (page, smokingType = {}, step = {}, answer = {}) => {
   if (page === 'tobacco-smoking-change') {
     return {
-      title: `${smokingType.caption} change`
+      title: getSmokingChangePageHeading(step.type, step.change, answer),
+      caption: 'Your smoking history'
+    }
+  }
+
+  if (page === 'tobacco-smoking') {
+    return {
+      title: smokingType.pageHeading || smokingType.caption
     }
   }
 
@@ -955,7 +1000,7 @@ const getSmokingContentPageOverrides = (req, page, step) => {
   }, {})
 
   return {
-    heading: getSmokingTypePageHeading(page, context.smokingType),
+    heading: getSmokingTypePageHeading(page, context.smokingType, step, context.answer),
     questions
   }
 }
