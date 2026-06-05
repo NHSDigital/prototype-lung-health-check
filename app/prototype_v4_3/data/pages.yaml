@@ -174,7 +174,7 @@ pages:
     questions:
       - cancer-diagnosis
     heading:
-      title: Tell us if you have ever been diagnosed with cancer
+      title: If you have ever been diagnosed with cancer
       caption: Your health
     description: |
       If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.
@@ -182,7 +182,7 @@ pages:
     questions:
       - cancer-diagnosis-relatives
     heading:
-      title: Tell us if your parents, siblings or children have ever been diagnosed with lung cancer
+      title: If your parents, siblings or children have ever been diagnosed with lung cancer
       caption: Your family history
     description: |
       If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
