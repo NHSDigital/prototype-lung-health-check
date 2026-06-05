@@ -13,7 +13,7 @@ tobaccoTypes:
         change: Has the number of cigarettes you normally smoke changed over time?
       past:
         frequency: How often did you smoke cigarettes?
-        quantity: How many cigarettes did you smoke in a normal day?
+        quantity: How many cigarettes did you smoke?
         change: Did the number of cigarettes you normally smoked change over time?
 
   rolling_tobacco:
@@ -43,7 +43,7 @@ tobaccoTypes:
         change: Has the number of full pipe loads you normally smoke changed over time?
       past:
         frequency: How often did you smoke a pipe?
-        quantity: How many full pipe loads did you smoke in a normal day?
+        quantity: How many full pipe loads did you smoke?
         change: Did the number of full pipe loads you normally smoked change over time?
 
   small_cigars:
@@ -59,7 +59,7 @@ tobaccoTypes:
         change: Has the number of small cigars you normally smoke changed over time?
       past:
         frequency: How often did you smoke small cigars?
-        quantity: How many small cigars did you smoke in a normal day?
+        quantity: How many small cigars did you smoke?
         change: Did the number of small cigars you normally smoked change over time?
 
   medium_cigars:
@@ -75,7 +75,7 @@ tobaccoTypes:
         change: Has the number of medium cigars you normally smoke changed over time?
       past:
         frequency: How often did you smoke medium cigars?
-        quantity: How many medium cigars did you smoke in a normal day?
+        quantity: How many medium cigars did you smoke?
         change: Did the number of medium cigars you normally smoked change over time?
 
   large_cigars:
@@ -91,7 +91,7 @@ tobaccoTypes:
         change: Has the number of large cigars you normally smoke changed over time?
       past:
         frequency: How often did you smoke large cigars?
-        quantity: How many large cigars did you smoke in a normal day?
+        quantity: How many large cigars did you smoke?
         change: Did the number of large cigars you normally smoked change over time?
 
   cigarillos:
@@ -107,7 +107,7 @@ tobaccoTypes:
         change: Has the number of cigarillos you normally smoke changed over time?
       past:
         frequency: How often did you smoke cigarillos?
-        quantity: How many cigarillos did you smoke in a normal day?
+        quantity: How many cigarillos did you smoke?
         change: Did the number of cigarillos you normally smoked change over time?
 
   shisha:
@@ -122,7 +122,7 @@ tobaccoTypes:
         quantity: How long do you currently smoke shisha?
       past:
         frequency: How often did you smoke shisha?
-        quantity: How long did you smoke shisha in a normal day?
+        quantity: How long did you smoke shisha?
 
 smokingChangeTypes:
   greater:
