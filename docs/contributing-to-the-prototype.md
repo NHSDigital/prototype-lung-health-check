@@ -249,6 +249,7 @@ Merging a pull request adds the reviewed changes into the main version of the pr
 
 Before merging, check:
 
+- the pull request has at least 1 approval
 - the pull request has been reviewed by the right person or people
 - any requested changes have been made
 - important comments have been answered or resolved
@@ -265,7 +266,11 @@ To merge:
 
 After the pull request is merged, the changes are part of the main version of the prototype.
 
-Do not merge your own pull request unless your team has agreed that this is acceptable.
+Do not merge your own pull request until someone else has approved it.
+
+The `main` branch is protected. This means changes must be merged through a pull request and the pull request must have at least 1 approval before it can be merged.
+
+If new commits are pushed after someone has approved the pull request, GitHub will dismiss the existing approval. This means the pull request needs to be reviewed and approved again before it can be merged.
 
 ## Good practice
 
