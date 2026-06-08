@@ -33,6 +33,8 @@ GitHub and GitHub Desktop use some words that may be unfamiliar.
 
 `Pull request` means asking for your changes to be reviewed and merged into the main version of the prototype.
 
+`Review app` means a temporary version of the prototype that is created automatically on Heroku when someone creates a pull request. Reviewers can usually use it to see how the changed prototype looks and works.
+
 `Merge` means adding the changes from a pull request into the main version of the prototype.
 
 ## Clone the repository using GitHub Desktop
@@ -160,16 +162,25 @@ Please check:
 
 Ask someone to review the pull request. The reviewer should be someone who can check the content, design or technical impact of the change.
 
+When a pull request is created, a review app is usually created automatically on Heroku. This gives reviewers a temporary version of the prototype where they can see most changes in context.
+
 ## Review a pull request on GitHub
 
 Reviewing a pull request means checking someone else's changes before they are merged.
 
 1. Open the pull request on GitHub.
 2. Read the title and description.
-3. Select the `Files changed` tab.
-4. Review each changed file.
-5. Add comments if you have questions or suggested changes.
-6. Submit your review.
+3. Open the Heroku review app if one is available.
+4. Use the review app to check changes that are visible in the prototype.
+5. Return to the pull request on GitHub.
+6. Select the `Files changed` tab.
+7. Review any changes that are not visible in the Heroku review app.
+8. Add comments if you have questions or suggested changes.
+9. Submit your review.
+
+Use the Heroku review app to check visible changes, such as page content, layout, journey changes and form behaviour.
+
+Use the GitHub website to review changes that are not visible in the Heroku review app. This might include data files, configuration, documentation, validation rules or changes that only affect how the prototype is maintained.
 
 When reviewing, check:
 
