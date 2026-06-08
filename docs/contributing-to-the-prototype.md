@@ -272,6 +272,12 @@ The `main` branch is protected. This means changes must be merged through a pull
 
 If new commits are pushed after someone has approved the pull request, GitHub will dismiss the existing approval. This means the pull request needs to be reviewed and approved again before it can be merged.
 
+The person who created the pull request will usually merge it after it has been approved.
+
+A reviewer can merge someone else's pull request if the pull request has been approved, there are no unresolved comments, and the author or team is happy for it to be merged.
+
+If you approve someone else's pull request, do not merge it straight away unless it is clear that the change is ready to merge. If you are not sure, leave a comment asking whether they are happy for you to merge it.
+
 ## Good practice
 
 Keep each pull request focused on one change or one group of closely related changes.
