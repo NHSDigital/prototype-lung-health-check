@@ -51,6 +51,8 @@ LLPv2 was adapted for UK lung screening use. It includes smoking duration and tr
 
 For concurrent tobacco use, the smoking duration input should be the **union of smoking years**, not the sum of per-product durations.
 
+For LLPv2, cigarette-equivalent quantity is useful for normalising different products into a consistent tobacco exposure, but the public LLPv2 descriptions do not expose a separate cigarettes-per-day or pack-years term equivalent to PLCOm2012. The main overlap issue is therefore duration: how many calendar years the person smoked any relevant tobacco.
+
 ### PLCOm2012
 
 PLCOm2012 estimates 6-year lung cancer risk. The smoking inputs are:
@@ -130,6 +132,26 @@ Using the original LLP smoking-duration bands:
 In LLP, the consecutive history has the higher smoking-duration contribution because it spans more calendar years. The concurrent history should not be counted as 30 years just because there are 15 years of cigarettes and 15 years of roll-ups. Those years overlap.
 
 If overlapping product histories were summed incorrectly, the concurrent example would be moved from the 1 to 19 year band to the 20 to 39 year band. That would overstate the smoking-duration part of the LLP score.
+
+## LLPv2 impact
+
+For LLPv2, the analysis changes in 2 ways:
+
+1. LLPv2 broadens what counts in the smoking history. The UKLS documentation says LLPv2 added pipes and cigars alongside cigarettes and treated cigar and pipe smoking as conferring an identical risk to cigarette smoking.
+2. LLPv2 does not appear, from public documentation, to use a separate intensity term like PLCOm2012. That means concurrent smoking does not increase the LLPv2 score simply because the person smoked more cigarette-equivalents per day in the same years.
+
+For the worked example:
+
+| Scenario | Calendar smoking duration | Cigarette-equivalent intensity | LLPv2 smoking impact |
+| --- | ---: | ---: | --- |
+| Concurrent | 15 years | 20/day | Lower duration contribution |
+| Consecutive | 30 years | 10/day | Higher duration contribution |
+
+So, for LLPv2, the consecutive history is more likely to score higher than the concurrent history because it has more calendar years of smoking.
+
+If the 2 histories had the same calendar smoking duration, LLPv2 would not distinguish them through intensity in the way PLCOm2012 does. For example, 15 years at 20 cigarette-equivalents per day and 15 years at 10 cigarette-equivalents per day would have the same LLPv2 smoking-duration input, assuming both meet the relevant smoking threshold.
+
+The NIHR UKLS appendix also says start and stop smoking ages were grouped into 10-year bands for the LLP risk algorithm. That means small differences around age-band boundaries can affect the calculated LLPv2 risk in the live implementation. The public appendix does not provide enough detail to calculate an exact LLPv2 percentage for the worked example here.
 
 ## PLCOm2012 impact
 
