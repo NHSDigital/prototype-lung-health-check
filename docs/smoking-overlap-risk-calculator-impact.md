@@ -2,7 +2,7 @@
 
 This note looks at how smoking cigarettes and roll-ups at the same time, rather than one after the other, can affect lung cancer risk scores in the LLP and PLCO risk calculators.
 
-It is not clinical guidance. It is a modelling note for the v4.3 prototype questions.
+It is not clinical guidance. It is a modelling note for the v4.1, v4.2 and v4.3 prototype questions.
 
 ## Summary
 
@@ -14,6 +14,8 @@ For risk calculators this matters because:
 - **PLCOm2012 is sensitive to both smoking intensity and smoking duration**. If 2 tobacco products overlap, the daily cigarette-equivalent amount should be added together for those overlapping years.
 
 For the v4.3 prototype, this means we should avoid simply adding the number of years for each selected tobacco type. That would double-count overlapping periods.
+
+For v4.1 and v4.2, the issue is different. They collect one overall smoking duration and then ask about each tobacco type's frequency and quantity. That can support LLPv2 if the overall duration means "years when the person smoked any tobacco", but it is not enough to safely distinguish concurrent from consecutive product use for PLCOm2012.
 
 ## What v4.3 asks
 
@@ -32,6 +34,25 @@ The v4.3 prototype asks:
 This supports a better calculation than a single "years smoked" field, because it can identify overlap between tobacco types.
 
 One limitation is that the prototype asks roll-up quantity as bands of grams of rolling tobacco, not as a number of roll-ups. For this worked example, I use the product decision that **1 roll-up is equivalent to 2 cigarettes**.
+
+## What v4.1 and v4.2 ask
+
+The v4.1 and v4.2 prototypes collect smoking duration as a single overall smoking history:
+
+- age started smoking
+- age stopped smoking, where relevant
+- total periods stopped smoking for 1 year or longer
+
+They then collect tobacco type, frequency and quantity for each selected tobacco product.
+
+This means v4.1 and v4.2 can tell that someone smoked cigarettes and roll-ups, and can collect an amount for each product. They cannot tell whether those products were smoked:
+
+- at the same time
+- one after the other
+- partly overlapping
+- for different start and stop periods
+
+So v4.1 and v4.2 cannot build a reliable product-by-product calendar timeline. They rely on the user giving a correct overall calendar duration for all tobacco smoking.
 
 ## Calculator inputs affected
 
@@ -166,6 +187,39 @@ In this example, PLCOm2012 gives the concurrent history the higher score, despit
 
 This is why a pack-year-only transformation is not enough for PLCOm2012. The 2 scenarios both equal 15 pack-years, but they produce different PLCOm2012 scores.
 
+## Practical implication for v4.1 and v4.2
+
+For LLPv2, v4.1 and v4.2 are probably workable if the single duration answer is treated as the number of calendar years when the person smoked any relevant tobacco.
+
+For the worked example:
+
+| Scenario | True history | v4.1/v4.2 duration answer needed for LLPv2 |
+| --- | --- | ---: |
+| Concurrent | cigarettes and roll-ups for the same 15 years | 15 years |
+| Consecutive | cigarettes for 15 years, then roll-ups for 15 years | 30 years |
+
+For PLCOm2012, v4.1 and v4.2 are riskier. If a calculation simply adds cigarette-equivalent quantities across products and applies the total to the whole smoking duration, it assumes the products were smoked concurrently for the whole period.
+
+That assumption is correct for the concurrent example:
+
+```text
+20 cigarette-equivalents per day for 15 years
+```
+
+But it would overstate the consecutive example if it turned this:
+
+```text
+10 cigarette-equivalents per day for 30 years
+```
+
+into this:
+
+```text
+20 cigarette-equivalents per day for 30 years
+```
+
+So v4.1 and v4.2 support LLPv2 better than PLCOm2012 for multi-product tobacco histories. They do not collect enough timing detail to reliably distinguish concurrent from consecutive tobacco use when deriving the PLCOm2012 intensity input.
+
 ## Practical implication for v4.3
 
 For someone who smokes cigarettes and roll-ups, we should calculate a calendar timeline:
@@ -196,6 +250,7 @@ This answer is useful for explaining the direction of impact, but it has limitat
 - It uses the original LLP published smoking-duration bands to explain the effect. LLPv2 and programme implementations may have operational details that are not fully visible in public calculator documentation.
 - It assumes 1 roll-up equals 2 cigarettes because that was specified for this analysis. The prototype currently asks rolling tobacco quantity in grams, so an implementation would need a reliable conversion from grams or bands to cigarette-equivalent values.
 - It calculates PLCOm2012 for a specific baseline person. Changing age, BMI, ethnicity/race, education, COPD, cancer history or family history changes the absolute percentages, although the overlap issue remains.
+- It treats v4.1 and v4.2 as data-capture designs rather than implemented calculator logic. If a downstream calculator made additional assumptions or asked follow-up questions outside the prototype, the impact could change.
 - It does not address changed smoking amounts over time beyond the simple concurrent/consecutive comparison. Real histories may need year-by-year segments.
 
 ## Sources
