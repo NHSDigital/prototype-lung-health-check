@@ -13,11 +13,36 @@ For risk calculators this matters because:
 - **LLP/LLPv2 is mainly sensitive to smoking duration**, not separate daily quantities. If 2 tobacco products overlap, the overlapping years should usually be counted once, not once per product.
 - **PLCOm2012 is sensitive to both smoking intensity and smoking duration**. If 2 tobacco products overlap, the daily cigarette-equivalent amount should be added together for those overlapping years.
 
-For the v4.3 prototype, this means we should avoid simply adding the number of years for each selected tobacco type. That would double-count overlapping periods.
+For v4.1 and v4.2, the issue is that they collect one overall smoking duration and then ask about each tobacco type's frequency and quantity. That can support LLPv2 if the overall duration means "years when the person smoked any tobacco", but it is not enough to safely distinguish concurrent from consecutive product use for PLCOm2012.
 
-For v4.1 and v4.2, the issue is different. They collect one overall smoking duration and then ask about each tobacco type's frequency and quantity. That can support LLPv2 if the overall duration means "years when the person smoked any tobacco", but it is not enough to safely distinguish concurrent from consecutive product use for PLCOm2012.
+For v4.3, the issue changes. It asks duration questions for each selected tobacco type, so we can start to identify overlap. This means we should avoid simply adding the number of years for each selected tobacco type. That would double-count overlapping periods.
 
-## What v4.3 asks
+## Prototype data capture
+
+### v4.1
+
+The v4.1 prototype collects smoking duration as one overall smoking history before the tobacco type loop:
+
+- age started smoking
+- age stopped smoking, where relevant
+- total periods stopped smoking for 1 year or longer
+
+It then collects tobacco type, smoking status, frequency, quantity and changed-use details for each selected tobacco product.
+
+This means v4.1 can tell that someone smoked cigarettes and roll-ups, and can collect an amount for each product. It cannot tell whether those products were smoked:
+
+- at the same time
+- one after the other
+- partly overlapping
+- for different start and stop periods
+
+### v4.2
+
+The v4.2 prototype keeps the same calculation limitation as v4.1. It groups the duration questions into a `smoking-duration` page and groups frequency and quantity into `tobacco-smoking` pages, but duration is still collected as one overall smoking history before the per-product tobacco loop.
+
+So v4.2 also relies on the user giving a correct overall calendar duration for all tobacco smoking. It cannot build a reliable product-by-product calendar timeline for concurrent or consecutive tobacco use.
+
+### v4.3
 
 The v4.3 prototype asks:
 
@@ -33,7 +58,9 @@ The v4.3 prototype asks:
 
 This supports a better calculation than a single "years smoked" field, because it can identify overlap between tobacco types.
 
-One limitation is that the prototype asks roll-up quantity as bands of grams of rolling tobacco, not as a number of roll-ups. For this worked example, I use these product decisions:
+### Rolling tobacco conversion
+
+The prototypes ask roll-up quantity as bands of grams of rolling tobacco, not as a number of roll-ups. For this worked example, we use these product decisions:
 
 - 1 roll-up = 0.5g of rolling tobacco
 - 1 roll-up = 2 cigarette-equivalents
@@ -44,25 +71,6 @@ This means:
 rolling tobacco cigarette-equivalents per day = (grams per day / 0.5) x 2
                                               = grams per day x 4
 ```
-
-## What v4.1 and v4.2 ask
-
-The v4.1 and v4.2 prototypes collect smoking duration as a single overall smoking history:
-
-- age started smoking
-- age stopped smoking, where relevant
-- total periods stopped smoking for 1 year or longer
-
-They then collect tobacco type, frequency and quantity for each selected tobacco product.
-
-This means v4.1 and v4.2 can tell that someone smoked cigarettes and roll-ups, and can collect an amount for each product. They cannot tell whether those products were smoked:
-
-- at the same time
-- one after the other
-- partly overlapping
-- for different start and stop periods
-
-So v4.1 and v4.2 cannot build a reliable product-by-product calendar timeline. They rely on the user giving a correct overall calendar duration for all tobacco smoking.
 
 ## Calculator inputs affected
 
