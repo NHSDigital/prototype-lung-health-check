@@ -33,7 +33,17 @@ The v4.3 prototype asks:
 
 This supports a better calculation than a single "years smoked" field, because it can identify overlap between tobacco types.
 
-One limitation is that the prototype asks roll-up quantity as bands of grams of rolling tobacco, not as a number of roll-ups. For this worked example, I use the product decision that **1 roll-up is equivalent to 2 cigarettes**.
+One limitation is that the prototype asks roll-up quantity as bands of grams of rolling tobacco, not as a number of roll-ups. For this worked example, I use these product decisions:
+
+- 1 roll-up = 0.5g of rolling tobacco
+- 1 roll-up = 2 cigarette-equivalents
+
+This means:
+
+```text
+rolling tobacco cigarette-equivalents per day = (grams per day / 0.5) x 2
+                                              = grams per day x 4
+```
 
 ## What v4.1 and v4.2 ask
 
@@ -100,13 +110,15 @@ Assume:
 - no personal cancer history
 - no family history of lung cancer
 - no quit time, because the person currently smokes
-- 1 roll-up = 2 cigarettes
+- 1 roll-up = 0.5g of rolling tobacco
+- 1 roll-up = 2 cigarette-equivalents
 
 Smoking pattern:
 
 - cigarettes: 10 cigarettes per day
 - roll-ups: 5 roll-ups per day
-- roll-up equivalent: 5 roll-ups x 2 = 10 cigarettes per day
+- rolling tobacco: 5 roll-ups x 0.5g = 2.5g per day
+- roll-up cigarette-equivalent: 5 roll-ups x 2 = 10 cigarettes per day
 
 So when cigarettes and roll-ups are smoked concurrently:
 
@@ -114,6 +126,20 @@ So when cigarettes and roll-ups are smoked concurrently:
 total cigarette-equivalent intensity = 10 + (5 x 2)
                                     = 20 cigarettes per day
 ```
+
+The same calculation can be made from grams:
+
+```text
+rolling tobacco cigarette-equivalents = 2.5g x 4
+                                      = 10 cigarettes per day
+
+total cigarette-equivalent intensity = 10 + 10
+                                    = 20 cigarettes per day
+```
+
+So the exact worked PLCOm2012 numbers do not change. The new information explains how to derive the same cigarette-equivalent value from grams.
+
+In v4.3, 2.5g would fall into the "Less than 10g" rolling tobacco answer band. That band is too broad to calculate an exact PLCOm2012 smoking intensity unless the implementation applies a representative value for the band.
 
 ## Comparing concurrent and consecutive use
 
@@ -220,6 +246,14 @@ into this:
 
 So v4.1 and v4.2 support LLPv2 better than PLCOm2012 for multi-product tobacco histories. They do not collect enough timing detail to reliably distinguish concurrent from consecutive tobacco use when deriving the PLCOm2012 intensity input.
 
+The grams conversion does not fix this timing problem. It only makes the rolling tobacco amount computable as cigarette-equivalents:
+
+```text
+2.5g rolling tobacco per day x 4 = 10 cigarette-equivalents per day
+```
+
+v4.1 and v4.2 would still need to know whether that 2.5g per day was smoked during the same years as the cigarettes or during different years.
+
 ## Practical implication for v4.3
 
 For someone who smokes cigarettes and roll-ups, we should calculate a calendar timeline:
@@ -242,13 +276,22 @@ Consecutive:
 10 cigarette-equivalents per day
 ```
 
-## Critique of this answer
+For rolling tobacco, the conversion step is:
+
+```text
+grams of rolling tobacco per day x 4 = cigarette-equivalents per day
+```
+
+If the input is a band, such as "Less than 10g", the implementation needs a clear rule for choosing a representative value before it can calculate PLCOm2012. For LLPv2, the exact gram amount is less important than the calendar duration, assuming the person meets the relevant smoking threshold.
+
+## Critique
 
 This answer is useful for explaining the direction of impact, but it has limitations:
 
 - It uses a simplified 2-product example and assumes stable daily use over whole years.
 - It uses the original LLP published smoking-duration bands to explain the effect. LLPv2 and programme implementations may have operational details that are not fully visible in public calculator documentation.
-- It assumes 1 roll-up equals 2 cigarettes because that was specified for this analysis. The prototype currently asks rolling tobacco quantity in grams, so an implementation would need a reliable conversion from grams or bands to cigarette-equivalent values.
+- It assumes 1 roll-up equals 0.5g of rolling tobacco and 2 cigarette-equivalents because those values were specified for this analysis. If either conversion changes, the PLCOm2012 intensity examples change.
+- The prototype currently asks rolling tobacco quantity in grams bands. A band such as "Less than 10g" does not provide an exact gram value, so an implementation would need a reliable representative value or a more precise input before calculating PLCOm2012.
 - It calculates PLCOm2012 for a specific baseline person. Changing age, BMI, ethnicity/race, education, COPD, cancer history or family history changes the absolute percentages, although the overlap issue remains.
 - It treats v4.1 and v4.2 as data-capture designs rather than implemented calculator logic. If a downstream calculator made additional assumptions or asked follow-up questions outside the prototype, the impact could change.
 - It does not address changed smoking amounts over time beyond the simple concurrent/consecutive comparison. Real histories may need year-by-year segments.
