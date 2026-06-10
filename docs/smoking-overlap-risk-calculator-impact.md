@@ -230,34 +230,37 @@ This is why a pack-year-only transformation is not enough for PLCOm2012. The 2 s
 Use the same baseline person as the first example, but change the tobacco pattern:
 
 - cigarettes: 10 cigarettes per day
-- large cigars: 1 large cigar per day
-- large cigar cigarette-equivalent: 1 large cigar x 4 = 4 cigarette-equivalents per day
+- large cigars: 1 large cigar per week
+- large cigar cigarette-equivalent: 1 large cigar x 4 = 4 cigarette-equivalents per week
 
 So when cigarettes and large cigars are smoked concurrently:
 
 ```text
-total cigarette-equivalent intensity = 10 + (1 x 4)
-                                    = 14 cigarette-equivalents per day
+large cigar daily average = 4 / 7
+                          = 0.57 cigarette-equivalents per day
+
+total cigarette-equivalent intensity = 10 + 0.57
+                                    = 10.57 cigarette-equivalents per day
 ```
 
 To isolate the effect of overlap, compare 2 histories with the same total cigarette-equivalent exposure:
 
 | Scenario | History | Calendar smoking duration | Average cigarette-equivalent intensity | Pack-years |
 | --- | --- | ---: | ---: | ---: |
-| Concurrent | 10 cigarettes/day and 1 large cigar/day for 15 years | 15 years | 14/day | 10.5 |
-| Consecutive | 10 cigarettes/day for 15 years, then 1 large cigar/day for 15 years | 30 years | 7/day | 10.5 |
+| Concurrent | 10 cigarettes/day and 1 large cigar/week for 15 years | 15 years | 10.57/day | 7.93 |
+| Consecutive | 10 cigarettes/day for 15 years, then 1 large cigar/week for 15 years | 30 years | 5.29/day | 7.93 |
 
 The consecutive average intensity is:
 
 ```text
-((10 x 15) + (4 x 15)) / 30 = 7 cigarette-equivalents per day
+((10 x 15) + (0.57 x 15)) / 30 = 5.29 cigarette-equivalents per day
 ```
 
 Both histories have the same pack-years:
 
 ```text
-concurrent pack-years = (14 / 20) x 15 = 10.5
-consecutive pack-years = (7 / 20) x 30 = 10.5
+concurrent pack-years = (10.57 / 20) x 15 = 7.93
+consecutive pack-years = (5.29 / 20) x 30 = 7.93
 ```
 
 For LLP and LLPv2, the impact is the same as the roll-up example. The consecutive history has the higher smoking-duration contribution because it spans 30 calendar years rather than 15.
@@ -266,10 +269,10 @@ Using the PLCOm2012 formula with the same baseline assumptions:
 
 | Scenario | PLCO smoking intensity input | PLCO duration input | PLCOm2012 6-year risk |
 | --- | ---: | ---: | ---: |
-| Concurrent | 14 cigarette-equivalents/day | 15 years | 0.92% |
-| Consecutive | 7 cigarette-equivalents/day | 30 years | 0.40% |
+| Concurrent | 10.57 cigarette-equivalents/day | 15 years | 0.60% |
+| Consecutive | 5.29 cigarette-equivalents/day | 30 years | 0.17% |
 
-If v4.1 or v4.2 simply added the cigarette and large cigar amounts and applied the total to the whole 30-year duration, it could incorrectly treat the consecutive history as 14 cigarette-equivalents per day for 30 years. That would overstate the PLCOm2012 smoking intensity for the consecutive history.
+If v4.1 or v4.2 simply added the cigarette and large cigar amounts and applied the total to the whole 30-year duration, it could incorrectly treat the consecutive history as 10.57 cigarette-equivalents per day for 30 years. That would overstate the PLCOm2012 smoking intensity for the consecutive history.
 
 ## Practical implication for v4.1 and v4.2
 
