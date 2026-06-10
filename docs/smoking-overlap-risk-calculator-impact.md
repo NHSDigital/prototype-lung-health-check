@@ -58,9 +58,9 @@ The v4.3 prototype asks:
 
 This supports a better calculation than a single "years smoked" field, because it can identify overlap between tobacco types.
 
-### Rolling tobacco conversion
+### Cigarette-equivalent conversions
 
-The prototypes ask roll-up quantity as bands of grams of rolling tobacco, not as a number of roll-ups. For this worked example, we use these product decisions:
+The prototypes ask roll-up quantity as bands of grams of rolling tobacco, not as a number of roll-ups. For the roll-up worked example, we use these product decisions:
 
 - 1 roll-up = 0.5g of rolling tobacco
 - 1 roll-up = 2 cigarette-equivalents
@@ -71,6 +71,10 @@ This means:
 rolling tobacco cigarette-equivalents per day = (grams per day / 0.5) x 2
                                               = grams per day x 4
 ```
+
+For the large cigar worked example, we use this product decision:
+
+- 1 large cigar = 4 cigarette-equivalents
 
 ## Calculator inputs affected
 
@@ -105,7 +109,7 @@ The published implementation uses smoking intensity and duration separately, rat
 
 For concurrent tobacco use, the smoking intensity input should be the **sum of cigarette-equivalent tobacco used in the same period**.
 
-## Worked example: cigarettes and roll-ups
+## Worked example 1: cigarettes and roll-ups
 
 Assume:
 
@@ -195,7 +199,7 @@ For LLPv2, the analysis changes in 2 ways:
 1. LLPv2 broadens what counts in the smoking history. The UKLS documentation says LLPv2 added pipes and cigars alongside cigarettes and treated cigar and pipe smoking as conferring an identical risk to cigarette smoking.
 2. LLPv2 does not appear, from public documentation, to use a separate intensity term like PLCOm2012. That means concurrent smoking does not increase the LLPv2 score simply because the person smoked more cigarette-equivalents per day in the same years.
 
-For the worked example:
+For the roll-up worked example:
 
 | Scenario | Calendar smoking duration | Cigarette-equivalent intensity | LLPv2 smoking impact |
 | --- | ---: | ---: | --- |
@@ -221,11 +225,57 @@ In this example, PLCOm2012 gives the concurrent history the higher score, despit
 
 This is why a pack-year-only transformation is not enough for PLCOm2012. The 2 scenarios both equal 15 pack-years, but they produce different PLCOm2012 scores.
 
+## Worked example 2: cigarettes and large cigars
+
+Use the same baseline person as the first example, but change the tobacco pattern:
+
+- cigarettes: 10 cigarettes per day
+- large cigars: 1 large cigar per day
+- large cigar cigarette-equivalent: 1 large cigar x 4 = 4 cigarette-equivalents per day
+
+So when cigarettes and large cigars are smoked concurrently:
+
+```text
+total cigarette-equivalent intensity = 10 + (1 x 4)
+                                    = 14 cigarette-equivalents per day
+```
+
+To isolate the effect of overlap, compare 2 histories with the same total cigarette-equivalent exposure:
+
+| Scenario | History | Calendar smoking duration | Average cigarette-equivalent intensity | Pack-years |
+| --- | --- | ---: | ---: | ---: |
+| Concurrent | 10 cigarettes/day and 1 large cigar/day for 15 years | 15 years | 14/day | 10.5 |
+| Consecutive | 10 cigarettes/day for 15 years, then 1 large cigar/day for 15 years | 30 years | 7/day | 10.5 |
+
+The consecutive average intensity is:
+
+```text
+((10 x 15) + (4 x 15)) / 30 = 7 cigarette-equivalents per day
+```
+
+Both histories have the same pack-years:
+
+```text
+concurrent pack-years = (14 / 20) x 15 = 10.5
+consecutive pack-years = (7 / 20) x 30 = 10.5
+```
+
+For LLP and LLPv2, the impact is the same as the roll-up example. The consecutive history has the higher smoking-duration contribution because it spans 30 calendar years rather than 15.
+
+Using the PLCOm2012 formula with the same baseline assumptions:
+
+| Scenario | PLCO smoking intensity input | PLCO duration input | PLCOm2012 6-year risk |
+| --- | ---: | ---: | ---: |
+| Concurrent | 14 cigarette-equivalents/day | 15 years | 0.92% |
+| Consecutive | 7 cigarette-equivalents/day | 30 years | 0.40% |
+
+If v4.1 or v4.2 simply added the cigarette and large cigar amounts and applied the total to the whole 30-year duration, it could incorrectly treat the consecutive history as 14 cigarette-equivalents per day for 30 years. That would overstate the PLCOm2012 smoking intensity for the consecutive history.
+
 ## Practical implication for v4.1 and v4.2
 
 For LLPv2, v4.1 and v4.2 are probably workable if the single duration answer is treated as the number of calendar years when the person smoked any relevant tobacco.
 
-For the worked example:
+The same duration pattern applies to both worked examples. For example:
 
 | Scenario | True history | v4.1/v4.2 duration answer needed for LLPv2 |
 | --- | --- | ---: |
@@ -298,7 +348,7 @@ This answer is useful for explaining the direction of impact, but it has limitat
 
 - It uses a simplified 2-product example and assumes stable daily use over whole years.
 - It uses the original LLP published smoking-duration bands to explain the effect. LLPv2 and programme implementations may have operational details that are not fully visible in public calculator documentation.
-- It assumes 1 roll-up equals 0.5g of rolling tobacco and 2 cigarette-equivalents because those values were specified for this analysis. If either conversion changes, the PLCOm2012 intensity examples change.
+- It assumes 1 roll-up equals 0.5g of rolling tobacco, 1 roll-up equals 2 cigarette-equivalents, and 1 large cigar equals 4 cigarette-equivalents because those values were specified for this analysis. If any conversion changes, the PLCOm2012 intensity examples change.
 - The prototype currently asks rolling tobacco quantity in grams bands. A band such as "Less than 10g" does not provide an exact gram value, so an implementation would need a reliable representative value or a more precise input before calculating PLCOm2012.
 - It calculates PLCOm2012 for a specific baseline person. Changing age, BMI, ethnicity/race, education, COPD, cancer history or family history changes the absolute percentages, although the overlap issue remains.
 - It treats v4.1 and v4.2 as data-capture designs rather than implemented calculator logic. If a downstream calculator made additional assumptions or asked follow-up questions outside the prototype, the impact could change.
