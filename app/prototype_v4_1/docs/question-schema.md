@@ -314,7 +314,10 @@ Supported validation fields are:
 | `type: date` | Requires day, month and year to form a real date. |
 | `min` | Minimum numeric value. |
 | `max` | Maximum numeric value. |
+| `integer` | Requires a numeric answer to be a whole number. |
+| `decimalPlaces` | Maximum decimal places for a numeric answer. |
 | `items` | Per-field validation for `text_group`. |
+| `total` | Combined numeric validation for `text_group` fields. |
 | `conditional` | Validation for conditional reveal inputs. |
 
 For numeric questions, provide all relevant messages:
