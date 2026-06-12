@@ -289,6 +289,30 @@ const validateGroupTotal = (groupValue, question, errors) => {
 }
 
 /**
+ * Order grouped input errors by the visual input order.
+ *
+ * @param {ValidationError[]} errors - Validation errors for a text_group.
+ * @param {Object} question - Normalised text_group question config.
+ * @returns {ValidationError[]} Errors ordered by grouped input position.
+ */
+const orderGroupErrors = (errors, question) => {
+  const inputOrder = (question.input?.items || []).reduce((map, item, index) => {
+    map[`#${item.id}`] = index
+    return map
+  }, {})
+
+  return errors
+    .map((error, index) => ({ error, index }))
+    .sort((a, b) => {
+      const aOrder = inputOrder[a.error.href] ?? Number.MAX_SAFE_INTEGER
+      const bOrder = inputOrder[b.error.href] ?? Number.MAX_SAFE_INTEGER
+
+      return aOrder - bOrder || a.index - b.index
+    })
+    .map(({ error }) => error)
+}
+
+/**
  * Validate grouped inputs, such as imperial height or weight fields.
  *
  * @param {Object} answers - Session answers object.
@@ -298,33 +322,39 @@ const validateGroupTotal = (groupValue, question, errors) => {
 const validateInputGroup = (answers, question) => {
   const errors = []
   const groupValue = answers[question.answerKey]?.[question.input.valueKey] || {}
-  let hasItemErrors = false
+  let canValidateTotal = Boolean(question.validation?.total)
 
   ;(question.validation?.items || []).forEach((itemValidation) => {
-    const errorCount = errors.length
     const value = groupValue[itemValidation.answerKey]
     const itemErrors = question.errors?.items?.[itemValidation.answerKey] || {}
     const defaultHref = `#${itemValidation.id || itemValidation.answerKey}`
 
     if (itemValidation.required && isBlank(value)) {
       errors.push(makeError(itemErrors.required, defaultHref))
+      canValidateTotal = false
       return
     }
 
     if (itemValidation.type === 'number' && !isBlank(value)) {
-      validateNumber(value, itemValidation, itemErrors, errors, defaultHref)
-    }
+      const number = Number(value)
 
-    if (errors.length > errorCount) {
-      hasItemErrors = true
+      if (
+        Number.isNaN(number) ||
+        !Number.isFinite(number) ||
+        (itemValidation.integer && !isIntegerValue(value))
+      ) {
+        canValidateTotal = false
+      }
+
+      validateNumber(value, itemValidation, itemErrors, errors, defaultHref)
     }
   })
 
-  if (!hasItemErrors) {
+  if (canValidateTotal) {
     validateGroupTotal(groupValue, question, errors)
   }
 
-  return errors
+  return orderGroupErrors(errors, question)
 }
 
 /**
