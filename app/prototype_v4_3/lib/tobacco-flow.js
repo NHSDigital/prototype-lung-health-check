@@ -312,6 +312,104 @@ const getSmokingComparisonQuantity = (type, answer) => {
   return getSmokingQuantity(type, answer)
 }
 
+const rollingTobaccoQuantityValues = {
+  less_than_10: 10,
+  '10_to_30': 20,
+  '31_to_50': 40.5,
+  '51_to_75': 63,
+  '76_to_100': 88,
+  more_than_100: 100
+}
+
+const smokingFrequencyRateMultipliers = {
+  daily: 365,
+  weekly: 52,
+  monthly: 12,
+  yearly: 1
+}
+
+/**
+ * Check whether a value can be compared as a submitted numeric answer.
+ *
+ * @param {*} value - Submitted value.
+ * @returns {boolean} True when value is numeric.
+ */
+const isComparableNumber = (value) => {
+  if (value === undefined || value === null || String(value).trim() === '') {
+    return false
+  }
+
+  const number = Number(value)
+
+  return Number.isFinite(number)
+}
+
+/**
+ * Get an annualised quantity value for cross-frequency comparisons.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {*} quantity - Submitted quantity answer.
+ * @param {string} frequency - Submitted frequency answer.
+ * @returns {number|undefined} Annualised quantity, when comparable.
+ */
+const getSmokingQuantityAnnualRate = (type, quantity, frequency) => {
+  const multiplier = smokingFrequencyRateMultipliers[frequency]
+
+  if (!multiplier) {
+    return undefined
+  }
+
+  if (type === 'rolling_tobacco') {
+    const value = rollingTobaccoQuantityValues[quantity]
+
+    return value ? value * multiplier : undefined
+  }
+
+  return isComparableNumber(quantity) ? Number(quantity) * multiplier : undefined
+}
+
+/**
+ * Check whether a changed-smoking quantity contradicts the selected change direction.
+ *
+ * @param {Object} params - Comparison inputs.
+ * @returns {Object|undefined} Validation error when the quantities contradict.
+ */
+const getSmokingQuantityChangeComparisonError = ({
+  page,
+  step,
+  answer,
+  changeAnswer,
+  href
+}) => {
+  if (page !== 'smoking-quantity-change' || !step.change || !answer.smokingQuantity || !answer.smokingFrequency || !changeAnswer.quantity || !changeAnswer.frequency) {
+    return undefined
+  }
+
+  const currentRate = getSmokingQuantityAnnualRate(step.type, answer.smokingQuantity, answer.smokingFrequency)
+  const changedRate = getSmokingQuantityAnnualRate(step.type, changeAnswer.quantity, changeAnswer.frequency)
+
+  if (currentRate === undefined || changedRate === undefined) {
+    return undefined
+  }
+
+  const contradictsChange = step.change === 'greater'
+    ? changedRate <= currentRate
+    : changedRate >= currentRate
+
+  if (!contradictsChange) {
+    return undefined
+  }
+
+  const comparisonText = step.type === 'rolling_tobacco' && step.change === 'fewer'
+    ? 'less'
+    : smokingChangeTypes[step.change]?.label
+
+  return {
+    text: `Amount smoked must be ${comparisonText} than ${[getSmokingComparisonQuantity(step.type, answer.smokingQuantity), getSmokingFrequencyPeriod(answer.smokingFrequency)].filter(Boolean).join(' ')}`,
+    href
+  }
+}
+
 const smokingFrequencyPeriods = {
   daily: 'a day',
   weekly: 'a week',
@@ -1349,10 +1447,23 @@ const validateSmokingTypeQuestion = (req, page, step) => {
     }
   }
 
-  return validateQuestion(req.session.data.answers, page, {
+  const validationErrors = validateQuestion(req.session.data.answers, page, {
     ...overrides,
     errors
   })
+  const comparisonError = getSmokingQuantityChangeComparisonError({
+    page,
+    step,
+    answer: context.answer,
+    changeAnswer: context.changeAnswer,
+    href: `#${errorHref}`
+  })
+
+  if (comparisonError && !validationErrors.some((error) => error.href === comparisonError.href)) {
+    validationErrors.push(comparisonError)
+  }
+
+  return validationErrors
 }
 
 /**
