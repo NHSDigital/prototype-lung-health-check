@@ -319,6 +319,13 @@ const smokingFrequencyPeriods = {
   yearly: 'a year'
 }
 
+const smokingFrequencyMaxHours = {
+  daily: 24,
+  weekly: 168,
+  monthly: 744,
+  yearly: 8760
+}
+
 /**
  * Convert a smoking frequency value into a period phrase.
  *
@@ -327,6 +334,21 @@ const smokingFrequencyPeriods = {
  */
 const getSmokingFrequencyPeriod = (frequency) => {
   return smokingFrequencyPeriods[frequency] || ''
+}
+
+/**
+ * Get the maximum number of hours allowed for an "another amount" shisha answer.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} frequency - Selected smoking frequency.
+ * @returns {number} Maximum number of hours.
+ */
+const getSmokingQuantityOtherMaxHours = (type, frequency) => {
+  if (type !== 'shisha') {
+    return 24
+  }
+
+  return smokingFrequencyMaxHours[frequency] || 24
 }
 
 /**
@@ -733,6 +755,7 @@ const getSmokingQuantityQuestionOverrides = ({
   name,
   value,
   conditionalValue,
+  frequency,
   smokingType
 }) => {
   const question = getQuestion(page)
@@ -742,6 +765,7 @@ const getSmokingQuantityQuestionOverrides = ({
   const hint = hasHintOverride ? variantInput.hint : question.input.hint
   const questionType = variant.type || question.type
   const conditionalHref = '#smoking-quantity-other'
+  const maxHours = getSmokingQuantityOtherMaxHours(step.type, frequency)
   const items = variant.options
     ? variant.options.map((option) => {
       const item = toComponentItem(option)
@@ -783,7 +807,7 @@ const getSmokingQuantityQuestionOverrides = ({
           required: true,
           type: 'number',
           min: 0.5,
-          max: 24,
+          max: maxHours,
           answerKey: 'smokingQuantityOther',
           value: conditionalValue,
           href: conditionalHref
@@ -808,7 +832,7 @@ const getSmokingQuantityQuestionOverrides = ({
         href: conditionalHref
       },
       max: {
-        text: 'Number of hours must be 24 or fewer',
+        text: `Number of hours must be ${maxHours} or fewer`,
         href: conditionalHref
       }
     },
@@ -1048,6 +1072,7 @@ const getSmokingContentQuestionOverrides = ({
       name: `answers[${step.type}][smokingQuantity]`,
       value: answer.smokingQuantity,
       conditionalValue: answer.smokingQuantityOther,
+      frequency: answer.smokingFrequency,
       smokingType
     })
   }
@@ -1089,6 +1114,7 @@ const getSmokingContentQuestionOverrides = ({
       name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
       value: changeAnswer.quantity,
       conditionalValue: changeAnswer.smokingQuantityOther,
+      frequency: answer.smokingFrequency,
       smokingType
     })
   }
