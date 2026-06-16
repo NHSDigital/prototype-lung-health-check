@@ -277,10 +277,10 @@ const rollingTobaccoQuantityValues = {
 }
 
 const smokingFrequencyRateMultipliers = {
-  daily: 365,
-  weekly: 52,
-  monthly: 12,
-  yearly: 1
+  daily: 7,
+  weekly: 1,
+  monthly: 0.25,
+  yearly: 1 / 52
 }
 
 /**
@@ -300,14 +300,14 @@ const isComparableNumber = (value) => {
 }
 
 /**
- * Get an annualised quantity value for cross-frequency comparisons.
+ * Get a normalised quantity value for cross-frequency comparisons.
  *
  * @param {string} type - Tobacco type key.
  * @param {*} quantity - Submitted quantity answer.
  * @param {string} frequency - Submitted frequency answer.
- * @returns {number|undefined} Annualised quantity, when comparable.
+ * @returns {number|undefined} Normalised quantity, when comparable.
  */
-const getSmokingQuantityAnnualRate = (type, quantity, frequency) => {
+const getSmokingQuantityComparisonRate = (type, quantity, frequency) => {
   const multiplier = smokingFrequencyRateMultipliers[frequency]
 
   if (!multiplier) {
@@ -321,6 +321,21 @@ const getSmokingQuantityAnnualRate = (type, quantity, frequency) => {
   }
 
   return isComparableNumber(quantity) ? Number(quantity) * multiplier : undefined
+}
+
+/**
+ * Build the left side of a changed-quantity comparison error.
+ *
+ * @param {string} type - Tobacco type key.
+ * @returns {string} Error phrase.
+ */
+const getSmokingQuantityChangeErrorPhrase = (type) => {
+  const heading = removeQuestionMark(getSmokingTypeHeadings(type, true).quantityHeading || '')
+    .replace(/ in a normal (day|week|month|year)$/, '')
+
+  return upperFirst(lowerFirst(heading)
+    .replace(/^(how (?:much|many) .+?) did you normally smoke$/, '$1 you normally smoked')
+    .replace(/^(how (?:much|many) .+?) did you smoke$/, '$1 you normally smoked'))
 }
 
 /**
@@ -340,8 +355,8 @@ const getSmokingQuantityChangeComparisonError = ({
     return undefined
   }
 
-  const currentRate = getSmokingQuantityAnnualRate(step.type, answer.smokingQuantity, answer.smokingFrequency)
-  const changedRate = getSmokingQuantityAnnualRate(step.type, changeAnswer.quantity, changeAnswer.frequency)
+  const currentRate = getSmokingQuantityComparisonRate(step.type, answer.smokingQuantity, answer.smokingFrequency)
+  const changedRate = getSmokingQuantityComparisonRate(step.type, changeAnswer.quantity, changeAnswer.frequency)
 
   if (currentRate === undefined || changedRate === undefined) {
     return undefined
@@ -360,7 +375,7 @@ const getSmokingQuantityChangeComparisonError = ({
     : smokingChangeTypes[step.change]?.label
 
   return {
-    text: `Amount smoked must be ${comparisonText} than ${[getSmokingComparisonQuantity(step.type, answer.smokingQuantity), getSmokingFrequencyPeriod(answer.smokingFrequency)].filter(Boolean).join(' ')}`,
+    text: `${getSmokingQuantityChangeErrorPhrase(step.type)} must be ${comparisonText} than ${[getSmokingComparisonQuantity(step.type, answer.smokingQuantity), getSmokingFrequencyComparisonPeriod(answer.smokingFrequency)].filter(Boolean).join(' ')}`,
     href
   }
 }
@@ -370,6 +385,13 @@ const smokingFrequencyPeriods = {
   weekly: 'a week',
   monthly: 'a month',
   yearly: 'a year'
+}
+
+const smokingFrequencyComparisonPeriods = {
+  daily: 'per day',
+  weekly: 'per week',
+  monthly: 'per month',
+  yearly: 'per year'
 }
 
 const smokingFrequencyMaxHours = {
@@ -387,6 +409,16 @@ const smokingFrequencyMaxHours = {
  */
 const getSmokingFrequencyPeriod = (frequency) => {
   return smokingFrequencyPeriods[frequency] || ''
+}
+
+/**
+ * Convert a smoking frequency value into a comparison phrase.
+ *
+ * @param {string} frequency - Frequency value.
+ * @returns {string} Comparison phrase, for example `per day`.
+ */
+const getSmokingFrequencyComparisonPeriod = (frequency) => {
+  return smokingFrequencyComparisonPeriods[frequency] || ''
 }
 
 /**
@@ -753,6 +785,16 @@ const getQuestionItemsWithLabels = (id, labels = {}, hintOverrides = {}) => {
 }
 
 /**
+ * Check whether a smoking quantity must be a whole number.
+ *
+ * @param {string} type - Tobacco type key.
+ * @returns {boolean} True when decimal quantities should be rejected.
+ */
+const requiresWholeNumberSmokingQuantity = (type) => {
+  return !['rolling_tobacco', 'shisha'].includes(type)
+}
+
+/**
  * Build runtime overrides for a quantity question.
  *
  * @param {Object} params - Quantity override inputs.
@@ -777,6 +819,14 @@ const getSmokingQuantityQuestionOverrides = ({
   const questionType = variant.type || question.type
   const conditionalHref = '#smoking-quantity-other'
   const maxHours = getSmokingQuantityOtherMaxHours(step.type, frequency)
+  const validation = {
+    ...variant.validation
+  }
+
+  if (requiresWholeNumberSmokingQuantity(step.type)) {
+    validation.integer = true
+  }
+
   const items = variant.options
     ? variant.options.map((option) => {
       const item = toComponentItem(option)
@@ -812,7 +862,7 @@ const getSmokingQuantityQuestionOverrides = ({
       suffix: questionType === 'text' ? smokingType.suffix : undefined
     },
     validation: {
-      ...variant.validation,
+      ...validation,
       conditional: {
         another_amount: {
           required: true,
@@ -837,6 +887,10 @@ const getSmokingQuantityQuestionOverrides = ({
       invalid: {
         text: 'Number of hours must be a number',
         href: conditionalHref
+      },
+      integer: {
+        text: `${upperFirst(getAnswerPhraseFromHeading(heading))} must be a whole number`,
+        href: `#${question.input.id}`
       },
       min: {
         text: 'Number of hours must be 0.5 or more',
@@ -875,10 +929,10 @@ const getAnswerPhraseFromHeading = (heading = '') => {
     .replace(/^how long did you smoke /, 'how long you smoked ')
     .replace(/^how long do you currently smoke /, 'how long you currently smoke ')
     .replace(/^how long do you smoke /, 'how long you smoke ')
-    .replace(/^(how (?:much|many|long) .+?) did you normally smoke/, '$1 you normally smoked')
-    .replace(/^(how (?:much|many|long) .+?) did you smoke /, '$1 you smoked ')
-    .replace(/^(how (?:much|many|long) .+?) do you currently smoke /, '$1 you currently smoke ')
-    .replace(/^(how (?:much|many|long) .+?) do you smoke /, '$1 you smoke ')
+    .replace(/^(how (?:much|many|long) .+?) did you normally smoke(?= |$)/, '$1 you normally smoked')
+    .replace(/^(how (?:much|many|long) .+?) did you smoke(?= |$)/, '$1 you smoked')
+    .replace(/^(how (?:much|many|long) .+?) do you currently smoke(?= |$)/, '$1 you currently smoke')
+    .replace(/^(how (?:much|many|long) .+?) do you smoke(?= |$)/, '$1 you smoke')
 }
 
 /**
