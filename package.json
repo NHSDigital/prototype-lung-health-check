@@ -23,7 +23,7 @@
     "nhsuk-prototype-kit": "^8.2.3"
   },
   "devDependencies": {
-    "markdownlint-cli": "^0.48.0",
+    "markdownlint-cli": "^0.49.0",
     "standard": "^17.1.2",
     "stylelint": "^17.12.0",
     "stylelint-config-recommended-scss": "^17.0.1",
