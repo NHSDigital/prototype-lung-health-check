@@ -20,7 +20,7 @@
     "luxon": "^3.7.2",
     "markdown-it": "^14.2.0",
     "nhsuk-frontend": "^10.5.2",
-    "nhsuk-prototype-kit": "^8.2.3"
+    "nhsuk-prototype-kit": "^8.3.0"
   },
   "devDependencies": {
     "markdownlint-cli": "^0.49.0",
