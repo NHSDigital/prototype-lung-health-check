@@ -1,0 +1,922 @@
+---
+questions:
+  - id: accept-terms
+    type: multiple
+    answerKey: acceptTerms
+    input:
+      label: Confirm you agree to the terms of use
+    options:
+      - label: I agree
+        value: yes
+    validation:
+      required: true
+    errors:
+      required:
+        text: Confirm that you have read and agree to the terms of use
+  - id: phone-questionnaire
+    type: single
+    answerKey: phoneQuestionnaire
+    options:
+      - label: Yes, I have completed a lung cancer risk questionnaire
+        value: yes
+      - label: No, I can continue online
+        value: no
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have previously completed a lung cancer risk questionnaire by phone
+    input:
+      label: Have you previously completed a lung cancer risk questionnaire by phone in the last 12 months?
+  - id: smoker
+    type: single
+    answerKey: smoker
+    input:
+      label: Have you ever smoked tobacco?
+      hint: This includes social smoking
+    options:
+      - label: Yes, I currently smoke
+        value: yes_current
+      - label: Yes, I used to smoke
+        value: yes_previous
+      - label: Yes, but I have smoked fewer than 100 cigarettes in my lifetime
+        value: yes_fewer_than_100
+      - label: No, I have never smoked
+        value: no
+    summary:
+      label: Have you ever smoked tobacco?
+      hiddenText: whether you have ever smoked tobacco
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever smoked tobacco
+  - id: date-of-birth
+    type: date
+    answerKey: dateOfBirth
+    input:
+      label: What is your date of birth?
+      hint: For example, 15 3 1964
+      items:
+        - id: dateOfBirth-day
+          name: answers[dateOfBirth][day]
+          label: Day
+          answerKey: day
+        - id: dateOfBirth-month
+          name: answers[dateOfBirth][month]
+          label: Month
+          answerKey: month
+        - id: dateOfBirth-year
+          name: answers[dateOfBirth][year]
+          label: Year
+          answerKey: year
+    summary:
+      label: Date of birth
+    validation:
+      required: true
+      type: date
+    errors:
+      required:
+        text: Enter your date of birth
+        href: "#dateOfBirth-day"
+      invalid:
+        text: Enter a real date of birth
+        href: "#dateOfBirth-day"
+  - id: face-to-face-appointment
+    type: single
+    answerKey: faceToFaceAppointment
+    input:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
+    options:
+      - label: Yes, one or more of these things apply to me, and I need a face-to-face appointment
+        value: yes
+      - label: No, I can continue online
+        value: no
+    summary:
+      label: Do you need to leave the online service and ask for a face-to-face appointment?
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you need to leave the online service and ask for a face-to-face appointment
+  - id: height-metric
+    type: text
+    answerKey: height
+    input:
+      id: height-metric
+      name: answers[height][metric]
+      label: What is your height in centimetres?
+      valueKey: metric
+      suffix: cm
+      inputmode: decimal
+      classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to feet and inches
+    summary:
+      label: Height
+    validation:
+      required: true
+      type: number
+      min: 139.7
+      max: 243.8
+    errors:
+      required:
+        text: Enter your height in centimetres
+      invalid:
+        text: Enter your height in centimetres using numbers
+      min:
+        text: Height in centimetres must be 139.7cm or more
+      max:
+        text: Height in centimetres must be 243.8cm or fewer
+  - id: height-imperial
+    type: text_group
+    answerKey: height
+    input:
+      valueKey: imperial
+      label: What is your height in feet and inches?
+      items:
+        - id: height-imperial-feet
+          name: answers[height][imperial][feet]
+          label: Feet
+          answerKey: feet
+          suffix: ft
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+        - id: height-imperial-inches
+          name: answers[height][imperial][inches]
+          label: Inches
+          answerKey: inches
+          suffix: in
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to centimetres
+    summary:
+      label: Height
+    validation:
+      items:
+        - answerKey: feet
+          required: true
+          type: number
+          integer: true
+          min: 0
+        - answerKey: inches
+          required: true
+          type: number
+          integer: true
+          min: 0
+          max: 11
+      total:
+        min: 55
+        max: 96
+        items:
+          - answerKey: feet
+            multiplier: 12
+          - answerKey: inches
+    errors:
+      items:
+        feet:
+          required:
+            text: Enter your height in feet
+            href: "#height-imperial-feet"
+          invalid:
+            text: Enter your height in feet using numbers
+            href: "#height-imperial-feet"
+          integer:
+            text: Height in feet must be a whole number
+            href: "#height-imperial-feet"
+          min:
+            text: Height in feet must be 0ft or more
+            href: "#height-imperial-feet"
+        inches:
+          required:
+            text: Enter your height in inches
+            href: "#height-imperial-inches"
+          invalid:
+            text: Enter your height in inches using numbers
+            href: "#height-imperial-inches"
+          integer:
+            text: Height in inches must be a whole number
+            href: "#height-imperial-inches"
+          min:
+            text: Height in inches must be 0in or more
+            href: "#height-imperial-inches"
+          max:
+            text: Height in inches must be 11in or fewer
+            href: "#height-imperial-inches"
+      total:
+        min:
+          text: Height must be between 4 feet 7 inches and 8 feet
+          href: "#height-imperial-feet"
+        max:
+          text: Height must be between 4 feet 7 inches and 8 feet
+          href: "#height-imperial-feet"
+  - id: weight-metric
+    type: text
+    answerKey: weight
+    input:
+      id: weight-metric
+      name: answers[weight][metric]
+      valueKey: metric
+      label: What is your weight in kilograms?
+      suffix: kg
+      inputmode: decimal
+      classes: nhsuk-input--width-4
+    switchUnits:
+      text: Switch to stones and pounds
+    summary:
+      label: Weight
+    validation:
+      required: true
+      type: number
+      decimalPlaces: 2
+      min: 25.4
+      max: 317.5
+    errors:
+      required:
+        text: Enter your weight in kilograms
+      invalid:
+        text: Enter your weight in kilograms using numbers
+      decimalPlaces:
+        text: Weight in kilograms must have 2 decimal places or fewer
+      min:
+        text: Weight in kilograms must be 25.4kg or more
+      max:
+        text: Weight in kilograms must be 317.5kg or fewer
+  - id: weight-imperial
+    type: text_group
+    answerKey: weight
+    input:
+      valueKey: imperial
+      items:
+        - id: weight-imperial-stones
+          name: answers[weight][imperial][stones]
+          label: Stones
+          answerKey: stones
+          suffix: st
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+        - id: weight-imperial-pounds
+          name: answers[weight][imperial][pounds]
+          label: Pounds
+          answerKey: pounds
+          suffix: lb
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+      label: What is your weight in stones and pounds?
+    switchUnits:
+      text: Switch to kilograms
+    summary:
+      label: Weight
+    validation:
+      items:
+        - answerKey: stones
+          required: true
+          type: number
+          integer: true
+          min: 0
+        - answerKey: pounds
+          required: true
+          type: number
+          integer: true
+          min: 0
+          max: 13
+      total:
+        min: 56
+        max: 700
+        items:
+          - answerKey: stones
+            multiplier: 14
+          - answerKey: pounds
+    errors:
+      items:
+        stones:
+          required:
+            text: Enter your weight in stones
+            href: "#weight-imperial-stones"
+          invalid:
+            text: Enter your weight in stones using numbers
+            href: "#weight-imperial-stones"
+          integer:
+            text: Weight in stones must be a whole number
+            href: "#weight-imperial-stones"
+          min:
+            text: Weight in stones must be 0st or more
+            href: "#weight-imperial-stones"
+        pounds:
+          required:
+            text: Enter your weight in pounds
+            href: "#weight-imperial-pounds"
+          invalid:
+            text: Enter your weight in pounds using numbers
+            href: "#weight-imperial-pounds"
+          integer:
+            text: Weight in pounds must be a whole number
+            href: "#weight-imperial-pounds"
+          min:
+            text: Weight in pounds must be 0lb or more
+            href: "#weight-imperial-pounds"
+          max:
+            text: Weight in pounds must be 13lb or fewer
+            href: "#weight-imperial-pounds"
+      total:
+        min:
+          text: Weight must be between 4 stone and 50 stone
+          href: "#weight-imperial-stones"
+        max:
+          text: Weight must be between 4 stone and 50 stone
+          href: "#weight-imperial-stones"
+  - id: gender
+    type: single
+    answerKey: gender
+    input:
+      label: Which of these best describes your gender identity?
+    options:
+      - label: Female
+        value: female
+      - label: Male
+        value: male
+      - label: Non-binary
+        value: non_binary
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Gender identity
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select which option best describes your gender identity
+  - id: sex
+    type: single
+    answerKey: sex
+    options:
+      - label: Female
+        value: female
+      - label: Male
+        value: male
+    summary:
+      label: Sex at birth
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select your sex at birth
+    input:
+      label: What was your sex at birth?
+  - id: ethnicity
+    type: single
+    answerKey: ethnicity
+    input:
+      label: What is your ethnic background?
+    options:
+      - label: Asian or Asian British
+        value: asian_or_asian_british
+      - label: Black, African, Caribbean or Black British
+        value: black_african_caribbean_or_black_british
+      - label: Mixed or multiple ethnic groups
+        value: mixed_or_multiple_ethnic_groups
+      - label: White
+        value: white
+      - label: Other ethnic group
+        value: other_ethnic_group
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Ethnic background
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select your ethnic background
+  - id: education
+    type: single
+    answerKey: education
+    input:
+      label: What is the highest level of education you have completed?
+    options:
+      - label: I finished school before the age of 15
+        value: before_15
+      - label: GCSEs
+        hint: Previously O-levels
+        value: gcse
+      - label: A-levels
+        hint: Previously Higher School Certificate (HSC)
+        value: a_level
+      - label: Further education
+        hint: For example, apprenticeships or Higher National Certificates (HNC)
+        value: further_education
+      - label: Undergraduate degree
+        hint: A university degree, also known as a bachelor’s degree
+        value: undergraduate_degree
+      - label: Postgraduate degree
+        hint: For example, a Masters or PhD
+        value: postgraduate_degree
+      - divider: or
+      - label: I prefer not to say
+        value: prefer_not_to_say
+    summary:
+      label: Education
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select the highest level of education you have completed
+  - id: respiratory-conditions
+    type: multiple
+    answerKey: respiratoryConditions
+    input:
+      label: Have you ever been diagnosed with any of the following respiratory conditions?
+      hint: Select all that apply
+    options:
+      - label: Bronchitis
+        hint: An inflammation of the airways in the lungs that is usually caused by an infection
+        value: bronchitis
+        exclusiveGroup: conditions-list
+      - label: Chronic obstructive pulmonary disease (COPD)
+        hint: A group of lung conditions that cause breathing difficulties
+        value: chronic_obstructive_pulmonary_disease
+        exclusiveGroup: conditions-list
+      - label: Emphysema
+        hint: Damage to the air sacs in the lungs
+        value: emphysema
+        exclusiveGroup: conditions-list
+      - label: Pneumonia
+        hint: An infection of the lungs, usually diagnosed by a chest x-ray
+        value: pneumonia
+        exclusiveGroup: conditions-list
+      - label: Tuberculosis (TB)
+        hint: An infection that usually affects the lungs, but can affect any part of the body
+        value: tuberculosis
+        exclusiveGroup: conditions-list
+      - divider: or
+      - label: No, I have not had any of these respiratory conditions
+        value: no
+        exclusive: true
+        exclusiveGroup: conditions-list
+    summary:
+      label: Respiratory conditions
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select if you have ever been diagnosed with any respiratory conditions
+    caption: Your health
+  - id: asbestos-at-work
+    type: single
+    answerKey: asbestosAtWork
+    input:
+      label: Have you ever worked in a job where you might have been exposed to asbestos?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Worked in a job where you might have been exposed to asbestos
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever worked in a job where you might have been exposed to asbestos
+  - id: asbestos-at-home
+    type: single
+    answerKey: asbestosAtHome
+    input:
+      label: Have you ever lived with anyone who worked with asbestos?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Lived with anyone who worked with asbestos
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever lived with anyone who worked with asbestos
+  - id: cancer-diagnosis
+    type: single
+    answerKey: cancerDiagnosis
+    input:
+      label: Have you ever been diagnosed with cancer?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    summary:
+      label: Ever been diagnosed with cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you have ever been diagnosed with cancer
+  - id: cancer-diagnosis-relatives
+    type: single
+    answerKey: cancerDiagnosisRelatives
+    input:
+      label: Have any of your parents, siblings or children ever been diagnosed with lung cancer?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+      - label: I do not know
+        value: do_not_know
+    summary:
+      label: Parents, siblings or children diagnosed with lung cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether any of your parents, siblings or children have ever been diagnosed with lung cancer
+  - id: cancer-diagnosis-relatives-age
+    type: single
+    answerKey: cancerDiagnosisRelativesAge
+    input:
+      label: Were any of your relatives younger than 60 years old when they were diagnosed with lung cancer?
+    options:
+      - label: Yes, they were younger than 60
+        value: yes
+      - label: No, they were 60 or older
+        value: no
+      - label: I do not know
+        value: do_not_know
+    summary:
+      label: Relatives younger than 60 when diagnosed with lung cancer
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether any of your relatives were younger than 60 when they were diagnosed with lung cancer
+  - id: age-started-smoking
+    type: text
+    answerKey: ageStartedSmoking
+    input:
+      label: How old were you when you started smoking?
+      hint: Give an estimate if you are not sure
+      prefix: Age
+      inputmode: numeric
+      classes: nhsuk-input--width-2
+    summary:
+      label: Age you started smoking
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 120
+    errors:
+      required:
+        text: Enter the age you started smoking
+      invalid:
+        text: Enter the age you started smoking using numbers
+      min:
+        text: Age you started smoking must be 1 or older
+      max:
+        text: Age you started smoking must be 120 or younger
+    caption: Your smoking history
+  - id: age-stopped-smoking
+    type: text
+    answerKey: ageStoppedSmoking
+    input:
+      label: How old were you when you quit smoking?
+      hint: Give an estimate if you are not sure
+      prefix: Age
+      inputmode: numeric
+      classes: nhsuk-input--width-2
+    summary:
+      label: Age you quit smoking
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 120
+    errors:
+      required:
+        text: Enter the age you quit smoking
+      invalid:
+        text: Enter the age you quit smoking using numbers
+      min:
+        text: Age you quit smoking must be 1 or older
+      max:
+        text: Age you quit smoking must be 120 or younger
+    caption: Your smoking history
+  - id: periods-stopped-smoking
+    type: single
+    answerKey: periodsStoppedSmoking
+    options:
+      - label: Yes
+        value: yes
+        conditionalInput:
+          id: years-stopped-smoking
+          name: answers[yearsStoppedSmoking]
+          answerKey: yearsStoppedSmoking
+          label: Enter the total number of years you stopped smoking
+          hint: Give an estimate if you are not sure
+          suffix: years
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+      - label: No
+        value: no
+    summary:
+      label: Stopped smoking for periods of 1 year or longer
+    validation:
+      required: true
+      conditional:
+        yes:
+          required: true
+          type: number
+          min: 1
+          max: 80
+          answerKey: yearsStoppedSmoking
+          href: "#years-stopped-smoking"
+    errors:
+      required:
+        text: Select whether you have ever stopped smoking for periods of 1 year or longer
+      conditional:
+        yes:
+          required:
+            text: Enter the total number of years you stopped smoking
+            href: "#years-stopped-smoking"
+      invalid:
+        text: Total number of years you stopped smoking must be a number
+        href: "#years-stopped-smoking"
+      min:
+        text: Total number of years you stopped smoking must be 1 or more
+        href: "#years-stopped-smoking"
+      max:
+        text: Total number of years you stopped smoking must be 80 or fewer
+        href: "#years-stopped-smoking"
+    input:
+      label: Have you ever stopped smoking for periods of 1 year or longer?
+  - id: smoking-type
+    type: multiple
+    answerKey: smokingType
+    input:
+      label: Have you ever smoked any of the following types of tobacco?
+      hint: Select all that apply
+    options:
+      - label: Cigarettes
+        value: cigarettes
+        exclusiveGroup: types-list
+      - label: Rolling tobacco, or roll-ups
+        value: rolling_tobacco
+        exclusiveGroup: types-list
+      - label: Pipes
+        value: pipes
+        exclusiveGroup: types-list
+      - label: Small cigars
+        hint: Petit Corona or Short Panetela, usually 4 to 5 inches long
+        value: small_cigars
+        exclusiveGroup: types-list
+      - label: Medium cigars
+        hint: Robusto or Corona, usually 5 to 6 inches long
+        value: medium_cigars
+        exclusiveGroup: types-list
+      - label: Large cigars
+        hint: Churchill or Double Corona, usually 7 to 8 inches long
+        value: large_cigars
+        exclusiveGroup: types-list
+      - label: Cigarillos
+        hint: Cafe Creme or Signature cigars, roughly the size of a cigarette
+        value: cigarillos
+        exclusiveGroup: types-list
+      - label: Shisha
+        hint: Also known as hookah and water pipes
+        value: shisha
+        exclusiveGroup: types-list
+      - divider: or
+      - label: I have not smoked any of these types of tobacco
+        value: none
+        exclusive: true
+        exclusiveGroup: types-list
+    variants:
+      previous:
+        input:
+          label: What have you smoked?
+    summary:
+      label: Types of tobacco smoked
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select the types of tobacco you have smoked
+  - id: smoking-status
+    type: single
+    input:
+      label: Do you currently smoke?
+    options:
+      - label: Yes
+        value: yes
+      - label: No
+        value: no
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether you currently smoke this type of tobacco
+  - id: smoking-frequency
+    type: single
+    input:
+      label: How often do you smoke?
+    options:
+      - label: Daily
+        hint: You smoke on most days, for example, 5 or more days a week
+        value: daily
+      - label: Weekly
+        hint: You smoke at least once a week, but not on most days, for example, on weekends only
+        value: weekly
+      - label: Monthly
+        hint: You smoke at least once a month, but less than once a week
+        value: monthly
+      - label: Yearly
+        hint: You smoke less than once a month, for example, a few times a year
+        value: yearly
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select how often you smoke this type of tobacco
+  - id: smoking-quantity
+    type: text
+    input:
+      id: smoking-quantity
+      label: How much do you smoke?
+      hint: Give an estimate if you are not sure
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    variants:
+      rolling_tobacco:
+        type: single
+        input:
+          hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+        options:
+          - label: Less than 10g
+            value: less_than_10
+          - label: 10g to 30g
+            value: 10_to_30
+          - label: 31g to 50g
+            value: 31_to_50
+          - label: 51g to 75g
+            value: 51_to_75
+          - label: 76g to 100g
+            value: 76_to_100
+          - label: More than 100g
+            value: more_than_100
+        validation:
+          required: true
+      shisha:
+        type: single
+        input:
+          hint: null
+        options:
+          - label: Up to 30 minutes
+            value: up_to_30_minutes
+          - label: 30 minutes to 1 hour
+            value: 30_minutes_to_1_hour
+          - label: 1 to 2 hours
+            value: 1_to_2_hours
+          - label: More than 2 hours
+            value: more_than_2_hours
+          - divider: or
+          - label: Another amount
+            value: another_amount
+            conditionalInput:
+              id: smoking-quantity-other
+              name: answers[smokingQuantityOther]
+              answerKey: smokingQuantityOther
+              label: Enter the number of hours
+              hint: Give an estimate if you are not sure
+              suffix: hours
+              inputmode: numeric
+              classes: nhsuk-input--width-4
+        validation:
+          required: true
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 200
+    errors:
+      required:
+        text: Enter how much you smoke
+      invalid:
+        text: Enter how much you smoke using numbers
+      min:
+        text: Amount smoked must be 1 or more
+      max:
+        text: Amount smoked must be 200 or fewer
+  - id: smoking-change
+    type: multiple
+    input:
+      label: Has the amount you normally smoke changed over time?
+      hint: Select all that apply
+    options:
+      - label: Yes, I used to smoke more
+        value: greater
+        exclusiveGroup: change-list
+      - label: Yes, I used to smoke fewer
+        value: fewer
+        exclusiveGroup: change-list
+      - divider: or
+      - label: No, it has not changed
+        value: no
+        exclusive: true
+        exclusiveGroup: change-list
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select whether the amount you normally smoke has changed over time
+  - id: smoking-frequency-change
+    type: single
+    input:
+      label: How often did you smoke?
+    options:
+      - label: Daily
+        hint: You smoke on most days, for example, 5 or more days a week
+        value: daily
+      - label: Weekly
+        hint: You smoke at least once a week, but not on most days, for example, on weekends only
+        value: weekly
+      - label: Monthly
+        hint: You smoke at least once a month, but less than once a week
+        value: monthly
+      - label: Yearly
+        hint: You smoke less than once a month, for example, a few times a year
+        value: yearly
+    validation:
+      required: true
+    errors:
+      required:
+        text: Select how often you smoked this type of tobacco
+  - id: smoking-quantity-change
+    type: text
+    input:
+      id: smoking-quantity-change
+      label: How much did you smoke?
+      hint: Give an estimate if you are not sure
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    variants:
+      rolling_tobacco:
+        type: single
+        input:
+          hint: A standard size pouch usually contains 30g of tobacco, a larger pouch is usually 50g
+        options:
+          - label: Less than 10g
+            value: less_than_10
+          - label: 10g to 30g
+            value: 10_to_30
+          - label: 31g to 50g
+            value: 31_to_50
+          - label: 51g to 75g
+            value: 51_to_75
+          - label: 76g to 100g
+            value: 76_to_100
+          - label: More than 100g
+            value: more_than_100
+        validation:
+          required: true
+          type: null
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 200
+    errors:
+      required:
+        text: Enter how much you smoked
+      invalid:
+        text: Enter how much you smoked using numbers
+      min:
+        text: Amount smoked must be 1 or more
+      max:
+        text: Amount smoked must be 200 or fewer
+  - id: smoking-years-change
+    type: text
+    input:
+      id: smoking-years-change
+      label: How many years did you smoke this amount?
+      hint: Give an estimate if you are not sure
+      suffix: years
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 80
+    errors:
+      required:
+        text: Enter how many years you smoked this amount
+      invalid:
+        text: Enter how many years using numbers
+      min:
+        text: Number of years must be 1 or more
+      max:
+        text: Number of years must be 80 or fewer

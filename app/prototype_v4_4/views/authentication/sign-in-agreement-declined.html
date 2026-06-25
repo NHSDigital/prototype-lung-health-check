@@ -1,0 +1,32 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = "Sorry, you cannot test the online service" %}
+
+{% set bodyTextMarkdown %}
+To test the online service, we need to confirm who you are. To do this, you need to agree to let NHS login share your information with us.
+
+If you do not agree to share your NHS login information, you should complete your NHS lung cancer screening by phone.
+
+Call us on {{ serviceTelephone | telephoneLink }}
+
+**Phone lines are open:**<br aria-hidden="true">
+Monday to Friday 8am to 8pm<br aria-hidden="true">
+Saturdays 8am to 1pm
+{% endset %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      {{ button({
+        text: "Back to start page",
+        href: actions.back
+      }) }}
+
+    </div>
+  </div>
+{% endblock %}

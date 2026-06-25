@@ -1,0 +1,39 @@
+<h2 class="nhsuk-heading-m">
+  It’s never too late to stop
+</h2>
+
+<p class="nhsuk-body">
+  When you stop smoking, your body can repair itself sooner than you might think. It does not matter how old you are, or how long you have smoked.
+</p>
+
+{% set insetTextHtml %}
+<p class="nhsuk-body nhsuk-u-font-weight-bold">When you stop smoking, in:</p>
+<ul class="nhsuk-list">
+  <li>2 days, all harmful carbon monoxide leaves your body</li>
+  <li>2 to 12 weeks, your circulation improves</li>
+  <li>3 to 9 months, your lung function and breathing improves</li>
+  <li>1 year, your risk of a heart attack halves compared to a smoker</li>
+</ul>
+{% endset %}
+
+{{ insetText({
+  html: insetTextHtml,
+  classes: "nhsuk-u-margin-top-0"
+}) }}
+
+{{ list({
+  type: "tick",
+  title: "To help stop smoking:",
+  items: [
+    {
+      text: "talk to your GP or pharmacy about stop smoking aids, medication and support services
+"
+    },
+    {
+      text: "set small goals - you're 5 times more likely to quit for good if you stop smoking for 28 days"
+    },
+    {
+      text: "reflect on any past attempts to quit and try new methods"
+    }
+  ]
+}) }}

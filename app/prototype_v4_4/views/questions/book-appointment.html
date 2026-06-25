@@ -1,0 +1,34 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = "Call us to book an appointment" %}
+
+{% set bodyTextMarkdown %}
+Call us on {{ serviceTelephone | telephoneLink }} to book an appointment. If we do not hear from you in 2 weeks we will call you.
+
+At your face to face appointment a health professional will measure your height and weight. They will also ask you questions to check if you need a lung scan.
+
+**Phone lines are open:**<br aria-hidden="true">
+Monday to Friday 8am to 8pm<br aria-hidden="true">
+Saturdays 8am to 1pm
+{% endset %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+      {{ bodyTextMarkdown | markdownToHtml | safe }}
+
+      {% include prototype.viewPath + "/includes/speak-to-a-gp.html" %}
+
+    </div>
+  </div>
+{% endblock %}
