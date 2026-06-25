@@ -1,4 +1,4 @@
-# Prototype v4.1 documentation
+# Prototype v4.4 documentation
 
 Prototype v4.4 uses YAML-backed question content for most standard question pages.
 
