@@ -1,90 +1,125 @@
-# NHS check if you need a lung scan prototype
+# Check if you need a lung scan prototype
 
-A digital questionnaire prototype for lung health screening eligibility and risk assessment, built using the NHS prototype kit.
+A digital questionnaire prototype for lung cancer screening eligibility and risk
+assessment, built with the NHS prototype kit.
 
-## About this prototype
+The prototype explores whether people can complete parts of the lung cancer
+screening questionnaire online instead of completing the whole assessment by
+phone.
 
-This prototype tests a digital alternative to phone-based lung health check questionnaires. It allows members of the public to check their eligibility and complete a risk assessment questionnaire to determine if they need a lung health scan.
+## Current prototype
 
-Currently, lung health check assessments are conducted over the phone, often taking over 30 minutes and involving personal questions. This prototype explores whether users would prefer to complete these assessments digitally, in their own time and privacy.
+The latest version is **prototype v4.4**.
 
-## User journey
+- Start page: `/prototype_v4_4/start-page`
+- Page index: `/prototype_v4_4/page-index`
+- Last updated in the prototype index: 25 June 2026
 
-The prototype guides users through:
+The app also keeps earlier versions available for comparison and research
+review:
 
-1. **Eligibility checking** - Age and smoking history validation
-2. **Risk assessment questionnaire** - Series of health and lifestyle questions
-3. **Results** - Risk level determination and next steps
+- `prototype_v4_3`
+- `prototype_v4_2`
+- `prototype_v4_1`
+- `prototype_v4`
+- `prototype_v3`
+- `prototype_v2`
+- `prototype_v1`
 
-## Current status
+## What v4.4 includes
 
-**Version:** 1.0
-**Status:** Research prototype for user testing
+Prototype v4.4 includes:
 
-### What works
+- simulated NHS login and security code pages
+- terms acceptance
+- an exit route for people who have already completed the questionnaire by phone
+- eligibility checks for smoking history and age
+- a route for people who need a face-to-face appointment
+- height, weight, gender identity, sex at birth, ethnicity and education questions
+- smoking history and tobacco type questions
+- repeated tobacco questions for cigarettes, rolling tobacco, pipes, cigars,
+  cigarillos and shisha
+- respiratory conditions, asbestos, cancer diagnosis and family history questions
+- check your answers and confirmation pages
+- content pages for accessibility, contact, cookies, privacy, terms, paused and
+  closed service states
+- 404, 500 and 503 error pages
 
-- Complete end-to-end user journey
-- Age validation (55-74 years eligible)
-- NHS design system patterns and components
-- Responsive design following NHS accessibility standards
+The v4.4 flow is documented in
+[`app/prototype_v4_4/docs/question-flow.md`](app/prototype_v4_4/docs/question-flow.md).
 
-### Known limitations
+## Content and data
 
-- **Scoring system not implemented** - The prototype doesn't calculate weighted scores from answers in the background
-- **Fixed outcome** - Currently shows high-risk result by default (with option to view low-risk alternative)
-- **Research prototype only** - Not intended for clinical use
+Prototype v4.4 uses YAML-backed content for most standard question pages:
 
-## Research hypothesis
+- `app/prototype_v4_4/data/questions.yaml` for reusable question controls
+- `app/prototype_v4_4/data/pages.yaml` for page composition
+- `app/prototype_v4_4/data/tobacco.yaml` for tobacco-specific content and
+  repeated tobacco sub-flows
 
-We hypothesize that most users will prefer completing lung health assessments digitally rather than over the phone, due to:
+The YAML content hot-reloads while the app is running. If invalid YAML is saved,
+the next request can fail until the file is fixed.
 
-- Convenience of completing in their own time
-- Privacy for answering personal questions
-- Reduced time commitment
+Version-specific documentation is in
+[`app/prototype_v4_4/docs`](app/prototype_v4_4/docs).
 
-However, we expect some users will always prefer speaking to a healthcare professional.
+Shared project documentation is in [`docs`](docs), including:
 
-## Design approach
+- a contribution guide
+- risk calculator notes
+- tobacco cigarette-equivalent notes and CSV data
+- a modelling note about concurrent and consecutive tobacco smoking
 
-This prototype has been developed in consultation with:
+## Risk calculators
 
-- Health Check Online team
-- NHS 111
-- Screening and Personalised Prevention teams
+The repository includes shared prototype-only `LLPv2` and `PLCOm2012` calculator
+modules in `app/lib/risk-calculators`.
 
-We've used NHS design patterns and components wherever possible to ensure consistency with existing NHS digital services.
+These modules are not currently wired into the v4.4 journey to decide whether a
+person is high risk or low risk. The next implementation step is an adapter that
+maps prototype session answers to calculator inputs and owns thresholds, missing
+answer handling, cigarette-equivalent mapping and result page routing.
 
-## Future development
+Calculator results are not clinically signed off and must not be used to make
+clinical decisions.
 
-- Version 2.0 planned with improvements based on user research findings
-- Design history will be maintained to track changes and decisions
-- Further end-to-end testing with large number of participants
+See [`docs/risk-calculators.md`](docs/risk-calculators.md).
 
-## Technical setup
+## Running locally
 
-Built with the latest NHS prototype kit. No additional setup required beyond standard NHS prototype kit installation.
+Use the project Node and npm versions:
 
-### Running the prototype
+- Node 24
+- npm 11
+
+Install dependencies and start the prototype:
 
 ```bash
 npm install
 npm start
 ```
 
-The prototype will be available at `http://localhost:3000`
+The prototype runs at `http://localhost:3000`.
 
-### Password
+## Useful commands
 
-This prototype is password-protected as required for NHS research prototypes. Contact the team for access credentials.
+```bash
+npm run lint:markdown
+npm run lint:scripts
+npm run lint:styles
+```
 
-## Research and testing
+## Research status
 
-This prototype is designed for user research to understand preferences between digital and phone-based assessments. It should not be used for actual clinical decisions.
+This is a research prototype for user testing and service design work. It is not
+intended for clinical use.
 
 ## Contributing
 
-This is a research prototype. For questions or contributions, please contact the team or raise an issue in this repository.
+For non-technical contribution guidance, see
+[`docs/contributing-to-the-prototype.md`](docs/contributing-to-the-prototype.md).
 
 ## Licence
 
-This prototype is built using the NHS prototype kit and follows the same licensing terms.
+This prototype is built using the NHS prototype kit and follows the same
+licensing terms.
