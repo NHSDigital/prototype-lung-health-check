@@ -162,7 +162,7 @@ questions:
       valueKey: metric
       label: What is your height in centimetres?
       suffix: cm
-      inputmode: numeric
+      inputmode: decimal
       classes: nhsuk-input--width-4
     switchUnits:
       text: Switch to feet and inches
@@ -171,17 +171,17 @@ questions:
     validation:
       required: true
       type: number
-      min: 100
-      max: 250
+      min: 139.7
+      max: 243.8
     errors:
       required:
         text: Enter your height in centimetres
       invalid:
         text: Enter your height in centimetres using numbers
       min:
-        text: Height in centimetres must be 100 or more
+        text: Height in centimetres must be 139.7cm or more
       max:
-        text: Height in centimetres must be 250 or fewer
+        text: Height in centimetres must be 243.8cm or fewer
 
   - id: height-imperial
     type: text_group
@@ -220,13 +220,21 @@ questions:
         - answerKey: feet
           required: true
           type: number
-          min: 3
-          max: 8
+          integer: true
+          min: 0
         - answerKey: inches
           required: true
           type: number
+          integer: true
           min: 0
           max: 11
+      total:
+        min: 55
+        max: 96
+        items:
+          - answerKey: feet
+            multiplier: 12
+          - answerKey: inches
     errors:
       items:
         feet:
@@ -236,11 +244,11 @@ questions:
           invalid:
             text: Enter your height in feet using numbers
             href: "#height-imperial-feet"
-          min:
-            text: Height in feet must be 3 or more
+          integer:
+            text: Height in feet must be a whole number
             href: "#height-imperial-feet"
-          max:
-            text: Height in feet must be 8 or fewer
+          min:
+            text: Height in feet must be 0ft or more
             href: "#height-imperial-feet"
         inches:
           required:
@@ -249,12 +257,22 @@ questions:
           invalid:
             text: Enter your height in inches using numbers
             href: "#height-imperial-inches"
+          integer:
+            text: Height in inches must be a whole number
+            href: "#height-imperial-inches"
           min:
-            text: Height in inches must be 0 or more
+            text: Height in inches must be 0in or more
             href: "#height-imperial-inches"
           max:
-            text: Height in inches must be 11 or fewer
+            text: Height in inches must be 11in or fewer
             href: "#height-imperial-inches"
+      total:
+        min:
+          text: Height must be between 4 feet 7 inches and 8 feet
+          href: "#height-imperial-feet"
+        max:
+          text: Height must be between 4 feet 7 inches and 8 feet
+          href: "#height-imperial-feet"
 
   - id: weight-metric
     type: text
@@ -272,7 +290,7 @@ questions:
       valueKey: metric
       label: What is your weight in kilograms?
       suffix: kg
-      inputmode: numeric
+      inputmode: decimal
       classes: nhsuk-input--width-4
     switchUnits:
       text: Switch to stones and pounds
@@ -281,17 +299,20 @@ questions:
     validation:
       required: true
       type: number
-      min: 30
-      max: 250
+      decimalPlaces: 2
+      min: 25.4
+      max: 317.5
     errors:
       required:
         text: Enter your weight in kilograms
       invalid:
         text: Enter your weight in kilograms using numbers
+      decimalPlaces:
+        text: Weight in kilograms must have 2 decimal places or fewer
       min:
-        text: Weight in kilograms must be 30 or more
+        text: Weight in kilograms must be 25.4kg or more
       max:
-        text: Weight in kilograms must be 250 or fewer
+        text: Weight in kilograms must be 317.5kg or fewer
 
   - id: weight-imperial
     type: text_group
@@ -330,13 +351,21 @@ questions:
         - answerKey: stones
           required: true
           type: number
-          min: 4
-          max: 40
+          integer: true
+          min: 0
         - answerKey: pounds
           required: true
           type: number
+          integer: true
           min: 0
           max: 13
+      total:
+        min: 56
+        max: 700
+        items:
+          - answerKey: stones
+            multiplier: 14
+          - answerKey: pounds
     errors:
       items:
         stones:
@@ -346,11 +375,11 @@ questions:
           invalid:
             text: Enter your weight in stones using numbers
             href: "#weight-imperial-stones"
-          min:
-            text: Weight in stones must be 4 or more
+          integer:
+            text: Weight in stones must be a whole number
             href: "#weight-imperial-stones"
-          max:
-            text: Weight in stones must be 40 or fewer
+          min:
+            text: Weight in stones must be 0st or more
             href: "#weight-imperial-stones"
         pounds:
           required:
@@ -359,12 +388,22 @@ questions:
           invalid:
             text: Enter your weight in pounds using numbers
             href: "#weight-imperial-pounds"
+          integer:
+            text: Weight in pounds must be a whole number
+            href: "#weight-imperial-pounds"
           min:
-            text: Weight in pounds must be 0 or more
+            text: Weight in pounds must be 0lb or more
             href: "#weight-imperial-pounds"
           max:
-            text: Weight in pounds must be 13 or fewer
+            text: Weight in pounds must be 13lb or fewer
             href: "#weight-imperial-pounds"
+      total:
+        min:
+          text: Weight must be between 4 stone and 50 stone
+          href: "#weight-imperial-stones"
+        max:
+          text: Weight must be between 4 stone and 50 stone
+          href: "#weight-imperial-stones"
 
   - id: gender
     type: single

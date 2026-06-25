@@ -312,11 +312,138 @@ const getSmokingComparisonQuantity = (type, answer) => {
   return getSmokingQuantity(type, answer)
 }
 
+const rollingTobaccoQuantityValues = {
+  less_than_10: 10,
+  '10_to_30': 20,
+  '31_to_50': 40.5,
+  '51_to_75': 63,
+  '76_to_100': 88,
+  more_than_100: 100
+}
+
+const smokingFrequencyRateMultipliers = {
+  daily: 7,
+  weekly: 1,
+  monthly: 0.25,
+  yearly: 1 / 52
+}
+
+/**
+ * Check whether a value can be compared as a submitted numeric answer.
+ *
+ * @param {*} value - Submitted value.
+ * @returns {boolean} True when value is numeric.
+ */
+const isComparableNumber = (value) => {
+  if (value === undefined || value === null || String(value).trim() === '') {
+    return false
+  }
+
+  const number = Number(value)
+
+  return Number.isFinite(number)
+}
+
+/**
+ * Get a normalised quantity value for cross-frequency comparisons.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {*} quantity - Submitted quantity answer.
+ * @param {string} frequency - Submitted frequency answer.
+ * @returns {number|undefined} Normalised quantity, when comparable.
+ */
+const getSmokingQuantityComparisonRate = (type, quantity, frequency) => {
+  const multiplier = smokingFrequencyRateMultipliers[frequency]
+
+  if (!multiplier) {
+    return undefined
+  }
+
+  if (type === 'rolling_tobacco') {
+    const value = rollingTobaccoQuantityValues[quantity]
+
+    return value ? value * multiplier : undefined
+  }
+
+  return isComparableNumber(quantity) ? Number(quantity) * multiplier : undefined
+}
+
+/**
+ * Build the left side of a changed-quantity comparison error.
+ *
+ * @param {string} type - Tobacco type key.
+ * @returns {string} Error phrase.
+ */
+const getSmokingQuantityChangeErrorPhrase = (type) => {
+  const heading = removeQuestionMark(getSmokingTypeHeadings(type, true).quantityHeading || '')
+    .replace(/ in a normal (day|week|month|year)$/, '')
+
+  return upperFirst(lowerFirst(heading)
+    .replace(/^(how (?:much|many) .+?) did you normally smoke$/, '$1 you normally smoked')
+    .replace(/^(how (?:much|many) .+?) did you smoke$/, '$1 you normally smoked'))
+}
+
+/**
+ * Check whether a changed-smoking quantity contradicts the selected change direction.
+ *
+ * @param {Object} params - Comparison inputs.
+ * @returns {Object|undefined} Validation error when the quantities contradict.
+ */
+const getSmokingQuantityChangeComparisonError = ({
+  page,
+  step,
+  answer,
+  changeAnswer,
+  href
+}) => {
+  if (page !== 'smoking-quantity-change' || !step.change || !answer.smokingQuantity || !answer.smokingFrequency || !changeAnswer.quantity || !changeAnswer.frequency) {
+    return undefined
+  }
+
+  const currentRate = getSmokingQuantityComparisonRate(step.type, answer.smokingQuantity, answer.smokingFrequency)
+  const changedRate = getSmokingQuantityComparisonRate(step.type, changeAnswer.quantity, changeAnswer.frequency)
+
+  if (currentRate === undefined || changedRate === undefined) {
+    return undefined
+  }
+
+  const contradictsChange = step.change === 'greater'
+    ? changedRate <= currentRate
+    : changedRate >= currentRate
+
+  if (!contradictsChange) {
+    return undefined
+  }
+
+  const comparisonText = step.type === 'rolling_tobacco' && step.change === 'fewer'
+    ? 'less'
+    : smokingChangeTypes[step.change]?.label
+
+  return {
+    text: `${getSmokingQuantityChangeErrorPhrase(step.type)} must be ${comparisonText} than ${[getSmokingComparisonQuantity(step.type, answer.smokingQuantity), getSmokingFrequencyComparisonPeriod(answer.smokingFrequency)].filter(Boolean).join(' ')}`,
+    href
+  }
+}
+
 const smokingFrequencyPeriods = {
   daily: 'a day',
   weekly: 'a week',
   monthly: 'a month',
   yearly: 'a year'
+}
+
+const smokingFrequencyComparisonPeriods = {
+  daily: 'per day',
+  weekly: 'per week',
+  monthly: 'per month',
+  yearly: 'per year'
+}
+
+const smokingFrequencyMaxHours = {
+  daily: 24,
+  weekly: 168,
+  monthly: 744,
+  yearly: 8760
 }
 
 /**
@@ -327,6 +454,31 @@ const smokingFrequencyPeriods = {
  */
 const getSmokingFrequencyPeriod = (frequency) => {
   return smokingFrequencyPeriods[frequency] || ''
+}
+
+/**
+ * Convert a smoking frequency value into a comparison phrase.
+ *
+ * @param {string} frequency - Frequency value.
+ * @returns {string} Comparison phrase, for example `per day`.
+ */
+const getSmokingFrequencyComparisonPeriod = (frequency) => {
+  return smokingFrequencyComparisonPeriods[frequency] || ''
+}
+
+/**
+ * Get the maximum number of hours allowed for an "another amount" shisha answer.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} frequency - Selected smoking frequency.
+ * @returns {number} Maximum number of hours.
+ */
+const getSmokingQuantityOtherMaxHours = (type, frequency) => {
+  if (type !== 'shisha') {
+    return 24
+  }
+
+  return smokingFrequencyMaxHours[frequency] || 24
 }
 
 /**
@@ -585,13 +737,7 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
   }
 
   if (page === 'smoking-years-change') {
-    const quantity = getSmokingQuantity(type, changeAnswer.quantity)
-
-    if (!quantity) {
-      return getQuestion('smoking-years-change').input.label
-    }
-
-    return `How many years did you smoke ${[quantity, getSmokingFrequencyPeriod(answer.smokingFrequency)].filter(Boolean).join(' ')}?`
+    return getQuestion('smoking-years-change').input.label
   }
 
   return ''
@@ -720,6 +866,16 @@ const getQuestionItemsWithLabels = (id, labels = {}, hintOverrides = {}) => {
 }
 
 /**
+ * Check whether a smoking quantity must be a whole number.
+ *
+ * @param {string} type - Tobacco type key.
+ * @returns {boolean} True when decimal quantities should be rejected.
+ */
+const requiresWholeNumberSmokingQuantity = (type) => {
+  return !['rolling_tobacco', 'shisha'].includes(type)
+}
+
+/**
  * Build runtime overrides for a quantity question.
  *
  * @param {Object} params - Quantity override inputs.
@@ -733,6 +889,7 @@ const getSmokingQuantityQuestionOverrides = ({
   name,
   value,
   conditionalValue,
+  frequency,
   smokingType
 }) => {
   const question = getQuestion(page)
@@ -742,6 +899,15 @@ const getSmokingQuantityQuestionOverrides = ({
   const hint = hasHintOverride ? variantInput.hint : question.input.hint
   const questionType = variant.type || question.type
   const conditionalHref = '#smoking-quantity-other'
+  const maxHours = getSmokingQuantityOtherMaxHours(step.type, frequency)
+  const validation = {
+    ...variant.validation
+  }
+
+  if (requiresWholeNumberSmokingQuantity(step.type)) {
+    validation.integer = true
+  }
+
   const items = variant.options
     ? variant.options.map((option) => {
       const item = toComponentItem(option)
@@ -777,13 +943,13 @@ const getSmokingQuantityQuestionOverrides = ({
       suffix: questionType === 'text' ? smokingType.suffix : undefined
     },
     validation: {
-      ...variant.validation,
+      ...validation,
       conditional: {
         another_amount: {
           required: true,
           type: 'number',
           min: 0.5,
-          max: 24,
+          max: maxHours,
           answerKey: 'smokingQuantityOther',
           value: conditionalValue,
           href: conditionalHref
@@ -803,12 +969,16 @@ const getSmokingQuantityQuestionOverrides = ({
         text: 'Number of hours must be a number',
         href: conditionalHref
       },
+      integer: {
+        text: `${upperFirst(getAnswerPhraseFromHeading(heading))} must be a whole number`,
+        href: `#${question.input.id}`
+      },
       min: {
         text: 'Number of hours must be 0.5 or more',
         href: conditionalHref
       },
       max: {
-        text: 'Number of hours must be 24 or fewer',
+        text: `Number of hours must be ${maxHours} or fewer`,
         href: conditionalHref
       }
     },
@@ -841,9 +1011,10 @@ const getAnswerPhraseFromHeading = (heading = '') => {
     .replace(/^how long did you smoke /, 'how long you smoked ')
     .replace(/^how long do you currently smoke /, 'how long you currently smoke ')
     .replace(/^how long do you smoke /, 'how long you smoke ')
-    .replace(/^(how (?:much|many|long) .+?) did you smoke /, '$1 you smoked ')
-    .replace(/^(how (?:much|many|long) .+?) do you currently smoke /, '$1 you currently smoke ')
-    .replace(/^(how (?:much|many|long) .+?) do you smoke /, '$1 you smoke ')
+    .replace(/^(how (?:much|many|long) .+?) did you normally smoke(?= |$)/, '$1 you normally smoked')
+    .replace(/^(how (?:much|many|long) .+?) did you smoke(?= |$)/, '$1 you smoked')
+    .replace(/^(how (?:much|many|long) .+?) do you currently smoke(?= |$)/, '$1 you currently smoke')
+    .replace(/^(how (?:much|many|long) .+?) do you smoke(?= |$)/, '$1 you smoke')
 }
 
 /**
@@ -1048,6 +1219,7 @@ const getSmokingContentQuestionOverrides = ({
       name: `answers[${step.type}][smokingQuantity]`,
       value: answer.smokingQuantity,
       conditionalValue: answer.smokingQuantityOther,
+      frequency: answer.smokingFrequency,
       smokingType
     })
   }
@@ -1089,6 +1261,7 @@ const getSmokingContentQuestionOverrides = ({
       name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
       value: changeAnswer.quantity,
       conditionalValue: changeAnswer.smokingQuantityOther,
+      frequency: answer.smokingFrequency,
       smokingType
     })
   }
@@ -1323,10 +1496,23 @@ const validateSmokingTypeQuestion = (req, page, step) => {
     }
   }
 
-  return validateQuestion(req.session.data.answers, page, {
+  const validationErrors = validateQuestion(req.session.data.answers, page, {
     ...overrides,
     errors
   })
+  const comparisonError = getSmokingQuantityChangeComparisonError({
+    page,
+    step,
+    answer: context.answer,
+    changeAnswer: context.changeAnswer,
+    href: `#${errorHref}`
+  })
+
+  if (comparisonError && !validationErrors.some((error) => error.href === comparisonError.href)) {
+    validationErrors.push(comparisonError)
+  }
+
+  return validationErrors
 }
 
 /**

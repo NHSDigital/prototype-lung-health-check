@@ -12,8 +12,11 @@ const { getQuestion } = require('./questions')
  * @property {string} [type] - Type-specific validation, for example number or date.
  * @property {number} [min] - Minimum numeric value.
  * @property {number} [max] - Maximum numeric value.
+ * @property {boolean} [integer] - Whether a numeric value must be a whole number.
+ * @property {number} [decimalPlaces] - Maximum number of decimal places allowed.
  * @property {Object} [conditional] - Conditional reveal validation rules.
  * @property {Object[]} [items] - Validation rules for grouped inputs.
+ * @property {Object} [total] - Total validation rules for grouped numeric inputs.
  */
 
 /**
@@ -192,6 +195,30 @@ const mergeQuestion = (question, overrides = {}) => {
 }
 
 /**
+ * Check whether a submitted numeric value is written as a whole number.
+ *
+ * @param {*} value - Submitted value.
+ * @returns {boolean} True when the submitted value is an integer string.
+ */
+const isIntegerValue = (value) => {
+  return /^-?\d+$/.test(String(value).trim())
+}
+
+/**
+ * Check whether a submitted numeric value has no more than the allowed number
+ * of decimal places.
+ *
+ * @param {*} value - Submitted value.
+ * @param {number} decimalPlaces - Maximum decimal places allowed.
+ * @returns {boolean} True when the value has an allowed decimal precision.
+ */
+const hasMaximumDecimalPlaces = (value, decimalPlaces) => {
+  const match = String(value).trim().match(/^-?\d+(?:\.(\d+))?$/)
+
+  return Boolean(match) && (!match[1] || match[1].length <= decimalPlaces)
+}
+
+/**
  * Validate a numeric value against invalid, min and max rules.
  *
  * @param {*} value - Submitted value.
@@ -203,8 +230,21 @@ const mergeQuestion = (question, overrides = {}) => {
 const validateNumber = (value, validation, errorsConfig, errors, defaultHref) => {
   const number = Number(value)
 
-  if (Number.isNaN(number)) {
+  if (Number.isNaN(number) || !Number.isFinite(number)) {
     errors.push(makeError(errorsConfig.invalid, defaultHref))
+    return
+  }
+
+  if (validation.integer && !isIntegerValue(value)) {
+    errors.push(makeError(errorsConfig.integer || errorsConfig.invalid, defaultHref))
+    return
+  }
+
+  if (
+    validation.decimalPlaces !== undefined &&
+    !hasMaximumDecimalPlaces(value, validation.decimalPlaces)
+  ) {
+    errors.push(makeError(errorsConfig.decimalPlaces || errorsConfig.invalid, defaultHref))
     return
   }
 
@@ -218,6 +258,61 @@ const validateNumber = (value, validation, errorsConfig, errors, defaultHref) =>
 }
 
 /**
+ * Validate the total value of grouped numeric inputs.
+ *
+ * @param {Object} groupValue - Submitted group values keyed by answer key.
+ * @param {Object} question - Normalised text_group question config.
+ * @param {ValidationError[]} errors - Mutable error collection.
+ */
+const validateGroupTotal = (groupValue, question, errors) => {
+  const totalValidation = question.validation?.total
+
+  if (!totalValidation) {
+    return
+  }
+
+  const total = (totalValidation.items || []).reduce((sum, item) => {
+    const multiplier = item.multiplier || 1
+
+    return sum + (Number(groupValue[item.answerKey]) * multiplier)
+  }, 0)
+  const totalErrors = question.errors?.total || {}
+  const defaultHref = `#${question.input?.items?.[0]?.id || question.id}`
+
+  if (totalValidation.min !== undefined && total < totalValidation.min) {
+    errors.push(makeError(totalErrors.min, defaultHref))
+  }
+
+  if (totalValidation.max !== undefined && total > totalValidation.max) {
+    errors.push(makeError(totalErrors.max, defaultHref))
+  }
+}
+
+/**
+ * Order grouped input errors by the visual input order.
+ *
+ * @param {ValidationError[]} errors - Validation errors for a text_group.
+ * @param {Object} question - Normalised text_group question config.
+ * @returns {ValidationError[]} Errors ordered by grouped input position.
+ */
+const orderGroupErrors = (errors, question) => {
+  const inputOrder = (question.input?.items || []).reduce((map, item, index) => {
+    map[`#${item.id}`] = index
+    return map
+  }, {})
+
+  return errors
+    .map((error, index) => ({ error, index }))
+    .sort((a, b) => {
+      const aOrder = inputOrder[a.error.href] ?? Number.MAX_SAFE_INTEGER
+      const bOrder = inputOrder[b.error.href] ?? Number.MAX_SAFE_INTEGER
+
+      return aOrder - bOrder || a.index - b.index
+    })
+    .map(({ error }) => error)
+}
+
+/**
  * Validate grouped inputs, such as imperial height or weight fields.
  *
  * @param {Object} answers - Session answers object.
@@ -227,6 +322,7 @@ const validateNumber = (value, validation, errorsConfig, errors, defaultHref) =>
 const validateInputGroup = (answers, question) => {
   const errors = []
   const groupValue = answers[question.answerKey]?.[question.input.valueKey] || {}
+  let canValidateTotal = Boolean(question.validation?.total)
 
   ;(question.validation?.items || []).forEach((itemValidation) => {
     const value = groupValue[itemValidation.answerKey]
@@ -235,15 +331,30 @@ const validateInputGroup = (answers, question) => {
 
     if (itemValidation.required && isBlank(value)) {
       errors.push(makeError(itemErrors.required, defaultHref))
+      canValidateTotal = false
       return
     }
 
     if (itemValidation.type === 'number' && !isBlank(value)) {
+      const number = Number(value)
+
+      if (
+        Number.isNaN(number) ||
+        !Number.isFinite(number) ||
+        (itemValidation.integer && !isIntegerValue(value))
+      ) {
+        canValidateTotal = false
+      }
+
       validateNumber(value, itemValidation, itemErrors, errors, defaultHref)
     }
   })
 
-  return errors
+  if (canValidateTotal) {
+    validateGroupTotal(groupValue, question, errors)
+  }
+
+  return orderGroupErrors(errors, question)
 }
 
 /**
