@@ -71,11 +71,15 @@
 
       <h3 class="nhsuk-heading-s">Tobacco smoking</h3>
       <ul class="nhsuk-list nhsuk-list--spaced">
-        {{ seededPageLink("/smoking-frequency", "Cigarettes - smoking frequency") }}
         {{ seededPageLink("/smoking-status?type=cigarettes", "Cigarettes - currently smoke") }}
+        {{ seededPageLink("/smoking-frequency?type=cigarettes", "Cigarettes - smoking frequency") }}
+        {{ seededPageLink("/smoking-quantity?type=cigarettes", "Cigarettes - smoking quantity") }}
         {{ seededPageLink("/smoking-change?type=cigarettes", "Cigarettes - has quantity changed") }}
-        {{ seededPageLink("/smoking-frequency-change?type=cigarettes%26change=greater", "Cigarettes - more smoking change") }}
-        {{ seededProfilePageLink("/smoking-frequency?type=shisha", "shisha", "Shisha smoking") }}
+        {{ seededPageLink("/smoking-frequency-change?type=cigarettes%26change=greater", "Cigarettes - more smoking frequency") }}
+        {{ seededPageLink("/smoking-quantity-change?type=cigarettes%26change=greater", "Cigarettes - more smoking quantity") }}
+        {{ seededPageLink("/smoking-years-change?type=cigarettes%26change=greater", "Cigarettes - more smoking years") }}
+        {{ seededProfilePageLink("/smoking-frequency?type=shisha", "shisha", "Shisha smoking frequency") }}
+        {{ seededProfilePageLink("/smoking-quantity?type=shisha", "shisha", "Shisha smoking quantity") }}
       </ul>
 
       <h2 class="nhsuk-heading-m">Your health</h2>
