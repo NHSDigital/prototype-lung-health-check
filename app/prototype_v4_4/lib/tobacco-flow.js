@@ -1059,7 +1059,7 @@ const getSmokingContentQuestionOverrides = ({
   if (page === 'smoking-frequency-change') {
     return {
       heading: {
-        title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer, false),
+        title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
         caption: 'Your smoking history'
       },
       input: {
@@ -1074,7 +1074,7 @@ const getSmokingContentQuestionOverrides = ({
     return getSmokingQuantityQuestionOverrides({
       page,
       step,
-      heading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer, false),
+      heading: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
       caption: 'Your smoking history',
       name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
       value: changeAnswer.quantity,

@@ -70,6 +70,7 @@ Sources:
 
 - Tobacco sub-flow pages use `getSmokingContentQuestionOverrides()` before validation. The validator sees the runtime heading, input name, selected value and tobacco-specific variant.
 - `smoking-status`, `smoking-frequency`, `smoking-quantity`, `smoking-change`, `smoking-frequency-change`, `smoking-quantity-change`, and `smoking-years-change` can replace their base `required` text with contextual text generated from the runtime heading.
+- `smoking-frequency-change` and `smoking-quantity-change` include the changed-smoking comparison in the runtime heading and contextual errors, for example `when you smoked more than 10 cigarettes a day`.
 - For headings beginning `How often`, the required message is `Select ...`; for `How much`, `How many`, or `How long`, the message is `Enter ...` for text inputs and `Select ...` for single-choice inputs; yes/no headings become `Select whether ...`.
 - For numeric tobacco quantity text inputs, non-rolling-tobacco and non-shisha types require whole numbers. The integer message is generated as `[answer phrase] must be a whole number`.
 - For shisha `another_amount`, the conditional input messages are `Enter the number of hours`, `Number of hours must be a number`, `Number of hours must be 0.5 or more`, and `Number of hours must be [maxHours] or fewer`. `maxHours` is 24 for daily/non-shisha, 168 weekly, 744 monthly, and 8760 yearly.
