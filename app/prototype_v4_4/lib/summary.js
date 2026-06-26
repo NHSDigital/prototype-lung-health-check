@@ -238,17 +238,17 @@ const getCheckYourAnswers = (answers = {}) => {
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-frequency-change', type, change, changeAnswer, answer),
           value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
-          href: getSmokingTypeStepUrl({ page: 'tobacco-smoking-change', type, change })
+          href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
         }),
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-quantity-change', type, change, changeAnswer, answer),
           value: getSmokingQuantity(type, changeAnswer.quantity),
-          href: getSmokingTypeStepUrl({ page: 'tobacco-smoking-change', type, change })
+          href: getSmokingTypeStepUrl({ page: 'smoking-quantity-change', type, change })
         }),
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-years-change', type, change, changeAnswer, answer),
           value: changeAnswer.years && formatQuantity(changeAnswer.years, 'year', 'years'),
-          href: getSmokingTypeStepUrl({ page: 'tobacco-smoking-change', type, change })
+          href: getSmokingTypeStepUrl({ page: 'smoking-years-change', type, change })
         })
       ]
     })
@@ -261,12 +261,12 @@ const getCheckYourAnswers = (answers = {}) => {
       makeSummaryRow({
         key: getSmokingStepHeading('smoking-frequency', type, isPast, answer),
         value: formatValue(answer.smokingFrequency, valueLabels.smokingFrequency),
-        href: getSmokingTypeStepUrl({ page: 'tobacco-smoking', type })
+        href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type })
       }),
       makeSummaryRow({
         key: getSmokingStepHeading('smoking-quantity', type, isPast, answer),
         value: formatSmokingQuantityAnswer(type, answer),
-        href: getSmokingTypeStepUrl({ page: 'tobacco-smoking', type })
+        href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type })
       }),
       type !== 'shisha' && makeSummaryRow({
         key: smokingType.changeHeading,

@@ -72,21 +72,26 @@ flowchart TD
   selectedType["Next selected tobacco type"] --> formerSmoker{"Former smoker?"}
 
   formerSmoker -- No, currently smokes --> status["Smoking status"]
-  formerSmoker -- Yes --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
-  status --> tobaccoSmoking
+  formerSmoker -- Yes --> frequency["Smoking frequency"]
+  status --> frequency
+  frequency --> quantity["Smoking quantity"]
 
-  tobaccoSmoking --> isShisha{"Is the selected type<br>shisha?"}
+  quantity --> isShisha{"Is the selected type<br>shisha?"}
   isShisha -- Yes --> nextTypeOrCya
   isShisha -- No --> changed{"Smoking changed<br>over time?"}
 
   changed -- No change selected --> nextTypeOrCya
-  changed -- More selected --> moreChange["Tobacco smoking change<br>More: frequency, quantity and years"]
-  moreChange --> fewerSelected{"Fewer also selected?"}
+  changed -- More selected --> moreFrequency["More: smoking frequency"]
+  moreFrequency --> moreQuantity["More: smoking quantity"]
+  moreQuantity --> moreYears["More: smoking years"]
+  moreYears --> fewerSelected{"Fewer also selected?"}
 
-  changed -- Only fewer selected --> fewerChange["Tobacco smoking change<br>Fewer: frequency, quantity and years"]
-  fewerSelected -- Yes --> fewerChange
+  changed -- Only fewer selected --> fewerFrequency["Fewer: smoking frequency"]
+  fewerSelected -- Yes --> fewerFrequency
   fewerSelected -- No --> nextTypeOrCya
-  fewerChange --> nextTypeOrCya
+  fewerFrequency --> fewerQuantity["Fewer: smoking quantity"]
+  fewerQuantity --> fewerYears["Fewer: smoking years"]
+  fewerYears --> nextTypeOrCya
 
   nextTypeOrCya["Next selected tobacco type<br>or Check your answers"]
 ```
@@ -96,10 +101,10 @@ flowchart TD
 - Height and weight unit pages can be switched manually using the unit-switch links.
 - `When you smoked tobacco` combines age started smoking, age stopped smoking and periods stopped smoking.
 - `Age stopped smoking` is shown on `When you smoked tobacco` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
-- `Tobacco smoking` combines smoking frequency and smoking quantity.
-- `Tobacco smoking change` combines changed-smoking frequency, quantity and years.
-- The tobacco subflow uses query strings such as `/prototype_v4_4/smoking-status?type=cigarettes` and `/prototype_v4_4/tobacco-smoking-change?type=cigarettes&change=greater`.
+- Smoking frequency and smoking quantity are separate pages.
+- Changed-smoking frequency, quantity and years are separate pages.
+- The tobacco subflow uses query strings such as `/prototype_v4_4/smoking-status?type=cigarettes` and `/prototype_v4_4/smoking-frequency-change?type=cigarettes&change=greater`.
 - If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
-- Shisha follows the same tobacco-smoking flow as other tobacco types, but skips the smoking-change flow.
-- If both `more` and `fewer` are selected for a tobacco type, the flow asks the `more` tobacco-smoking-change page first, then the `fewer` tobacco-smoking-change page.
+- Shisha follows the same smoking frequency and quantity flow as other tobacco types, but skips the smoking-change flow.
+- If both `more` and `fewer` are selected for a tobacco type, the flow asks the `more` changed-smoking pages first, then the `fewer` changed-smoking pages.
 - `Check your answers` links back to the last tobacco step that applies to the current set of answers.

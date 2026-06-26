@@ -150,8 +150,11 @@ router.post(`/prototype_${version}/smoking-duration`, questionController.smoking
 router.get(`/prototype_${version}/smoking-type`, questionController.smokingType_get)
 router.post(`/prototype_${version}/smoking-type`, questionController.smokingType_post)
 
-router.get(`/prototype_${version}/tobacco-smoking`, questionController.tobaccoSmoking_get)
-router.post(`/prototype_${version}/tobacco-smoking`, questionController.tobaccoSmoking_post)
+router.get(`/prototype_${version}/smoking-frequency`, questionController.smokingFrequency_get)
+router.post(`/prototype_${version}/smoking-frequency`, questionController.smokingFrequency_post)
+
+router.get(`/prototype_${version}/smoking-quantity`, questionController.smokingQuantity_get)
+router.post(`/prototype_${version}/smoking-quantity`, questionController.smokingQuantity_post)
 
 router.get(`/prototype_${version}/smoking-type-exit`, questionController.smokingTypeExit_get)
 
@@ -161,8 +164,14 @@ router.post(`/prototype_${version}/smoking-status`, questionController.smokingSt
 router.get(`/prototype_${version}/smoking-change`, questionController.smokingChange_get)
 router.post(`/prototype_${version}/smoking-change`, questionController.smokingChange_post)
 
-router.get(`/prototype_${version}/tobacco-smoking-change`, questionController.tobaccoSmokingChange_get)
-router.post(`/prototype_${version}/tobacco-smoking-change`, questionController.tobaccoSmokingChange_post)
+router.get(`/prototype_${version}/smoking-frequency-change`, questionController.smokingFrequencyChange_get)
+router.post(`/prototype_${version}/smoking-frequency-change`, questionController.smokingFrequencyChange_post)
+
+router.get(`/prototype_${version}/smoking-quantity-change`, questionController.smokingQuantityChange_get)
+router.post(`/prototype_${version}/smoking-quantity-change`, questionController.smokingQuantityChange_post)
+
+router.get(`/prototype_${version}/smoking-years-change`, questionController.smokingYearsChange_get)
+router.post(`/prototype_${version}/smoking-years-change`, questionController.smokingYearsChange_post)
 
 /// Check your answers ----------------------------------------------------- ///
 

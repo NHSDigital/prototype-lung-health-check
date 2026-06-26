@@ -13,9 +13,7 @@ const {
   getSmokingTypeStep,
   getSmokingTypeSteps,
   getSmokingTypeStepUrl,
-  renderSmokingTypePage,
   renderSmokingTypeQuestion,
-  validateSmokingTypePage,
   validateSmokingTypeQuestion
 } = require('../lib/tobacco-flow')
 const { getHeightBack, getWeightBack, getWeightNext } = require('../lib/unit-navigation')
@@ -36,6 +34,25 @@ const getFamilyHistoryBack = (answers = {}) => {
   return answers.cancerDiagnosisRelatives === 'yes'
     ? `/prototype_${version}/cancer-diagnosis-relatives-age`
     : `/prototype_${version}/cancer-diagnosis-relatives`
+}
+
+const postSmokingTypeQuestion = (req, res, page, beforeValidate) => {
+  const { step, steps } = getSmokingTypeStep(req, page)
+
+  if (!step) {
+    res.redirect(`/prototype_${version}/smoking-type`)
+    return
+  }
+
+  beforeValidate?.(req, step)
+
+  const errors = validateSmokingTypeQuestion(req, page, step)
+
+  if (errors.length) {
+    renderSmokingTypeQuestion(req, res, page, errors)
+  } else {
+    res.redirect(getSmokingTypeActions(step, steps).onward)
+  }
 }
 
 /// ------------------------------------------------------------------------ ///
@@ -639,28 +656,22 @@ exports.smokingType_post = (req, res) => {
   }
 }
 
-exports.tobaccoSmoking_get = (req, res) => {
-  renderSmokingTypePage(req, res, 'tobacco-smoking')
+exports.smokingFrequency_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-frequency')
 }
 
-exports.tobaccoSmoking_post = (req, res) => {
-  const { step, steps } = getSmokingTypeStep(req, 'tobacco-smoking')
-  const { answers } = req.session.data
+exports.smokingFrequency_post = (req, res) => {
+  postSmokingTypeQuestion(req, res, 'smoking-frequency')
+}
 
-  if (!step) {
-    res.redirect(`/prototype_${version}/smoking-type`)
-    return
-  }
+exports.smokingQuantity_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-quantity')
+}
 
-  deleteUnselectedSmokingQuantityOtherAnswer(answers, step)
-
-  const errors = validateSmokingTypePage(req, 'tobacco-smoking', step)
-
-  if (errors.length) {
-    renderSmokingTypePage(req, res, 'tobacco-smoking', errors)
-  } else {
-    res.redirect(getSmokingTypeActions(step, steps).onward)
-  }
+exports.smokingQuantity_post = (req, res) => {
+  postSmokingTypeQuestion(req, res, 'smoking-quantity', (req, step) => {
+    deleteUnselectedSmokingQuantityOtherAnswer(req.session.data.answers, step)
+  })
 }
 
 exports.smokingTypeExit_get = (req, res) => {
@@ -721,26 +732,30 @@ exports.smokingChange_post = (req, res) => {
   }
 }
 
-exports.tobaccoSmokingChange_get = (req, res) => {
-  renderSmokingTypePage(req, res, 'tobacco-smoking-change')
+exports.smokingFrequencyChange_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-frequency-change')
 }
 
-exports.tobaccoSmokingChange_post = (req, res) => {
-  const { step, steps } = getSmokingTypeStep(req, 'tobacco-smoking-change')
+exports.smokingFrequencyChange_post = (req, res) => {
+  postSmokingTypeQuestion(req, res, 'smoking-frequency-change')
+}
 
-  if (!step) {
-    res.redirect(`/prototype_${version}/smoking-type`)
-    return
-  }
+exports.smokingQuantityChange_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-quantity-change')
+}
 
-  deleteUnselectedSmokingQuantityOtherAnswer(req.session.data.answers, step, 'quantity')
-  const errors = validateSmokingTypePage(req, 'tobacco-smoking-change', step)
+exports.smokingQuantityChange_post = (req, res) => {
+  postSmokingTypeQuestion(req, res, 'smoking-quantity-change', (req, step) => {
+    deleteUnselectedSmokingQuantityOtherAnswer(req.session.data.answers, step, 'quantity')
+  })
+}
 
-  if (errors.length) {
-    renderSmokingTypePage(req, res, 'tobacco-smoking-change', errors)
-  } else {
-    res.redirect(getSmokingTypeActions(step, steps).onward)
-  }
+exports.smokingYearsChange_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'smoking-years-change')
+}
+
+exports.smokingYearsChange_post = (req, res) => {
+  postSmokingTypeQuestion(req, res, 'smoking-years-change')
 }
 
 /// ------------------------------------------------------------------------ ///

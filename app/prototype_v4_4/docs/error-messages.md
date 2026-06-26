@@ -31,9 +31,9 @@ Sources:
 - `cancer-diagnosis-relatives`: `yes` continues to `cancer-diagnosis-relatives-age`; `no` clears that answer and goes to `check-your-answers`.
 - `smoking-duration`: grouped page. `age-stopped-smoking` is visible only when `smoker` is `yes_previous` or type-specific `smoking-status` is `no`; otherwise `ageStoppedSmoking` is cleared. If `periods-stopped-smoking` is `no`, `yearsStoppedSmoking` is cleared.
 - `smoking-type`: `none` goes to `smoking-type-exit`; otherwise selected tobacco types create the tobacco sub-flow in tobacco.yaml order. Former smokers skip each type-specific `smoking-status` question.
-- `tobacco-smoking`: grouped tobacco page that validates `smoking-frequency` and `smoking-quantity` together for the active tobacco type.
+- `smoking-frequency` and `smoking-quantity`: separate tobacco pages for the active tobacco type.
 - `smoking-change`: selected `greater` and `fewer` options create corresponding changed-smoking follow-up steps. Unselected changed-smoking answer groups are cleared.
-- `tobacco-smoking-change`: grouped tobacco page that validates `smoking-frequency-change`, `smoking-quantity-change`, and `smoking-years-change` together for the active tobacco type and change direction.
+- `smoking-frequency-change`, `smoking-quantity-change`, and `smoking-years-change`: separate tobacco pages for the active tobacco type and change direction.
 - `smoking-quantity` and `smoking-quantity-change`: if `another_amount` is not selected, the related `smokingQuantityOther` answer is cleared.
 
 ## Page composition
@@ -59,9 +59,12 @@ Sources:
 - `smoking-duration`: `age-started-smoking`, `age-stopped-smoking` (shown when any configured condition matches), `periods-stopped-smoking`
 - `smoking-type`: `smoking-type`
 - `smoking-status`: `smoking-status`
-- `tobacco-smoking`: `smoking-frequency`, `smoking-quantity`
-- `tobacco-smoking-change`: `smoking-frequency-change`, `smoking-quantity-change`, `smoking-years-change`
+- `smoking-frequency`: `smoking-frequency`
+- `smoking-quantity`: `smoking-quantity`
 - `smoking-change`: `smoking-change`
+- `smoking-frequency-change`: `smoking-frequency-change`
+- `smoking-quantity-change`: `smoking-quantity-change`
+- `smoking-years-change`: `smoking-years-change`
 
 ## Runtime tobacco messages
 
@@ -506,7 +509,7 @@ Type: `single`
 
 Answer key: `smokingFrequency`
 
-Page: `tobacco-smoking`
+Page: `smoking-frequency`
 
 Validation: required
 
@@ -522,7 +525,7 @@ Type: `text`
 
 Answer key: `smokingQuantity`
 
-Page: `tobacco-smoking`
+Page: `smoking-quantity`
 
 Validation: required; type: number; minimum 1; maximum 200
 
@@ -559,7 +562,7 @@ Type: `single`
 
 Answer key: `smokingFrequencyChange`
 
-Page: `tobacco-smoking-change`
+Page: `smoking-frequency-change`
 
 Validation: required
 
@@ -575,7 +578,7 @@ Type: `text`
 
 Answer key: `smokingQuantityChange`
 
-Page: `tobacco-smoking-change`
+Page: `smoking-quantity-change`
 
 Validation: required; type: number; minimum 1; maximum 200
 
@@ -596,7 +599,7 @@ Type: `text`
 
 Answer key: `smokingYearsChange`
 
-Page: `tobacco-smoking-change`
+Page: `smoking-years-change`
 
 Validation: required; type: number; minimum 1; maximum 80
 

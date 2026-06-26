@@ -237,20 +237,20 @@ pages:
   - id: smoking-status
     questions:
       - smoking-status
-  - id: tobacco-smoking
-    heading:
-      title: Tobacco smoking
-      caption: Your smoking history
+  - id: smoking-frequency
     questions:
       - smoking-frequency
+  - id: smoking-quantity
+    questions:
       - smoking-quantity
-  - id: tobacco-smoking-change
-    heading:
-      title: Tobacco smoking
-      caption: Your smoking history
+  - id: smoking-frequency-change
     questions:
       - smoking-frequency-change
+  - id: smoking-quantity-change
+    questions:
       - smoking-quantity-change
+  - id: smoking-years-change
+    questions:
       - smoking-years-change
   - id: smoking-change
     questions:

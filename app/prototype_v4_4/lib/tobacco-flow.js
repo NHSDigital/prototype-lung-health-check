@@ -6,7 +6,7 @@ const {
   tobaccoTypes: smokingTypes
 } = require('./questions')
 const { getQuestionPage } = require('./question-pages')
-const { renderQuestion, renderQuestionPage, version } = require('./question-renderer')
+const { renderQuestion, version } = require('./question-renderer')
 const { validateQuestion } = require('./question-validator')
 
 const nextStepAfterSmokingTypes = `/prototype_${version}/respiratory-conditions`
@@ -182,12 +182,15 @@ const getSmokingTypeSteps = (answers = {}) => {
       steps.push({ page: 'smoking-status', type })
     }
 
-    steps.push({ page: 'tobacco-smoking', type })
+    steps.push({ page: 'smoking-frequency', type })
+    steps.push({ page: 'smoking-quantity', type })
 
     if (type !== 'shisha') {
       steps.push({ page: 'smoking-change', type })
       getSelectedSmokingChanges(answer).forEach((change) => {
-        steps.push({ page: 'tobacco-smoking-change', type, change })
+        steps.push({ page: 'smoking-frequency-change', type, change })
+        steps.push({ page: 'smoking-quantity-change', type, change })
+        steps.push({ page: 'smoking-years-change', type, change })
       })
     }
 
@@ -635,20 +638,6 @@ const getSmokingChangeComparisonText = (type, change, answer = {}) => {
   }
 
   return `when you smoked ${changeLabel} than ${amount}`
-}
-
-/**
- * Build the heading for a changed-smoking grouped page.
- *
- * @param {string} type - Tobacco type key.
- * @param {string} change - Smoking change key.
- * @param {Object} answer - Answer object for one tobacco type.
- * @returns {string} Contextual page heading.
- */
-const getSmokingChangePageHeading = (type, change, answer = {}) => {
-  const comparisonText = getSmokingChangeComparisonText(type, change, answer)
-
-  return comparisonText ? upperFirst(comparisonText) : ''
 }
 
 /**
@@ -1130,53 +1119,6 @@ const getSmokingTypeStepContext = (req, step) => {
   }
 }
 
-const getSmokingTypePageAnswers = (step) => {
-  return {
-    smokingType: [step.type]
-  }
-}
-
-const getSmokingTypePageHeading = (page, smokingType = {}, step = {}, answer = {}) => {
-  if (page === 'tobacco-smoking-change') {
-    return {
-      title: getSmokingChangePageHeading(step.type, step.change, answer),
-      caption: 'Your smoking history'
-    }
-  }
-
-  if (page === 'tobacco-smoking') {
-    return {
-      title: smokingType.pageHeading || smokingType.caption
-    }
-  }
-
-  return {
-    title: smokingType.caption
-  }
-}
-
-const getSmokingTypePageQuestionIds = (page, step) => {
-  return getQuestionPage(page, getSmokingTypePageAnswers(step)).questions.map((question) => question.id)
-}
-
-const getSmokingContentPageOverrides = (req, page, step) => {
-  const context = getSmokingTypeStepContext(req, step)
-  const questions = getSmokingTypePageQuestionIds(page, step).reduce((overrides, questionId) => {
-    overrides[questionId] = getSmokingContentQuestionOverrides({
-      page: questionId,
-      step,
-      ...context
-    })
-
-    return overrides
-  }, {})
-
-  return {
-    heading: getSmokingTypePageHeading(page, context.smokingType, step, context.answer),
-    questions
-  }
-}
-
 /**
  * Build action URLs for a tobacco sub-flow step.
  *
@@ -1227,32 +1169,6 @@ const renderSmokingTypeQuestion = (req, res, page, errors = []) => {
     step,
     ...context
   }))
-}
-
-/**
- * Render a grouped tobacco sub-flow page, resolving the active step and context.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @param {string} page - Current tobacco page id.
- * @param {Object[]} [errors] - Validation errors.
- */
-const renderSmokingTypePage = (req, res, page, errors = []) => {
-  const { step, steps } = getSmokingTypeStep(req, page)
-
-  if (!step) {
-    res.redirect(`/prototype_${version}/smoking-type`)
-    return
-  }
-
-  renderQuestionPage(
-    res,
-    page,
-    getSmokingTypeActions(step, steps),
-    errors,
-    getSmokingTypePageAnswers(step),
-    getSmokingContentPageOverrides(req, page, step)
-  )
 }
 
 /**
@@ -1311,18 +1227,6 @@ const validateSmokingTypeQuestion = (req, page, step) => {
   return validationErrors
 }
 
-/**
- * Validate a grouped tobacco sub-flow page.
- *
- * @param {Object} req - Express request object.
- * @param {string} page - Current tobacco page id.
- * @param {SmokingTypeStep} step - Current tobacco step.
- * @returns {Object[]} Validation errors.
- */
-const validateSmokingTypePage = (req, page, step) => {
-  return getSmokingTypePageQuestionIds(page, step).flatMap((questionId) => validateSmokingTypeQuestion(req, questionId, step))
-}
-
 module.exports = {
   deleteUnselectedSmokingQuantityOtherAnswer,
   deleteUnselectedSmokingChangeAnswers,
@@ -1343,9 +1247,7 @@ module.exports = {
   getSmokingTypeSteps,
   getSmokingTypeStepUrl,
   isPastSmokingType,
-  renderSmokingTypePage,
   renderSmokingTypeQuestion,
-  validateSmokingTypePage,
   validateSmokingTypeQuestion,
   getValueLabels
 }
