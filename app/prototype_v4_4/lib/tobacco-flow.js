@@ -1018,7 +1018,7 @@ const getSmokingContentQuestionOverrides = ({
     return {
       heading: {
         title: getSmokingStepHeading(page, step.type, isPastSmokingType, answer),
-        caption: smokingType.caption
+        caption: 'Your smoking history'
       },
       input: {
         name: `answers[${step.type}][smokingFrequency]`
@@ -1033,7 +1033,7 @@ const getSmokingContentQuestionOverrides = ({
       page,
       step,
       heading: getSmokingStepHeading(page, step.type, isPastSmokingType, answer),
-      caption: smokingType.caption,
+      caption: 'Your smoking history',
       name: `answers[${step.type}][smokingQuantity]`,
       value: answer.smokingQuantity,
       conditionalValue: answer.smokingQuantityOther,
