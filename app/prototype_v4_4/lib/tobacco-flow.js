@@ -16,7 +16,8 @@ const getValueLabels = () => {
     smokingChange: getQuestionValueLabels('smoking-change'),
     smokingFrequency: getQuestionValueLabels('smoking-frequency'),
     smokingStatus: getQuestionValueLabels('smoking-status'),
-    smokingType: getQuestionValueLabels('smoking-type')
+    smokingType: getQuestionValueLabels('smoking-type'),
+    yearsSmoked: getQuestionValueLabels('years-smoked')
   }
 }
 
@@ -173,13 +174,19 @@ const deleteUnselectedSmokingChangeAnswers = (answer = {}) => {
  */
 const getSmokingTypeSteps = (answers = {}) => {
   const includeSmokingStatus = answers.smoker !== 'yes_previous'
+  const selectedTypes = getSelectedSmokingTypes(answers)
+  const includeYearsSmoked = selectedTypes.length > 1
 
-  return getSelectedSmokingTypes(answers).flatMap((type) => {
+  return selectedTypes.flatMap((type) => {
     const steps = []
     const answer = answers[type] || {}
 
     if (includeSmokingStatus) {
       steps.push({ page: 'smoking-status', type })
+    }
+
+    if (includeYearsSmoked) {
+      steps.push({ page: 'years-smoked', type })
     }
 
     steps.push({ page: 'smoking-frequency', type })
@@ -538,6 +545,8 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
     ...smokingType,
     pageHeading: getSmokingTypeLabel(type),
     statusHeading: currentHeadings.status,
+    yearsHeading: tenseHeadings.years,
+    yearsInputLabel: tenseHeadings.yearsInput,
     frequencyHeading: tenseHeadings.frequency,
     quantityHeading: tenseHeadings.quantity,
     changeHeading: tenseHeadings.change
@@ -555,8 +564,11 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
  */
 const getSmokingStepHeading = (page, type, isPast = false, answer = {}) => {
   const frequency = answer.smokingFrequency
+  const headingKey = page === 'years-smoked'
+    ? 'years'
+    : page.replace('smoking-', '')
 
-  return applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, isPast)[`${page.replace('smoking-', '')}Heading`] || '', frequency)
+  return applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, isPast)[`${headingKey}Heading`] || '', frequency)
 }
 
 /**
@@ -610,6 +622,42 @@ const deleteUnselectedSmokingQuantityOtherAnswer = (answers = {}, step, quantity
   if (answer[quantityKey] !== 'another_amount') {
     delete answer.smokingQuantityOther
   }
+}
+
+/**
+ * Remove stale years-smoked answers when the conditional input is not shown.
+ *
+ * @param {Object} answers - Session answers object, mutated in place.
+ * @param {SmokingTypeStep} step - Current tobacco step.
+ */
+const deleteUnselectedYearsSmokedAnswer = (answers = {}, step) => {
+  if (!step) {
+    return
+  }
+
+  const answer = answers[step.type] || {}
+
+  if (answer.yearsSmokedMoreThanOneYear !== 'yes') {
+    delete answer.yearsSmoked
+  }
+}
+
+/**
+ * Remove years-smoked answers when only one tobacco type is selected.
+ *
+ * @param {Object} answers - Session answers object, mutated in place.
+ */
+const deleteInapplicableYearsSmokedAnswers = (answers = {}) => {
+  const selectedTypes = getSelectedSmokingTypes(answers)
+
+  if (selectedTypes.length > 1) {
+    return
+  }
+
+  selectedTypes.forEach((type) => {
+    delete answers[type]?.yearsSmokedMoreThanOneYear
+    delete answers[type]?.yearsSmoked
+  })
 }
 
 /**
@@ -1014,6 +1062,60 @@ const getSmokingContentQuestionOverrides = ({
     }
   }
 
+  if (page === 'years-smoked') {
+    const question = getQuestion('years-smoked')
+
+    return {
+      heading: {
+        title: smokingType.yearsHeading,
+        caption: 'Your smoking history'
+      },
+      input: {
+        id: 'years-smoked',
+        name: `answers[${step.type}][yearsSmokedMoreThanOneYear]`
+      },
+      validation: {
+        conditional: {
+          yes: {
+            required: true,
+            type: 'number',
+            min: 1,
+            max: 80,
+            answerKey: 'yearsSmoked',
+            value: answer.yearsSmoked,
+            href: '#years-smoked-number'
+          }
+        }
+      },
+      errors: {
+        conditional: {
+          yes: {
+            required: {
+              text: smokingType.yearsInputLabel,
+              href: '#years-smoked-number'
+            }
+          }
+        }
+      },
+      value: answer.yearsSmokedMoreThanOneYear,
+      items: question.items.map((item) => {
+        if (!item.conditionalInput) {
+          return item
+        }
+
+        return {
+          ...item,
+          conditionalInput: {
+            ...item.conditionalInput,
+            name: `answers[${step.type}][yearsSmoked]`,
+            label: smokingType.yearsInputLabel,
+            value: answer.yearsSmoked
+          }
+        }
+      })
+    }
+  }
+
   if (page === 'smoking-frequency') {
     return {
       heading: {
@@ -1228,6 +1330,8 @@ const validateSmokingTypeQuestion = (req, page, step) => {
 }
 
 module.exports = {
+  deleteInapplicableYearsSmokedAnswers,
+  deleteUnselectedYearsSmokedAnswer,
   deleteUnselectedSmokingQuantityOtherAnswer,
   deleteUnselectedSmokingChangeAnswers,
   deleteUnselectedSmokingTypeAnswers,

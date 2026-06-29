@@ -226,6 +226,7 @@ const getCheckYourAnswers = (answers = {}) => {
   const valueLabels = getValueLabels()
   const selectedSmokingTypes = getSelectedSmokingTypes(answers)
   const isFormerSmoker = answers.smoker === 'yes_previous'
+  const includeYearsSmoked = selectedSmokingTypes.length > 1
 
   const tobaccoRows = selectedSmokingTypes.map((type) => {
     const answer = answers[type] || {}
@@ -257,6 +258,16 @@ const getCheckYourAnswers = (answers = {}) => {
         key: smokingType.statusHeading,
         value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
         href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
+      }),
+      includeYearsSmoked && makeSummaryRow({
+        key: getSmokingStepHeading('years-smoked', type, isPast, answer),
+        value: formatValue(answer.yearsSmokedMoreThanOneYear, valueLabels.yearsSmoked),
+        href: getSmokingTypeStepUrl({ page: 'years-smoked', type })
+      }),
+      includeYearsSmoked && answer.yearsSmokedMoreThanOneYear === 'yes' && makeSummaryRow({
+        key: smokingType.yearsInputLabel,
+        value: answer.yearsSmoked && formatQuantity(answer.yearsSmoked, 'year', 'years'),
+        href: getSmokingTypeStepUrl({ page: 'years-smoked', type })
       }),
       makeSummaryRow({
         key: getSmokingStepHeading('smoking-frequency', type, isPast, answer),

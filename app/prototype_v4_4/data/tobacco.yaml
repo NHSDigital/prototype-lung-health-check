@@ -8,10 +8,14 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke cigarettes?
+        years: Have you smoked cigarettes for more than 1 year?
+        yearsInput: Enter the number of years you have smoked cigarettes
         frequency: How often do you smoke cigarettes?
         quantity: How many cigarettes do you currently smoke in a normal day?
         change: Has the number of cigarettes you normally smoke changed over time?
       past:
+        years: Did you smoke cigarettes for more than 1 year?
+        yearsInput: Enter the number of years you smoked cigarettes
         frequency: How often did you smoke cigarettes?
         quantity: How many cigarettes did you smoke in a normal day?
         change: Did the number of cigarettes you normally smoked change over time?
@@ -22,10 +26,14 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke rolling tobacco or roll-ups?
+        years: Have you smoked rolling tobacco or roll-ups for more than 1 year?
+        yearsInput: Enter the number of years you have smoked rolling tobacco or roll-ups
         frequency: How often do you smoke rolling tobacco or roll-ups?
         quantity: How much rolling tobacco do you currently smoke in a normal week?
         change: Has the amount of rolling tobacco you normally smoke changed over time?
       past:
+        years: Did you smoke rolling tobacco or roll-ups for more than 1 year?
+        yearsInput: Enter the number of years you smoked rolling tobacco or roll-ups
         frequency: How often did you smoke rolling tobacco or roll-ups?
         quantity: How much rolling tobacco did you smoke in a normal week?
         change: Did the amount of rolling tobacco you normally smoked change over time?
@@ -38,10 +46,14 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke a pipe?
+        years: Have you smoked a pipe for more than 1 year?
+        yearsInput: Enter the number of years you have smoked a pipe
         frequency: How often do you smoke a pipe?
         quantity: How many full pipe loads do you currently smoke in a normal day?
         change: Has the number of full pipe loads you normally smoke changed over time?
       past:
+        years: Did you smoke a pipe for more than 1 year?
+        yearsInput: Enter the number of years you smoked a pipe
         frequency: How often did you smoke a pipe?
         quantity: How many full pipe loads did you smoke in a normal day?
         change: Did the number of full pipe loads you normally smoked change over time?
@@ -54,10 +66,14 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke small cigars?
+        years: Have you smoked small cigars for more than 1 year?
+        yearsInput: Enter the number of years you have smoked small cigars
         frequency: How often do you smoke small cigars?
         quantity: How many small cigars do you currently smoke in a normal day?
         change: Has the number of small cigars you normally smoke changed over time?
       past:
+        years: Did you smoke small cigars for more than 1 year?
+        yearsInput: Enter the number of years you smoked small cigars
         frequency: How often did you smoke small cigars?
         quantity: How many small cigars did you smoke in a normal day?
         change: Did the number of small cigars you normally smoked change over time?
@@ -70,10 +86,14 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke medium cigars?
+        years: Have you smoked medium cigars for more than 1 year?
+        yearsInput: Enter the number of years you have smoked medium cigars
         frequency: How often do you smoke medium cigars?
         quantity: How many medium cigars do you currently smoke in a normal day?
         change: Has the number of medium cigars you normally smoke changed over time?
       past:
+        years: Did you smoke medium cigars for more than 1 year?
+        yearsInput: Enter the number of years you smoked medium cigars
         frequency: How often did you smoke medium cigars?
         quantity: How many medium cigars did you smoke in a normal day?
         change: Did the number of medium cigars you normally smoked change over time?
@@ -86,10 +106,14 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke large cigars?
+        years: Have you smoked large cigars for more than 1 year?
+        yearsInput: Enter the number of years you have smoked large cigars
         frequency: How often do you smoke large cigars?
         quantity: How many large cigars do you currently smoke in a normal day?
         change: Has the number of large cigars you normally smoke changed over time?
       past:
+        years: Did you smoke large cigars for more than 1 year?
+        yearsInput: Enter the number of years you smoked large cigars
         frequency: How often did you smoke large cigars?
         quantity: How many large cigars did you smoke in a normal day?
         change: Did the number of large cigars you normally smoked change over time?
@@ -102,10 +126,14 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke cigarillos?
+        years: Have you smoked cigarillos for more than 1 year?
+        yearsInput: Enter the number of years you have smoked cigarillos
         frequency: How often do you smoke cigarillos?
         quantity: How many cigarillos do you currently smoke in a normal day?
         change: Has the number of cigarillos you normally smoke changed over time?
       past:
+        years: Did you smoke cigarillos for more than 1 year?
+        yearsInput: Enter the number of years you smoked cigarillos
         frequency: How often did you smoke cigarillos?
         quantity: How many cigarillos did you smoke in a normal day?
         change: Did the number of cigarillos you normally smoked change over time?
@@ -118,9 +146,13 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke shisha?
+        years: Have you smoked shisha for more than 1 year?
+        yearsInput: Enter the number of years you have smoked shisha
         frequency: How often do you smoke shisha?
         quantity: How long do you currently smoke shisha in a normal day?
       past:
+        years: Did you smoke shisha for more than 1 year?
+        yearsInput: Enter the number of years you smoked shisha
         frequency: How often did you smoke shisha?
         quantity: How long did you smoke shisha in a normal day?
 

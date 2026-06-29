@@ -72,8 +72,11 @@ flowchart TD
   selectedType["Next selected tobacco type"] --> formerSmoker{"Former smoker?"}
 
   formerSmoker -- No, currently smokes --> status["Smoking status"]
-  formerSmoker -- Yes --> frequency["Smoking frequency"]
-  status --> frequency
+  formerSmoker -- Yes --> multipleTypes{"More than one<br>tobacco type selected?"}
+  status --> multipleTypes
+  multipleTypes -- Yes --> yearsSmoked["Years smoked"]
+  multipleTypes -- No --> frequency
+  yearsSmoked --> frequency
   frequency --> quantity["Smoking quantity"]
 
   quantity --> isShisha{"Is the selected type<br>shisha?"}
@@ -101,9 +104,10 @@ flowchart TD
 - Height and weight unit pages can be switched manually using the unit-switch links.
 - `When you smoked tobacco` combines age started smoking, age stopped smoking and periods stopped smoking.
 - `Age stopped smoking` is shown on `When you smoked tobacco` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
+- `Years smoked` is shown for each selected tobacco type only when more than one tobacco type has been selected.
 - Smoking frequency and smoking quantity are separate pages.
 - Changed-smoking frequency, quantity and years are separate pages.
-- The tobacco subflow uses query strings such as `/prototype_v4_4/smoking-status?type=cigarettes` and `/prototype_v4_4/smoking-frequency-change?type=cigarettes&change=greater`.
+- The tobacco subflow uses query strings such as `/prototype_v4_4/smoking-status?type=cigarettes`, `/prototype_v4_4/years-smoked?type=cigarettes` and `/prototype_v4_4/smoking-frequency-change?type=cigarettes&change=greater`.
 - If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
 - Shisha follows the same smoking frequency and quantity flow as other tobacco types, but skips the smoking-change flow.
 - If both `more` and `fewer` are selected for a tobacco type, the flow asks the `more` changed-smoking pages first, then the `fewer` changed-smoking pages.

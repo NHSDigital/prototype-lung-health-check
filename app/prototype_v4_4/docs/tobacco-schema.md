@@ -25,16 +25,22 @@ tobaccoTypes:
     headings:
       current:
         status: Do you currently smoke cigarettes?
+        years: Have you smoked cigarettes for more than 1 year?
+        yearsInput: Enter the number of years you have smoked cigarettes
         frequency: How often do you smoke cigarettes?
         quantity: How many cigarettes do you currently smoke in a normal day?
         change: Has the number of cigarettes you normally smoke changed over time?
       past:
+        years: Did you smoke cigarettes for more than 1 year?
+        yearsInput: Enter the number of years you smoked cigarettes
         frequency: How often did you smoke cigarettes?
         quantity: How many cigarettes did you smoke in a normal day?
         change: Did the number of cigarettes you normally smoked change over time?
 ```
 
 The tobacco flow uses `headings.current` when someone currently smokes and `headings.past` when someone used to smoke.
+
+`years` and `yearsInput` are used by the `years-smoked` page, which is shown when more than one tobacco type has been selected.
 
 `caption` is shown above the tobacco question heading.
 

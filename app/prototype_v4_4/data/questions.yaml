@@ -719,6 +719,51 @@ questions:
     errors:
       required:
         text: Select whether you currently smoke this type of tobacco
+  - id: years-smoked
+    type: single
+    input:
+      label: Have you smoked this type of tobacco for more than 1 year?
+    options:
+      - label: Yes
+        value: yes
+        conditionalInput:
+          id: years-smoked-number
+          name: answers[yearsSmoked]
+          answerKey: yearsSmoked
+          label: Enter the number of years you smoked this type of tobacco
+          hint: Give an estimate if you are not sure
+          suffix: years
+          inputmode: numeric
+          classes: nhsuk-input--width-4
+      - label: No
+        value: no
+    validation:
+      required: true
+      conditional:
+        yes:
+          required: true
+          type: number
+          min: 1
+          max: 80
+          answerKey: yearsSmoked
+          href: "#years-smoked-number"
+    errors:
+      required:
+        text: Select whether you smoked this type of tobacco for more than 1 year
+      conditional:
+        yes:
+          required:
+            text: Enter the number of years you smoked this type of tobacco
+            href: "#years-smoked-number"
+      invalid:
+        text: Number of years must be a number
+        href: "#years-smoked-number"
+      min:
+        text: Number of years must be 1 or more
+        href: "#years-smoked-number"
+      max:
+        text: Number of years must be 80 or fewer
+        href: "#years-smoked-number"
   - id: smoking-frequency
     type: single
     input:

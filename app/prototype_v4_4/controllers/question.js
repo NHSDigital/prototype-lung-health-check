@@ -3,6 +3,8 @@ const { getQuestionPage } = require('../lib/question-pages')
 const { renderQuestion, renderQuestionPage, version, view } = require('../lib/question-renderer')
 const { getCheckYourAnswers } = require('../lib/summary')
 const {
+  deleteInapplicableYearsSmokedAnswers,
+  deleteUnselectedYearsSmokedAnswer,
   deleteUnselectedSmokingQuantityOtherAnswer,
   deleteUnselectedSmokingChangeAnswers,
   deleteUnselectedSmokingTypeAnswers,
@@ -639,6 +641,7 @@ exports.smokingType_post = (req, res) => {
       ? answers.smokingType
       : [answers.smokingType].filter(Boolean)
     deleteUnselectedSmokingTypeAnswers(answers)
+    deleteInapplicableYearsSmokedAnswers(answers)
     if (answers.smoker === 'yes_previous') {
       getSelectedSmokingTypes(answers).forEach((type) => {
         delete answers[type]?.smokingStatus
@@ -654,6 +657,16 @@ exports.smokingType_post = (req, res) => {
       res.redirect(`/prototype_${version}/smoking-type`)
     }
   }
+}
+
+exports.yearsSmoked_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'years-smoked')
+}
+
+exports.yearsSmoked_post = (req, res) => {
+  postSmokingTypeQuestion(req, res, 'years-smoked', (req, step) => {
+    deleteUnselectedYearsSmokedAnswer(req.session.data.answers, step)
+  })
 }
 
 exports.smokingFrequency_get = (req, res) => {

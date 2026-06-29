@@ -237,6 +237,9 @@ pages:
   - id: smoking-status
     questions:
       - smoking-status
+  - id: years-smoked
+    questions:
+      - years-smoked
   - id: smoking-frequency
     questions:
       - smoking-frequency
