@@ -116,7 +116,7 @@ To add another page:
 | Field | Required | Description |
 | --- | --- | --- |
 | `id` | Yes | Stable question ID used by the controller, renderer and default input ID. Use kebab case. |
-| `type` | Yes | Question type rendered by `_question.html`. |
+| `type` | Yes | Question type rendered by `question-page.html`. |
 | `answerKey` | No | Key used in `req.session.data.answers`. If omitted, the question ID is converted to camel case. |
 | `input` | Usually | Input, radios or checkboxes configuration. |
 | `input.label` | Yes | Question label shown above the input, unless the page has no heading and the label is promoted to the page heading. |

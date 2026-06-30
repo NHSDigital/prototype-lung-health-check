@@ -158,6 +158,8 @@ router.post(`/prototype_${version}/smoking-quantity`, questionController.smoking
 
 router.get(`/prototype_${version}/smoking-type-exit`, questionController.smokingTypeExit_get)
 
+router.get(`/prototype_${version}/smoking-type-summary`, questionController.smokingTypeSummary_get)
+
 router.get(`/prototype_${version}/smoking-status`, questionController.smokingStatus_get)
 router.post(`/prototype_${version}/smoking-status`, questionController.smokingStatus_post)
 

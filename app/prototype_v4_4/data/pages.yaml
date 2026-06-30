@@ -23,6 +23,16 @@ pages:
       - if you have ever had a cancer diagnosis
       - if your parents, siblings, or children have ever had a lung cancer diagnosis
       - Your smoking history
+  - id: phone-questionnaire-exit
+    type: stop
+    heading:
+      title: You do not need to test the online service
+    description: |
+      Because you have completed the questionnaire by phone you do not need to test the online service. This is because the online service asks the same questions.
+
+      Find out more about NHS lung cancer screening in [North West and South West London](https://www.healthylondon.org/our-work/lung-health-check/).
+    includes:
+      - speak-to-a-gp
   - id: smoker
     questions:
       - smoker
@@ -44,6 +54,24 @@ pages:
       caption: Eligibilty
     questions:
       - date-of-birth
+  - id: not-eligible-for-screening
+    type: stop
+    heading:
+      title: You are not eligible for lung cancer screening
+    description: |
+      You told us you have never smoked or have smoked fewer than 100 cigarettes in your lifetime. This means you are not eligible for NHS lung cancer screening.
+    includes:
+      - speak-to-a-gp
+  - id: not-eligible-for-scan
+    type: stop
+    heading:
+      title: You are not eligible for an NHS lung scan
+    description: |
+      The NHS lung scan is for people between the ages of 55 and 74.
+
+      According to your date of birth you are not in this age range.
+    includes:
+      - speak-to-a-gp
   - id: face-to-face-appointment
     questions:
       - face-to-face-appointment
@@ -59,6 +87,20 @@ pages:
       - have had a limb amputation, or were born with a limb difference
       - have been diagnosed with an eating disorder, or think you may have one
       - are pregnant
+  - id: book-appointment
+    type: stop
+    heading:
+      title: Call us to book an appointment
+    description: |
+      Call us on {{ serviceTelephone | telephoneLink }} to book an appointment. If we do not hear from you in 2 weeks we will call you.
+
+      At your face to face appointment a health professional will measure your height and weight. They will also ask you questions to check if you need a lung scan.
+
+      **Phone lines are open:**<br aria-hidden="true">
+      Monday to Friday 8am to 8pm<br aria-hidden="true">
+      Saturdays 8am to 1pm
+    includes:
+      - speak-to-a-gp
   - id: height-metric
     questions:
       - height-metric
@@ -234,6 +276,23 @@ pages:
           We need to know what you used to smoke frequently. For example, if you smoked a pipe on a weekly basis for a year or longer.
 
           You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+  - id: smoking-type-exit
+    type: stop
+    heading:
+      title: You are not eligible for lung cancer screening
+    description: |
+      You told us you have never smoked the types of tobacco listed. This means you are not eligible for NHS lung cancer screening.
+    includes:
+      - speak-to-a-gp
+  - id: smoking-type-summary
+    type: summary
+    heading:
+      title: Check your answers about this type of tobacco
+      caption: Your smoking history
+    description: |
+      Check the answers you gave for this type of tobacco. If any of the details are wrong, you can change them.
+    button:
+      text: Continue
   - id: smoking-status
     questions:
       - smoking-status

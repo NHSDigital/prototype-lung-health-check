@@ -42,7 +42,8 @@ flowchart TD
   smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
   smokingType -- One or more tobacco types --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
 
-  tobaccoLoop --> respiratory["Respiratory conditions"]
+  tobaccoLoop --> tobaccoSummary["Tobacco type summary"]
+  tobaccoSummary --> respiratory["Respiratory conditions"]
   respiratory --> asbestos["Asbestos<br>At work, at home"]
   asbestos --> cancerDiagnosis["Cancer diagnosis"]
   cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
@@ -96,7 +97,7 @@ flowchart TD
   fewerQuantity --> fewerYears["Fewer: smoking years"]
   fewerYears --> nextTypeOrCya
 
-  nextTypeOrCya["Next selected tobacco type<br>or Check your answers"]
+  nextTypeOrCya["Tobacco type summary<br>then next selected type<br>or Respiratory conditions"]
 ```
 
 ## Notes
@@ -111,4 +112,5 @@ flowchart TD
 - If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
 - Shisha follows the same smoking frequency and quantity flow as other tobacco types, but skips the smoking-change flow.
 - If both `more` and `fewer` are selected for a tobacco type, the flow asks the `more` changed-smoking pages first, then the `fewer` changed-smoking pages.
+- Each selected tobacco type ends with a scoped summary page before the next selected tobacco type starts.
 - `Check your answers` links back to the last tobacco step that applies to the current set of answers.

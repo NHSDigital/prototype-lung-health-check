@@ -1,6 +1,6 @@
 const { getDateOfBirth, isEligibleForScanAge } = require('../lib/eligibility')
 const { getQuestionPage } = require('../lib/question-pages')
-const { renderQuestion, renderQuestionPage, version, view } = require('../lib/question-renderer')
+const { renderQuestion, renderQuestionPage, renderStopPage, renderSummaryPage, version, view } = require('../lib/question-renderer')
 const { getCheckYourAnswers } = require('../lib/summary')
 const {
   deleteInapplicableYearsSmokedAnswers,
@@ -11,10 +11,13 @@ const {
   getFormerSmokerFallbackStep,
   getSelectedSmokingTypes,
   getSmokingTypeActions,
+  getSmokingTypeSummaryActions,
+  getSmokingTypeSummaryUrl,
   getSmokingTypeQuestionOverrides,
   getSmokingTypeStep,
   getSmokingTypeSteps,
   getSmokingTypeStepUrl,
+  getValueLabels: getSmokingValueLabels,
   renderSmokingTypeQuestion,
   validateSmokingTypeQuestion
 } = require('../lib/tobacco-flow')
@@ -29,7 +32,7 @@ const getLastSmokingTypeStepBack = (answers = {}) => {
   const smokingSteps = getSmokingTypeSteps(answers)
   const lastSmokingStep = smokingSteps[smokingSteps.length - 1]
 
-  return lastSmokingStep ? getSmokingTypeStepUrl(lastSmokingStep) : `/prototype_${version}/smoking-type`
+  return lastSmokingStep ? getSmokingTypeSummaryUrl(lastSmokingStep.type) : `/prototype_${version}/smoking-type`
 }
 
 const getFamilyHistoryBack = (answers = {}) => {
@@ -112,10 +115,8 @@ exports.phoneQuestionnaire_post = (req, res) => {
 }
 
 exports.phoneQuestionnaireExit_get = (req, res) => {
-  res.render(view('questions/phone-questionnaire-exit'), {
-    actions: {
-      back: `/prototype_${version}/phone-questionnaire`
-    }
+  renderStopPage(req, res, 'phone-questionnaire-exit', {
+    back: `/prototype_${version}/phone-questionnaire`
   })
 }
 
@@ -206,29 +207,23 @@ exports.faceToFaceAppointment_post = (req, res) => {
 }
 
 exports.notEligibleForScreening_get = (req, res) => {
-  res.render(view('questions/not-eligible-for-screening'), {
-    actions: {
-      back: `/prototype_${version}/smoker`,
-      cancel: `/prototype_${version}/`
-    }
+  renderStopPage(req, res, 'not-eligible-for-screening', {
+    back: `/prototype_${version}/smoker`,
+    cancel: `/prototype_${version}/`
   })
 }
 
 exports.notEligibleForScan_get = (req, res) => {
-  res.render(view('questions/not-eligible-for-scan'), {
-    actions: {
-      back: `/prototype_${version}/date-of-birth`,
-      cancel: `/prototype_${version}/`
-    }
+  renderStopPage(req, res, 'not-eligible-for-scan', {
+    back: `/prototype_${version}/date-of-birth`,
+    cancel: `/prototype_${version}/`
   })
 }
 
 exports.bookAppointment_get = (req, res) => {
-  res.render(view('questions/book-appointment'), {
-    actions: {
-      back: `/prototype_${version}/face-to-face-appointment`,
-      cancel: `/prototype_${version}/`
-    }
+  renderStopPage(req, res, 'book-appointment', {
+    back: `/prototype_${version}/face-to-face-appointment`,
+    cancel: `/prototype_${version}/`
   })
 }
 
@@ -688,9 +683,29 @@ exports.smokingQuantity_post = (req, res) => {
 }
 
 exports.smokingTypeExit_get = (req, res) => {
-  res.render(view('questions/smoking-type-exit'), {
-    actions: {
-      back: `/prototype_${version}/smoking-type`
+  renderStopPage(req, res, 'smoking-type-exit', {
+    back: `/prototype_${version}/smoking-type`
+  })
+}
+
+exports.smokingTypeSummary_get = (req, res) => {
+  const answers = req.session.data?.answers || {}
+  const type = req.query.type
+  const selectedTypes = getSelectedSmokingTypes(answers)
+
+  if (!selectedTypes.includes(type)) {
+    res.redirect(`/prototype_${version}/smoking-type`)
+    return
+  }
+
+  const smokingType = getSmokingValueLabels().smokingType[type] || 'this type of tobacco'
+
+  renderSummaryPage(req, res, 'smoking-type-summary', getSmokingTypeSummaryActions(type, getSmokingTypeSteps(answers)), {
+    heading: {
+      title: `Check your answers about ${smokingType}`
+    },
+    summary: {
+      tobaccoTypes: [type]
     }
   })
 }

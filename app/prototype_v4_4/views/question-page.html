@@ -2,6 +2,8 @@
 
 {% set title = page.heading.title %}
 {% set caption = page.heading.caption %}
+{% set isGroupedPage = page.questions.length > 1 %}
+{% set firstQuestion = page.questions[0] %}
 
 {% block beforeContent %}
 {{ backLink({
@@ -16,17 +18,25 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
 
-      {% include prototype.viewPath + "/includes/page-heading.html" %}
+      {% if isGroupedPage or not firstQuestion.input.isPageHeading %}
+        {% include prototype.viewPath + "/includes/page-heading.html" %}
+      {% endif %}
 
       {% if page.description %}
         {{ page.description | markdownToHtml | safe }}
       {% endif %}
 
+      {% if page.details %}
+        {{ details({
+          summaryText: page.details.summary,
+          html: page.details.text | markdownToHtml | safe
+        }) }}
+      {% endif %}
+
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
-        {% set isGroupedPage = true %}
         {% for question in page.questions %}
-          {% include prototype.viewPath + "/questions/_question-input.html" %}
+          {% include prototype.viewPath + "/includes/question-input.html" %}
         {% endfor %}
 
         {{ button({

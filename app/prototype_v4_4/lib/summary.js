@@ -1,6 +1,6 @@
 const { nhsukDate } = require('../../filters/dates')
 const { getQuestionValueLabels } = require('./questions')
-const { version } = require('./question-renderer')
+const { version } = require('./settings')
 const {
   formatQuantity,
   getSelectedSmokingChanges,
@@ -288,6 +288,7 @@ const getCheckYourAnswers = (answers = {}) => {
     ])
 
     return {
+      type,
       heading: valueLabels.smokingType[type],
       rows
     }
@@ -409,7 +410,44 @@ const getCheckYourAnswers = (answers = {}) => {
   }
 }
 
+/**
+ * Build scoped summary-list sections for summary pages.
+ *
+ * @param {Object} answers - Session answers object.
+ * @param {Object} config - Summary page config from pages.yaml.
+ * @returns {Object[]} Summary-list sections.
+ */
+const getSummaryPageSections = (answers = {}, config = {}) => {
+  const checkYourAnswers = getCheckYourAnswers(answers)
+  const sections = []
+
+  ;(config.sections || []).forEach((section) => {
+    const rows = checkYourAnswers[section.id || section]
+
+    if (rows?.length) {
+      sections.push({
+        heading: section.heading,
+        rows
+      })
+    }
+  })
+
+  ;(config.tobaccoTypes || []).forEach((type) => {
+    const tobacco = checkYourAnswers.tobaccoRows.find((section) => section.type === type)
+
+    if (tobacco?.rows.length) {
+      sections.push({
+        heading: tobacco.heading,
+        rows: tobacco.rows
+      })
+    }
+  })
+
+  return sections
+}
+
 module.exports = {
   getCheckYourAnswers,
+  getSummaryPageSections,
   getValueLabels
 }

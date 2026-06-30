@@ -221,6 +221,30 @@ const getSmokingTypeStepUrl = (step) => {
   return `/prototype_${version}/${step.page}?${searchParams}`
 }
 
+const getSmokingTypeSummaryUrl = (type) => {
+  const searchParams = new URLSearchParams({ type })
+
+  return `/prototype_${version}/smoking-type-summary?${searchParams}`
+}
+
+const getLastSmokingTypeStepIndex = (type, steps = []) => {
+  return steps.reduce((lastIndex, item, index) => {
+    return item.type === type ? index : lastIndex
+  }, -1)
+}
+
+const getSmokingTypeSummaryActions = (type, steps = []) => {
+  const lastStepIndex = getLastSmokingTypeStepIndex(type, steps)
+  const lastStep = steps[lastStepIndex]
+  const nextStep = steps[lastStepIndex + 1]
+
+  return {
+    next: nextStep ? getSmokingTypeStepUrl(nextStep) : nextStepAfterSmokingTypes,
+    back: lastStep ? getSmokingTypeStepUrl(lastStep) : `/prototype_${version}/smoking-type`,
+    cancel: `/prototype_${version}/`
+  }
+}
+
 /**
  * Format a tobacco quantity answer with the correct unit label.
  *
@@ -1232,11 +1256,17 @@ const getSmokingTypeActions = (step, steps) => {
   const index = steps.findIndex((item) => item.page === step.page && item.type === step.type && item.change === step.change)
   const previousStep = steps[index - 1]
   const nextStep = steps[index + 1]
+  const backUrl = previousStep
+    ? previousStep.type === step.type ? getSmokingTypeStepUrl(previousStep) : getSmokingTypeSummaryUrl(previousStep.type)
+    : `/prototype_${version}/smoking-type`
+  const nextUrl = nextStep && nextStep.type === step.type
+    ? getSmokingTypeStepUrl(nextStep)
+    : getSmokingTypeSummaryUrl(step.type)
 
   return {
     next: getSmokingTypeStepUrl(step),
-    back: previousStep ? getSmokingTypeStepUrl(previousStep) : `/prototype_${version}/smoking-type`,
-    onward: nextStep ? getSmokingTypeStepUrl(nextStep) : nextStepAfterSmokingTypes,
+    back: backUrl,
+    onward: nextUrl,
     cancel: `/prototype_${version}/`
   }
 }
@@ -1347,6 +1377,8 @@ module.exports = {
   getSmokingTypeActions,
   getSmokingTypeHeadings,
   getSmokingTypeQuestionOverrides,
+  getSmokingTypeSummaryActions,
+  getSmokingTypeSummaryUrl,
   getSmokingTypeStep,
   getSmokingTypeSteps,
   getSmokingTypeStepUrl,
