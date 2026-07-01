@@ -121,6 +121,8 @@ router.post(`/prototype_${version}/ethnicity`, questionController.ethnicity_post
 router.get(`/prototype_${version}/education`, questionController.education_get)
 router.post(`/prototype_${version}/education`, questionController.education_post)
 
+router.get(`/prototype_${version}/smoking-history`, questionController.smokingHistory_get)
+
 /// Your health ------------------------------------------------------------ ///
 
 router.get(`/prototype_${version}/respiratory-conditions`, questionController.respiratoryConditions_get)

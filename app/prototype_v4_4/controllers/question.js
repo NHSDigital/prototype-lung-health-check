@@ -1,6 +1,6 @@
 const { getDateOfBirth, isEligibleForScanAge } = require('../lib/eligibility')
 const { getQuestionPage } = require('../lib/question-pages')
-const { renderQuestion, renderQuestionPage, renderStopPage, renderSummaryPage, version, view } = require('../lib/question-renderer')
+const { renderInterstitialPage, renderQuestion, renderQuestionPage, renderStopPage, renderSummaryPage, version, view } = require('../lib/question-renderer')
 const { getCheckYourAnswers } = require('../lib/summary')
 const {
   deleteInapplicableYearsSmokedAnswers,
@@ -433,8 +433,16 @@ exports.education_post = (req, res) => {
       cancel: `/prototype_${version}/`
     }, errors)
   } else {
-    res.redirect(`/prototype_${version}/smoking-duration`)
+    res.redirect(`/prototype_${version}/smoking-history`)
   }
+}
+
+exports.smokingHistory_get = (req, res) => {
+  renderInterstitialPage(req, res, 'smoking-history', {
+    next: `/prototype_${version}/smoking-duration`,
+    back: `/prototype_${version}/education`,
+    cancel: `/prototype_${version}/`
+  })
 }
 
 /// ------------------------------------------------------------------------ ///
@@ -580,7 +588,7 @@ exports.smokingDuration_get = (req, res) => {
 
   renderQuestionPage(res, 'smoking-duration', {
     next: `/prototype_${version}/smoking-duration`,
-    back: `/prototype_${version}/education`,
+    back: `/prototype_${version}/smoking-history`,
     cancel: `/prototype_${version}/`
   }, [], answers)
 }
@@ -592,7 +600,7 @@ exports.smokingDuration_post = (req, res) => {
   if (errors.length) {
     renderQuestionPage(res, 'smoking-duration', {
       next: `/prototype_${version}/smoking-duration`,
-      back: `/prototype_${version}/education`,
+      back: `/prototype_${version}/smoking-history`,
       cancel: `/prototype_${version}/`
     }, errors, answers)
   } else {

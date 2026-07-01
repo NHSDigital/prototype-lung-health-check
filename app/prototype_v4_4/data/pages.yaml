@@ -177,6 +177,24 @@ pages:
       We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
 
       If your qualification is not shown choose the closest level.
+  - id: smoking-history
+    type: interstitial
+    heading:
+      title: Smoking history
+    description: |
+      We will ask you questions about your smoking history to help us check if you need a lung scan.
+
+      We will ask:
+
+      - when you started smoking
+      - when you quit smoking - if this applies to you
+      - if you ever stopped smoking for periods of 1 year or longer
+
+      For each tobacco type you smoked, we will also ask:
+
+      - how frequently you smoked
+      - the amount of tobacco you smoked
+      - if the amount of tobacco you smoked ever changed
   - id: respiratory-conditions
     heading:
       caption: Your health
