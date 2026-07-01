@@ -1372,6 +1372,7 @@ module.exports = {
   getSmokingChangeAnswer,
   getSmokingChangeHeading,
   getSmokingChangeLabels,
+  getSmokingCurrentAmount,
   getSmokingQuantity,
   getSmokingStepHeading,
   getSmokingTypeActions,

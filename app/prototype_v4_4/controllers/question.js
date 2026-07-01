@@ -14,6 +14,7 @@ const {
   getSmokingTypeSummaryActions,
   getSmokingTypeSummaryUrl,
   getSmokingTypeQuestionOverrides,
+  getSmokingTypeHeadings,
   getSmokingTypeStep,
   getSmokingTypeSteps,
   getSmokingTypeStepUrl,
@@ -698,12 +699,14 @@ exports.smokingTypeSummary_get = (req, res) => {
     return
   }
 
-  const smokingType = getSmokingValueLabels().smokingType[type] || 'this type of tobacco'
+  const smokingType = (getSmokingValueLabels().smokingType[type] || 'this type of tobacco').toLowerCase()
+  const smokingTypeCaption = (getSmokingTypeHeadings(type).caption || `${smokingType} smoking`).toLowerCase()
 
   renderSummaryPage(req, res, 'smoking-type-summary', getSmokingTypeSummaryActions(type, getSmokingTypeSteps(answers)), {
     heading: {
       title: `Check your answers about ${smokingType}`
     },
+    description: `Check the answers you gave for ${smokingTypeCaption}. If any of the details are wrong, you can change them.`,
     summary: {
       tobaccoTypes: [type]
     }

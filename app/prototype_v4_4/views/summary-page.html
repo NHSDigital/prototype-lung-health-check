@@ -18,18 +18,28 @@
 
       {% include prototype.viewPath + "/includes/page-heading.html" %}
 
-      {% if page.description %}
+      {# {% if page.description %}
         {{ page.description | markdownToHtml | safe }}
-      {% endif %}
+      {% endif %} #}
 
       {% for section in summary.sections %}
-        {% if section.heading %}
+        {# {% if section.heading %}
           <h2 class="nhsuk-heading-m">{{ section.heading }}</h2>
-        {% endif %}
+        {% endif %} #}
 
         {{ summaryList({
           rows: section.rows
         }) }}
+
+        {% for subSection in section.subSections %}
+          {% if subSection.heading %}
+            <h2 class="nhsuk-heading-m">{{ subSection.heading }}</h2>
+          {% endif %}
+
+          {{ summaryList({
+            rows: subSection.rows
+          }) }}
+        {% endfor %}
       {% endfor %}
 
       {% if actions.next %}

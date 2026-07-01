@@ -8,6 +8,7 @@ const {
   getSmokingChangeAnswer,
   getSmokingChangeHeading,
   getSmokingChangeLabels,
+  getSmokingCurrentAmount,
   getSmokingQuantity,
   getSmokingStepHeading,
   getSmokingTypeHeadings,
@@ -216,6 +217,54 @@ const formatListValue = (value, labels) => {
   }
 }
 
+const getSmokingChangeSummaryHeading = (type, change, answer = {}) => {
+  const currentAmount = getSmokingCurrentAmount(type, answer)
+  const comparisonLabels = {
+    greater: 'more',
+    fewer: 'fewer'
+  }
+  const comparison = type === 'rolling_tobacco' && change === 'fewer'
+    ? 'less'
+    : valueLabelFallback(change, comparisonLabels)
+
+  return currentAmount
+    ? `When you smoked ${comparison} than ${currentAmount}`
+    : `When you smoked ${comparison}`
+}
+
+const valueLabelFallback = (value, labels = {}) => labels[value] || value
+
+const getTobaccoChangeSummaryRows = (type, change, answer = {}, valueLabels = {}) => {
+  const changeAnswer = getSmokingChangeAnswer(answer, change)
+
+  return makeSummaryRows([
+    makeSummaryRow({
+      key: 'How often did you smoke?',
+      value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
+      href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
+    }),
+    makeSummaryRow({
+      key: 'How much did you smoke?',
+      value: getSmokingQuantity(type, changeAnswer.quantity),
+      href: getSmokingTypeStepUrl({ page: 'smoking-quantity-change', type, change })
+    }),
+    makeSummaryRow({
+      key: 'How many years did you smoke this amount?',
+      value: changeAnswer.years && formatQuantity(changeAnswer.years, 'year', 'years'),
+      href: getSmokingTypeStepUrl({ page: 'smoking-years-change', type, change })
+    })
+  ])
+}
+
+const getTobaccoChangeSummarySubSections = (type, answer = {}, valueLabels = {}) => {
+  return getSelectedSmokingChanges(answer).map((change) => {
+    return {
+      heading: getSmokingChangeSummaryHeading(type, change, answer),
+      rows: getTobaccoChangeSummaryRows(type, change, answer, valueLabels)
+    }
+  }).filter((section) => section.rows.length)
+}
+
 /**
  * Build all check-your-answers summary-list sections.
  *
@@ -253,7 +302,7 @@ const getCheckYourAnswers = (answers = {}) => {
         })
       ]
     })
-    const rows = makeSummaryRows([
+    const summaryRows = makeSummaryRows([
       !isFormerSmoker && makeSummaryRow({
         key: smokingType.statusHeading,
         value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
@@ -283,13 +332,18 @@ const getCheckYourAnswers = (answers = {}) => {
         key: smokingType.changeHeading,
         ...formatListValue(answer.smokingChange, getSmokingChangeLabels(type, answer, isPast)),
         href: getSmokingTypeStepUrl({ page: 'smoking-change', type })
-      }),
+      })
+    ])
+    const rows = makeSummaryRows([
+      ...summaryRows,
       ...smokingChangeRows
     ])
 
     return {
       type,
       heading: valueLabels.smokingType[type],
+      summaryRows,
+      subSections: getTobaccoChangeSummarySubSections(type, answer, valueLabels),
       rows
     }
   }).filter((section) => section.rows.length)
@@ -438,7 +492,8 @@ const getSummaryPageSections = (answers = {}, config = {}) => {
     if (tobacco?.rows.length) {
       sections.push({
         heading: tobacco.heading,
-        rows: tobacco.rows
+        rows: tobacco.summaryRows || tobacco.rows,
+        subSections: tobacco.subSections
       })
     }
   })
