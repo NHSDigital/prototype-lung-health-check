@@ -36,7 +36,8 @@ flowchart TD
   sex --> ethnicity["Ethnic background"]
   ethnicity --> education["Education"]
 
-  education --> smokingDuration["When you smoked tobacco<br>Age started, age stopped if applicable,<br>periods stopped"]
+  education --> smokingHistory["Smoking history<br>Interstitial"]
+  smokingHistory --> smokingDuration["When you smoked tobacco<br>Age started, age stopped if applicable,<br>periods stopped"]
   smokingDuration --> smokingType{"Smoking type"}
 
   smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
@@ -103,6 +104,7 @@ flowchart TD
 ## Notes
 
 - Height and weight unit pages can be switched manually using the unit-switch links.
+- `Smoking history` is an interstitial page shown after `Education` and before `When you smoked tobacco`.
 - `When you smoked tobacco` combines age started smoking, age stopped smoking and periods stopped smoking.
 - `Age stopped smoking` is shown on `When you smoked tobacco` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
 - `Years smoked` is shown for each selected tobacco type only when more than one tobacco type has been selected.
