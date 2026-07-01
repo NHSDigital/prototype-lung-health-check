@@ -39,9 +39,14 @@
           {% include prototype.viewPath + "/includes/question-input.html" %}
         {% endfor %}
 
-        {{ button({
-          text: "Continue"
-        }) }}
+        <div class="nhsuk-button-group">
+          {{ button({
+            text: "Continue"
+          }) }}
+
+          {# <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a> #}
+        </div>
+
 
       </form>
 

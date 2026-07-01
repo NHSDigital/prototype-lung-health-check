@@ -43,10 +43,16 @@
             classes: page.button.classes
           }) }}
 
-          {% if actions.cancel %}
+          {# {% if actions.cancel %}
             <a class="nhsuk-link" href="{{ actions.cancel }}">{{ page.cancel.text | default("Cancel") }}</a>
-          {% endif %}
+          {% endif %} #}
         </div>
+
+        {% if actions.cancel %}
+          <p class="nhsuk-body">
+            <a class="nhsuk-link" href="{{ actions.cancel }}">{{ page.cancel.text | default("Cancel") }}</a>
+          </p>
+        {% endif %}
       {% endif %}
 
       {% for include in page.includes %}
