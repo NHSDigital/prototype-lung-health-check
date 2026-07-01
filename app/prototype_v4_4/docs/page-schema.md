@@ -46,7 +46,7 @@ Supported page types:
 
 `description`, `insetText` and `details.text` support Markdown. They can also use Nunjucks locals and filters, for example `{{ serviceTelephone | telephoneLink }}`.
 
-## Stop Pages
+## Stop pages
 
 Stop pages are for terminal branches. They do not show a continue button unless the controller passes `actions.next`.
 
@@ -61,7 +61,7 @@ Stop pages are for terminal branches. They do not show a continue button unless 
     - speak-to-a-gp
 ```
 
-## Interruption Pages
+## Interruption pages
 
 Interruption pages use the NHS interruption panel pattern. Their primary button uses the `nhsuk-button--reverse` modifier by default.
 
@@ -88,7 +88,7 @@ renderInterruptionPage(req, res, 'important-information', {
 })
 ```
 
-## Interstitial Pages
+## Interstitial pages
 
 Interstitial pages use the same content fields without the blue panel.
 
@@ -105,7 +105,7 @@ Interstitial pages use the same content fields without the blue panel.
 
 Render from a controller with `renderInterstitialPage`.
 
-## Summary Pages
+## Summary pages
 
 Summary pages reuse the same answer formatting and change links as check your answers, but only include the configured sections.
 

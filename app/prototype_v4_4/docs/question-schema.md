@@ -127,7 +127,7 @@ To add another page:
 | `variants` | No | Alternative content used by controller or flow overrides. |
 | `switchUnits` | No | Link text for height and weight unit switching. |
 
-## Page Headings
+## Page headings
 
 Put page headings, captions, descriptions and details in `pages.yaml`.
 
