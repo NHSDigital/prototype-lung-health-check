@@ -180,7 +180,7 @@ pages:
   - id: smoking-history
     type: interstitial
     heading:
-      title: Smoking history
+      title: Your smoking history
     description: |
       We will ask you questions about your smoking history to help us check if you need a lung scan.
 
