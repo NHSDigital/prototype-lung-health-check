@@ -400,7 +400,7 @@ questions:
       - label: I finished school before the age of 15
         value: before_15
       - label: GCSEs
-        hint: Previously O-levels
+        hint: Previously Certificate of Secondary Education (CSE) and O-levels
         value: gcse
       - label: A-levels
         hint: Previously Higher School Certificate (HSC)
