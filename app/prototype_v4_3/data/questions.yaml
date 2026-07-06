@@ -687,7 +687,7 @@ questions:
         value: cigarillos
         exclusiveGroup: types-list
       - label: Shisha
-        hint: Also known as hookah and water pipes
+        hint: Also know as a waterpipe or hookah
         value: shisha
         exclusiveGroup: types-list
       - divider: or
