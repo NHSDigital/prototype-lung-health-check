@@ -599,6 +599,24 @@ const getSmokingCurrentAmount = (type, answer = {}) => {
 }
 
 /**
+ * Build the changed amount phrase used in changed-smoking years headings.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {Object} changeAnswer - Change-specific answer object.
+ * @returns {string} Amount phrase, for example `15 cigarettes a month`.
+ */
+const getSmokingChangedAmount = (type, changeAnswer = {}) => {
+  const quantity = getSmokingQuantity(type, changeAnswer.quantity)
+  const period = getSmokingFrequencyPeriod(changeAnswer.frequency)
+
+  if (!quantity) {
+    return ''
+  }
+
+  return [lowerFirst(quantity), period].filter(Boolean).join(' ')
+}
+
+/**
  * Decide whether a tobacco type should use past-tense content.
  *
  * @param {Object} answers - Session answers object.
@@ -827,23 +845,31 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
   const comparisonText = getSmokingChangeComparisonText(type, change, answer)
 
   if (page === 'smoking-frequency-change') {
-    const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true).frequencyHeading, answer.smokingFrequency)
+    const baseHeading = getQuestion('smoking-frequency-change').input.label
 
-    return includeComparison && comparisonText ? `${baseHeading.replace('?', '')} ${comparisonText}?` : baseHeading
+    return includeComparison && comparisonText ? `${upperFirst(comparisonText)}, ${lowerFirst(baseHeading)}` : baseHeading
   }
 
   if (page === 'smoking-quantity-change') {
     const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true).quantityHeading, changeAnswer.frequency || answer.smokingFrequency)
+    const contextualHeading = baseHeading
+      .replace(' did you smoke ', ' did you normally smoke ')
+      .replace(' did you smoke?', ' did you normally smoke?')
+      .replace(/ in a normal (day|week|month|year)\?$/, ' a $1?')
     const normalHeading = baseHeading
       .replace(' did you smoke ', ' did you normally smoke ')
       .replace(' did you smoke?', ' did you normally smoke?')
       .replace(/ in a normal (day|week|month|year)\?$/, '?')
 
-    return includeComparison && comparisonText ? `${baseHeading.replace('?', '')} ${comparisonText}?` : normalHeading
+    return includeComparison && comparisonText ? `${upperFirst(comparisonText)}, ${lowerFirst(contextualHeading)}` : normalHeading
   }
 
   if (page === 'smoking-years-change') {
-    return getQuestion('smoking-years-change').input.label
+    const amount = getSmokingChangedAmount(type, changeAnswer)
+
+    return amount
+      ? `Roughly how many years did you smoke ${amount}?`
+      : 'Roughly how many years did you smoke this amount?'
   }
 
   return ''
@@ -1072,6 +1098,7 @@ const upperFirst = (value = '') => {
  */
 const getAnswerPhraseFromHeading = (heading = '') => {
   return lowerFirst(removeQuestionMark(heading))
+    .replace(/^roughly how many years did you smoke(?= |$)/, 'roughly how many years you smoked')
     .replace(/^how often did you smoke /, 'how often you smoked ')
     .replace(/^how often do you smoke /, 'how often you smoke ')
     .replace(/^how long did you smoke /, 'how long you smoked ')
@@ -1126,7 +1153,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
     return `Select ${getAnswerPhraseFromHeading(heading)}`
   }
 
-  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
+  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long') || heading.startsWith('Roughly how many')) {
     return `${questionType === 'single' ? 'Select' : 'Enter'} ${getAnswerPhraseFromHeading(heading)}`
   }
 
@@ -1143,7 +1170,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
 const getContextualInvalidErrorText = (question, overrides) => {
   const heading = overrides.heading?.title || question.heading?.title || ''
 
-  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
+  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long') || heading.startsWith('Roughly how many')) {
     return `Enter ${getAnswerPhraseFromHeading(heading)} using numbers`
   }
 
