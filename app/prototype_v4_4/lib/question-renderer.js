@@ -162,6 +162,8 @@ const mergeQuestionOverrides = (question, overrides = {}) => {
  * @param {string} id - Page id from pages.yaml.
  * @param {Object} actions - URLs used by the grouped question template.
  * @param {Object[]} [errors] - Validation errors for all questions on the page.
+ * @param {Object} [answers] - Session answers object used for conditional questions.
+ * @param {Object} [overrides] - Runtime overrides for page or question content.
  */
 const renderQuestionPage = (res, id, actions, errors = [], answers = {}, overrides = {}) => {
   const page = getQuestionPage(id, answers)

@@ -132,7 +132,7 @@ const formatValue = (value, labels) => {
  * @typedef {Object} SummaryRow
  * @property {Object} key - NHS summary-list key config.
  * @property {Object} [value] - NHS summary-list value config.
- * @property {Object} actions - NHS summary-list actions config.
+ * @property {Object} [actions] - NHS summary-list actions config.
  */
 
 /**
@@ -238,18 +238,43 @@ const getSmokingChangeSummaryHeading = (type, change, answer = {}) => {
 
 const valueLabelFallback = (value, labels = {}) => labels[value] || value
 
+/**
+ * Resolve the frequency value to show for a changed-smoking answer.
+ *
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {string} change - Smoking change key.
+ * @param {Object} changeAnswer - Change-specific answer object.
+ * @returns {string|undefined} Frequency value for display.
+ */
 const getSmokingChangeFrequencyValue = (answer = {}, change, changeAnswer = {}) => {
   const options = getSmokingChangeFrequencyOptions(answer, change)
 
   return options.length === 1 ? options[0] : changeAnswer.frequency
 }
 
+/**
+ * Get the change-frequency summary row URL when the frequency page applies.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} change - Smoking change key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {string|undefined} Change URL, or undefined for defaulted frequencies.
+ */
 const getSmokingChangeFrequencyHref = (type, change, answer = {}) => {
   return isSmokingChangeFrequencyDefaulted(answer, change)
     ? undefined
     : getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
 }
 
+/**
+ * Build changed-smoking summary rows for a tobacco type and change direction.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} change - Smoking change key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {Object} valueLabels - Display labels keyed by submitted value.
+ * @returns {SummaryRow[]} Changed-smoking summary rows.
+ */
 const getTobaccoChangeSummaryRows = (type, change, answer = {}, valueLabels = {}) => {
   const changeAnswer = getSmokingChangeAnswer(answer, change)
 
