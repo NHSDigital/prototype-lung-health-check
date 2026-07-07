@@ -1,0 +1,54 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = page.heading.title %}
+{% set caption = page.heading.caption %}
+
+{% block beforeContent %}
+{% if actions.back %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+      <div class="nhsuk-panel nhsuk-panel--interruption">
+        {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+        {% if page.description %}
+          {{ page.description | markdownToHtml | safe }}
+        {% endif %}
+
+        {% if page.insetText %}
+          {{ insetText({
+            html: page.insetText | markdownToHtml | safe
+          }) }}
+        {% endif %}
+
+        {% if page.details %}
+          {{ details({
+            summaryText: page.details.summary,
+            html: page.details.text | markdownToHtml | safe
+          }) }}
+        {% endif %}
+
+        {% if actions.next %}
+          <div class="nhsuk-button-group">
+            {{ button({
+              text: page.button.text | default("Continue"),
+              href: actions.next,
+              classes: page.button.classes | default("nhsuk-button--reverse")
+            }) }}
+
+            {% if actions.cancel %}
+              <a class="nhsuk-link nhsuk-link--reverse" href="{{ actions.cancel }}">{{ page.cancel.text | default("Cancel") }}</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

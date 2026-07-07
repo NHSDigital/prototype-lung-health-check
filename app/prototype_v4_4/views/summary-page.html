@@ -1,0 +1,67 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = page.heading.title %}
+{% set caption = page.heading.caption %}
+
+{% block beforeContent %}
+{% if actions.back %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+      {# {% if page.description %}
+        {{ page.description | markdownToHtml | safe }}
+      {% endif %} #}
+
+      {% for section in summary.sections %}
+        {# {% if section.heading %}
+          <h2 class="nhsuk-heading-m">{{ section.heading }}</h2>
+        {% endif %} #}
+
+        {{ summaryList({
+          rows: section.rows
+        }) }}
+
+        {% for subSection in section.subSections %}
+          {% if subSection.heading %}
+            <h2 class="nhsuk-heading-m">{{ subSection.heading }}</h2>
+          {% endif %}
+
+          {{ summaryList({
+            rows: subSection.rows
+          }) }}
+        {% endfor %}
+      {% endfor %}
+
+      {% if actions.next %}
+        <div class="nhsuk-button-group">
+          {{ button({
+            text: page.button.text | default("Continue"),
+            href: actions.next,
+            classes: page.button.classes
+          }) }}
+
+          {# {% if actions.cancel %}
+            <a class="nhsuk-link" href="{{ actions.cancel }}">{{ page.cancel.text | default("Cancel") }}</a>
+          {% endif %} #}
+        </div>
+      {% endif %}
+
+      {% if actions.cancel %}
+        <p class="nhsuk-body">
+          <a class="nhsuk-link" href="{{ actions.cancel }}">{{ page.cancel.text | default("Cancel") }}</a>
+        </p>
+      {% endif %}
+
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = page.heading.title %}
+{% set caption = page.heading.caption %}
+{% set isGroupedPage = page.questions.length > 1 %}
+{% set firstQuestion = page.questions[0] %}
+
+{% block beforeContent %}
+{{ backLink({
+  text: "Back",
+  href: actions.back
+}) }}
+{% endblock %}
+
+{% block content %}
+  {% include prototype.viewPath + "/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% if isGroupedPage or not firstQuestion.input.isPageHeading %}
+        {% include prototype.viewPath + "/includes/page-heading.html" %}
+      {% endif %}
+
+      {% if page.description %}
+        {{ page.description | markdownToHtml | safe }}
+      {% endif %}
+
+      {% if page.details %}
+        {{ details({
+          summaryText: page.details.summary,
+          html: page.details.text | markdownToHtml | safe
+        }) }}
+      {% endif %}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {% for question in page.questions %}
+          {% include prototype.viewPath + "/includes/question-input.html" %}
+        {% endfor %}
+
+        <div class="nhsuk-button-group">
+          {{ button({
+            text: "Continue"
+          }) }}
+
+          {# <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a> #}
+        </div>
+
+
+      </form>
+
+      <p class="nhsuk-body">
+        <a class="nhsuk-link" href="{{ actions.cancel }}">Cancel</a>
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

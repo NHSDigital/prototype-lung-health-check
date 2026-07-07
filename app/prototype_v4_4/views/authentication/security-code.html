@@ -1,0 +1,92 @@
+{% extends prototype.viewPath + "/layouts/main.html" %}
+
+{% set title = "Enter the security code" %}
+
+{% block content %}
+  {% include prototype.viewPath + "/includes/error-summary.html" %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+
+      {% include prototype.viewPath + "/includes/page-heading.html" %}
+
+      <p class="nhsuk-body">
+        We have sent a 6-digit security code to your phone number ending in 0887.
+      </p>
+
+      <p class="nhsuk-body">
+        It may take a few minutes to arrive.
+      </p>
+
+      {% set securityCodeHtml %}
+        <p class="nhsuk-body">Make sure your device:</p>
+        <ul class="nhsuk-list nhsuk-list--bullet">
+          <li>is not in flight mode and has a strong signal</li>
+          <li>can receive text messages from other senders</li>
+        </ul>
+        <p class="nhsuk-body">Wait 30 seconds before you <a href="#" class="nhsuk-link">send the security code again</a>.</p>
+      {% endset %}
+
+      {{ details({
+        summaryText: "Not received a security code?",
+        html: securityCodeHtml
+      }) }}
+
+      <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
+
+        {{ input({
+          id: "security-code",
+          name: "authentication[securityCode]",
+          label: {
+            text: "Security code",
+            isPageHeading: false,
+            classes: "nhsuk-label--s"
+          },
+          hint: {
+            text: "The code is 6 digits"
+          },
+          inputmode: "numeric",
+          value: data.authentication.securityCode,
+          classes: "nhsuk-input--width-10"
+        }) }}
+
+        {{ checkboxes({
+          name: "authentication[rememberDevice]",
+          values: data.authentication.rememberDevice,
+          items: [
+            {
+              value: "yes",
+              text: "Remember this device and stop sending security codes"
+            }
+          ]
+        }) }}
+
+        {{ button({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {% set rememberDeviceHtml %}
+        <p class="nhsuk-body">We can remember the device you are using now, so you will not need to enter a security code when you log in with this device in the future.</p>
+        <p class="nhsuk-body">To keep your NHS login secure, you should only do this on your own personal or trusted devices.</p>
+        <p class="nhsuk-body">We may ask if you still want us to remember this device in the future.</p>
+      {% endset %}
+
+      {{ details({
+        summaryText: "What does remember this device mean?",
+        html: rememberDeviceHtml
+      }) }}
+
+      {% set mobileDeviceHtml %}
+        <p class="nhsuk-body">If you no longer have access to it, you can <a href="#" class="nhsuk-link">change the mobile phone number you use to log in</a>.</p>
+      {% endset %}
+
+      {{ details({
+        summaryText: "I cannot log in using my mobile phone",
+        html: mobileDeviceHtml
+      }) }}
+
+    </div>
+  </div>
+{% endblock %}

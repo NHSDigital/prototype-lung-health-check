@@ -1,0 +1,337 @@
+---
+pages:
+  - id: accept-terms
+    questions:
+      - accept-terms
+    heading:
+      title: Terms of use
+    description: |
+      To continue, confirm that you have read and agree to the [NHS Check if you need a lung scan terms of use](terms-of-use).
+  - id: phone-questionnaire
+    questions:
+      - phone-questionnaire
+    heading:
+      title: Confirm if you have completed a lung cancer risk questionnaire by phone
+    description: |
+      If you have already completed a questionnaire about your lung health or lung cancer risk by phone you do not need to test the online service. This is because the online service asks the same questions.
+
+      The questionnaire would have asked you questions about:
+
+      - your height and weight
+      - your ethnicity
+      - your education
+      - if you have ever had a cancer diagnosis
+      - if your parents, siblings, or children have ever had a lung cancer diagnosis
+      - Your smoking history
+  - id: phone-questionnaire-exit
+    type: stop
+    heading:
+      title: You do not need to test the online service
+    description: |
+      Because you have completed the questionnaire by phone you do not need to test the online service. This is because the online service asks the same questions.
+
+      Find out more about NHS lung cancer screening in [North West and South West London](https://www.healthylondon.org/our-work/lung-health-check/).
+    includes:
+      - speak-to-a-gp
+  - id: smoker
+    questions:
+      - smoker
+    heading:
+      title: Tobacco smoking
+    description: |
+      We will ask you questions about Your smoking history. This includes different types of tobacco smoking such as:
+
+      - cigarettes from a packet
+      - rolling tobacco, or roll ups
+      - a pipe
+      - cigars
+      - cigarillos
+      - shisha
+
+      It does not currently include vaping or e-cigarettes.
+  - id: date-of-birth
+    heading:
+      caption: Eligibilty
+    questions:
+      - date-of-birth
+  - id: not-eligible-for-screening
+    type: stop
+    heading:
+      title: You are not eligible for lung cancer screening
+    description: |
+      You told us you have never smoked or have smoked fewer than 100 cigarettes in your lifetime. This means you are not eligible for NHS lung cancer screening.
+    includes:
+      - speak-to-a-gp
+  - id: not-eligible-for-scan
+    type: stop
+    heading:
+      title: You are not eligible for an NHS lung scan
+    description: |
+      The NHS lung scan is for people between the ages of 55 and 74.
+
+      According to your date of birth you are not in this age range.
+    includes:
+      - speak-to-a-gp
+  - id: face-to-face-appointment
+    questions:
+      - face-to-face-appointment
+    heading:
+      title: Check if you need a face-to-face appointment
+      caption: Eligibilty
+    description: |
+      This online service uses automatic calculations based on your height and weight. This means it is not suitable for everyone.
+
+      You need to do your questionnaire in person, not online, if you:
+
+      - have a condition that affects your height
+      - have had a limb amputation, or were born with a limb difference
+      - have been diagnosed with an eating disorder, or think you may have one
+      - are pregnant
+  - id: book-appointment
+    type: stop
+    heading:
+      title: Call us to book an appointment
+    description: |
+      Call us on {{ serviceTelephone | telephoneLink }} to book an appointment. If we do not hear from you in 2 weeks we will call you.
+
+      At your face to face appointment a health professional will measure your height and weight. They will also ask you questions to check if you need a lung scan.
+
+      **Phone lines are open:**<br aria-hidden="true">
+      Monday to Friday 8am to 8pm<br aria-hidden="true">
+      Saturdays 8am to 1pm
+    includes:
+      - speak-to-a-gp
+  - id: height-metric
+    questions:
+      - height-metric
+    heading:
+      title: Your height
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+  - id: height-imperial
+    questions:
+      - height-imperial
+    heading:
+      title: Your height
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      You can measure your height at home with a measuring tape. Some pharmacies and gyms have machines to measure your height.
+  - id: weight-metric
+    questions:
+      - weight-metric
+    heading:
+      title: Your weight
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+  - id: weight-imperial
+    questions:
+      - weight-imperial
+    heading:
+      title: Your weight
+      caption: About you
+    description: |
+      An accurate measurement is important.
+
+      If you have digital scales, use these to check your weight. Some pharmacies and gyms have scales where you can check for free.
+  - id: gender
+    questions:
+      - gender
+    heading:
+      title: Your gender identity
+      caption: About you
+    description: |
+      The answers you submit will not be shared with your patient care advisor during your phone appointment, or with your GP.
+
+      In the future we plan to use information about someone's gender identity to help us plan their care in the NHS lung cancer screening programme.
+  - id: sex
+    questions:
+      - sex
+    heading:
+      title: Your sex at birth
+      caption: About you
+    description: |
+      Your sex may impact your chances of developing lung cancer.
+  - id: ethnicity
+    questions:
+      - ethnicity
+    heading:
+      title: Your ethnic background
+      caption: About you
+    description: |
+      We ask this question because your ethnicity may impact your chances of developing lung cancer.
+  - id: education
+    questions:
+      - education
+    heading:
+      title: Your education
+      caption: About you
+    description: |
+      We ask this question because education is linked to other factors that may impact your chances of developing lung cancer.
+
+      If your qualification is not shown choose the closest level.
+  - id: smoking-history
+    type: interstitial
+    heading:
+      title: Your smoking history
+    description: |
+      We will ask you questions about your smoking history to help us check if you need a lung scan.
+
+      We will ask:
+
+      - when you started smoking
+      - when you quit smoking - if this applies to you
+      - if you ever stopped smoking for periods of 1 year or longer
+
+      For each tobacco type you smoked, we will also ask:
+
+      - how frequently you smoked
+      - the amount of tobacco you smoked
+      - if the amount of tobacco you smoked ever changed
+  - id: respiratory-conditions
+    heading:
+      caption: Your health
+    questions:
+      - respiratory-conditions
+  - id: asbestos
+    heading:
+      title: If you have been exposed to asbestos
+      caption: Your health
+    description: |
+      You may have been exposed to asbestos if you worked in an industry such as building or construction, particularly from the 1950s to the 1990s.
+
+      You might also have been exposed if you lived with someone who worked with asbestos.
+
+      <details class="nhsuk-details">
+        <summary class="nhsuk-details__summary">
+          <span class="nhsuk-details__summary-text">
+            What is asbestos?
+          </span>
+        </summary>
+        <div class="nhsuk-details__text">
+          <p class="nhsuk-body">Asbestos was used in a number of building materials and products. For example:</p>
+          <ul class="nhsuk-list nhsuk-list--bullet">
+          <li>boilers and pipes</li>
+          <li>car brakes</li>
+          <li>cement for roofing sheets</li>
+          <li>floor tiles</li>
+          <li>insulating board to protect buildings and ships against fire</li>
+          </ul>
+          <p class="nhsuk-body">If you or someone you lived with worked in an industry such as building or construction you are more likely to have come into contact with damaged asbestos materials and products.</p>
+        </div>
+      </details>
+    questions:
+      - asbestos-at-work
+      - asbestos-at-home
+  - id: cancer-diagnosis
+    questions:
+      - cancer-diagnosis
+    heading:
+      title: If you have ever been diagnosed with cancer
+      caption: Your health
+    description: |
+      If you have ever been diagnosed with any type of cancer it may impact your chances of developing lung cancer.
+  - id: cancer-diagnosis-relatives
+    questions:
+      - cancer-diagnosis-relatives
+    heading:
+      title: If your parents, siblings or children have ever been diagnosed with lung cancer
+      caption: Your family history
+    description: |
+      If any of your parents, siblings or children have ever been diagnosed with lung cancer it may impact your chances of developing lung cancer.
+
+      This question is about lung cancer rather than any other type of cancer. It does not include your grandparents or grandchildren.
+  - id: cancer-diagnosis-relatives-age
+    questions:
+      - cancer-diagnosis-relatives-age
+    heading:
+      title: If your relatives were under 60 when they were diagnosed
+      caption: Your family history
+    description: |
+      We ask about their age when they were diagnosed with lung cancer because it may impact your chances of developing lung cancer.
+
+      If you do not know or cannot remember, select 'I do not know'.
+  - id: smoking-duration
+    heading:
+      title: When you smoked tobacco
+      caption: Your smoking history
+    questions:
+      - age-started-smoking
+      - id: age-stopped-smoking
+        if:
+          any:
+            - question: smoker
+              is: yes_previous
+            - question: smoking-status
+              is: no
+      - periods-stopped-smoking
+  - id: smoking-type
+    heading:
+      title: The type of tobacco you smoke or used to smoke
+      caption: Your smoking history
+    questions:
+      - smoking-type
+    description: |
+      Smoking affects your health in different ways depending on what you smoke.
+
+      We need to know what you smoke, or used to smoke, for a period of 1 year or longer. This does not include vaping or e-cigarettes.
+
+      You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+    variants:
+      previous:
+        heading:
+          title: The type of tobacco you have smoked
+        description: |
+          Smoking affects your health in different ways depending on what you smoked.
+
+          We need to know what you used to smoke frequently. For example, if you smoked a pipe on a weekly basis for a year or longer.
+
+          You do not need to tell us about less frequent forms of smoking. For example, a cigar on special occasions.
+  - id: smoking-type-exit
+    type: stop
+    heading:
+      title: You are not eligible for lung cancer screening
+    description: |
+      You told us you have never smoked the types of tobacco listed. This means you are not eligible for NHS lung cancer screening.
+    includes:
+      - speak-to-a-gp
+  - id: smoking-type-summary
+    type: summary
+    heading:
+      title: Check your answers about this type of tobacco
+      caption: Your smoking history
+    description: |
+      Check the answers you gave for this type of tobacco. If any of the details are wrong, you can change them.
+    button:
+      text: Continue
+  - id: smoking-status
+    questions:
+      - smoking-status
+  - id: years-smoked
+    questions:
+      - years-smoked
+  - id: smoking-frequency
+    questions:
+      - smoking-frequency
+  - id: smoking-quantity
+    questions:
+      - smoking-quantity
+  - id: smoking-frequency-change
+    questions:
+      - smoking-frequency-change
+  - id: smoking-quantity-change
+    questions:
+      - smoking-quantity-change
+  - id: smoking-years-change
+    questions:
+      - smoking-years-change
+  - id: smoking-change
+    questions:
+      - smoking-change

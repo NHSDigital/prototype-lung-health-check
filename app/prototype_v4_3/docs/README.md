@@ -1,6 +1,6 @@
-# Prototype v4.1 documentation
+# Prototype v4.3 documentation
 
-Prototype v4.1 uses YAML-backed question content for most standard question pages.
+Prototype v4.3 uses YAML-backed question content for most standard question pages.
 
 ## Main files
 
@@ -34,6 +34,7 @@ Prototype v4.1 uses YAML-backed question content for most standard question page
 - [Content guide](content-guide.md)
 - [Developer guide](developer-guide.md)
 - [Question flow](question-flow.md)
+- [Error messages](error-messages.md)
 
 ## Hot reload
 

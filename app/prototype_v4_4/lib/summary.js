@@ -1,0 +1,508 @@
+const { nhsukDate } = require('../../filters/dates')
+const { getQuestionValueLabels } = require('./questions')
+const { version } = require('./settings')
+const {
+  formatQuantity,
+  getSelectedSmokingChanges,
+  getSelectedSmokingTypes,
+  getSmokingChangeAnswer,
+  getSmokingChangeHeading,
+  getSmokingChangeLabels,
+  getSmokingCurrentAmount,
+  getSmokingQuantity,
+  getSmokingStepHeading,
+  getSmokingTypeHeadings,
+  getSmokingTypeStepUrl,
+  isPastSmokingType,
+  getValueLabels: getTobaccoValueLabels
+} = require('./tobacco-flow')
+
+const getValueLabels = () => {
+  return {
+    asbestosAtHome: getQuestionValueLabels('asbestos-at-home'),
+    asbestosAtWork: getQuestionValueLabels('asbestos-at-work'),
+    cancerDiagnosis: getQuestionValueLabels('cancer-diagnosis'),
+    cancerDiagnosisRelatives: getQuestionValueLabels('cancer-diagnosis-relatives'),
+    cancerDiagnosisRelativesAge: getQuestionValueLabels('cancer-diagnosis-relatives-age'),
+    education: getQuestionValueLabels('education'),
+    ethnicity: getQuestionValueLabels('ethnicity'),
+    faceToFaceAppointment: getQuestionValueLabels('face-to-face-appointment'),
+    gender: getQuestionValueLabels('gender'),
+    periodsStoppedSmoking: {
+      yes: 'Yes',
+      no: 'No'
+    },
+    respiratoryConditions: getQuestionValueLabels('respiratory-conditions'),
+    sex: getQuestionValueLabels('sex'),
+    smoker: getQuestionValueLabels('smoker'),
+    ...getTobaccoValueLabels()
+  }
+}
+
+/**
+ * Format a date of birth for check-your-answers.
+ *
+ * @param {Object} dateOfBirth - Date parts keyed by day, month and year.
+ * @returns {string} Formatted date, or an empty string when incomplete.
+ */
+const formatDateOfBirth = (dateOfBirth = {}) => {
+  if (!dateOfBirth.day || !dateOfBirth.month || !dateOfBirth.year) {
+    return ''
+  }
+
+  return nhsukDate(
+    `${dateOfBirth.year}-${String(dateOfBirth.month).padStart(2, '0')}-${String(dateOfBirth.day).padStart(2, '0')}`
+  )
+}
+
+/**
+ * Format a height answer for check-your-answers.
+ *
+ * @param {Object} height - Height answer object.
+ * @returns {string} Formatted height.
+ */
+const formatHeight = (height = {}) => {
+  if (height.metric) {
+    return `${height.metric} cm`
+  }
+
+  if (height.imperial?.feet || height.imperial?.inches) {
+    return `${height.imperial.feet || 0} feet ${height.imperial.inches || 0} inches`
+  }
+
+  return ''
+}
+
+/**
+ * Format a weight answer for check-your-answers.
+ *
+ * @param {Object} weight - Weight answer object.
+ * @returns {string} Formatted weight.
+ */
+const formatWeight = (weight = {}) => {
+  if (weight.metric) {
+    return `${weight.metric} kg`
+  }
+
+  if (weight.imperial?.stones || weight.imperial?.pounds) {
+    return `${weight.imperial.stones || 0} stone ${weight.imperial.pounds || 0} pounds`
+  }
+
+  return ''
+}
+
+/**
+ * Format a smoking quantity, including conditional reveal "another amount" answers.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {Object} answer - Answer object containing quantity fields.
+ * @param {string} quantityKey - Quantity answer key.
+ * @returns {string} Formatted quantity answer.
+ */
+const formatSmokingQuantityAnswer = (type, answer = {}, quantityKey = 'smokingQuantity') => {
+  if (answer[quantityKey] === 'another_amount') {
+    return answer.smokingQuantityOther
+      ? formatQuantity(answer.smokingQuantityOther, 'hour', 'hours')
+      : ''
+  }
+
+  return getSmokingQuantity(type, answer[quantityKey])
+}
+
+/**
+ * Format one or more stored values using display labels.
+ *
+ * @param {string|string[]} value - Submitted value or values.
+ * @param {Object.<string, string>} labels - Value-to-label map.
+ * @returns {string} Comma-separated display labels.
+ */
+const formatValue = (value, labels) => {
+  if (!value) {
+    return ''
+  }
+
+  const values = Array.isArray(value) ? value : [value]
+
+  return values.map((item) => labels?.[item] || item).join(', ')
+}
+
+/**
+ * @typedef {Object} SummaryRow
+ * @property {Object} key - NHS summary-list key config.
+ * @property {Object} [value] - NHS summary-list value config.
+ * @property {Object} actions - NHS summary-list actions config.
+ */
+
+/**
+ * Build an NHS summary-list row.
+ *
+ * @param {Object} row - Row config.
+ * @param {string} row.key - Question text.
+ * @param {string} [row.value] - Plain text answer value.
+ * @param {string} [row.html] - HTML answer value.
+ * @param {string} row.href - Change link URL.
+ * @param {string} [row.visuallyHiddenText] - Custom visually hidden action text.
+ * @returns {SummaryRow|boolean} Summary row, or false when there is no value.
+ */
+const makeSummaryRow = ({ key, value, html, href, visuallyHiddenText }) => {
+  if (!value && !html) {
+    return false
+  }
+
+  return {
+    key: {
+      text: key
+    },
+    value: html
+      ? { html }
+      : { text: value },
+    actions: {
+      items: [
+        {
+          href,
+          text: 'Change',
+          visuallyHiddenText: visuallyHiddenText || key
+        }
+      ]
+    }
+  }
+}
+
+/**
+ * Remove empty rows from a summary-list row collection.
+ *
+ * @param {Array<SummaryRow|boolean>} rows - Summary rows.
+ * @returns {SummaryRow[]} Visible rows.
+ */
+const makeSummaryRows = (rows) => rows.filter(Boolean)
+
+/**
+ * Escape HTML before manually building a summary-list HTML value.
+ *
+ * @param {*} value - Value to escape.
+ * @returns {string} Escaped HTML string.
+ */
+const escapeHtml = (value) => {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+/**
+ * Format a multi-value answer as either text or bullet-list HTML.
+ *
+ * @param {string|string[]} value - Submitted value or values.
+ * @param {Object.<string, string>} labels - Value-to-label map.
+ * @returns {Object} Summary-list value config.
+ */
+const formatListValue = (value, labels) => {
+  if (!value) {
+    return {}
+  }
+
+  const values = Array.isArray(value) ? value : [value]
+  const labelValues = values.map((item) => labels[item] || item)
+
+  if (labelValues.length > 1) {
+    return {
+      html: `<ul class="nhsuk-list nhsuk-list--bullet">${labelValues.map((label) => `<li>${escapeHtml(label)}</li>`).join('')}</ul>`
+    }
+  }
+
+  return {
+    value: labelValues[0]
+  }
+}
+
+const getSmokingChangeSummaryHeading = (type, change, answer = {}) => {
+  const currentAmount = getSmokingCurrentAmount(type, answer)
+  const comparisonLabels = {
+    greater: 'more',
+    fewer: 'fewer'
+  }
+  const comparison = type === 'rolling_tobacco' && change === 'fewer'
+    ? 'less'
+    : valueLabelFallback(change, comparisonLabels)
+
+  return currentAmount
+    ? `When you smoked ${comparison} than ${currentAmount}`
+    : `When you smoked ${comparison}`
+}
+
+const valueLabelFallback = (value, labels = {}) => labels[value] || value
+
+const getTobaccoChangeSummaryRows = (type, change, answer = {}, valueLabels = {}) => {
+  const changeAnswer = getSmokingChangeAnswer(answer, change)
+
+  return makeSummaryRows([
+    makeSummaryRow({
+      key: 'How often did you smoke?',
+      value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
+      href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
+    }),
+    makeSummaryRow({
+      key: 'How much did you smoke?',
+      value: getSmokingQuantity(type, changeAnswer.quantity),
+      href: getSmokingTypeStepUrl({ page: 'smoking-quantity-change', type, change })
+    }),
+    makeSummaryRow({
+      key: 'How many years did you smoke this amount?',
+      value: changeAnswer.years && formatQuantity(changeAnswer.years, 'year', 'years'),
+      href: getSmokingTypeStepUrl({ page: 'smoking-years-change', type, change })
+    })
+  ])
+}
+
+const getTobaccoChangeSummarySubSections = (type, answer = {}, valueLabels = {}) => {
+  return getSelectedSmokingChanges(answer).map((change) => {
+    return {
+      heading: getSmokingChangeSummaryHeading(type, change, answer),
+      rows: getTobaccoChangeSummaryRows(type, change, answer, valueLabels)
+    }
+  }).filter((section) => section.rows.length)
+}
+
+/**
+ * Build all check-your-answers summary-list sections.
+ *
+ * @param {Object} answers - Session answers object.
+ * @returns {Object} Summary-list rows grouped by section.
+ */
+const getCheckYourAnswers = (answers = {}) => {
+  const valueLabels = getValueLabels()
+  const selectedSmokingTypes = getSelectedSmokingTypes(answers)
+  const isFormerSmoker = answers.smoker === 'yes_previous'
+  const includeYearsSmoked = selectedSmokingTypes.length > 1
+
+  const tobaccoRows = selectedSmokingTypes.map((type) => {
+    const answer = answers[type] || {}
+    const isPast = isPastSmokingType(answers, answer)
+    const smokingType = getSmokingTypeHeadings(type, isPast)
+    const smokingChangeRows = getSelectedSmokingChanges(answer).flatMap((change) => {
+      const changeAnswer = getSmokingChangeAnswer(answer, change)
+
+      return [
+        makeSummaryRow({
+          key: getSmokingChangeHeading('smoking-frequency-change', type, change, changeAnswer, answer),
+          value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
+          href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
+        }),
+        makeSummaryRow({
+          key: getSmokingChangeHeading('smoking-quantity-change', type, change, changeAnswer, answer),
+          value: getSmokingQuantity(type, changeAnswer.quantity),
+          href: getSmokingTypeStepUrl({ page: 'smoking-quantity-change', type, change })
+        }),
+        makeSummaryRow({
+          key: getSmokingChangeHeading('smoking-years-change', type, change, changeAnswer, answer),
+          value: changeAnswer.years && formatQuantity(changeAnswer.years, 'year', 'years'),
+          href: getSmokingTypeStepUrl({ page: 'smoking-years-change', type, change })
+        })
+      ]
+    })
+    const summaryRows = makeSummaryRows([
+      !isFormerSmoker && makeSummaryRow({
+        key: smokingType.statusHeading,
+        value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
+        href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
+      }),
+      includeYearsSmoked && makeSummaryRow({
+        key: getSmokingStepHeading('years-smoked', type, isPast, answer),
+        value: formatValue(answer.yearsSmokedMoreThanOneYear, valueLabels.yearsSmoked),
+        href: getSmokingTypeStepUrl({ page: 'years-smoked', type })
+      }),
+      includeYearsSmoked && answer.yearsSmokedMoreThanOneYear === 'yes' && makeSummaryRow({
+        key: smokingType.yearsInputLabel,
+        value: answer.yearsSmoked && formatQuantity(answer.yearsSmoked, 'year', 'years'),
+        href: getSmokingTypeStepUrl({ page: 'years-smoked', type })
+      }),
+      makeSummaryRow({
+        key: getSmokingStepHeading('smoking-frequency', type, isPast, answer),
+        value: formatValue(answer.smokingFrequency, valueLabels.smokingFrequency),
+        href: getSmokingTypeStepUrl({ page: 'smoking-frequency', type })
+      }),
+      makeSummaryRow({
+        key: getSmokingStepHeading('smoking-quantity', type, isPast, answer),
+        value: formatSmokingQuantityAnswer(type, answer),
+        href: getSmokingTypeStepUrl({ page: 'smoking-quantity', type })
+      }),
+      type !== 'shisha' && makeSummaryRow({
+        key: smokingType.changeHeading,
+        ...formatListValue(answer.smokingChange, getSmokingChangeLabels(type, answer, isPast)),
+        href: getSmokingTypeStepUrl({ page: 'smoking-change', type })
+      })
+    ])
+    const rows = makeSummaryRows([
+      ...summaryRows,
+      ...smokingChangeRows
+    ])
+
+    return {
+      type,
+      heading: valueLabels.smokingType[type],
+      summaryRows,
+      subSections: getTobaccoChangeSummarySubSections(type, answer, valueLabels),
+      rows
+    }
+  }).filter((section) => section.rows.length)
+
+  return {
+    eligibility: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Have you ever smoked tobacco?',
+        value: formatValue(answers.smoker, valueLabels.smoker),
+        href: `/prototype_${version}/smoker`,
+        visuallyHiddenText: 'whether you have ever smoked tobacco'
+      }),
+      makeSummaryRow({
+        key: 'Date of birth',
+        value: formatDateOfBirth(answers.dateOfBirth),
+        href: `/prototype_${version}/date-of-birth`
+      }),
+      makeSummaryRow({
+        key: 'Do you need to leave the online service and ask for a face-to-face appointment?',
+        value: formatValue(answers.faceToFaceAppointment, valueLabels.faceToFaceAppointment),
+        href: `/prototype_${version}/face-to-face-appointment`
+      })
+    ]),
+    aboutYou: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Height',
+        value: formatHeight(answers.height),
+        href: answers.height?.imperial ? `/prototype_${version}/height-imperial` : `/prototype_${version}/height-metric`
+      }),
+      makeSummaryRow({
+        key: 'Weight',
+        value: formatWeight(answers.weight),
+        href: answers.weight?.imperial ? `/prototype_${version}/weight-imperial` : `/prototype_${version}/weight-metric`
+      }),
+      makeSummaryRow({
+        key: 'Gender identity',
+        value: formatValue(answers.gender, valueLabels.gender),
+        href: `/prototype_${version}/gender`
+      }),
+      makeSummaryRow({
+        key: 'Sex at birth',
+        value: formatValue(answers.sex, valueLabels.sex),
+        href: `/prototype_${version}/sex`
+      }),
+      makeSummaryRow({
+        key: 'Ethnic background',
+        value: formatValue(answers.ethnicity, valueLabels.ethnicity),
+        href: `/prototype_${version}/ethnicity`
+      }),
+      makeSummaryRow({
+        key: 'Education',
+        value: formatValue(answers.education, valueLabels.education),
+        href: `/prototype_${version}/education`
+      })
+    ]),
+    health: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Respiratory conditions',
+        ...formatListValue(answers.respiratoryConditions, valueLabels.respiratoryConditions),
+        href: `/prototype_${version}/respiratory-conditions`
+      }),
+      makeSummaryRow({
+        key: 'Worked in a job where you might have been exposed to asbestos',
+        value: formatValue(answers.asbestosAtWork, valueLabels.asbestosAtWork),
+        href: `/prototype_${version}/asbestos`
+      }),
+      makeSummaryRow({
+        key: 'Lived with anyone who worked with asbestos',
+        value: formatValue(answers.asbestosAtHome, valueLabels.asbestosAtHome),
+        href: `/prototype_${version}/asbestos`
+      }),
+      makeSummaryRow({
+        key: 'Ever been diagnosed with cancer',
+        value: formatValue(answers.cancerDiagnosis, valueLabels.cancerDiagnosis),
+        href: `/prototype_${version}/cancer-diagnosis`
+      })
+    ]),
+    familyHistory: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Parents, siblings or children diagnosed with lung cancer',
+        value: formatValue(answers.cancerDiagnosisRelatives, valueLabels.cancerDiagnosisRelatives),
+        href: `/prototype_${version}/cancer-diagnosis-relatives`
+      }),
+      answers.cancerDiagnosisRelatives === 'yes' && makeSummaryRow({
+        key: 'Relatives younger than 60 when diagnosed with lung cancer',
+        value: formatValue(answers.cancerDiagnosisRelativesAge, valueLabels.cancerDiagnosisRelativesAge),
+        href: `/prototype_${version}/cancer-diagnosis-relatives-age`
+      })
+    ]),
+    smokingHabits: makeSummaryRows([
+      makeSummaryRow({
+        key: 'Age you started smoking',
+        value: answers.ageStartedSmoking && `Age ${answers.ageStartedSmoking}`,
+        href: `/prototype_${version}/smoking-duration`
+      }),
+      isFormerSmoker && makeSummaryRow({
+        key: 'Age you stopped smoking',
+        value: answers.ageStoppedSmoking && `Age ${answers.ageStoppedSmoking}`,
+        href: `/prototype_${version}/smoking-duration`
+      }),
+      makeSummaryRow({
+        key: 'Stopped smoking for periods of 1 year or longer',
+        value: formatValue(answers.periodsStoppedSmoking, valueLabels.periodsStoppedSmoking),
+        href: `/prototype_${version}/smoking-duration`
+      }),
+      answers.periodsStoppedSmoking === 'yes' && makeSummaryRow({
+        key: 'Total number of years you stopped smoking',
+        value: answers.yearsStoppedSmoking && formatQuantity(answers.yearsStoppedSmoking, 'year', 'years'),
+        href: `/prototype_${version}/smoking-duration`
+      }),
+      makeSummaryRow({
+        key: 'Types of tobacco smoked',
+        ...formatListValue(answers.smokingType, valueLabels.smokingType),
+        href: `/prototype_${version}/smoking-type`
+      })
+    ]),
+    tobaccoRows
+  }
+}
+
+/**
+ * Build scoped summary-list sections for summary pages.
+ *
+ * @param {Object} answers - Session answers object.
+ * @param {Object} config - Summary page config from pages.yaml.
+ * @returns {Object[]} Summary-list sections.
+ */
+const getSummaryPageSections = (answers = {}, config = {}) => {
+  const checkYourAnswers = getCheckYourAnswers(answers)
+  const sections = []
+
+  ;(config.sections || []).forEach((section) => {
+    const rows = checkYourAnswers[section.id || section]
+
+    if (rows?.length) {
+      sections.push({
+        heading: section.heading,
+        rows
+      })
+    }
+  })
+
+  ;(config.tobaccoTypes || []).forEach((type) => {
+    const tobacco = checkYourAnswers.tobaccoRows.find((section) => section.type === type)
+
+    if (tobacco?.rows.length) {
+      sections.push({
+        heading: tobacco.heading,
+        rows: tobacco.summaryRows || tobacco.rows,
+        subSections: tobacco.subSections
+      })
+    }
+  })
+
+  return sections
+}
+
+module.exports = {
+  getCheckYourAnswers,
+  getSummaryPageSections,
+  getValueLabels
+}
