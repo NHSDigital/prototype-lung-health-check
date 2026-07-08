@@ -1,7 +1,10 @@
 // External dependencies
 const express = require('express')
+const path = require('path')
 
 const router = express.Router()
+
+router.use('/assets/vendor/mermaid', express.static(path.join(__dirname, '..', 'node_modules', 'mermaid', 'dist')))
 
 router.use(require('./prototype_v1/routes'))
 router.use(require('./prototype_v2/routes'))
