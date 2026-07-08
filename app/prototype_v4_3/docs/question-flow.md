@@ -2,7 +2,7 @@
 
 This diagram is based on `app/prototype_v4_3/routes.js`, `app/prototype_v4_3/controllers/authentication.js`, and `app/prototype_v4_3/controllers/question.js`.
 
-The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds.
+The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds. Colours are grouped by category: grey for control and flow, blue for process, and green for data.
 
 ## Symbol key
 
@@ -81,6 +81,13 @@ flowchart TD
   cya --> confirmation
   confirmation@{ shape: doc, label: "Confirmation" }
   confirmation --> flowComplete([End])
+  classDef controlFlow fill:#dbe0e3,stroke:#4c6272,color:#212b32,stroke-width:2px
+  classDef process fill:#d7e8f7,stroke:#005eb8,color:#212b32,stroke-width:2px
+  classDef data fill:#d9f3f0,stroke:#00a499,color:#212b32,stroke-width:2px
+  linkStyle default stroke:#4c6272,stroke-width:2px
+  class ageDecision,agreementDecision,agreementDeclinedEnd,bookAppointmentEnd,cancerDiagnosisRelativesDecision,faceToFaceDecision,flowComplete,heightUnit,notEligibleScanEnd,notEligibleScreeningEnd,phoneExitEnd,phoneQuestionnaireDecision,smokingStatusDecision,smokingTypeDecision,smokingTypeExitEnd,start,weightUnit controlFlow
+  class agreement,agreementDeclined,asbestos,bookAppointment,cancerDiagnosis,cancerDiagnosisRelatives,cancerDiagnosisRelativesAge,cya,dob,education,ethnicity,faceToFace,gender,heightImperial,heightMetric,notEligibleScan,notEligibleScreening,phoneExit,phoneQuestionnaire,respiratoryConditions,securityCode,sex,signIn,smokingStatus,smokingStatusCurrent,smokingType,smokingTypeExit,startPage,terms,tobaccoLoop,weightImperial,weightMetric process
+  class confirmation data
 ```
 
 ## Tobacco subflow
@@ -119,6 +126,12 @@ flowchart TD
   moreTypes -- Yes --> nextType((Next type))
   nextType --> selectedType
   moreTypes -- No --> health((Your health))
+  classDef controlFlow fill:#dbe0e3,stroke:#4c6272,color:#212b32,stroke-width:2px
+  classDef process fill:#d7e8f7,stroke:#005eb8,color:#212b32,stroke-width:2px
+  classDef data fill:#d9f3f0,stroke:#00a499,color:#212b32,stroke-width:2px
+  linkStyle default stroke:#4c6272,stroke-width:2px
+  class changedDecision,fewerSelected,health,isShisha,moreTypes,nextType controlFlow
+  class changed,duration,fewerChange,moreChange,selectedType,tobaccoSmoking process
 ```
 
 ## Notes
