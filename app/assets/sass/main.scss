@@ -29,3 +29,12 @@
 .nhsuk-phase-banner__text {
   margin: 0;
 }
+
+.app-mermaid {
+  margin-bottom: nhsuk-spacing(6);
+  overflow-x: auto;
+}
+
+.app-mermaid svg {
+  max-width: none;
+}
