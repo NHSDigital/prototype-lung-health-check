@@ -6,6 +6,7 @@ const {
   getSelectedSmokingChanges,
   getSelectedSmokingTypes,
   getSmokingChangeAnswer,
+  getSmokingChangeFrequencyOptions,
   getSmokingChangeHeading,
   getSmokingChangeLabels,
   getSmokingCurrentAmount,
@@ -13,6 +14,7 @@ const {
   getSmokingStepHeading,
   getSmokingTypeHeadings,
   getSmokingTypeStepUrl,
+  isSmokingChangeFrequencyDefaulted,
   isPastSmokingType,
   getValueLabels: getTobaccoValueLabels
 } = require('./tobacco-flow')
@@ -130,7 +132,7 @@ const formatValue = (value, labels) => {
  * @typedef {Object} SummaryRow
  * @property {Object} key - NHS summary-list key config.
  * @property {Object} [value] - NHS summary-list value config.
- * @property {Object} actions - NHS summary-list actions config.
+ * @property {Object} [actions] - NHS summary-list actions config.
  */
 
 /**
@@ -140,7 +142,7 @@ const formatValue = (value, labels) => {
  * @param {string} row.key - Question text.
  * @param {string} [row.value] - Plain text answer value.
  * @param {string} [row.html] - HTML answer value.
- * @param {string} row.href - Change link URL.
+ * @param {string} [row.href] - Change link URL.
  * @param {string} [row.visuallyHiddenText] - Custom visually hidden action text.
  * @returns {SummaryRow|boolean} Summary row, or false when there is no value.
  */
@@ -156,15 +158,17 @@ const makeSummaryRow = ({ key, value, html, href, visuallyHiddenText }) => {
     value: html
       ? { html }
       : { text: value },
-    actions: {
-      items: [
-        {
-          href,
-          text: 'Change',
-          visuallyHiddenText: visuallyHiddenText || key
+    actions: href
+      ? {
+          items: [
+            {
+              href,
+              text: 'Change',
+              visuallyHiddenText: visuallyHiddenText || key
+            }
+          ]
         }
-      ]
-    }
+      : undefined
   }
 }
 
@@ -234,14 +238,51 @@ const getSmokingChangeSummaryHeading = (type, change, answer = {}) => {
 
 const valueLabelFallback = (value, labels = {}) => labels[value] || value
 
+/**
+ * Resolve the frequency value to show for a changed-smoking answer.
+ *
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {string} change - Smoking change key.
+ * @param {Object} changeAnswer - Change-specific answer object.
+ * @returns {string|undefined} Frequency value for display.
+ */
+const getSmokingChangeFrequencyValue = (answer = {}, change, changeAnswer = {}) => {
+  const options = getSmokingChangeFrequencyOptions(answer, change)
+
+  return options.length === 1 ? options[0] : changeAnswer.frequency
+}
+
+/**
+ * Get the change-frequency summary row URL when the frequency page applies.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} change - Smoking change key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @returns {string|undefined} Change URL, or undefined for defaulted frequencies.
+ */
+const getSmokingChangeFrequencyHref = (type, change, answer = {}) => {
+  return isSmokingChangeFrequencyDefaulted(answer, change)
+    ? undefined
+    : getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
+}
+
+/**
+ * Build changed-smoking summary rows for a tobacco type and change direction.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {string} change - Smoking change key.
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {Object} valueLabels - Display labels keyed by submitted value.
+ * @returns {SummaryRow[]} Changed-smoking summary rows.
+ */
 const getTobaccoChangeSummaryRows = (type, change, answer = {}, valueLabels = {}) => {
   const changeAnswer = getSmokingChangeAnswer(answer, change)
 
   return makeSummaryRows([
     makeSummaryRow({
       key: 'How often did you smoke?',
-      value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
-      href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
+      value: formatValue(getSmokingChangeFrequencyValue(answer, change, changeAnswer), valueLabels.smokingFrequency),
+      href: getSmokingChangeFrequencyHref(type, change, answer)
     }),
     makeSummaryRow({
       key: 'How much did you smoke?',
@@ -287,8 +328,8 @@ const getCheckYourAnswers = (answers = {}) => {
       return [
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-frequency-change', type, change, changeAnswer, answer),
-          value: formatValue(changeAnswer.frequency, valueLabels.smokingFrequency),
-          href: getSmokingTypeStepUrl({ page: 'smoking-frequency-change', type, change })
+          value: formatValue(getSmokingChangeFrequencyValue(answer, change, changeAnswer), valueLabels.smokingFrequency),
+          href: getSmokingChangeFrequencyHref(type, change, answer)
         }),
         makeSummaryRow({
           key: getSmokingChangeHeading('smoking-quantity-change', type, change, changeAnswer, answer),

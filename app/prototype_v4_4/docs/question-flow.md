@@ -86,20 +86,37 @@ flowchart TD
   isShisha -- No --> changed{"Smoking changed<br>over time?"}
 
   changed -- No change selected --> nextTypeOrCya
-  changed -- More selected --> moreFrequency["More: smoking frequency"]
-  moreFrequency --> moreQuantity["More: smoking quantity"]
+  changed -- More selected --> moreFrequencyNeeded{"More: more than one<br>frequency option?"}
+  moreFrequencyNeeded -- Yes --> moreFrequency["More: smoking frequency"]
+  moreFrequencyNeeded -- No, default frequency --> moreQuantity["More: smoking quantity"]
+  moreFrequency --> moreQuantity
   moreQuantity --> moreYears["More: smoking years"]
   moreYears --> fewerSelected{"Fewer also selected?"}
 
-  changed -- Only fewer selected --> fewerFrequency["Fewer: smoking frequency"]
-  fewerSelected -- Yes --> fewerFrequency
+  changed -- Only fewer selected --> fewerFrequencyNeeded{"Fewer: more than one<br>frequency option?"}
+  fewerSelected -- Yes --> fewerFrequencyNeeded
   fewerSelected -- No --> nextTypeOrCya
+  fewerFrequencyNeeded -- Yes --> fewerFrequency["Fewer: smoking frequency"]
+  fewerFrequencyNeeded -- No, default frequency --> fewerQuantity["Fewer: smoking quantity"]
   fewerFrequency --> fewerQuantity["Fewer: smoking quantity"]
   fewerQuantity --> fewerYears["Fewer: smoking years"]
   fewerYears --> nextTypeOrCya
 
   nextTypeOrCya["Tobacco type summary<br>then next selected type<br>or Respiratory conditions"]
 ```
+
+## Changed-smoking frequency options
+
+Changed-smoking frequency uses the current or usual smoking frequency as a boundary. The question is only shown when there is more than one valid option.
+
+| Current or usual frequency | If smoked more | If smoked fewer or less |
+| --- | --- | --- |
+| Daily | Default to daily and skip frequency question | Daily, weekly, monthly, yearly |
+| Weekly | Daily, weekly | Weekly, monthly, yearly |
+| Monthly | Daily, weekly, monthly | Monthly, yearly |
+| Yearly | Daily, weekly, monthly, yearly | Default to yearly and skip frequency question |
+
+When the changed-smoking frequency is defaulted, the answer is still stored and shown in summaries, but the frequency row does not include a `Change` link.
 
 ## Notes
 
@@ -109,7 +126,8 @@ flowchart TD
 - `Age stopped smoking` is shown on `When you smoked tobacco` when the `smoker` answer is `yes_previous`. It can also be shown again from check your answers if a tobacco-specific `Smoking status` answer is `no`.
 - `Years smoked` is shown for each selected tobacco type only when more than one tobacco type has been selected.
 - Smoking frequency and smoking quantity are separate pages.
-- Changed-smoking frequency, quantity and years are separate pages.
+- Changed-smoking quantity and years are separate pages. Changed-smoking frequency is a separate page only when more than one frequency option applies.
+- Changed-smoking quantity uses the selected or defaulted changed-smoking frequency to set its `normal day`, `normal week`, `normal month` or `normal year` wording.
 - The tobacco subflow uses query strings such as `/prototype_v4_4/smoking-status?type=cigarettes`, `/prototype_v4_4/years-smoked?type=cigarettes` and `/prototype_v4_4/smoking-frequency-change?type=cigarettes&change=greater`.
 - If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
 - Shisha follows the same smoking frequency and quantity flow as other tobacco types, but skips the smoking-change flow.

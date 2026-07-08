@@ -181,6 +181,8 @@ const getSmokingTypeSteps = (answers = {}) => {
     const steps = []
     const answer = answers[type] || {}
 
+    normaliseSmokingChangeFrequencyAnswers(answer)
+
     if (includeSmokingStatus) {
       steps.push({ page: 'smoking-status', type })
     }
@@ -195,7 +197,10 @@ const getSmokingTypeSteps = (answers = {}) => {
     if (type !== 'shisha') {
       steps.push({ page: 'smoking-change', type })
       getSelectedSmokingChanges(answer).forEach((change) => {
-        steps.push({ page: 'smoking-frequency-change', type, change })
+        if (!isSmokingChangeFrequencyDefaulted(answer, change)) {
+          steps.push({ page: 'smoking-frequency-change', type, change })
+        }
+
         steps.push({ page: 'smoking-quantity-change', type, change })
         steps.push({ page: 'smoking-years-change', type, change })
       })
@@ -315,6 +320,94 @@ const smokingFrequencyRateMultipliers = {
   weekly: 1,
   monthly: 0.25,
   yearly: 1 / 52
+}
+
+const smokingFrequencyOrder = [
+  'daily',
+  'weekly',
+  'monthly',
+  'yearly'
+]
+
+/**
+ * Get the frequency options that can apply to a changed-smoking answer.
+ *
+ * This is intentionally ordinal rather than mathematical. For example, if
+ * someone smoked fewer than a weekly baseline, daily is not offered.
+ *
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {string} change - Smoking change key.
+ * @returns {string[]} Frequency values that should be offered.
+ */
+const getSmokingChangeFrequencyOptions = (answer = {}, change) => {
+  const currentIndex = smokingFrequencyOrder.indexOf(answer.smokingFrequency)
+
+  if (currentIndex === -1) {
+    return smokingFrequencyOrder
+  }
+
+  if (change === 'greater') {
+    return smokingFrequencyOrder.slice(0, currentIndex + 1)
+  }
+
+  if (change === 'fewer') {
+    return smokingFrequencyOrder.slice(currentIndex)
+  }
+
+  return smokingFrequencyOrder
+}
+
+/**
+ * Check whether the change-frequency question has a single default answer.
+ *
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {string} change - Smoking change key.
+ * @returns {boolean} True when frequency should be defaulted and not changed.
+ */
+const isSmokingChangeFrequencyDefaulted = (answer = {}, change) => {
+  return getSmokingChangeFrequencyOptions(answer, change).length === 1
+}
+
+/**
+ * Get or create the nested changed-smoking answer object.
+ *
+ * @param {Object} answer - Answer object for one tobacco type.
+ * @param {string} change - Smoking change key.
+ * @returns {Object} Writable nested answer object.
+ */
+const getWritableSmokingChangeAnswer = (answer = {}, change) => {
+  refreshData()
+
+  const answerKey = smokingChangeTypes[change]?.answerKey
+
+  if (!answerKey) {
+    return {}
+  }
+
+  answer[answerKey] = answer[answerKey] || {}
+
+  return answer[answerKey]
+}
+
+/**
+ * Default single-option changed frequencies and remove stale invalid ones.
+ *
+ * @param {Object} answer - Answer object for one tobacco type, mutated in place.
+ */
+const normaliseSmokingChangeFrequencyAnswers = (answer = {}) => {
+  getSelectedSmokingChanges(answer).forEach((change) => {
+    const options = getSmokingChangeFrequencyOptions(answer, change)
+    const changeAnswer = getWritableSmokingChangeAnswer(answer, change)
+
+    if (options.length === 1) {
+      changeAnswer.frequency = options[0]
+      return
+    }
+
+    if (changeAnswer.frequency && !options.includes(changeAnswer.frequency)) {
+      delete changeAnswer.frequency
+    }
+  })
 }
 
 /**
@@ -503,6 +596,24 @@ const getSmokingCurrentAmount = (type, answer = {}) => {
   }
 
   return [quantity, period].filter(Boolean).join(' ')
+}
+
+/**
+ * Build the changed amount phrase used in changed-smoking years headings.
+ *
+ * @param {string} type - Tobacco type key.
+ * @param {Object} changeAnswer - Change-specific answer object.
+ * @returns {string} Amount phrase, for example `15 cigarettes a month`.
+ */
+const getSmokingChangedAmount = (type, changeAnswer = {}) => {
+  const quantity = getSmokingQuantity(type, changeAnswer.quantity)
+  const period = getSmokingFrequencyPeriod(changeAnswer.frequency)
+
+  if (!quantity) {
+    return ''
+  }
+
+  return [lowerFirst(quantity), period].filter(Boolean).join(' ')
 }
 
 /**
@@ -734,23 +845,31 @@ const getSmokingChangeHeading = (page, type, change, changeAnswer = {}, answer =
   const comparisonText = getSmokingChangeComparisonText(type, change, answer)
 
   if (page === 'smoking-frequency-change') {
-    const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true).frequencyHeading, answer.smokingFrequency)
+    const baseHeading = getQuestion('smoking-frequency-change').input.label
 
-    return includeComparison && comparisonText ? `${baseHeading.replace('?', '')} ${comparisonText}?` : baseHeading
+    return includeComparison && comparisonText ? `${upperFirst(comparisonText)}, ${lowerFirst(baseHeading)}` : baseHeading
   }
 
   if (page === 'smoking-quantity-change') {
-    const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true).quantityHeading, answer.smokingFrequency)
+    const baseHeading = applySmokingFrequencyPeriod(getSmokingTypeHeadings(type, true).quantityHeading, changeAnswer.frequency || answer.smokingFrequency)
+    const contextualHeading = baseHeading
+      .replace(' did you smoke ', ' did you normally smoke ')
+      .replace(' did you smoke?', ' did you normally smoke?')
+      .replace(/ in a normal (day|week|month|year)\?$/, ' a $1?')
     const normalHeading = baseHeading
       .replace(' did you smoke ', ' did you normally smoke ')
       .replace(' did you smoke?', ' did you normally smoke?')
       .replace(/ in a normal (day|week|month|year)\?$/, '?')
 
-    return includeComparison && comparisonText ? `${baseHeading.replace('?', '')} ${comparisonText}?` : normalHeading
+    return includeComparison && comparisonText ? `${upperFirst(comparisonText)}, ${lowerFirst(contextualHeading)}` : normalHeading
   }
 
   if (page === 'smoking-years-change') {
-    return getQuestion('smoking-years-change').input.label
+    const amount = getSmokingChangedAmount(type, changeAnswer)
+
+    return amount
+      ? `Roughly how many years did you smoke ${amount}?`
+      : 'Roughly how many years did you smoke this amount?'
   }
 
   return ''
@@ -979,6 +1098,7 @@ const upperFirst = (value = '') => {
  */
 const getAnswerPhraseFromHeading = (heading = '') => {
   return lowerFirst(removeQuestionMark(heading))
+    .replace(/^roughly how many years did you smoke(?= |$)/, 'roughly how many years you smoked')
     .replace(/^how often did you smoke /, 'how often you smoked ')
     .replace(/^how often do you smoke /, 'how often you smoke ')
     .replace(/^how long did you smoke /, 'how long you smoked ')
@@ -1033,7 +1153,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
     return `Select ${getAnswerPhraseFromHeading(heading)}`
   }
 
-  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
+  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long') || heading.startsWith('Roughly how many')) {
     return `${questionType === 'single' ? 'Select' : 'Enter'} ${getAnswerPhraseFromHeading(heading)}`
   }
 
@@ -1050,7 +1170,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
 const getContextualInvalidErrorText = (question, overrides) => {
   const heading = overrides.heading?.title || question.heading?.title || ''
 
-  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
+  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long') || heading.startsWith('Roughly how many')) {
     return `Enter ${getAnswerPhraseFromHeading(heading)} using numbers`
   }
 
@@ -1183,6 +1303,8 @@ const getSmokingContentQuestionOverrides = ({
   }
 
   if (page === 'smoking-frequency-change') {
+    const availableFrequencies = getSmokingChangeFrequencyOptions(answer, step.change)
+
     return {
       heading: {
         title: getSmokingChangeHeading(page, step.type, step.change, changeAnswer, answer),
@@ -1192,7 +1314,9 @@ const getSmokingContentQuestionOverrides = ({
         name: `answers[${step.type}][${smokingChange.answerKey}][frequency]`
       },
       value: changeAnswer.frequency,
-      items: getQuestion('smoking-frequency-change').items
+      items: getQuestion('smoking-frequency-change').items.filter((item) => {
+        return !item.value || availableFrequencies.includes(item.value)
+      })
     }
   }
 
@@ -1205,7 +1329,7 @@ const getSmokingContentQuestionOverrides = ({
       name: `answers[${step.type}][${smokingChange.answerKey}][quantity]`,
       value: changeAnswer.quantity,
       conditionalValue: changeAnswer.smokingQuantityOther,
-      frequency: answer.smokingFrequency,
+      frequency: changeAnswer.frequency || answer.smokingFrequency,
       smokingType
     })
   }
@@ -1344,6 +1468,19 @@ const validateSmokingTypeQuestion = (req, page, step) => {
     ...overrides,
     errors
   })
+
+  if (
+    page === 'smoking-frequency-change' &&
+    context.changeAnswer.frequency &&
+    !getSmokingChangeFrequencyOptions(context.answer, step.change).includes(context.changeAnswer.frequency) &&
+    !validationErrors.some((error) => error.href === `#${errorHref}`)
+  ) {
+    validationErrors.push({
+      text: errors.required.text,
+      href: `#${errorHref}`
+    })
+  }
+
   const comparisonError = getSmokingQuantityChangeComparisonError({
     page,
     step,
@@ -1370,6 +1507,7 @@ module.exports = {
   getSelectedSmokingTypes,
   getFormerSmokerFallbackStep,
   getSmokingChangeAnswer,
+  getSmokingChangeFrequencyOptions,
   getSmokingChangeHeading,
   getSmokingChangeLabels,
   getSmokingCurrentAmount,
@@ -1383,6 +1521,7 @@ module.exports = {
   getSmokingTypeStep,
   getSmokingTypeSteps,
   getSmokingTypeStepUrl,
+  isSmokingChangeFrequencyDefaulted,
   isPastSmokingType,
   renderSmokingTypeQuestion,
   validateSmokingTypeQuestion,
