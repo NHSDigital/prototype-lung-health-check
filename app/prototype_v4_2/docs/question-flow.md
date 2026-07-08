@@ -1,6 +1,10 @@
 # Prototype v4.2 question flow
 
-This diagram is based on `app/prototype_v4_2/routes.js`, `app/prototype_v4_2/controllers/authentication.js`, and `app/prototype_v4_2/controllers/question.js`.
+This diagram is based on:
+
+- `app/prototype_v4_2/routes.js`
+- `app/prototype_v4_2/controllers/authentication.js`
+- `app/prototype_v4_2/controllers/question.js`
 
 The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds. Colours are grouped by category: grey for control and flow, blue for process, and green for data.
 
