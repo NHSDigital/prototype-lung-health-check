@@ -2,34 +2,60 @@
 
 This diagram is based on `app/prototype_v4_2/routes.js`, `app/prototype_v4_2/controllers/authentication.js`, and `app/prototype_v4_2/controllers/question.js`.
 
+The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds.
+
+## Symbol key
+
+| Symbol | Mermaid syntax | Used for |
+| --- | --- | --- |
+| Stadium | `node([Label])` | Start and end points |
+| Rectangle | `node["Label"]` | User-facing pages and single process steps |
+| Diamond | `node{"Label"}` | Routing decisions |
+| Circle | `node((Label))` | Connectors between repeated sections |
+| Double-sided rectangle | `node[["Label"]]` | Predefined or repeated sub-processes |
+| Hexagon | `node{{"Label"}}` | Preparation steps |
+| Document | `node@{ shape: doc, label: "Label" }` | Output documents or reports |
+
 ```mermaid
 flowchart TD
-  start["Start page<br>/prototype_v4_2/start-page"] --> signIn["Sign in"]
+  start([Start]) --> startPage["Start page<br>/prototype_v4_2/start-page"]
+  startPage --> signIn["Sign in"]
   signIn --> securityCode["Security code"]
-  securityCode --> agreement{"Share NHS login<br>information?"}
-  agreement -- Accept --> terms["Accept terms"]
-  agreement -- Decline --> agreementDeclined["Sign-in agreement declined<br>End"]
+  securityCode --> agreement["Share NHS login<br>information?"]
+  agreement --> agreementDecision{"Accepted?"}
+  agreementDecision -- Yes --> terms["Accept terms"]
+  agreementDecision -- No --> agreementDeclined["Sign-in agreement declined"]
+  agreementDeclined --> agreementDeclinedEnd([End])
 
-  terms --> phoneQuestionnaire{"Completed the questionnaire<br>by phone?"}
-  phoneQuestionnaire -- Yes --> phoneExit["Phone questionnaire exit<br>End"]
-  phoneQuestionnaire -- No --> smoker{"Are you a current or<br>former smoker?"}
+  terms --> phoneQuestionnaire["Completed the questionnaire<br>by phone?"]
+  phoneQuestionnaire --> phoneQuestionnaireDecision{"Completed by phone?"}
+  phoneQuestionnaireDecision -- Yes --> phoneExit["Phone questionnaire exit"]
+  phoneExit --> phoneExitEnd([End])
+  phoneQuestionnaireDecision -- No --> smoker["Are you a current or<br>former smoker?"]
 
-  smoker -- No or fewer than 100 cigarettes in lifetime --> notEligibleScreening["Not eligible for screening<br>End"]
-  smoker -- Yes --> dob{"Date of birth<br>Age 55 to 74?"}
+  smoker --> smokerDecision{"Eligible smoker?"}
+  smokerDecision -- No or fewer than 100 cigarettes in lifetime --> notEligibleScreening["Not eligible for screening"]
+  notEligibleScreening --> notEligibleScreeningEnd([End])
+  smokerDecision -- Yes --> dob["Date of birth"]
 
-  dob -- No --> notEligibleScan["Not eligible for scan<br>End"]
-  dob -- Yes --> faceToFace{"Need a face to face<br>appointment?"}
+  dob --> ageDecision{"Age 55 to 74?"}
+  ageDecision -- No --> notEligibleScan["Not eligible for scan"]
+  notEligibleScan --> notEligibleScanEnd([End])
+  ageDecision -- Yes --> faceToFace["Need a face to face<br>appointment?"]
 
-  faceToFace -- Yes --> bookAppointment["Book appointment<br>End"]
-  faceToFace -- No --> height{"Height"}
+  faceToFace --> faceToFaceDecision{"Needs face-to-face<br>appointment?"}
+  faceToFaceDecision -- Yes --> bookAppointment["Book appointment"]
+  bookAppointment --> bookAppointmentEnd([End])
+  faceToFaceDecision -- No --> heightUnit{"Height unit?"}
 
-  height -- Metric --> heightMetric["Height - metric"]
-  height -- Imperial --> heightImperial["Height - imperial"]
-  heightMetric --> weight
-  heightImperial --> weight
+  heightUnit -- Metric/default --> heightMetric["Height - metric"]
+  heightUnit -- Imperial --> heightImperial["Height - imperial"]
+  heightMetric --> weightUnit
+  heightImperial --> weightUnit
 
-  weight{"Weight"} -- Metric --> weightMetric["Weight - metric"]
-  weight -- Imperial --> weightImperial["Weight - imperial"]
+  weightUnit{"Weight unit?"}
+  weightUnit -- Metric/default --> weightMetric["Weight - metric"]
+  weightUnit -- Imperial --> weightImperial["Weight - imperial"]
   weightMetric --> gender["Gender identity"]
   weightImperial --> gender
   gender --> sex["Sex at birth"]
@@ -37,21 +63,26 @@ flowchart TD
   ethnicity --> education["Education"]
 
   education --> smokingDuration["When you smoked tobacco<br>Age started, age stopped if applicable,<br>periods stopped"]
-  smokingDuration --> smokingType{"Smoking type"}
+  smokingDuration --> smokingType["Smoking type"]
 
-  smokingType -- None selected --> smokingTypeExit["Smoking type exit<br>End"]
-  smokingType -- One or more tobacco types --> tobaccoLoop["Repeat tobacco questions<br>for each selected type"]
+  smokingType --> smokingTypeDecision{"Any tobacco type<br>selected?"}
+  smokingTypeDecision -- No, none selected --> smokingTypeExit["Smoking type exit"]
+  smokingTypeExit --> smokingTypeExitEnd([End])
+  smokingTypeDecision -- Yes --> tobaccoLoop[["Repeat tobacco questions<br>for each selected type"]]
 
   tobaccoLoop --> respiratory["Respiratory conditions"]
   respiratory --> asbestos["Asbestos<br>At work, at home"]
   asbestos --> cancerDiagnosis["Cancer diagnosis"]
-  cancerDiagnosis --> relatives{"Close relative had<br>lung cancer?"}
+  cancerDiagnosis --> relatives["Close relative had<br>lung cancer?"]
 
-  relatives -- Yes --> relativesAge["Relative diagnosed before 60?"]
-  relatives -- No --> cya["Check your answers"]
+  relatives --> relativesDecision{"Relative had<br>lung cancer?"}
+  relativesDecision -- Yes --> relativesAge["Relative diagnosed before 60?"]
+  relativesDecision -- No --> cya["Check your answers"]
   relativesAge --> cya
 
-  cya --> confirmation["Confirmation<br>End"]
+  cya --> confirmation
+  confirmation@{ shape: doc, label: "Confirmation" }
+  confirmation --> flowComplete([End])
 ```
 
 ## Tobacco subflow
@@ -69,26 +100,30 @@ The tobacco questions repeat for each selected tobacco type, in this order:
 
 ```mermaid
 flowchart TD
-  selectedType["Next selected tobacco type"] --> formerSmoker{"Former smoker?"}
+  selectedType{{Next selected tobacco type}} --> formerSmokerDecision{"Former smoker?"}
 
-  formerSmoker -- No, currently smokes --> status["Smoking status"]
-  formerSmoker -- Yes --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
+  formerSmokerDecision -- No, currently smokes --> status["Smoking status"]
+  formerSmokerDecision -- Yes --> tobaccoSmoking["Tobacco smoking<br>Frequency and quantity"]
   status --> tobaccoSmoking
 
   tobaccoSmoking --> isShisha{"Is the selected type<br>shisha?"}
-  isShisha -- Yes --> nextTypeOrCya
-  isShisha -- No --> changed{"Smoking changed<br>over time?"}
+  isShisha -- Yes --> moreTypes
+  isShisha -- No --> changed["Smoking changed<br>over time?"]
 
-  changed -- No change selected --> nextTypeOrCya
-  changed -- More selected --> moreChange["Tobacco smoking change<br>More: frequency, quantity and years"]
+  changed --> changedDecision{"Change selected?"}
+  changedDecision -- No change selected --> moreTypes
+  changedDecision -- More selected --> moreChange["Tobacco smoking change<br>More: frequency, quantity and years"]
   moreChange --> fewerSelected{"Fewer also selected?"}
 
-  changed -- Only fewer selected --> fewerChange["Tobacco smoking change<br>Fewer: frequency, quantity and years"]
+  changedDecision -- Only fewer selected --> fewerChange["Tobacco smoking change<br>Fewer: frequency, quantity and years"]
   fewerSelected -- Yes --> fewerChange
-  fewerSelected -- No --> nextTypeOrCya
-  fewerChange --> nextTypeOrCya
+  fewerSelected -- No --> moreTypes
+  fewerChange --> moreTypes
 
-  nextTypeOrCya["Next selected tobacco type<br>or Check your answers"]
+  moreTypes{"More selected<br>tobacco types?"}
+  moreTypes -- Yes --> nextType((Next type))
+  nextType --> selectedType
+  moreTypes -- No --> cya((Check your answers))
 ```
 
 ## Notes
