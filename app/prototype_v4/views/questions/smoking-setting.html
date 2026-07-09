@@ -18,7 +18,7 @@
 
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
-        {% set legendText %}
+        {% set headingText %}
           {% include "prototype_v4/views/includes/page-heading-legend.html" %}
         {% endset %}
 
@@ -26,7 +26,7 @@
           name: "answers[" + type + "][smokingSetting]",
           fieldset: {
             legend: {
-              text: legendText,
+              html: headingText,
               isPageHeading: true,
               classes: "nhsuk-fieldset__legend--l"
             }

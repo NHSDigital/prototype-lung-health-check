@@ -1,6 +1,6 @@
 {% extends "prototype_v4/views/layouts/main.html" %}
 
-{% set title = changeHeading %}
+{% set title = questionHeading %}
 {% set caption = smokingType.caption %}
 
 {% block beforeContent %}
@@ -23,19 +23,19 @@
       <form action="{{ actions.next }}" method="post" accept-charset="utf-8" novalidate>
 
         {{ input({
-          id: "smoking-years-change",
-          name: "answers[" + type + "][" + smokingChange.answerKey + "][years]",
+          id: "years-smoked",
+          name: "answers[" + type + "][yearsSmoked]",
           label: {
             html: headingText,
             isPageHeading: true,
             classes: "nhsuk-label--l"
           },
           hint: {
-            text: "Give a rough estimate"
+            text: "Give an estimate if you are not sure"
           },
           suffix: "years",
           inputmode: "numeric",
-          value: changeAnswer.years,
+          value: data.answers[type].yearsSmoked,
           classes: "nhsuk-input--width-4"
         }) }}
 
