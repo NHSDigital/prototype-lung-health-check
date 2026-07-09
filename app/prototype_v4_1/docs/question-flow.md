@@ -8,6 +8,8 @@ This diagram is based on:
 
 The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds. Colours are grouped by category: grey for control and flow, blue for process, and green for data.
 
+## Main questionnaire flow
+
 ```mermaid
 flowchart TD
   start([Start]) --> startPage["Start page<br>/prototype_v4_1/start-page"]
@@ -89,7 +91,7 @@ flowchart TD
   class confirmation data
 ```
 
-## Tobacco subflow
+### Smoking history subflow
 
 The tobacco questions repeat for each selected tobacco type, in this order:
 
@@ -104,7 +106,7 @@ The tobacco questions repeat for each selected tobacco type, in this order:
 
 ```mermaid
 flowchart TD
-  selectedType{{Next selected tobacco type}} --> isShisha{"Is the selected type<br>shisha?"}
+  selectedType{{Selected tobacco type}} --> isShisha{"Is the selected type<br>shisha?"}
 
   isShisha -- Yes --> shishaPast{"Used to smoke?"}
   shishaPast -- No, currently smokes --> shishaStatus["Smoking status"]
