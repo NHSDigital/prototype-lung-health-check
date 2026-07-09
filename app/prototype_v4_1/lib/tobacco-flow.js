@@ -95,6 +95,14 @@ const getQuestionVariantValueLabels = (id, type) => {
   }, {})
 }
 
+const getSmokingTypeLabel = (type) => {
+  return (getValueLabels().smokingType[type] || 'this type of tobacco').replace(', or ', ' or ').toLowerCase()
+}
+
+const getYearsSmokedHeading = (type) => {
+  return `Roughly how many years have you smoked ${getSmokingTypeLabel(type)}?`
+}
+
 /**
  * Get selected tobacco types in tobacco.yaml order.
  *
@@ -196,13 +204,19 @@ const deleteUnselectedShishaSettingAnswers = (answer = {}) => {
  */
 const getSmokingTypeSteps = (answers = {}) => {
   const includeSmokingStatus = answers.smoker !== 'yes_previous'
+  const selectedTypes = getSelectedSmokingTypes(answers)
+  const includeYearsSmoked = selectedTypes.length > 1
 
-  return getSelectedSmokingTypes(answers).flatMap((type) => {
+  return selectedTypes.flatMap((type) => {
     const steps = []
     const answer = answers[type] || {}
 
     if (includeSmokingStatus) {
       steps.push({ page: 'smoking-status', type })
+    }
+
+    if (includeYearsSmoked) {
+      steps.push({ page: 'years-smoked', type })
     }
 
     if (type === 'shisha') {
@@ -603,6 +617,10 @@ const getSmokingStepHeading = (page, type, setting, isPast = false, answer = {})
 
   if (!smokingType) {
     return ''
+  }
+
+  if (page === 'years-smoked') {
+    return getYearsSmokedHeading(type)
   }
 
   if (type === 'shisha' && setting) {
@@ -1014,7 +1032,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
     return `Select ${getAnswerPhraseFromHeading(heading)}`
   }
 
-  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
+  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long') || heading.startsWith('Roughly how many')) {
     return `${questionType === 'single' ? 'Select' : 'Enter'} ${getAnswerPhraseFromHeading(heading)}`
   }
 
@@ -1031,7 +1049,7 @@ const getContextualRequiredErrorText = (question, overrides) => {
 const getContextualInvalidErrorText = (question, overrides) => {
   const heading = overrides.heading?.title || question.heading?.title || ''
 
-  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long')) {
+  if (heading.startsWith('How much') || heading.startsWith('How many') || heading.startsWith('How long') || heading.startsWith('Roughly how many')) {
     return `Enter ${getAnswerPhraseFromHeading(heading)} using numbers`
   }
 
@@ -1078,6 +1096,20 @@ const getSmokingContentQuestionOverrides = ({
         name: `answers[${step.type}][smokingSetting]`
       },
       values: answer.smokingSetting
+    }
+  }
+
+  if (page === 'years-smoked') {
+    return {
+      heading: {
+        title: getSmokingStepHeading(page, step.type),
+        caption: smokingType.caption
+      },
+      input: {
+        id: 'years-smoked',
+        name: `answers[${step.type}][yearsSmoked]`
+      },
+      value: answer.yearsSmoked
     }
   }
 

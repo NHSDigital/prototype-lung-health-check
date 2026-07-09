@@ -100,12 +100,17 @@ The tobacco questions repeat for each selected tobacco type, in this order:
 
 ```mermaid
 flowchart TD
-  selectedType{{Selected tobacco type}} --> isShisha{"Is the selected type<br>shisha?"}
+  selectedType{{Selected tobacco type}} --> pastForYears{"Used to smoke?"}
+  pastForYears -- No, currently smokes --> statusBeforeYears["Smoking status"]
+  pastForYears -- Yes --> multipleTypes{"More than one<br>tobacco type selected?"}
+  statusBeforeYears --> multipleTypes
+  multipleTypes -- Yes --> yearsSmoked["Years smoked"]
+  multipleTypes -- No --> isShisha{"Is the selected type<br>shisha?"}
+  yearsSmoked --> isShisha
 
   isShisha -- Yes --> shishaPast{"Used to smoke?"}
-  shishaPast -- No, currently smokes --> shishaStatus["Smoking status"]
   shishaPast -- Yes --> setting["Smoking setting"]
-  shishaStatus --> setting
+  shishaPast -- No, currently smokes --> setting
   setting --> selectedSetting{{Next selected shisha setting}}
   selectedSetting --> shishaFrequency["Smoking frequency"]
   shishaFrequency --> shishaQuantity["Smoking quantity"]
@@ -114,9 +119,8 @@ flowchart TD
   moreSettings -- No --> moreTypes
 
   isShisha -- No --> past{"Used to smoke?"}
-  past -- No, currently smokes --> status["Smoking status"]
   past -- Yes --> frequency["Smoking frequency"]
-  status --> frequency["Smoking frequency"]
+  past -- No, currently smokes --> frequency["Smoking frequency"]
   frequency --> quantity["Smoking quantity"]
   quantity --> changed["Smoking changed<br>over time?"]
 
@@ -143,8 +147,8 @@ flowchart TD
   classDef process fill:#d7e8f7,stroke:#005eb8,color:#212b32,stroke-width:2px
   classDef data fill:#d9f3f0,stroke:#00a499,color:#212b32,stroke-width:2px
   linkStyle default stroke:#4c6272,stroke-width:2px
-  class changedDecision,cya,decreasedSelected,isShisha,moreSettings,moreTypes,nextType,past,shishaPast controlFlow
-  class changed,decreasedFrequency,decreasedQuantity,decreasedYears,frequency,increasedFrequency,increasedQuantity,increasedYears,quantity,selectedSetting,selectedType,setting,shishaFrequency,shishaQuantity,shishaStatus,status process
+  class changedDecision,cya,decreasedSelected,isShisha,moreSettings,moreTypes,multipleTypes,nextType,past,pastForYears,shishaPast controlFlow
+  class changed,decreasedFrequency,decreasedQuantity,decreasedYears,frequency,increasedFrequency,increasedQuantity,increasedYears,quantity,selectedSetting,selectedType,setting,shishaFrequency,shishaQuantity,statusBeforeYears,yearsSmoked process
 ```
 
 ## Symbol key
@@ -167,8 +171,9 @@ flowchart TD
   - `app/prototype_v4_1/controllers/question.js`
 - Height and weight unit pages can be switched manually using the unit-switch links.
 - `Age stopped smoking` is only asked when the `smoker` answer is `yes_previous`.
-- The tobacco subflow uses query strings such as `/prototype_v4_1/smoking-status?type=cigarettes`.
+- The tobacco subflow uses query strings such as `/prototype_v4_1/smoking-status?type=cigarettes` and `/prototype_v4_1/years-smoked?type=cigarettes`.
 - If the `smoker` answer is `yes_previous`, each tobacco type skips `Smoking status` and uses past-tense question text.
+- `Years smoked` is shown for each selected tobacco type only when more than one tobacco type has been selected.
 - Shisha asks for `Smoking setting`, then repeats frequency and quantity for each selected setting. The shisha setting-specific pages include the setting in the query string, for example `/prototype_v4_1/smoking-frequency?type=shisha&setting=group`.
 - If both `increased` and `decreased` are selected for a tobacco type, the flow asks the three "increased" change questions first, then the three "decreased" change questions.
 - `Check your answers` links back to the last tobacco step that applies to the current set of answers.

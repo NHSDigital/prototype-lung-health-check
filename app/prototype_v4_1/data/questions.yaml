@@ -935,6 +935,30 @@ questions:
       required:
         text: Select whether you currently smoke this type of tobacco
 
+  - id: years-smoked
+    type: text
+    heading:
+      title: Roughly how many years have you smoked this type of tobacco?
+    input:
+      hint: Give an estimate if you are not sure
+      suffix: years
+      inputmode: numeric
+      classes: nhsuk-input--width-4
+    validation:
+      required: true
+      type: number
+      min: 1
+      max: 80
+    errors:
+      required:
+        text: Enter roughly how many years you have smoked this type of tobacco
+      invalid:
+        text: Enter the number of years using numbers
+      min:
+        text: Number of years must be 1 or more
+      max:
+        text: Number of years must be 80 or fewer
+
   - id: smoking-frequency
     type: single
     heading:
