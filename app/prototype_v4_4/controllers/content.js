@@ -16,7 +16,7 @@ const renderDocs = (fileName) => renderMarkdownFile({
     },
     fullWidth: true,
     hasMermaid: true,
-    hidePhaseBanner: true
+    hidePhaseBanner: false
   },
   stripFirstHeading: true,
   renderTemplate: false
