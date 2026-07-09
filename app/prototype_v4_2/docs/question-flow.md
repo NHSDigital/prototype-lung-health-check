@@ -8,18 +8,6 @@ This diagram is based on:
 
 The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds. Colours are grouped by category: grey for control and flow, blue for process, and green for data.
 
-## Symbol key
-
-| Symbol | Mermaid syntax | Used for |
-| --- | --- | --- |
-| Stadium | `node([Label])` | Start and end points |
-| Rectangle | `node["Label"]` | User-facing pages and single process steps |
-| Diamond | `node{"Label"}` | Routing decisions |
-| Circle | `node((Label))` | Connectors between repeated sections |
-| Double-sided rectangle | `node[["Label"]]` | Predefined or repeated sub-processes |
-| Hexagon | `node{{"Label"}}` | Preparation steps |
-| Document | `node@{ shape: doc, label: "Label" }` | Output documents or reports |
-
 ```mermaid
 flowchart TD
   start([Start]) --> startPage["Start page<br>/prototype_v4_2/start-page"]
@@ -142,6 +130,18 @@ flowchart TD
   class changedDecision,cya,fewerSelected,formerSmokerDecision,isShisha,moreTypes,nextType controlFlow
   class changed,fewerChange,moreChange,selectedType,status,tobaccoSmoking process
 ```
+
+## Symbol key
+
+| Symbol | Mermaid syntax | Used for |
+| --- | --- | --- |
+| Stadium | `node([Label])` | Start and end points |
+| Rectangle | `node["Label"]` | User-facing pages and single process steps |
+| Diamond | `node{"Label"}` | Routing decisions |
+| Circle | `node((Label))` | Connectors between repeated sections |
+| Double-sided rectangle | `node[["Label"]]` | Predefined or repeated sub-processes |
+| Hexagon | `node{{"Label"}}` | Preparation steps |
+| Document | `node@{ shape: doc, label: "Label" }` | Output documents or reports |
 
 ## Notes
 
