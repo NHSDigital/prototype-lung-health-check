@@ -6,6 +6,19 @@ const markdownIt = new MarkdownIt({
   typographer: true
 })
 
+const defaultFenceRenderer = markdownIt.renderer.rules.fence
+
+markdownIt.renderer.rules.fence = (tokens, index, options, env, self) => {
+  const token = tokens[index]
+  const info = token.info ? token.info.trim().split(/\s+/)[0] : ''
+
+  if (info === 'mermaid') {
+    return `<div class="app-mermaid mermaid">\n${markdownIt.utils.escapeHtml(token.content)}</div>\n`
+  }
+
+  return defaultFenceRenderer(tokens, index, options, env, self)
+}
+
 /* ------------------------------------------------------------------
 utility function to parse markdown as HTML
 example: {{ "## Title" | markdownToHtml }}

@@ -194,6 +194,8 @@ router.get(`/prototype_${version}/paused`, contentController.paused)
 
 router.get(`/prototype_${version}/closed`, contentController.closed)
 
+router.get(`/prototype_${version}/question-flow`, contentController.questionFlow)
+
 /// ------------------------------------------------------------------------ ///
 /// Error pages
 /// ------------------------------------------------------------------------ ///

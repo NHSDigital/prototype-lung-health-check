@@ -2,10 +2,19 @@
 
 {% set title = contentData.title %}
 
+{% block beforeContent %}
+{% if contentData.actions and contentData.actions.back %}
+{{ backLink({
+  text: "Back",
+  href: contentData.actions.back
+}) }}
+{% endif %}
+{% endblock %}
+
 {% block content %}
 
   <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-two-thirds">
+    <div class="{{ 'nhsuk-grid-column-full' if contentData.fullWidth else 'nhsuk-grid-column-two-thirds' }}">
 
       <h1 class="nhsuk-heading-l">{{ title }}</h1>
 
