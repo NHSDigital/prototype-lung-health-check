@@ -40,6 +40,14 @@ router.get(prototypePath, (req, res) => {
 })
 
 router.get(`${prototypePath}/start-page`, (req, res) => {
+  if (req.session.data) {
+    delete req.session.data['logged-in']
+  }
+
+  if (res.locals.data) {
+    delete res.locals.data['logged-in']
+  }
+
   res.render(view('start'), {
     actions: {
       start: `${prototypePath}/sign-in`

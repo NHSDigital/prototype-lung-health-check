@@ -37,6 +37,14 @@ router.get(`/prototype_${version}`, (req, res) => {
 })
 
 router.get(`/prototype_${version}/start-page`, (req, res) => {
+  if (req.session.data) {
+    delete req.session.data['logged-in']
+  }
+
+  if (res.locals.data) {
+    delete res.locals.data['logged-in']
+  }
+
   res.render(view('index'), {
     actions: {
       start: `/prototype_${version}/sign-in`

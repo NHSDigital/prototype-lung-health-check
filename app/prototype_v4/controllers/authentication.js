@@ -51,6 +51,8 @@ exports.securityCode_post = (req, res) => {
       }
     })
   } else {
+    req.session.data = req.session.data || {}
+    req.session.data['logged-in'] = true
     res.redirect('/prototype_v4/sign-in-agreement')
   }
 }

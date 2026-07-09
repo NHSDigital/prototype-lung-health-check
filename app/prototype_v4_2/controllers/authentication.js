@@ -48,6 +48,8 @@ exports.securityCode_post = (req, res) => {
       }
     })
   } else {
+    req.session.data = req.session.data || {}
+    req.session.data['logged-in'] = true
     res.redirect(`${prototypePath}/sign-in-agreement`)
   }
 }
