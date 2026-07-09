@@ -1,11 +1,5 @@
 # Prototype v4.3 question flow
 
-This diagram is based on:
-
-- `app/prototype_v4_3/routes.js`
-- `app/prototype_v4_3/controllers/authentication.js`
-- `app/prototype_v4_3/controllers/question.js`
-
 The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds. Colours are grouped by category: grey for control and flow, blue for process, and green for data.
 
 ## Main questionnaire flow
@@ -142,6 +136,10 @@ flowchart TD
 
 ## Notes
 
+- This diagram is based on:
+  - `app/prototype_v4_3/routes.js`
+  - `app/prototype_v4_3/controllers/authentication.js`
+  - `app/prototype_v4_3/controllers/question.js`
 - Height and weight unit pages can be switched manually using the unit-switch links.
 - `Smoking type` is shown immediately after `Phone questionnaire`.
 - `Smoking status` is shown when one tobacco type is selected.

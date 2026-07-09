@@ -1,11 +1,5 @@
 # Prototype v4.4 question flow
 
-This diagram is based on:
-
-- `app/prototype_v4_4/routes.js`
-- `app/prototype_v4_4/controllers/authentication.js`
-- `app/prototype_v4_4/controllers/question.js`
-
 The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds. Colours are grouped by category: grey for control and flow, blue for process, and green for data.
 
 ## Main questionnaire flow
@@ -174,6 +168,10 @@ When the changed-smoking frequency is defaulted, the answer is still stored and 
 
 ## Notes
 
+- This diagram is based on:
+  - `app/prototype_v4_4/routes.js`
+  - `app/prototype_v4_4/controllers/authentication.js`
+  - `app/prototype_v4_4/controllers/question.js`
 - Height and weight unit pages can be switched manually using the unit-switch links.
 - `Smoking history` is an interstitial page shown after `Education` and before `When you smoked tobacco`.
 - `When you smoked tobacco` combines age started smoking, age stopped smoking and periods stopped smoking.
