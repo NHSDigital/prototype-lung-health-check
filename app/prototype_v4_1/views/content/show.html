@@ -2,6 +2,15 @@
 
 {% set title = contentData.title %}
 
+{% block beforeContent %}
+{% if contentData.actions and contentData.actions.back %}
+{{ backLink({
+  text: "Back",
+  href: contentData.actions.back
+}) }}
+{% endif %}
+{% endblock %}
+
 {% block content %}
 
   <div class="nhsuk-grid-row">

@@ -1,6 +1,6 @@
 const path = require('path')
 const { renderMarkdownFile } = require('../../lib/content-renderer')
-const { view } = require('../lib/settings')
+const { path: prototypePath, view } = require('../lib/settings')
 
 const contentDirectory = path.join(__dirname, '..', 'content')
 const docsDirectory = path.join(__dirname, '..', 'docs')
@@ -11,6 +11,9 @@ const renderDocs = (fileName) => renderMarkdownFile({
   fileName,
   view,
   data: {
+    actions: {
+      back: `${prototypePath}/page-index`
+    },
     fullWidth: true,
     hasMermaid: true,
     hidePhaseBanner: true
