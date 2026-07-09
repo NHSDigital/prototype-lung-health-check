@@ -2,7 +2,7 @@
 
 The diagrams use user-facing pages as process rectangles and branch-only routing logic as decision diamonds. Colours are grouped by category: grey for control and flow, blue for process, and green for data.
 
-## Main questionnaire flow
+## Main question flow
 
 ```mermaid
 flowchart TD
