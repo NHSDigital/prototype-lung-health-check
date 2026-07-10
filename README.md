@@ -101,6 +101,14 @@ npm start
 
 The prototype runs at `http://localhost:3000`.
 
+Local environment variables can be set in a `.env` file. Copy `.env.example`
+to `.env` and change the values you need:
+
+```bash
+PHASE_BANNER_TAG_TEXT="Pilot"
+PHASE_BANNER_TAG_CLASSES="nhsuk-tag--blue"
+```
+
 ## Useful commands
 
 ```bash
