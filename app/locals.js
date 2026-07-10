@@ -1,3 +1,5 @@
+const config = require('./config')
+
 module.exports = (req, res, next) => {
   // You can set any additional local variables here.
   // These will be made available to any views
@@ -9,6 +11,7 @@ module.exports = (req, res, next) => {
   res.locals.serviceUrl = 'digital-lung-cancer-screening.nhs.uk'
   res.locals.serviceEmail = 'england.digitallungcancerscreening@nhs.net'
   res.locals.serviceTelephone = '020 3835 1600'
+  res.locals.phaseBanner = config.phaseBanner
 
   res.locals.referrer = req.query.referrer
   res.locals.query = req.query

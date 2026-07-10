@@ -13,7 +13,7 @@ The latest version is **prototype v4.4**.
 
 - Start page: `/prototype_v4_4/start-page`
 - Page index: `/prototype_v4_4/page-index`
-- Last updated in the prototype index: 25 June 2026
+- Last updated in the prototype index: 9 July 2026
 
 The app also keeps earlier versions available for comparison and research
 review:
@@ -100,6 +100,14 @@ npm start
 ```
 
 The prototype runs at `http://localhost:3000`.
+
+Local environment variables can be set in a `.env` file. Copy `.env.example`
+to `.env` and change the values you need:
+
+```bash
+PHASE_BANNER_TAG_TEXT="Pilot"
+PHASE_BANNER_TAG_CLASSES="nhsuk-tag--blue"
+```
 
 ## Useful commands
 
