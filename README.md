@@ -13,7 +13,7 @@ The latest version is **prototype v4.4**.
 
 - Start page: `/prototype_v4_4/start-page`
 - Page index: `/prototype_v4_4/page-index`
-- Last updated in the prototype index: 25 June 2026
+- Last updated in the prototype index: 9 July 2026
 
 The app also keeps earlier versions available for comparison and research
 review:
