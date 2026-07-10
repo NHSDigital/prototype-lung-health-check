@@ -748,6 +748,26 @@ exports.smokingStatus_post = (req, res) => {
   }
 }
 
+exports.yearsSmoked_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'years-smoked')
+}
+
+exports.yearsSmoked_post = (req, res) => {
+  const { step, steps } = getSmokingTypeStep(req, 'years-smoked')
+  const errors = step ? validateSmokingTypeQuestion(req, 'years-smoked', step) : []
+
+  if (!step) {
+    res.redirect(`/prototype_${version}/smoking-type`)
+    return
+  }
+
+  if (errors.length) {
+    renderSmokingTypeQuestion(req, res, 'years-smoked', errors)
+  } else {
+    res.redirect(getSmokingTypeActions(step, steps).onward)
+  }
+}
+
 exports.smokingFrequency_get = (req, res) => {
   renderSmokingTypeQuestion(req, res, 'smoking-frequency')
 }

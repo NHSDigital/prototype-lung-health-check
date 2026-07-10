@@ -233,13 +233,19 @@ const deleteUnselectedShishaSettingAnswers = (answer = {}) => {
 
 const getSmokingTypeSteps = (answers = {}) => {
   const includeSmokingStatus = answers.smoker !== 'yes_previous'
+  const selectedTypes = getSelectedSmokingTypes(answers)
+  const includeYearsSmoked = selectedTypes.length > 1
 
-  return getSelectedSmokingTypes(answers).flatMap((type) => {
+  return selectedTypes.flatMap((type) => {
     const steps = []
     const answer = answers[type] || {}
 
     if (includeSmokingStatus) {
       steps.push({ page: 'smoking-status', type })
+    }
+
+    if (includeYearsSmoked) {
+      steps.push({ page: 'years-smoked', type })
     }
 
     if (type === 'shisha') {
@@ -593,12 +599,24 @@ const getSmokingTypeHeadings = (type, isPast = false) => {
   }
 }
 
+const getSmokingTypeLabel = (type) => {
+  return (valueLabels.smokingType[type] || 'this type of tobacco').replace(', or ', ' or ').toLowerCase()
+}
+
+const getYearsSmokedHeading = (type) => {
+  return `Roughly how many years have you smoked ${getSmokingTypeLabel(type)}?`
+}
+
 const getSmokingStepHeading = (page, type, setting, isPast = false) => {
   const smokingType = smokingTypes[type]
   const shishaSetting = shishaSmokingSettings[setting]
 
   if (!smokingType) {
     return ''
+  }
+
+  if (page === 'years-smoked') {
+    return getYearsSmokedHeading(type)
   }
 
   if (type === 'shisha' && shishaSetting) {
@@ -686,6 +704,7 @@ const formatListValue = (value, labels) => {
 const getCheckYourAnswers = (answers = {}) => {
   const selectedSmokingTypes = getSelectedSmokingTypes(answers)
   const isFormerSmoker = answers.smoker === 'yes_previous'
+  const includeYearsSmoked = selectedSmokingTypes.length > 1
 
   const tobaccoRows = selectedSmokingTypes.map((type) => {
     const answer = answers[type] || {}
@@ -733,6 +752,11 @@ const getCheckYourAnswers = (answers = {}) => {
         key: smokingType.statusHeading,
         value: formatValue(answer.smokingStatus, valueLabels.smokingStatus),
         href: getSmokingTypeStepUrl({ page: 'smoking-status', type })
+      }),
+      includeYearsSmoked && makeSummaryRow({
+        key: getSmokingStepHeading('years-smoked', type),
+        value: answer.yearsSmoked && formatQuantity(answer.yearsSmoked, 'year', 'years'),
+        href: getSmokingTypeStepUrl({ page: 'years-smoked', type })
       }),
       type === 'shisha' && makeSummaryRow({
         key: smokingType.settingHeading,
@@ -1804,6 +1828,26 @@ exports.smokingStatus_post = (req, res) => {
 
   if (errors.length) {
     renderSmokingTypeQuestion(req, res, 'smoking-status', errors)
+  } else {
+    res.redirect(getSmokingTypeActions(step, steps).onward)
+  }
+}
+
+exports.yearsSmoked_get = (req, res) => {
+  renderSmokingTypeQuestion(req, res, 'years-smoked')
+}
+
+exports.yearsSmoked_post = (req, res) => {
+  const { step, steps } = getSmokingTypeStep(req, 'years-smoked')
+  const errors = []
+
+  if (!step) {
+    res.redirect(`/prototype_${version}/smoking-type`)
+    return
+  }
+
+  if (errors.length) {
+    renderSmokingTypeQuestion(req, res, 'years-smoked', errors)
   } else {
     res.redirect(getSmokingTypeActions(step, steps).onward)
   }

@@ -40,6 +40,14 @@ router.get(prototypePath, (req, res) => {
 })
 
 router.get(`${prototypePath}/start-page`, (req, res) => {
+  if (req.session.data) {
+    delete req.session.data['logged-in']
+  }
+
+  if (res.locals.data) {
+    delete res.locals.data['logged-in']
+  }
+
   res.render(view('start'), {
     actions: {
       start: `${prototypePath}/sign-in`
@@ -163,6 +171,9 @@ router.get(`/prototype_${version}/smoking-type-exit`, questionController.smoking
 
 router.get(`/prototype_${version}/smoking-status`, questionController.smokingStatus_get)
 router.post(`/prototype_${version}/smoking-status`, questionController.smokingStatus_post)
+
+router.get(`/prototype_${version}/years-smoked`, questionController.yearsSmoked_get)
+router.post(`/prototype_${version}/years-smoked`, questionController.yearsSmoked_post)
 
 router.get(`/prototype_${version}/smoking-frequency`, questionController.smokingFrequency_get)
 router.post(`/prototype_${version}/smoking-frequency`, questionController.smokingFrequency_post)
