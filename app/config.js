@@ -1,16 +1,41 @@
+require('dotenv').config({ quiet: true })
+
 // Use this file to change prototype configuration.
+
+const getEnv = (name, fallback) => {
+  if (process.env[name] === undefined) {
+    return fallback
+  }
+
+  return process.env[name]
+}
+
+const getPort = () => {
+  const port = Number.parseInt(getEnv('PORT', '3000'), 10)
+
+  if (Number.isNaN(port)) {
+    return 3000
+  }
+
+  return port
+}
 
 module.exports = {
   // Service name
-  serviceName: 'Check if you need a lung scan',
+  serviceName: getEnv('SERVICE_NAME', 'Check if you need a lung scan'),
 
   // Port to run nodemon on locally
-  port: 3000,
+  port: getPort(),
 
   // Automatically stores form data, and send to all views
   useAutoStoreData: 'true',
 
   // Enable cookie-based session store (persists on restart)
   // Please note 4KB cookie limit per domain, cookies too large will silently be ignored
-  useCookieSessionStore: 'false'
+  useCookieSessionStore: 'false',
+
+  phaseBanner: {
+    tagText: getEnv('PHASE_BANNER_TAG_TEXT', 'Prototype'),
+    tagClasses: getEnv('PHASE_BANNER_TAG_CLASSES', 'nhsuk-tag--blue')
+  }
 }
