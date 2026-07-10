@@ -95,7 +95,7 @@
   strong,
   b,
   dt:not([class]) {
-    @include nhsuk-typography-weight-bold;
+    @include nhsuk-font-weight-bold;
   }
 
   dd + dt {
