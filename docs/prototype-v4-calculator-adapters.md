@@ -16,6 +16,7 @@ The adapter converts `req.session.data.answers` into inputs for:
 - `PLCOm2012`
 
 It does not apply risk thresholds or route to result pages.
+Thresholds and calculator execution are handled by `app/lib/risk-summary.js`.
 
 ## API
 
@@ -133,3 +134,18 @@ Shisha time bands use representative minute amounts:
 When multiple tobacco products are selected, exact overlap can only be derived
 when per-product start and stop ages are available. If overlap is not available,
 the adapter uses the available duration answers and records an estimated issue.
+
+## Risk summary debugging
+
+The data-driven v4 prototypes attach a risk summary to rendered pages. It is
+available in Chrome DevTools as:
+
+```js
+window.prototypeRiskSummary
+```
+
+Set `RISK_SUMMARY_DEBUG=true` before starting the prototype to show the same
+summary in the page UI.
+
+Page indexes include low- and high-risk fixture profiles. These links set
+session answers and open check your answers with complete calculator inputs.
