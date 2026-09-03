@@ -606,4 +606,3 @@ Validation: required; type: number; minimum 1; maximum 80
 | `invalid` | Enter how many years using numbers | `#smoking-years-change` |
 | `min` | Number of years must be 1 or more | `#smoking-years-change` |
 | `max` | Number of years must be 80 or fewer | `#smoking-years-change` |
-

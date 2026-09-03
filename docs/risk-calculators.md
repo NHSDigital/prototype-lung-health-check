@@ -227,17 +227,24 @@ The implementation uses:
 
 If the team agrees a different source, update the calculator code and this page together.
 
-## Next work
+## Prototype adapters
 
-The next step is to create an adapter that converts prototype session answers into calculator inputs.
+The v4 session-answer adapter is documented in
+`docs/prototype-v4-calculator-adapters.md`.
 
-The adapter should sit outside the calculator modules. This keeps the formula code reusable across `prototype_v4_2`, `prototype_v4_3` and future prototypes.
+The adapter sits outside the calculator modules. This keeps the formula code
+reusable across the v4 prototypes.
 
-The adapter should own:
+The adapter owns:
+
+- how prototype answers map to calculator categories
+- how age and BMI are derived
+- cigarette-equivalent tobacco mapping
+- how missing, unknown, refused or estimated answers are reported
+
+Each prototype or result flow should still own:
 
 - eligibility thresholds
 - threshold comparison rules
-- how to handle missing, unknown or refused answers
-- cigarette-equivalent tobacco mapping
 - result page routing
 - content that says the score is not clinically signed off
