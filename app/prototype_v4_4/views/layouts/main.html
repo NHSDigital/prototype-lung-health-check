@@ -95,6 +95,7 @@
 
 {% block bodyEnd %}
   {{ super() }}
+  {% include "includes/risk-summary-debug.html" %}
   <script type="module" src="/assets/javascript/main.js"></script>
   {% block pageScripts %}{% endblock %}
 {% endblock %}

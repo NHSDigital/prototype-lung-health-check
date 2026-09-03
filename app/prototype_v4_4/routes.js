@@ -21,15 +21,19 @@ const hasView = (template) => {
 /// ------------------------------------------------------------------------ ///
 
 const authenticationController = require('./controllers/authentication')
+const calculatorAdapter = require('./lib/calculator-adapter')
 const contentController = require('./controllers/content')
 const errorController = require('./controllers/error')
 const { getDefaultAnswerProfile, getIndexRedirect } = require('./lib/page-index')
 const questionController = require('./controllers/question')
+const { attachRiskSummary } = require('../lib/risk-summary')
 
 router.use((req, res, next) => {
   res.locals.prototype = settings.locals
   next()
 })
+
+router.use(attachRiskSummary(calculatorAdapter))
 
 /// ------------------------------------------------------------------------ ///
 /// Start page
