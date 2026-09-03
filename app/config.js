@@ -20,6 +20,16 @@ const getPort = () => {
   return port
 }
 
+const getBooleanEnv = (name, fallback = false) => {
+  const value = getEnv(name)
+
+  if (value === undefined) {
+    return fallback
+  }
+
+  return ['1', 'true', 'yes', 'on'].includes(value.toLowerCase())
+}
+
 module.exports = {
   // Service name
   serviceName: getEnv('SERVICE_NAME', 'Check if you need a lung scan'),
@@ -37,5 +47,7 @@ module.exports = {
   phaseBanner: {
     tagText: getEnv('PHASE_BANNER_TAG_TEXT', 'Prototype'),
     tagClasses: getEnv('PHASE_BANNER_TAG_CLASSES', 'nhsuk-tag--blue')
-  }
+  },
+
+  riskSummaryDebug: getBooleanEnv('RISK_SUMMARY_DEBUG')
 }
