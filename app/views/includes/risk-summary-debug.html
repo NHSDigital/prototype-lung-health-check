@@ -1,0 +1,22 @@
+{% if riskSummary %}
+  {% if riskSummaryDebug %}
+    <div class="nhsuk-width-container nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-6">
+      <details class="nhsuk-details" open>
+        <summary class="nhsuk-details__summary">
+          <span class="nhsuk-details__summary-text">Risk summary debug</span>
+        </summary>
+        <div class="nhsuk-details__text">
+          <p class="nhsuk-body-s">
+            Prototype only. Not clinically signed off. Do not use to make clinical decisions.
+          </p>
+          <pre class="nhsuk-u-font-size-16"><code>{{ riskSummary | prettyJson }}</code></pre>
+        </div>
+      </details>
+    </div>
+  {% endif %}
+
+  <script>
+    window.prototypeRiskSummary = {{ riskSummary | safeJson | safe }}
+    console.info('Risk summary', window.prototypeRiskSummary)
+  </script>
+{% endif %}
