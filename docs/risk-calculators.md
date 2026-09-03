@@ -106,6 +106,30 @@ Each prototype or adapter should own:
 - the rule for using one calculator or both calculators
 - any result page routing
 
+The shared prototype risk summary in `app/lib/risk-summary.js` applies these
+prototype-only thresholds:
+
+- `PLCOm2012`: `0.0151`, or `1.51%`
+- `LLPv2`: `0.025`, or `2.5%`
+
+It returns both calculator results and an `overall` decision:
+
+```js
+{
+  plcom2012: { risk: 0.0231, percent: 2.31, eligible: true },
+  llpv2: { risk: 0.018, percent: 1.8, eligible: false },
+  overall: { eligible: true, reason: 'plcom2012' }
+}
+```
+
+The real object also includes `inputsUsed`, `missingInputs`, threshold values
+and adapter issues to help debug prototype journeys.
+
+The data-driven v4 prototypes expose the summary in the browser console as
+`window.prototypeRiskSummary`. Set `RISK_SUMMARY_DEBUG=true` to show the same
+summary in the prototype UI. Any UI or research use must show the prototype-only
+caveat above.
+
 ## PLCOm2012
 
 `PLCOm2012` returns a 6-year risk of lung cancer.

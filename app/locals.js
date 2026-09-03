@@ -12,6 +12,7 @@ module.exports = (req, res, next) => {
   res.locals.serviceEmail = 'england.digitallungcancerscreening@nhs.net'
   res.locals.serviceTelephone = '020 3835 1600'
   res.locals.phaseBanner = config.phaseBanner
+  res.locals.riskSummaryDebug = config.riskSummaryDebug
 
   res.locals.referrer = req.query.referrer
   res.locals.query = req.query

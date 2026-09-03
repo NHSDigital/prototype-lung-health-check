@@ -107,6 +107,8 @@
       <h2 class="nhsuk-heading-m">Check and confirmation</h2>
       <ul class="nhsuk-list nhsuk-list--spaced">
         {{ seededPageLink("/check-your-answers", "Check your answers - with default answers") }}
+        {{ seededProfilePageLink("/check-your-answers", "risk-low", "Check your answers - low-risk participant") }}
+        {{ seededProfilePageLink("/check-your-answers", "risk-high", "Check your answers - high-risk participant") }}
         {{ pageLink("/confirmation", "Confirmation") }}
         {{ pageLink("/confirmation?risk=high", "Confirmation - High risk") }}
       </ul>
