@@ -491,7 +491,7 @@ questions:
         text: Select your ethnic background
 
   - id: education
-    type: single
+    type: multiple
     answerKey: education
     heading:
       title: Your education
@@ -501,12 +501,13 @@ questions:
 
       If your qualification is not shown choose the closest level.
     input:
-      label: What is the highest level of education you have completed?
+      label: What level of education you have completed?
+      hint: Select all that apply
     options:
       - label: I finished school before the age of 15
         value: before_15
       - label: GCSEs
-        hint: Previously O-levels
+        hint: Previously Certificate of Secondary Education (CSE) or O-levels
         value: gcse
       - label: A-levels
         hint: Previously Higher School Certificate (HSC)
