@@ -22,7 +22,7 @@ questions:
       label: What is the highest level of education you have completed?
     options:
       - label: GCSEs
-        hint: Previously O-levels
+        hint: Previously Certificate of Secondary Education (CSE) or O-levels
         value: gcse
       - divider: or
       - label: I prefer not to say
