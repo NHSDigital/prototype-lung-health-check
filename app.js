@@ -30,6 +30,19 @@ async function init () {
     sessionDataDefaults
   })
 
+  const AutoRoutingView = prototype.app.get('view')
+
+  prototype.app.set('view', class extends AutoRoutingView {
+    constructor (name, options) {
+      super(name, options)
+
+      // Versioned templates live under app/prototype_*, outside app/views.
+      if (name.startsWith('prototype_')) {
+        this.path = this.path.replace(/^views[/\\]/, '')
+      }
+    }
+  })
+
   prototype.start(config.port)
 }
 
