@@ -524,6 +524,7 @@ questions:
       - divider: or
       - label: I prefer not to say
         value: prefer_not_to_say
+        exclusive: true
     summary:
       label: Education
     validation:
