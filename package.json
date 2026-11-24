@@ -22,7 +22,7 @@
     "markdown-it": "^15.0.3",
     "mermaid": "^12.3.0",
     "nhsuk-frontend": "^10.7.2",
-    "nhsuk-prototype-kit": "^8.5.2"
+    "nhsuk-prototype-kit": "^8.6.0"
   },
   "devDependencies": {
     "markdownlint-cli": "^0.50.0",
